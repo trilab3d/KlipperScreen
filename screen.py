@@ -1,9 +1,12 @@
 #!/usr/bin/python
 
+# this needs to be run on very beginning for corrct screen orientation
+import os
+os.system("/usr/bin/xrandr -display :0.0 -o left")
+
 import argparse
 import json
 import logging
-import os
 import subprocess
 import pathlib
 import traceback  # noqa

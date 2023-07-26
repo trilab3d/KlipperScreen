@@ -59,7 +59,8 @@ class SystemPanel(ScreenPanel):
         self.update_header = Gtk.Label()
         self.update_label = Gtk.Label()
         self.update_header.set_hexpand(True)  # align to center
-        self.update_label.set_hexpand(True)
+        self.update_label.set_hexpand(False)
+        self.update_label.set_line_wrap(True)
         self.update_header.set_margin_top(60)
 
         self.get_updates()

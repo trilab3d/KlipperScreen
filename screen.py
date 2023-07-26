@@ -105,6 +105,7 @@ class KlipperScreen(Gtk.Window):
         self.blanking_time = 600
         self.use_dpms = True
         self.apiclient = None
+        self.tpcclient = None
         self.version = version
         self.dialogs = []
         self.confirm = None
@@ -208,6 +209,11 @@ class KlipperScreen(Gtk.Window):
             self.printers[ind][name]["moonraker_host"],
             self.printers[ind][name]["moonraker_port"],
             self.printers[ind][name]["moonraker_api_key"],
+        )
+
+        self.tpcclient = KlippyRest(
+            self.printers[ind][name]["tpc_host"],
+            self.printers[ind][name]["tpc_port"]
         )
 
         self.printer_initializing(_("Connecting to %s") % name, remove=True)

@@ -93,7 +93,9 @@ class KlipperScreenConfig:
             {printer[8:]: {
                 "moonraker_host": self.config.get(printer, "moonraker_host", fallback="127.0.0.1"),
                 "moonraker_port": self.config.get(printer, "moonraker_port", fallback="7125"),
-                "moonraker_api_key": self.config.get(printer, "moonraker_api_key", fallback="").replace('"', '')
+                "moonraker_api_key": self.config.get(printer, "moonraker_api_key", fallback="").replace('"', ''),
+                "tpc_host": self.config.get(printer, "moonraker_host", fallback="127.0.0.1"),
+                "tpc_port": self.config.get(printer, "moonraker_port", fallback="5000"),
             }} for printer in printers
         ]
 
@@ -165,12 +167,12 @@ class KlipperScreenConfig:
                     'invert_x', 'invert_y', 'invert_z',
                 )
                 strs = (
-                    'moonraker_api_key', 'moonraker_host', 'titlebar_name_type',
+                    'moonraker_api_key', 'moonraker_host', 'tpc_host' 'titlebar_name_type',
                     'screw_positions', 'power_devices', 'titlebar_items', 'z_babystep_values',
                     'extrude_distances', "extrude_speeds", "camera_url",
                 )
                 numbers = (
-                    'moonraker_port', 'move_speed_xy', 'move_speed_z',
+                    'moonraker_port', 'tpc_port', 'move_speed_xy', 'move_speed_z',
                     'calibrate_x_position', 'calibrate_y_position',
                 )
             elif section.startswith('preheat '):

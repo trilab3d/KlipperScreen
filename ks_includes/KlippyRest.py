@@ -32,12 +32,15 @@ class KlippyRest:
     def get_thumbnail_stream(self, thumbnail):
         return self.send_request(f"server/files/gcodes/{thumbnail}", json=False)
 
-    def send_request(self, method, json=True):
-        url = f"{self.endpoint}/{method}"
+    def send_request(self, endpoint, method="GET", json=True):
+        url = f"{self.endpoint}/{endpoint}"
         headers = {} if self.api_key is False else {"x-api-key": self.api_key}
         data = False
         try:
-            response = requests.get(url, headers=headers, timeout=3)
+            if method == "GET":
+                response = requests.get(url, headers=headers, timeout=3)
+            elif method == "POST":
+                response = requests.post(url, headers=headers, timeout=3)
             response.raise_for_status()
             if json:
                 logging.debug(f"Sending request to {url}")

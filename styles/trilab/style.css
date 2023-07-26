@@ -5,26 +5,11 @@
 }
 
 window {
-    background: repeating-linear-gradient(
-  	30deg,
-  	rgb(250, 104, 49),
-  	rgb(250, 104, 49) 30px,
-  	rgb(60, 60, 60) 30px,
-  	rgb(60, 60, 60) 60px
-    );
-}
-
-button {
-    background-color: rgb(128, 222, 234);
-    border-radius: 1em;
+    background: #DDDDDD;
 }
 
 button label{
     color: black;
-}
-
-button:active {
-    background-color: #FFA726;
 }
 
 .button_active {
@@ -40,19 +25,22 @@ button.color1 label, button.color2 label, button.color3 label, button.color4 lab
     color: black;
 }
 
-button.color1, button.color2, button.color3, button.color4{
-    background-color: #80DEEA;
-    border-color: #1a909f;
-    box-shadow: .1em .1em #BDBDBD;
-    border-radius: 1em;
+button, button.color1, button.color2, button.color3, button.color4{
+    background-color: #AAAAAA;
+    border-color: #f5a742;
+    border-width: 5px ;
+    box-shadow: .1em .1em #666666;
+    border-radius: 0.5em;
+    border-style: none none solid none;
 }
 
-button.color1:active, button.color2:active, button.color3:active, button.color4:active, button.update:active, button.invalid:active, .dialog button:active {
+button:active, button.color1:active, button.color2:active, button.color3:active, button.color4:active, button.update:active, button.invalid:active, .dialog button:active {
+    background-color: #AAAAAA;
     border-style: none;
 }
 
 button.active {
-    background-color: #FFA726;
+    background-color: #3fd5e8;
 }
 
 button.update {

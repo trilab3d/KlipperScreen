@@ -34,14 +34,14 @@ class SystemPanel(ScreenPanel):
         self.update_dialog = None
         grid = self._gtk.HomogeneousGrid()
         grid.set_row_homogeneous(False)
+        self.do_schedule_refresh = True
 
-        self.update_all = self._gtk.Button('arrow-up', _('Full Update'), 'color1')
-        self.update_all.set_label(_('Update'))
-        self.update_all.connect("clicked", self.show_update_info)
-        self.update_all.set_vexpand(False)
-        self.refresh = self._gtk.Button('refresh', _('Refresh'), 'color2')
-        self.refresh.connect("clicked", self.refresh_updates)
-        self.refresh.set_vexpand(False)
+        self.download_button = self._gtk.Button('arrow-down', _('Download'), 'color1')
+        self.download_button.connect("clicked", self.download)
+        self.download_button.set_vexpand(False)
+        self.update_button = self._gtk.Button('arrow-up', _('Update'), 'color2')
+        self.update_button.connect("clicked", self.show_update_info)
+        self.update_button.set_vexpand(False)
 
         reboot = self._gtk.Button('refresh', _('Restart'), 'color3')
         reboot.connect("clicked", self.reboot_poweroff, "reboot")
@@ -63,50 +63,82 @@ class SystemPanel(ScreenPanel):
         self.update_label.set_line_wrap(True)
         self.update_header.set_margin_top(60)
 
+        self.button_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        self.button_box.set_hexpand(True)
+        self.button_box.set_vexpand(False)
+        self.button_box.set_halign(Gtk.Align.CENTER)
+        self.button_box.set_homogeneous(True)
+        self.button_box.set_size_request(self._gtk.content_width, -1)
+
         self.get_updates()
 
         infogrid.attach(self.update_header, 0, 0, 1, 1)
         infogrid.attach(self.update_label, 0, 1, 1, 1)
 
-
         scroll.add(infogrid)
 
         grid.attach(scroll, 0, 0, 1, 1)
-        grid.attach(self.update_all, 0, 1, 1, 1)
-        grid.attach(self.refresh, 0, 2, 1, 1)
-        grid.attach(reboot, 0, 3, 1, 1)
-        grid.attach(shutdown, 0, 4, 1, 1)
+        grid.attach(self.button_box, 0, 1, 1, 1)
+        grid.attach(reboot, 0, 2, 1, 1)
+        grid.attach(shutdown, 0, 3, 1, 1)
         self.content.add(grid)
 
     def activate(self):
+        self.do_schedule_refresh = True
         self.get_updates()
 
+    def deactivate(self):
+        self.do_schedule_refresh = False
+
     def refresh_updates(self, widget=None):
-        self.refresh.set_sensitive(False)
         self._screen.show_popup_message(_("Checking for updates, please wait..."), level=1)
         GLib.timeout_add_seconds(1, self.get_updates)
 
     def get_updates(self):
-        update_resp = self._screen.tpcclient.send_request(f"check_update")
-        if update_resp["download_pending"]:
-            self.update_header.set_markup("<span size='xx-large'>Update available</span>")
-            self.update_label.set_label(f"Current version: {update_resp['current_version']}")
-            self.update_all.set_label(_('Download and Update'))
-        elif update_resp["update_available"]:
-            self.update_header.set_markup("<span size='xx-large'>Update available</span>")
-            self.update_label.set_label(f"Current version: {update_resp['current_version']}\n"
-                                        f"Update version: {update_resp['update_version']}\n"
-                                        f"Changelog:\n{update_resp['release_notes']}")
-            self.update_all.set_label(_('Update'))
-            self.update_all.set_sensitive(True)
-        else:
-            self.update_header.set_markup("<span size='xx-large'>No update available</span>")
-            self.update_label.set_label(f"Current version: {update_resp['current_version']}")
-            self.update_all.set_label(_('Update'))
-            self.update_all.set_sensitive(False)
+        try:
+            update_resp = self._screen.tpcclient.send_request(f"check_update")
+            #logging.info(f"update_resp: {update_resp}")
+            for child in self.button_box.get_children():
+                self.button_box.remove(child)
+            if update_resp["update_status"] == "UPDATE_AVAILABLE":
+                self.update_header.set_markup("<span size='xx-large'>Update available</span>")
+                self.update_label.set_label(f"Current version: {update_resp['current_version']}")
+                self.button_box.add(self.download_button)
+            elif update_resp["update_status"] == "DOWNLOADING":
+                self.update_header.set_markup("<span size='xx-large'>"+_("Downloading")+"</span>")
+                self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"
+                                            f"{_('Progress')}: {int(float(update_resp['progress'])*100)}%")
+            elif update_resp["update_status"] == "UNPACKING":
+                self.update_header.set_markup("<span size='xx-large'>"+_("Unpacking")+"</span>")
+                self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"
+                                            f"{_('Update version')}: {update_resp['update_version']}\n"
+                                            f"{_('Release notes')}:\n{update_resp['release_notes']}")
+            elif update_resp["update_status"] == "INSTALLED":
+                self.update_header.set_markup("<span size='xx-large'>"+_("Update ready")+"</span>")
+                self.update_label.set_label(f"Current version: {update_resp['current_version']}\n"
+                                            f"Update version: {update_resp['update_version']}\n"
+                                            f"Changelog:\n{update_resp['release_notes']}")
+                self.button_box.add(self.update_button)
+            elif update_resp["update_status"] == "UP_TO_DATE":
+                self.update_header.set_markup("<span size='xx-large'>"+_("System is up to date")+"</span>")
+                self.update_label.set_label(f"Current version: {update_resp['current_version']}")
+            elif update_resp["update_status"] == "DOWNLOAD_FAILED":
+                self.update_header.set_markup("<span size='xx-large'>"+_("Download failed")+"</span>")
+                self.update_label.set_label(f"Current version: {update_resp['current_version']}")
+                self.button_box.add(self.download_button)
+            else:
+                self.update_header.set_markup("")
+                self.update_label.set_label("")
+        except:
+            self.update_header.set_markup("")
+            self.update_label.set_label("")
 
-        self.refresh.set_sensitive(True)
         self._screen.close_popup_message()
+        if self.do_schedule_refresh:
+            GLib.timeout_add_seconds(3, self.get_updates)
+
+    def download(self, widget):
+        self._screen.tpcclient.send_request(f"download_update","POST")
 
     def show_update_info(self, widget):
 

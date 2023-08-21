@@ -23,6 +23,7 @@ from signal import SIGTERM
 from ks_includes import functions
 from ks_includes.KlippyWebsocket import KlippyWebsocket
 from ks_includes.KlippyRest import KlippyRest
+from ks_includes.TPCRest import TPCRest
 from ks_includes.files import KlippyFiles
 from ks_includes.KlippyGtk import KlippyGtk
 from ks_includes.printer import Printer
@@ -211,7 +212,7 @@ class KlipperScreen(Gtk.Window):
             self.printers[ind][name]["moonraker_api_key"],
         )
 
-        self.tpcclient = KlippyRest(
+        self.tpcclient = TPCRest(
             self.printers[ind][name]["tpc_host"],
             self.printers[ind][name]["tpc_port"]
         )
@@ -918,7 +919,10 @@ class KlipperScreen(Gtk.Window):
 
     def show_keyboard(self, entry=None, event=None):
         if self.keyboard is not None:
-            return
+            if self.keyboard["entry"] == entry:
+                return
+            else:
+                self.remove_keyboard()
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         box.set_size_request(self.gtk.content_width, self.gtk.keyboard_height)
@@ -931,7 +935,7 @@ class KlipperScreen(Gtk.Window):
             return
         box.get_style_context().add_class("keyboard_box")
         box.add(Keyboard(self, self.remove_keyboard, entry=entry))
-        self.keyboard = {"box": box}
+        self.keyboard = {"box": box, "entry": entry}
         self.base_panel.content.pack_end(box, False, False, 0)
         self.base_panel.content.show_all()
 

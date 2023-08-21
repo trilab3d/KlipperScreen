@@ -101,8 +101,8 @@ class SystemPanel(ScreenPanel):
             for child in self.button_box.get_children():
                 self.button_box.remove(child)
             if update_resp["update_status"] == "UPDATE_AVAILABLE":
-                self.update_header.set_markup("<span size='xx-large'>Update available</span>")
-                self.update_label.set_label(f"Current version: {update_resp['current_version']}")
+                self.update_header.set_markup("<span size='xx-large'>"+_("New update available")+"</span>")
+                self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}")
                 self.button_box.add(self.download_button)
             elif update_resp["update_status"] == "DOWNLOADING":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Downloading")+"</span>")
@@ -115,16 +115,16 @@ class SystemPanel(ScreenPanel):
                                             f"{_('Release notes')}:\n{update_resp['release_notes']}")
             elif update_resp["update_status"] == "INSTALLED":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Update ready")+"</span>")
-                self.update_label.set_label(f"Current version: {update_resp['current_version']}\n"
-                                            f"Update version: {update_resp['update_version']}\n"
-                                            f"Changelog:\n{update_resp['release_notes']}")
+                self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"
+                                            f"{_('Update version')}: {update_resp['update_version']}\n"
+                                            f"{_('Release notes')}:\n{update_resp['release_notes']}")
                 self.button_box.add(self.update_button)
             elif update_resp["update_status"] == "UP_TO_DATE":
                 self.update_header.set_markup("<span size='xx-large'>"+_("System is up to date")+"</span>")
-                self.update_label.set_label(f"Current version: {update_resp['current_version']}")
+                self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}")
             elif update_resp["update_status"] == "DOWNLOAD_FAILED":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Download failed")+"</span>")
-                self.update_label.set_label(f"Current version: {update_resp['current_version']}")
+                self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}")
                 self.button_box.add(self.download_button)
             else:
                 self.update_header.set_markup("")

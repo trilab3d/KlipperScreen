@@ -383,7 +383,7 @@ class NetworkPanel(ScreenPanel):
             connected = False
 
         if connected or self.wifi.get_connected_ssid() == ssid:
-            stream = os.popen('hostname -f')
+            stream = os.popen('hostname')
             hostname = stream.read().strip()
             ifadd = netifaces.ifaddresses(self.interface)
             if netifaces.AF_INET in ifadd and len(ifadd[netifaces.AF_INET]) > 0:
@@ -409,7 +409,7 @@ class NetworkPanel(ScreenPanel):
 
     def update_single_network_info(self):
 
-        stream = os.popen('hostname -f')
+        stream = os.popen('hostname')
         hostname = stream.read().strip()
         ifadd = netifaces.ifaddresses(self.interface)
         ipv4 = ""

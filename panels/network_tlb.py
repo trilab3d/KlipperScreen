@@ -13,33 +13,16 @@ def create_panel(*args):
     return NetworkTlbPanel(*args)
 
 class NetworkTlbPanel(ScreenPanel):
-    initialized = False
 
     def __init__(self, screen, title):
         super().__init__(screen, title)
-
-        self.labels['networks'] = {}
-
+        self.do_schedule_refresh = True
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         box.set_vexpand(True)
-
         self.labels['networklist'] = Gtk.Grid()
         self.load_interfaces()
         box.pack_start(self.labels['networklist'], False, False, 0)
-
-        entry = Gtk.Entry()
-        entry.set_hexpand(True)
-        entry.set_vexpand(False)
-        entry.connect("button-press-event", self._screen.show_keyboard)
-        entry.connect("focus-in-event", self._screen.show_keyboard)
-        entry.grab_focus_without_selecting()
-        entry.set_visibility(False)
-
-        box.pack_start(entry, False, False, 0)
-
         self.content.add(box)
-        self.labels['main_box'] = box
-        self.initialized = True
 
     def load_interfaces(self):
         rsp = self._screen.tpcclient.send_request("network")
@@ -100,6 +83,10 @@ class NetworkTlbPanel(ScreenPanel):
             if n:
                 self.labels['networklist'].remove(n)
             self.labels['networklist'].attach(network, 0, i, 1, 1)
+        self.content.show_all()
+
+        if self.do_schedule_refresh:
+            GLib.timeout_add_seconds(3, self.load_interfaces)
 
     def show_wifi_settings(self, widget):
         self._screen.show_panel("wifi", "wifi", "Wifi Settings", 1, False)
@@ -108,8 +95,8 @@ class NetworkTlbPanel(ScreenPanel):
         self._screen.show_panel("ethernet", "ethernet", "Ethernet Settings", 1, False)
 
     def activate(self):
-        if self.initialized:
-            self.load_interfaces()
+        self.do_schedule_refresh = True
+        self.load_interfaces()
 
     def deactivate(self):
-        pass
+        self.do_schedule_refresh = False

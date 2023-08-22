@@ -39,6 +39,8 @@ class WifiPanel(ScreenPanel):
         self.ap_ssid_entry = None
         self.ap_pass_entry = None
 
+        self.btn_cancel = None
+        self.btn_save = None
         self.btn_refresh = None
 
         self.has_changes = False
@@ -233,16 +235,16 @@ class WifiPanel(ScreenPanel):
             grid.attach(ap_pass_box, 1, 4, 1, 1)
 
         btn_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        btn_cancel = self._gtk.Button("cancel", "Cancel", "color1")
-        btn_save = self._gtk.Button("complete", "Save", "color1")
+        self.btn_cancel = self._gtk.Button("cancel", "Cancel", "color1")
+        self.btn_save = self._gtk.Button("complete", "Save", "color1")
         self.btn_refresh = self._gtk.Button("refresh", "Refresh", "color1")
-        btn_save.connect("clicked", self.save)
-        btn_cancel.connect("clicked", self.cancel)
+        self.btn_save.connect("clicked", self.save)
+        self.btn_cancel.connect("clicked", self.cancel)
         self.btn_refresh.connect("clicked", self.wifi_refresh)
-        btn_save.set_sensitive(self.has_changes)
-        btn_cancel.set_sensitive(self.has_changes)
-        btn_box.add(btn_cancel)
-        btn_box.add(btn_save)
+        self.btn_save.set_sensitive(self.has_changes)
+        self.btn_cancel.set_sensitive(self.has_changes)
+        btn_box.add(self.btn_cancel)
+        btn_box.add(self.btn_save)
         btn_box.add(self.btn_refresh)
 
         grid.attach(btn_box, 1, 5, 1, 1)
@@ -276,6 +278,8 @@ class WifiPanel(ScreenPanel):
 
     def data_changed(self, widget):
         self.has_changes = True
+        self.btn_save.set_sensitive(self.has_changes)
+        self.btn_cancel.set_sensitive(self.has_changes)
 
     def toggle_pass_visibility(self, widget, entry):
         entry.set_visibility(not entry.get_visibility())
@@ -291,9 +295,10 @@ class WifiPanel(ScreenPanel):
             data["network_data"]["wifi_ap_ssid"] = str(self.ap_ssid_entry.get_text())
             data["network_data"]["wifi_ap_pass"] = str(self.ap_pass_entry.get_text())
         self._screen.tpcclient.post_request("settings", data)
-        self.fetch_settings()
-        self.has_changes = False
-        self.refresh()
+        #self.fetch_settings()
+        #self.has_changes = False
+        #self.refresh()
+        self._screen._menu_go_back()
 
     def cancel(self, widget):
         self.fetch_settings()

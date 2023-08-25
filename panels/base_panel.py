@@ -145,25 +145,6 @@ class BasePanel(ScreenPanel):
                 self.control['temp_box'].add(self.labels['heater_chamber_box'])
                 n += 1
 
-            # Options in the config have priority
-            for device in self._printer.get_temp_store_devices():
-                # Users can fill the bar if they want
-                if n >= nlimit + 1:
-                    break
-                name = device.split()[1] if len(device.split()) > 1 else device
-                for item in self.titlebar_items:
-                    if name == item:
-                        self.control['temp_box'].add(self.labels[f"{device}_box"])
-                        n += 1
-                        break
-
-            # If there is enough space fill with heater_generic
-            for device in self._printer.get_temp_store_devices():
-                if n >= nlimit:
-                    break
-                if device.startswith("heater_generic"):
-                    self.control['temp_box'].add(self.labels[f"{device}_box"])
-                    n += 1
             self.control['temp_box'].show_all()
         except Exception as e:
             logging.debug(f"Couldn't create heaters box: {e}")

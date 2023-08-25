@@ -124,23 +124,18 @@ class MainPanel(MenuPanel):
             devname = "Heater Chamber"
             class_name = "graph_label_heater_chamber"
             dev_type = "chamber"
-        elif device.startswith("heater_generic"):
-            self.h += 1
-            image = "heater"
-            class_name = f"graph_label_sensor_{self.h}"
-            dev_type = "sensor"
+        #elif device.startswith("heater_generic"):
+        #    self.h += 1
+        #    image = "heater"
+        #    class_name = f"graph_label_sensor_{self.h}"
+        #    dev_type = "sensor"
         elif device.startswith("temperature_fan"):
             self.f += 1
             image = "fan"
             class_name = f"graph_label_fan_{self.f}"
             dev_type = "fan"
-        elif self._config.get_main_config().getboolean("only_heaters", False):
-            return False
         else:
-            self.h += 1
-            image = "heat-up"
-            class_name = f"graph_label_sensor_{self.h}"
-            dev_type = "sensor"
+            return False
 
         rgb = self._gtk.get_temp_color(dev_type)
 

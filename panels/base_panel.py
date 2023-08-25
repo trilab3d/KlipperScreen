@@ -141,6 +141,10 @@ class BasePanel(ScreenPanel):
                 self.control['temp_box'].add(self.labels['heater_bed_box'])
                 n += 1
 
+            if self._printer.has_heated_chamber():
+                self.control['temp_box'].add(self.labels['heater_chamber_box'])
+                n += 1
+
             # Options in the config have priority
             for device in self._printer.get_temp_store_devices():
                 # Users can fill the bar if they want
@@ -173,6 +177,8 @@ class BasePanel(ScreenPanel):
             return self._gtk.Image("extruder", img_size, img_size)
         elif device.startswith("heater_bed"):
             return self._gtk.Image("bed", img_size, img_size)
+        elif device.startswith("heater_chamber"):
+            return self._gtk.Image("chamber", img_size, img_size)
         # Extra items
         elif self.titlebar_name_type is not None:
             # The item has a name, do not use an icon

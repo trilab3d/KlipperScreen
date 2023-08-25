@@ -55,7 +55,8 @@ class Printer:
             if x == 'heater_bed' \
                     or x.startswith('heater_generic ') \
                     or x.startswith('temperature_sensor ') \
-                    or x.startswith('temperature_fan '):
+                    or x.startswith('temperature_fan ') \
+                    or x.startswith('heater_chamber'):
                 self.devices[x] = {"temperature": 0}
                 if not x.startswith('temperature_sensor '):
                     self.devices[x]["target"] = 0
@@ -197,6 +198,8 @@ class Printer:
         heaters = []
         if self.has_heated_bed():
             heaters.append("heater_bed")
+        if self.has_heated_chamber():
+            heaters.append("heater_chamber")
         heaters.extend(iter(self.get_config_section_list("heater_generic ")))
         heaters.extend(iter(self.get_config_section_list("temperature_sensor ")))
         heaters.extend(iter(self.get_config_section_list("temperature_fan ")))
@@ -317,6 +320,10 @@ class Printer:
 
     def has_heated_bed(self):
         if "heater_bed" in self.devices:
+            return True
+
+    def has_heated_chamber(self):
+        if "heater_chamber" in self.devices:
             return True
 
     def init_temp_store(self, tempstore):

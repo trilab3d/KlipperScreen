@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   version="1.1"
+   id="Uploaded to svgrepo.com"
+   width="800px"
+   height="800px"
+   viewBox="0 0 32 32"
+   xml:space="preserve"
+   sodipodi:docname="chamber.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs9" /><sodipodi:namedview
+   id="namedview7"
+   pagecolor="#505050"
+   bordercolor="#ffffff"
+   borderopacity="1"
+   inkscape:showpageshadow="0"
+   inkscape:pageopacity="0"
+   inkscape:pagecheckerboard="1"
+   inkscape:deskcolor="#505050"
+   showgrid="false"
+   inkscape:zoom="1.03625"
+   inkscape:cx="400"
+   inkscape:cy="399.51749"
+   inkscape:window-width="1920"
+   inkscape:window-height="1009"
+   inkscape:window-x="-8"
+   inkscape:window-y="568"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="Uploaded to svgrepo.com" />
+<style
+   type="text/css"
+   id="style2">
+	.blueprint_een{fill:#111918;}
+	.st0{fill:#0B1719;}
+</style>
+<path
+   class="blueprint_een"
+   d="M31,5H1C0.448,5,0,5.448,0,6v19c0,0.552,0.448,1,1,1h3c0,0.552,0.448,1,1,1h2  c0.552,0,1-0.448,1-1h16c0,0.552,0.448,1,1,1h2c0.552,0,1-0.448,1-1h3c0.552,0,1-0.448,1-1V6C32,5.448,31.552,5,31,5z M2,24V7h20v17  H2z M30,24h-7V7h7V24z M3,23h18V8H3V23z M20,9v13H4V9H20z M25,10h-1V9h1V10z M27,10h-1V9h1V10z M29,10h-1V9h1V10z M25,12h-1v-1h1V12  z M27,12h-1v-1h1V12z M29,12h-1v-1h1V12z M25,14h-1v-1h1V14z M27,14h-1v-1h1V14z M29,14h-1v-1h1V14z M26.5,22  c1.381,0,2.5-1.119,2.5-2.5c0-1.381-1.119-2.5-2.5-2.5c-1.381,0-2.5,1.119-2.5,2.5C24,20.881,25.119,22,26.5,22z M26.5,18  c0.827,0,1.5,0.673,1.5,1.5S27.327,21,26.5,21S25,20.327,25,19.5S25.673,18,26.5,18z"
+   id="path4"
+   style="fill:#e2e2e2;fill-opacity:1" />
+</svg>

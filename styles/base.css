@@ -570,6 +570,7 @@ popover button {
 .graph_label_extruder3 {border-left-width: .4em; border-left-style: solid;}
 .graph_label_extruder4 {border-left-width: .4em; border-left-style: solid;}
 .graph_label_heater_bed {border-left-width: .4em; border-left-style: solid;}
+.graph_label_heater_chamber {border-left-width: .4em; border-left-style: solid;}
 .graph_label_fan_1 {border-left-width: .4em; border-left-style: solid;}
 .graph_label_fan_2 {border-left-width: .4em; border-left-style: solid;}
 .graph_label_fan_3 {border-left-width: .4em; border-left-style: solid;}

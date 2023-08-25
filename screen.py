@@ -453,6 +453,11 @@ class KlipperScreen(Gtk.Window):
                 "" if i == 0 else i + 1,
                 style_options['graph_colors']['bed']['colors'][i]
             )
+        for i in range(len(style_options['graph_colors']['chamber']['colors'])):
+            css_data += "\n.graph_label_heater_chamber%s {border-left-color: #%s}" % (
+                "" if i == 0 else i + 1,
+                style_options['graph_colors']['chamber']['colors'][i]
+            )
         for i in range(len(style_options['graph_colors']['fan']['colors'])):
             css_data += "\n.graph_label_fan_%s {border-left-color: #%s}" % (
                 i + 1,

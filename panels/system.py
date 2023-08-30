@@ -125,6 +125,7 @@ class SystemPanel(ScreenPanel):
                 self.update_header.set_markup("<span size='xx-large'>"+_("Unpacking")+"</span>")
                 self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"
                                             f"{_('Update version')}: {update_resp['update_version']}\n"
+                                            f"{_('Progress')}: {update_resp['progress']}%\n"
                                             f"{_('Release notes')}:\n{update_resp['release_notes']}")
             elif update_resp["update_status"] == "INSTALLED":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Update ready")+"</span>")
@@ -142,7 +143,8 @@ class SystemPanel(ScreenPanel):
                 self.button_box.add(self.download_button)
             elif update_resp["update_status"] == "USB_UPDATE_AVAILABLE":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Update found on USB")+"</span>")
-                self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}")
+                self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"
+                                            f"{_('Update version')}: {update_resp['update_version']}")
                 self.button_box.add(self.install_usb_button)
             elif update_resp["update_status"] == "USB_UNPACKING":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Unpacking")+"</span>")

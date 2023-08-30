@@ -22,6 +22,7 @@ class BasePanel(ScreenPanel):
         self.time_update = None
         self.updater_update = None
         self.last_update_status = None
+        self.last_update_status_time = datetime.now()
         self.titlebar_items = []
         self.titlebar_name_type = None
         self.buttons_showing = {
@@ -309,15 +310,24 @@ class BasePanel(ScreenPanel):
 
     def update_updater(self):
         logging.info("Updater check from base panel...")
-        update_resp = self._screen.tpcclient.send_request(f"check_update")
-        update_status = update_resp["update_status"]
-
-        if update_status != self.last_update_status:
-            self.last_update_status = update_status
-            if update_status == "UPDATE_AVAILABLE" \
-                    or update_status == "INSTALLED" \
-                    or update_status == "USB_UPDATE_AVAILABLE":
-                self._screen.show_panel("system", "system", "System", 1, False)
+        try:
+            update_resp = self._screen.tpcclient.send_request(f"check_update")
+            update_status = update_resp["update_status"]
+            now = datetime.now()
+            INTERVAL = 3600
+            if update_status != self.last_update_status \
+                    or self.last_update_status_time.timestamp() + INTERVAL > now.timestamp():
+                self.last_update_status = update_status
+                self.last_update_status_time = now
+                if (
+                        update_status == "UPDATE_AVAILABLE"
+                        or ((self._printer.state != "printing")
+                            and (update_status == "INSTALLED"
+                                 or update_status == "USB_UPDATE_AVAILABLE"))
+                ):
+                    self._screen.show_panel("system", "system", "System", 1, False)
+        except Exception as e:
+            logging.warning(f"Exception on update_updater: {e}")
         return True
 
     def show_estop(self, show=True):

@@ -316,7 +316,7 @@ class BasePanel(ScreenPanel):
             now = datetime.now()
             INTERVAL = 3600
             if update_status != self.last_update_status \
-                    or self.last_update_status_time.timestamp() + INTERVAL > now.timestamp():
+                    or self.last_update_status_time.timestamp() + INTERVAL < now.timestamp():
                 self.last_update_status = update_status
                 self.last_update_status_time = now
                 if (

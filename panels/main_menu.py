@@ -31,7 +31,8 @@ class MainPanel(MenuPanel):
         logging.info("### Making MainMenu")
 
         stats = self._printer.get_printer_status_data()["printer"]
-        if stats["temperature_devices"]["count"] > 0 or stats["extruders"]["count"] > 0:
+        #if stats["temperature_devices"]["count"] > 0 or stats["extruders"]["count"] > 0:
+        if True:
             self._gtk.reset_temp_color()
             self.main_menu.attach(self.create_left_panel(), 0, 0, 1, 1)
         if self._screen.vertical_mode:

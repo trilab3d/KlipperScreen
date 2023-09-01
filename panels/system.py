@@ -36,12 +36,25 @@ class SystemPanel(ScreenPanel):
         grid.set_row_homogeneous(False)
         self.do_schedule_refresh = True
 
+        self.refresh_button = self._gtk.Button('refresh', _('Refresh'), 'color1')
+        self.refresh_button.connect("clicked", self.refresh_omaha)
+        self.refresh_button.set_vexpand(False)
+
         self.download_button = self._gtk.Button('arrow-down', _('Download'), 'color1')
         self.download_button.connect("clicked", self.download)
         self.download_button.set_vexpand(False)
+
         self.update_button = self._gtk.Button('arrow-up', _('Update'), 'color2')
         self.update_button.connect("clicked", self.show_update_info)
         self.update_button.set_vexpand(False)
+
+        self.install_usb_button = self._gtk.Button('arrow-right', _('Install'), 'color1')
+        self.install_usb_button.connect("clicked", self.install_usb_update)
+        self.install_usb_button.set_vexpand(False)
+
+        self.discard_usb_button = self._gtk.Button('arrow-left', _('Discard'), 'color1')
+        self.discard_usb_button.connect("clicked", self.discard_usb_update)
+        self.discard_usb_button.set_vexpand(False)
 
         reboot = self._gtk.Button('refresh', _('Restart'), 'color3')
         reboot.connect("clicked", self.reboot_poweroff, "reboot")
@@ -112,6 +125,7 @@ class SystemPanel(ScreenPanel):
                 self.update_header.set_markup("<span size='xx-large'>"+_("Unpacking")+"</span>")
                 self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"
                                             f"{_('Update version')}: {update_resp['update_version']}\n"
+                                            f"{_('Progress')}: {update_resp['progress']}%\n"
                                             f"{_('Release notes')}:\n{update_resp['release_notes']}")
             elif update_resp["update_status"] == "INSTALLED":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Update ready")+"</span>")
@@ -122,10 +136,26 @@ class SystemPanel(ScreenPanel):
             elif update_resp["update_status"] == "UP_TO_DATE":
                 self.update_header.set_markup("<span size='xx-large'>"+_("System is up to date")+"</span>")
                 self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}")
+                self.button_box.add(self.refresh_button)
             elif update_resp["update_status"] == "DOWNLOAD_FAILED":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Download failed")+"</span>")
                 self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}")
                 self.button_box.add(self.download_button)
+            elif update_resp["update_status"] == "USB_UPDATE_AVAILABLE":
+                self.update_header.set_markup("<span size='xx-large'>"+_("Update found on USB")+"</span>")
+                self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"
+                                            f"{_('Update version')}: {update_resp['update_version']}")
+                self.button_box.add(self.install_usb_button)
+            elif update_resp["update_status"] == "USB_UNPACKING":
+                self.update_header.set_markup("<span size='xx-large'>"+_("Unpacking")+"</span>")
+                self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"
+                                            f"{_('Update version')}: {update_resp['update_version']}")
+            elif update_resp["update_status"] == "USB_INSTALLED":
+                self.update_header.set_markup("<span size='xx-large'>"+_("USB update ready")+"</span>")
+                self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"
+                                            f"{_('Update version')}: {update_resp['update_version']}")
+                self.button_box.add(self.update_button)
+                self.button_box.add(self.discard_usb_button)
             else:
                 self.update_header.set_markup("")
                 self.update_label.set_label("")
@@ -134,11 +164,21 @@ class SystemPanel(ScreenPanel):
             self.update_label.set_label("")
 
         self._screen.close_popup_message()
+        self.content.show_all()
         if self.do_schedule_refresh:
             GLib.timeout_add_seconds(3, self.get_updates)
 
     def download(self, widget):
         self._screen.tpcclient.send_request(f"download_update","POST")
+
+    def refresh_omaha(self, widget):
+        self._screen.tpcclient.send_request(f"download_update", "POST")
+
+    def install_usb_update(self, widget):
+        self._screen.tpcclient.send_request(f"install_usb_update","POST")
+
+    def discard_usb_update(self, widget):
+        self._screen.tpcclient.send_request(f"discard_usb_update","POST")
 
     def show_update_info(self, widget):
 

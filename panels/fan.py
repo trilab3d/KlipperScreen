@@ -13,7 +13,7 @@ def create_panel(*args):
     return FanPanel(*args)
 
 
-CHANGEABLE_FANS = ["fan", "fan_generic", "servo_fan_flap", "stepper_flap"]
+CHANGEABLE_FANS = ["fan", "fan_generic", "servo_flap", "stepper_flap"]
 
 
 class FanPanel(ScreenPanel):

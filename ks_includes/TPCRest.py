@@ -24,7 +24,7 @@ class TPCRest:
                 response = requests.post(url, timeout=3)
             response.raise_for_status()
             if json:
-                logging.debug(f"Sending request to {url}")
+                #logging.debug(f"Sending request to {url}")
                 data = response.json()
             else:
                 data = response.content
@@ -47,7 +47,7 @@ class TPCRest:
         return data
 
     def post_request(self, endpoint, js):
-        logging.info(f"Send request: {js}")
+        #logging.info(f"Send request: {js}")
         url = f"{self.endpoint}/{endpoint}"
         data = False
         try:

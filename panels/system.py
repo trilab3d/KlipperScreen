@@ -84,6 +84,7 @@ class SystemPanel(ScreenPanel):
         self.button_box.set_size_request(self._gtk.content_width, -1)
 
         self.get_updates()
+        GLib.timeout_add_seconds(3, self.get_updates)
 
         infogrid.attach(self.update_header, 0, 0, 1, 1)
         infogrid.attach(self.update_label, 0, 1, 1, 1)
@@ -99,13 +100,10 @@ class SystemPanel(ScreenPanel):
     def activate(self):
         self.do_schedule_refresh = True
         self.get_updates()
+        GLib.timeout_add_seconds(3, self.get_updates)
 
     def deactivate(self):
         self.do_schedule_refresh = False
-
-    def refresh_updates(self, widget=None):
-        self._screen.show_popup_message(_("Checking for updates, please wait..."), level=1)
-        GLib.timeout_add_seconds(1, self.get_updates)
 
     def get_updates(self):
         try:
@@ -165,8 +163,7 @@ class SystemPanel(ScreenPanel):
 
         self._screen.close_popup_message()
         self.content.show_all()
-        if self.do_schedule_refresh:
-            GLib.timeout_add_seconds(3, self.get_updates)
+        return self.do_schedule_refresh
 
     def download(self, widget):
         self._screen.tpcclient.send_request(f"download_update","POST")

@@ -191,6 +191,11 @@ class Printer:
         output_pins.extend(iter(self.get_config_section_list("output_pin ")))
         return output_pins
 
+    def get_door_sensors(self):
+        door_sensors = []
+        door_sensors.extend(iter(self.get_config_section_list("door_sensor")))
+        return door_sensors
+
     def get_gcode_macros(self):
         return self.get_config_section_list("gcode_macro ")
 

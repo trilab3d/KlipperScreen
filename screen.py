@@ -264,6 +264,8 @@ class KlipperScreen(Gtk.Window):
             requested_updates['objects'][f] = ["enabled", "filament_detected"]
         for p in self.printer.get_output_pins():
             requested_updates['objects'][p] = ["value"]
+        for s in self.printer.get_door_sensors():
+            requested_updates['objects'][s] = ["door_closed"]
 
         self._ws.klippy.object_subscription(requested_updates)
 
@@ -325,6 +327,11 @@ class KlipperScreen(Gtk.Window):
             self.panels[panel_name].activate()
         self.show_all()
 
+    # Handles commands from RESPOND TYPE=command MSG=...
+    def handle_message_command(self, command):
+        logging.info(f"Incomming command {command}")
+        if command == "DOOR_OPEN":
+            self.show_panel("Door Opened", "door_open", "Door Opened", 2, False)
     def show_popup_message(self, message, level=3):
         self.close_screensaver()
         if self.popup_message is not None:
@@ -757,6 +764,8 @@ class KlipperScreen(Gtk.Window):
                     self.show_popup_message(data[6:], 1)
                 elif data.startswith("!! "):
                     self.show_popup_message(data[3:], 3)
+                elif data.startswith("// "):
+                    self.handle_message_command(data[3:])
                 elif "unknown" in data.lower() and \
                         not ("TESTZ" in data or "MEASURE_AXES_NOISE" in data or "ACCELEROMETER_QUERY" in data):
                     self.show_popup_message(data)
@@ -887,6 +896,7 @@ class KlipperScreen(Gtk.Window):
                        + self.printer.get_fans()
                        + self.printer.get_filament_sensors()
                        + self.printer.get_output_pins()
+                       + self.printer.get_door_sensors()
                        )
 
         data = self.apiclient.send_request("printer/objects/query?" + "&".join(PRINTER_BASE_STATUS_OBJECTS +

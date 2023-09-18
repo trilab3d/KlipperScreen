@@ -227,7 +227,7 @@ class KlippyGtk:
     @staticmethod
     def HomogeneousGrid(width=None, height=None):
         g = Gtk.Grid()
-        g.set_row_homogeneous(True)
+        g.set_row_homogeneous(False)
         g.set_column_homogeneous(True)
         if width is not None and height is not None:
             g.set_size_request(width, height)

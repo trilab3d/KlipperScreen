@@ -18,12 +18,19 @@ class MainPanel(MenuPanel):
     def __init__(self, screen, title, items=None):
         super().__init__(screen, title, items)
         self.graph_retry_timeout = None
-        self.left_panel = None
+        # self.left_panel = None
+        self.image = self._gtk.Image(
+                "prusa_azteq", self._gtk.content_width*0.9,
+                self._gtk.content_height * 0.6)
+        self.image.set_size_request(self._gtk.content_width*0.9,
+                                    self._gtk.content_height * 0.6)
         self.devices = {}
         self.graph_update = None
         self.active_heater = None
         self.h = self.f = 0
         self.main_menu = self._gtk.HomogeneousGrid()
+        self.grid.set_margin_left(20)
+        self.grid.set_margin_right(20)
         self.main_menu.set_hexpand(True)
         self.main_menu.set_vexpand(True)
         self.graph_retry = 0
@@ -34,13 +41,14 @@ class MainPanel(MenuPanel):
         stats = self._printer.get_printer_status_data()["printer"]
         if stats["temperature_devices"]["count"] > 0 or stats["extruders"]["count"] > 0:
             self._gtk.reset_temp_color()
-            self.main_menu.attach(self.create_left_panel(), 0, 0, 1, 1)
+            self.main_menu.attach(self.image, 0, 0, 1, 1)
+            # self.main_menu.attach(self.create_left_panel(), 0, 0, 1, 1)
         if self._screen.vertical_mode:
-            self.labels['menu'] = self.arrangeMenuItems(items, 3, True)
+            self.labels['menu'] = self.arrangeMenuItems(items, 3, False)
             scroll.add(self.labels['menu'])
             self.main_menu.attach(scroll, 0, 1, 1, 1)
         else:
-            self.labels['menu'] = self.arrangeMenuItems(items, 2, True)
+            self.labels['menu'] = self.arrangeMenuItems(items, 2, False)
             scroll.add(self.labels['menu'])
             self.main_menu.attach(scroll, 1, 0, 1, 1)
         self.content.add(self.main_menu)
@@ -88,7 +96,7 @@ class MainPanel(MenuPanel):
         return False
 
     def activate(self):
-        self.update_graph_visibility()
+        # self.update_graph_visibility()
         self._screen.base_panel_show_all()
 
     def deactivate(self):

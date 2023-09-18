@@ -23,6 +23,11 @@ class MenuPanel(ScreenPanel):
         self.items = items
         self.create_menu_items()
         self.grid = self._gtk.HomogeneousGrid()
+        self.grid.set_margin_left(20)
+        self.grid.set_margin_right(20)
+        self.grid.set_column_spacing(20)
+        self.grid.set_row_spacing(20)
+        self.grid.set_vexpand(False)
         self.scroll = self._gtk.ScrolledWindow()
         self.scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
 
@@ -33,11 +38,12 @@ class MenuPanel(ScreenPanel):
         for child in self.scroll.get_children():
             self.scroll.remove(child)
         if self._screen.vertical_mode:
-            self.scroll.add(self.arrangeMenuItems(self.items, 3))
+            # self.scroll.add(self.arrangeMenuItems(self.items, 3))
+            self.content.add(self.arrangeMenuItems(self.items, 3))
         else:
             self.scroll.add(self.arrangeMenuItems(self.items, 4))
-        if not self.content.get_children():
-            self.content.add(self.scroll)
+        # if not self.content.get_children():
+        #     self.content.add(self.scroll)
 
     def arrangeMenuItems(self, items, columns, expand_last=False):
         for child in self.grid.get_children():

@@ -772,7 +772,7 @@ class JobStatusPanel(ScreenPanel):
     def show_file_thumbnail(self):
         if self._screen.vertical_mode:
             width = self._screen.width * 0.9
-            height = self._screen.height / 4
+            height = self._screen.height * 0.7
         else:
             width = self._screen.width / 3
             height = self._gtk.content_height * 0.47
@@ -780,7 +780,7 @@ class JobStatusPanel(ScreenPanel):
         logging.debug(self.filename)
         if pixbuf is None:
             logging.debug("no pixbuf")
-            pixbuf = self._gtk.PixbufFromIcon("file", width / 2, height / 2)
+            pixbuf = self._gtk.PixbufFromIcon("file", width * 0.9, height * 0.7)
         self.labels['thumbnail'].set_from_pixbuf(pixbuf)
 
     def update_filename(self):

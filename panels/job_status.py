@@ -120,8 +120,14 @@ class JobStatusPanel(ScreenPanel):
         self.grid.attach(overlay, 0, 0, 1, 1)
 
         self.labels['thumbnail'] = self._gtk.Image()
+        tbox = Gtk.Box()
+        tbox.set_hexpand(True)
+        tbox.set_vexpand(True)
+        tbox.set_halign(Gtk.Align.CENTER)
+        tbox.set_valign(Gtk.Align.CENTER)
+        tbox.add(self.labels['thumbnail'])
         self.labels['info_grid'] = Gtk.Grid()
-        self.labels['info_grid'].attach(self.labels['thumbnail'], 0, 0, 1, 1)
+        self.labels['info_grid'].attach(tbox, 0, 0, 1, 1)
         if self._printer.get_tools():
             self.current_extruder = self._printer.get_stat("toolhead", "extruder")
             diameter = float(self._printer.get_config_section(self.current_extruder)['filament_diameter'])
@@ -233,6 +239,7 @@ class JobStatusPanel(ScreenPanel):
             szfe.attach(self.buttons['fan'], 2, 1, 2, 1)
 
         info = Gtk.Grid()
+        info.set_vexpand(False)
         info.set_row_homogeneous(True)
         info.get_style_context().add_class("printing-info")
         info.attach(self.labels['temp_grid'], 0, 0, 1, 1)
@@ -249,7 +256,7 @@ class JobStatusPanel(ScreenPanel):
 
         info = Gtk.Grid()
         info.set_hexpand(True)
-        info.set_vexpand(True)
+        info.set_vexpand(False)
         info.set_halign(Gtk.Align.START)
         info.get_style_context().add_class("printing-info-secondary")
         info.attach(goback, 0, 0, 1, 6)
@@ -279,7 +286,7 @@ class JobStatusPanel(ScreenPanel):
 
         info = Gtk.Grid()
         info.set_hexpand(True)
-        info.set_vexpand(True)
+        info.set_vexpand(False)
         info.set_halign(Gtk.Align.START)
         info.get_style_context().add_class("printing-info-secondary")
         info.attach(goback, 0, 0, 1, 6)
@@ -772,7 +779,7 @@ class JobStatusPanel(ScreenPanel):
     def show_file_thumbnail(self):
         if self._screen.vertical_mode:
             width = self._screen.width * 0.9
-            height = self._screen.height * 0.7
+            height = self._screen.height * 0.45
         else:
             width = self._screen.width / 3
             height = self._gtk.content_height * 0.47
@@ -780,7 +787,7 @@ class JobStatusPanel(ScreenPanel):
         logging.debug(self.filename)
         if pixbuf is None:
             logging.debug("no pixbuf")
-            pixbuf = self._gtk.PixbufFromIcon("file", width * 0.9, height * 0.7)
+            pixbuf = self._gtk.PixbufFromIcon("file", width * 0.5, height * 0.5)
         self.labels['thumbnail'].set_from_pixbuf(pixbuf)
 
     def update_filename(self):

@@ -336,7 +336,7 @@ class KlipperScreen(Gtk.Window):
     def handle_message_command(self, command):
         logging.info(f"Incomming command {command}")
         if command == "DOOR_OPEN":
-            self.show_panel("Door Opened", "door_open", "Door Opened", 2, False)
+            self.show_panel("door_open", "door_open", _("Door Opened"), 2, False)
     def show_popup_message(self, message, level=3):
         self.close_screensaver()
         if self.popup_message is not None:
@@ -700,7 +700,10 @@ class KlipperScreen(Gtk.Window):
         self.base_panel_show_all()
         for dialog in self.dialogs:
             self.gtk.remove_dialog(dialog)
-        self.show_panel('job_status', "job_status", _("Printing"), 2)
+        if 'door_sensor' in self.printer.data and not self.printer.data['door_sensor']['door_closed']:
+            self.show_panel("door_open", "door_open", _("Door Opened"), 2, False)
+        else:
+            self.show_panel('job_status', "job_status", _("Printing"), 2)
 
     def state_ready(self, wait=True):
         # Do not return to main menu if completing a job, timeouts/user input will return

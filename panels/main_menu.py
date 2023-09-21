@@ -18,15 +18,23 @@ class MainPanel(MenuPanel):
     def __init__(self, screen, title, items=None):
         super().__init__(screen, title, items)
         self.graph_retry_timeout = None
-        self.left_panel = None
+        # self.left_panel = None
+        self.image = self._gtk.Image(
+                "prusa_azteq", self._gtk.content_width*0.9,
+                self._gtk.content_height * 0.6)
+        self.image.set_size_request(self._gtk.content_width*0.9,
+                                    self._gtk.content_height * 0.6)
         self.devices = {}
         self.graph_update = None
         self.active_heater = None
         self.h = self.f = 0
         self.main_menu = self._gtk.HomogeneousGrid()
+        self.grid.set_margin_left(20)
+        self.grid.set_margin_right(20)
         self.main_menu.set_hexpand(True)
         self.main_menu.set_vexpand(True)
         self.graph_retry = 0
+        scroll = self._gtk.ScrolledWindow()
 
         logging.info("### Making MainMenu")
 
@@ -34,17 +42,24 @@ class MainPanel(MenuPanel):
         #if stats["temperature_devices"]["count"] > 0 or stats["extruders"]["count"] > 0:
         if True:
             self._gtk.reset_temp_color()
-            self.main_menu.attach(self.create_left_panel(), 0, 0, 1, 1)
+            self.main_menu.attach(self.image, 0, 0, 1, 1)
+            # self.main_menu.attach(self.create_left_panel(), 0, 0, 1, 1)
         if self._screen.vertical_mode:
-            self.labels['menu'] = self.arrangeMenuItems(items, 3, True)
-            self.main_menu.attach(self.labels['menu'], 0, 1, 1, 1)
+            self.labels['menu'] = self.arrangeMenuItems(items, 3, False)
+            scroll.add(self.labels['menu'])
+            self.main_menu.attach(scroll, 0, 1, 1, 1)
         else:
-            self.labels['menu'] = self.arrangeMenuItems(items, 2, True)
-            self.main_menu.attach(self.labels['menu'], 1, 0, 1, 1)
+            self.labels['menu'] = self.arrangeMenuItems(items, 2, False)
+            scroll.add(self.labels['menu'])
+            self.main_menu.attach(scroll, 1, 0, 1, 1)
         self.content.add(self.main_menu)
 
     def update_graph_visibility(self):
         if self.left_panel is None or not self._printer.get_temp_store_devices():
+            if self._printer.get_temp_store_devices():
+                logging.info("Retrying to create left panel")
+                self._gtk.reset_temp_color()
+                self.main_menu.attach(self.create_left_panel(), 0, 0, 1, 1)
             self.graph_retry += 1
             if self.graph_retry < 5:
                 if self.graph_retry_timeout is None:
@@ -82,7 +97,7 @@ class MainPanel(MenuPanel):
         return False
 
     def activate(self):
-        self.update_graph_visibility()
+        # self.update_graph_visibility()
         self._screen.base_panel_show_all()
 
     def deactivate(self):
@@ -189,13 +204,10 @@ class MainPanel(MenuPanel):
         self.update_graph_visibility()
 
     def change_target_temp(self, temp):
-
-        max_temp = int(float(self._printer.get_config_section(self.active_heater)['max_temp']))
-        if temp > max_temp:
-            self._screen.show_popup_message(_("Can't set above the maximum:") + f' {max_temp}')
-            return
-        temp = max(temp, 0)
         name = self.active_heater.split()[1] if len(self.active_heater.split()) > 1 else self.active_heater
+        temp = self.verify_max_temp(temp)
+        if temp is False:
+            return
 
         if self.active_heater.startswith('extruder'):
             self._screen._ws.klippy.set_tool_temp(self._printer.get_tool_number(self.active_heater), temp)
@@ -209,6 +221,26 @@ class MainPanel(MenuPanel):
             logging.info(f"Unknown heater: {self.active_heater}")
             self._screen.show_popup_message(_("Unknown Heater") + " " + self.active_heater)
         self._printer.set_dev_stat(self.active_heater, "target", temp)
+
+    def verify_max_temp(self, temp):
+        temp = int(temp)
+        max_temp = int(float(self._printer.get_config_section(self.active_heater)['max_temp']))
+        logging.debug(f"{temp}/{max_temp}")
+        if temp > max_temp:
+            self._screen.show_popup_message(_("Can't set above the maximum:") + f' {max_temp}')
+            return False
+        return max(temp, 0)
+
+    def pid_calibrate(self, temp):
+        if self.verify_max_temp(temp):
+            script = {"script": f"PID_CALIBRATE HEATER={self.active_heater} TARGET={temp}"}
+            self._screen._confirm_send_action(
+                None,
+                _("Initiate a PID calibration for:") + f" {self.active_heater} @ {temp} ºC"
+                + "\n\n" + _("It may take more than 5 minutes depending on the heater power."),
+                "printer.gcode.script",
+                script
+            )
 
     def create_left_panel(self):
 
@@ -270,7 +302,10 @@ class MainPanel(MenuPanel):
         self.devices[self.active_heater]['name'].get_style_context().add_class("button_active")
 
         if "keypad" not in self.labels:
-            self.labels["keypad"] = Keypad(self._screen, self.change_target_temp, self.hide_numpad)
+            self.labels["keypad"] = Keypad(self._screen, self.change_target_temp, self.pid_calibrate, self.hide_numpad)
+        can_pid = self._printer.state not in ["printing", "paused"] \
+            and self._screen.printer.config[self.active_heater]['control'] == 'pid'
+        self.labels["keypad"].show_pid(can_pid)
         self.labels["keypad"].clear()
 
         if self._screen.vertical_mode:

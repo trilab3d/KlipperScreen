@@ -1,9 +1,10 @@
+# Daviteusz <imefiu3@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: Polish (KlipperScreen)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-21 16:13-0300\n"
-"PO-Revision-Date: 2023-06-19 16:20+0000\n"
+"POT-Creation-Date: 2023-07-02 16:32-0300\n"
+"PO-Revision-Date: 2023-07-04 03:44+0000\n"
 "Last-Translator: Daviteusz <imefiu3@gmail.com>\n"
 "Language-Team: Polish <https://translate.daviteusz.eu/projects/klipperscreen/"
 "translate/pl/>\n"
@@ -13,7 +14,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.18\n"
+"X-Generator: Weblate 4.18.1\n"
 
 #, python-format
 msgid "%s will be updated to version"
@@ -39,9 +40,6 @@ msgstr "Przyśpieszenie:"
 
 msgid "Accept"
 msgstr "Akceptuj"
-
-msgid "Actions"
-msgstr "Akcje"
 
 msgid "Add profile"
 msgstr "Dodaj profil"
@@ -143,9 +141,6 @@ msgstr "Zamknij"
 
 msgid "Complete"
 msgstr "Zakończone"
-
-msgid "Configuration"
-msgstr "Konfiguracja"
 
 msgid "Confirm Emergency Stop"
 msgstr "Potwierdzaj awaryjny stop"
@@ -264,7 +259,7 @@ msgid "Fullscreen"
 msgstr "Pełny ekran"
 
 msgid "Go Back"
-msgstr "Wróć"
+msgstr "Powróć"
 
 msgid "Height:"
 msgstr "Wysokość:"
@@ -276,10 +271,13 @@ msgid "Hide"
 msgstr "Ukryj"
 
 msgid "Hide sensors in Temp."
-msgstr "Ukryj sensory w Temp."
+msgstr "Ukryj sensory w obszarze Temperatura"
 
 msgid "Hide temp."
 msgstr "Ukryj temp."
+
+msgid "Home"
+msgstr "Bazuj"
 
 msgid "Home All"
 msgstr "Bazuj wszystkie"
@@ -296,9 +294,6 @@ msgstr "Bazuj Y"
 msgid "Home Z"
 msgstr "Bazuj Z"
 
-msgid "Homing"
-msgstr "Bazowanie"
-
 msgid "Host"
 msgstr "Gospodarz"
 
@@ -310,6 +305,9 @@ msgstr "Motyw ikon"
 
 msgid "Initializing printer..."
 msgstr "Inicjowanie drukarki..."
+
+msgid "Initiate a PID calibration for:"
+msgstr "Rozpoczęcie kalibracji PID dla:"
 
 msgid "Input Shaper"
 msgstr "Input Shaper"
@@ -331,6 +329,9 @@ msgstr "Odwróć Y"
 
 msgid "Invert Z"
 msgstr "Odwróć Z"
+
+msgid "It may take more than 5 minutes depending on the heater power."
+msgstr "Może to potrwać dłużej niż 5 minut w zależności od mocy grzałki."
 
 msgid "Klipper Restart"
 msgstr "Restartuj Klipper"
@@ -399,13 +400,13 @@ msgid "Maximum"
 msgstr "Maksymalna"
 
 msgid "Measure Both"
-msgstr "Zmierz oba"
+msgstr "Pomiar obu osi"
 
 msgid "Measure X"
-msgstr "Zmierz X"
+msgstr "Pomiar osi X"
 
 msgid "Measure Y"
-msgstr "Zmierz Y"
+msgstr "Pomiar osi Y"
 
 msgid "Medium"
 msgstr "Średni"
@@ -421,6 +422,9 @@ msgstr "Zmodyfikowane"
 
 msgid "Moonraker: connected"
 msgstr "Moonraker: połączony"
+
+msgid "More"
+msgstr "Więcej"
 
 msgid "Move"
 msgstr "Ruch"
@@ -438,7 +442,7 @@ msgid "Never"
 msgstr "Nigdy"
 
 msgid "New"
-msgstr "Nowy"
+msgstr "Nowe"
 
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
@@ -491,7 +495,7 @@ msgid "Power On Printer"
 msgstr "Zasilanie włączone"
 
 msgid "Pressure Advance:"
-msgstr "Natężenie docisku:"
+msgstr "Pressure Advance:"
 
 msgid "Print"
 msgstr "Drukuj"
@@ -584,7 +588,7 @@ msgid "Save configuration?"
 msgstr "Zapisać konfigurację?"
 
 msgid "Saved"
-msgstr "Zapisano"
+msgstr "Zapisane"
 
 #, python-format
 msgid "Saved offset: %s"
@@ -645,7 +649,7 @@ msgid "Speed:"
 msgstr "Prędkość:"
 
 msgid "Square Corner Velocity"
-msgstr "Prędkość w narożniku prostokątnym"
+msgstr "Prędkość na rogu kwadratu"
 
 msgid "Start"
 msgstr "Start"
@@ -750,13 +754,22 @@ msgid "mm"
 msgstr "mm"
 
 msgid "mm/s"
-msgstr "mm/s²"
+msgstr "mm/s"
 
 msgid "mm/s²"
 msgstr "mm/s²"
 
 msgid "mm³/s"
 msgstr "mm³/s"
+
+#~ msgid "Actions"
+#~ msgstr "Akcje"
+
+#~ msgid "Configuration"
+#~ msgstr "Konfiguracja"
+
+#~ msgid "Homing"
+#~ msgstr "Bazowanie"
 
 #~ msgid "Disable XY"
 #~ msgstr "Wyłącz XY"

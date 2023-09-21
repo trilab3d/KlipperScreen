@@ -23,6 +23,11 @@ class MenuPanel(ScreenPanel):
         self.items = items
         self.create_menu_items()
         self.grid = self._gtk.HomogeneousGrid()
+        self.grid.set_margin_left(20)
+        self.grid.set_margin_right(20)
+        self.grid.set_column_spacing(20)
+        self.grid.set_row_spacing(20)
+        self.grid.set_vexpand(False)
         self.scroll = self._gtk.ScrolledWindow()
         self.scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
 
@@ -33,11 +38,12 @@ class MenuPanel(ScreenPanel):
         for child in self.scroll.get_children():
             self.scroll.remove(child)
         if self._screen.vertical_mode:
-            self.scroll.add(self.arrangeMenuItems(self.items, 3))
+            # self.scroll.add(self.arrangeMenuItems(self.items, 3))
+            self.content.add(self.arrangeMenuItems(self.items, 3))
         else:
             self.scroll.add(self.arrangeMenuItems(self.items, 4))
-        if not self.content.get_children():
-            self.content.add(self.scroll)
+        # if not self.content.get_children():
+        #     self.content.add(self.scroll)
 
     def arrangeMenuItems(self, items, columns, expand_last=False):
         for child in self.grid.get_children():
@@ -74,6 +80,7 @@ class MenuPanel(ScreenPanel):
         for i in range(len(self.items)):
             key = list(self.items[i])[0]
             item = self.items[i][key]
+            scale = 1.1 if 12 < len(self.items) <= 16 else None  # hack to fit a 4th row
 
             printer = self._printer.get_printer_status_data()
 
@@ -81,7 +88,7 @@ class MenuPanel(ScreenPanel):
             icon = self._screen.env.from_string(item['icon']).render(printer) if item['icon'] else None
             style = self._screen.env.from_string(item['style']).render(printer) if item['style'] else None
 
-            b = self._gtk.Button(icon, name, style or f"color{i % 4 + 1}")
+            b = self._gtk.Button(icon, name, style or f"color{i % 4 + 1}", scale=scale)
 
             if item['panel'] is not None:
                 panel = self._screen.env.from_string(item['panel']).render(printer)

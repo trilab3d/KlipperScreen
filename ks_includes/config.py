@@ -300,6 +300,11 @@ class KlipperScreenConfig:
                                   "value": "True"}},
             {"show_heater_power": {"section": "main", "name": _("Show Heater Power"), "type": "binary",
                                    "value": "False", "callback": screen.reload_panels}},
+            {"view_group": {"section": "main", "name": _("View Mode"), "type": "dropdown",
+                                   "value": "False", "callback": screen.reload_panels, "options": [
+                    {"name": _("Basic"), "value": "basic"},
+                    {"name": _("Advanced"), "value": "advanced"}
+                ]}},
             # {"": {"section": "main", "name": _(""), "type": ""}}
         ]
 

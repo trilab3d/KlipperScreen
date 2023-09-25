@@ -7,6 +7,7 @@ import re
 import copy
 import pathlib
 import locale
+import subprocess
 
 from io import StringIO
 
@@ -36,6 +37,7 @@ class KlipperScreenConfig:
 
     def __init__(self, configfile, screen=None):
         self.lang_list = None
+        self.timezone_list = None
         self.errors = []
         self.default_config_path = os.path.join(klipperscreendir, "ks_includes", "defaults.conf")
         self.config = configparser.ConfigParser()
@@ -108,6 +110,7 @@ class KlipperScreenConfig:
         logging.debug(f"Configured printers: {json.dumps(conf_printers_debug, indent=2)}")
 
         self.create_translations()
+        self.create_time_zones()
         self._create_configurable_options(screen)
 
     def create_translations(self):
@@ -120,6 +123,40 @@ class KlipperScreenConfig:
         lang = self.get_main_config().get("language", None)
         logging.debug(f"Selected lang: {lang} OS lang: {locale.getlocale()[0]}")
         self.install_language(lang)
+
+    """
+    def create_time_zones(self):
+        self.timezone_list = {"nodes":[]}
+        proc = subprocess.Popen(['timedatectl', 'list-timezones'], stdout=subprocess.PIPE)
+        while True:
+            line = proc.stdout.readline()
+            if not line:
+                break
+            line = line.decode('utf-8')
+            line_parts = line.split('/')
+            if len(line_parts) == 1:
+                self.timezone_list['nodes'].append(line_parts[0])
+            elif len(line_parts) == 2:
+                if line_parts[0] not in self.timezone_list:
+                    self.timezone_list[line_parts[0]] = {'nodes': []}
+                self.timezone_list[line_parts[0]]['nodes'].append(line_parts[1])
+            elif len(line_parts) == 3:
+                if line_parts[0] not in self.timezone_list:
+                    self.timezone_list[line_parts[0]] = {'nodes': []}
+                if line_parts[1] not in self.timezone_list[line_parts[0]]:
+                    self.timezone_list[line_parts[0]][line_parts[1]] = {'nodes': []}
+                self.timezone_list[line_parts[0]][line_parts[1]]['nodes'].append(line_parts[2])
+    """
+
+    def create_time_zones(self):
+        self.timezone_list = []
+        proc = subprocess.Popen(['timedatectl', 'list-timezones'], stdout=subprocess.PIPE)
+        while True:
+            line = proc.stdout.readline()
+            if not line:
+                break
+            line = line.decode('utf-8')
+            self.timezone_list.append(line)
 
     def install_language(self, lang):
         if lang is None or lang == "system_lang":

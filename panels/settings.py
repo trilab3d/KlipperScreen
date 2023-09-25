@@ -1,3 +1,5 @@
+import os
+
 import gi
 
 gi.require_version("Gtk", "3.0")
@@ -13,7 +15,7 @@ def create_panel(*args):
 class SettingsPanel(ScreenPanel):
     def __init__(self, screen, title):
         super().__init__(screen, title)
-        self.printers = self.settings = self.langs = {}
+        self.printers = self.settings = self.langs = self.time_zones = {}
         self.menu = ['settings_menu']
         options = self._config.get_configurable_options().copy()
         options.append({"printers": {
@@ -25,6 +27,11 @@ class SettingsPanel(ScreenPanel):
             "name": _("Language"),
             "type": "menu",
             "menu": "lang"
+        }})
+        options.append({"time_zone": {
+            "name": _("Time Zone"),
+            "type": "menu",
+            "menu": "time_zone"
         }})
 
         self.labels['settings_menu'] = self._gtk.ScrolledWindow()
@@ -43,6 +50,44 @@ class SettingsPanel(ScreenPanel):
                 "type": "lang",
             }
             self.add_option("lang", self.langs, lang, self.langs[lang])
+
+        self.labels['time_zone_menu'] = self._gtk.ScrolledWindow()
+        self.labels['time_zone'] = Gtk.Grid()
+        self.labels['time_zone_menu'].add(self.labels['time_zone'])
+        """
+        for tz in self._config.timezone_list:
+            if tz == 'nodes':
+                for tzn in self._config.timezone_list[tz]:
+                    self.time_zones[tzn] = {
+                        "name": tzn,
+                        "type": "time_zone",
+                    }
+                    self.add_option("time_zone", self.time_zones, tzn, self.time_zones[tzn])
+            else:
+                self.labels[f"time_zone-{tz}"] = Gtk.Grid()
+                self.time_zones[tz] = {
+                    "name": tz,
+                    "type": "menu",
+                    "menu": f"time_zone-{tz}"
+                }
+                self.add_option("time_zone", self.time_zones, tz, self.time_zones[tz])
+                subzones = {}
+                for tzn in self._config.timezone_list[tz]:
+                    if tzn == 'nodes':
+                        for tzni in self._config.timezone_list[tzn]:
+                            subzones[tzni] = {
+                                "name": tzni,
+                                "type": "time_zone",
+                            }
+                            self.add_option(f"time_zone-{tz}", subzones, tzni, subzones[tzni])
+        """
+        for tz in self._config.timezone_list:
+            self.time_zones[tz] = {
+                "name": tz,
+                "type": "time_zone",
+            }
+            self.add_option("time_zone", self.time_zones, tz, self.time_zones[tz])
+
 
         self.labels['printers_menu'] = self._gtk.ScrolledWindow()
         self.labels['printers'] = Gtk.Grid()
@@ -135,6 +180,12 @@ class SettingsPanel(ScreenPanel):
             select.set_hexpand(False)
             select.set_halign(Gtk.Align.END)
             dev.add(select)
+        elif option['type'] == "time_zone":
+            select = self._gtk.Button("load", style="color3")
+            select.connect("clicked", self.chamge_timezone, option['name'])
+            select.set_hexpand(False)
+            select.set_halign(Gtk.Align.END)
+            dev.add(select)
 
         opt_array[opt_name] = {
             "name": option['name'],
@@ -147,3 +198,7 @@ class SettingsPanel(ScreenPanel):
         self.labels[boxname].insert_row(pos)
         self.labels[boxname].attach(opt_array[opt_name]['row'], 0, pos, 1, 1)
         self.labels[boxname].show_all()
+
+    def chamge_timezone(self, widget, timezone):
+        os.system(f"timedatectl set-timezone {timezone}")
+        os.system(f"systemctl restart klipper-screen")

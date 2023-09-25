@@ -174,8 +174,8 @@ class PrintPanel(ScreenPanel):
 
         delete = self._gtk.Button("delete", style="color1", scale=self.bts)
         delete.set_hexpand(False)
-        rename = self._gtk.Button("files", style="color2", scale=self.bts)
-        rename.set_hexpand(False)
+        #rename = self._gtk.Button("files", style="color2", scale=self.bts)
+        #rename.set_hexpand(False)
 
         if filename:
             action = self._gtk.Button("print", style="color3")
@@ -184,7 +184,7 @@ class PrintPanel(ScreenPanel):
             icon = Gtk.Button()
             icon.connect("clicked", self.confirm_print, fullpath)
             delete.connect("clicked", self.confirm_delete_file, f"gcodes/{fullpath}")
-            rename.connect("clicked", self.show_rename, f"gcodes/{fullpath}")
+            #rename.connect("clicked", self.show_rename, f"gcodes/{fullpath}")
             GLib.idle_add(self.image_load, fullpath)
         else:
             action = self._gtk.Button("load", style="color3")
@@ -192,7 +192,7 @@ class PrintPanel(ScreenPanel):
             icon = self._gtk.Button("folder")
             icon.connect("clicked", self.change_dir, fullpath)
             delete.connect("clicked", self.confirm_delete_directory, fullpath)
-            rename.connect("clicked", self.show_rename, fullpath)
+            #rename.connect("clicked", self.show_rename, fullpath)
         icon.set_hexpand(False)
         action.set_hexpand(False)
         action.set_halign(Gtk.Align.END)
@@ -206,8 +206,8 @@ class PrintPanel(ScreenPanel):
         row.attach(icon, 0, 0, 1, 2)
         row.attach(name, 1, 0, 3, 1)
         row.attach(info, 1, 1, 1, 1)
-        row.attach(rename, 2, 1, 1, 1)
-        row.attach(delete, 3, 1, 1, 1)
+        #row.attach(rename, 2, 1, 1, 1)
+        row.attach(delete, 2, 1, 1, 1)
 
         if not filename or (filename and os.path.splitext(filename)[1] in [".gcode", ".g", ".gco"]):
             row.attach(action, 4, 0, 1, 2)

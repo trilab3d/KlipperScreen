@@ -64,11 +64,15 @@ class Keypad(Gtk.Box):
         self.labels["keypad"] = numpad
 
     def show_pid(self, can_pid):
+        """
         if can_pid and self.pid not in self.bottom:
             self.bottom.add(self.pid)
             self.bottom.reorder_child(self.pid, 0)
         elif self.pid in self.bottom:
             self.bottom.remove(self.pid)
+        """
+        #do not show PID
+        pass
 
     def clear(self):
         self.labels['entry'].set_text("")

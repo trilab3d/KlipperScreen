@@ -62,13 +62,13 @@ class TemperaturePanel(ScreenPanel):
 
     def create_right_panel(self):
         cooldown = self._gtk.Button('cool-down', _('Cooldown'), "color4", self.bts, Gtk.PositionType.LEFT, 1)
-        adjust = self._gtk.Button('fine-tune', None, "color3", self.bts * 1.4, Gtk.PositionType.LEFT, 1)
+        #adjust = self._gtk.Button('fine-tune', None, "color3", self.bts * 1.4, Gtk.PositionType.LEFT, 1)
         cooldown.connect("clicked", self.set_temperature, "cooldown")
-        adjust.connect("clicked", self.switch_preheat_adjust)
+        #adjust.connect("clicked", self.switch_preheat_adjust)
 
         right = self._gtk.HomogeneousGrid()
-        right.attach(cooldown, 0, 0, 2, 1)
-        right.attach(adjust, 2, 0, 1, 1)
+        right.attach(cooldown, 0, 0, 3, 1)
+        #right.attach(adjust, 2, 0, 1, 1)
         if self.show_preheat:
             right.attach(self.preheat(), 0, 1, 3, 3)
         else:
@@ -184,7 +184,7 @@ class TemperaturePanel(ScreenPanel):
             else:
                 self.devices[device]['name'].get_style_context().add_class("graph_label_hidden")
                 self.devices[device]['name'].get_style_context().remove_class(self.devices[device]['class'])
-        if count > 0:
+        if count > 0 and self._config.get_main_config().get('view_group') != 'basic':
             if self.labels['da'] not in self.left_panel:
                 self.left_panel.add(self.labels['da'])
             self.labels['da'].queue_draw()

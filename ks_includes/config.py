@@ -193,7 +193,7 @@ class KlipperScreenConfig:
                 )
                 strs = (
                     'default_printer', 'language', 'print_sort_dir', 'theme', 'screen_blanking', 'font_size',
-                    'print_estimate_method', 'screen_blanking', "screen_on_devices", "screen_off_devices",
+                    'print_estimate_method', 'screen_blanking', "screen_on_devices", "screen_off_devices", "view_group"
                 )
                 numbers = (
                     'job_complete_timeout', 'job_error_timeout', 'move_speed_xy', 'move_speed_z',
@@ -216,7 +216,7 @@ class KlipperScreenConfig:
                 strs = ('gcode', '')
                 numbers = [f'{option}' for option in self.config[section] if option != 'gcode']
             elif section.startswith('menu '):
-                strs = ('name', 'icon', 'panel', 'method', 'params', 'enable', 'confirm', 'style')
+                strs = ('name', 'icon', 'panel', 'method', 'params', 'enable', 'confirm', 'style', 'view_groups')
             elif section == 'bed_screws':
                 # This section may be deprecated in favor of moving this options under the printer section
                 numbers = ('rotation', '')
@@ -458,10 +458,15 @@ class KlipperScreenConfig:
         index = f"menu {menu} {subsection}"
         items = [i[len(index):] for i in self.config.sections() if i.startswith(index)]
         menu_items = []
+        view_group = self.get_main_config().get('view_group')
         for item in items:
             split = item.split()
             if len(split) == 1:
-                menu_items.append(self._build_menu_item(menu, index + item))
+                cfg = self.config[index + item]
+                view_groups = cfg.get("view_groups", fallback='all').split(',')
+                logging.info(f"View groups for menu item {index + item} are {view_groups}({type(view_group)})")
+                if view_group in view_groups or 'all' in view_groups:
+                    menu_items.append(self._build_menu_item(menu, index + item))
 
         return menu_items
 

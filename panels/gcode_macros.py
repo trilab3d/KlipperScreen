@@ -7,6 +7,7 @@ from gi.repository import Gtk, GLib, Pango
 
 from ks_includes.screen_panel import ScreenPanel
 
+SYSTEM_MACROS = ["CANCEL_PRINT","PAUSE","SET_PAUSE_AT_LAYER","RESUME","SET_PRINT_STATS_INFO"]
 
 def create_panel(*args):
     return MacroPanel(*args)
@@ -80,6 +81,7 @@ class MacroPanel(ScreenPanel):
         labels.add(name)
 
         row = Gtk.Box(spacing=5)
+        row.set_vexpand(False)
         row.get_style_context().add_class("frame-item")
         row.add(labels)
         row.add(btn)
@@ -143,6 +145,8 @@ class MacroPanel(ScreenPanel):
         for macro in self._printer.get_gcode_macros():
             macro = macro[12:].strip()
             if macro.startswith("_"):  # Support for hiding macros by name
+                continue
+            if macro in SYSTEM_MACROS:
                 continue
             self.options[macro] = {
                 "name": macro,

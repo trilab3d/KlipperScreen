@@ -97,7 +97,7 @@ class KlipperScreenConfig:
                 "moonraker_port": self.config.get(printer, "moonraker_port", fallback="7125"),
                 "moonraker_api_key": self.config.get(printer, "moonraker_api_key", fallback="").replace('"', ''),
                 "tpc_host": self.config.get(printer, "moonraker_host", fallback="127.0.0.1"),
-                "tpc_port": self.config.get(printer, "moonraker_port", fallback="5000"),
+                "tpc_port": self.config.get(printer, "tpc_port", fallback="5000"),
             }} for printer in printers
         ]
 

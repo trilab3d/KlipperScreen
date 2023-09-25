@@ -295,6 +295,9 @@ class TemperaturePanel(ScreenPanel):
         # Support for hiding devices by name
         if devname.startswith("_"):
             return False
+        #hide panel
+        if devname == "panel":
+            return False
 
         if device.startswith("extruder"):
             if self._printer.extrudercount > 1:

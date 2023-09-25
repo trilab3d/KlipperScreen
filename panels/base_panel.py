@@ -47,8 +47,8 @@ class BasePanel(ScreenPanel):
             "panel": "gcode_macros"
         })
 
-        self.control['estop'] = self._gtk.Button('emergency', scale=abscale)
-        self.control['estop'].connect("clicked", self.emergency_stop)
+        #self.control['estop'] = self._gtk.Button('emergency', scale=abscale)
+        #self.control['estop'].connect("clicked", self.emergency_stop)
 
         # Any action bar button should close the keyboard
         for item in self.control:
@@ -70,8 +70,8 @@ class BasePanel(ScreenPanel):
         if self.buttons_showing['printer_select']:
             self.action_bar.add(self.control['printer_select'])
         self.show_macro_shortcut(self._config.get_main_config().getboolean('side_macro_shortcut', True))
-        self.action_bar.add(self.control['estop'])
-        self.show_estop(False)
+        #self.action_bar.add(self.control['estop'])
+        #self.show_estop(False)
 
         # Titlebar
 
@@ -332,9 +332,9 @@ class BasePanel(ScreenPanel):
 
     def show_estop(self, show=True):
         if show:
-            self.control['estop'].set_sensitive(True)
+            #self.control['estop'].set_sensitive(True)
             return
-        self.control['estop'].set_sensitive(False)
+        #self.control['estop'].set_sensitive(False)
 
     def set_ks_printer_cfg(self, printer):
         ScreenPanel.ks_printer_cfg = self._config.get_printer_config(printer)

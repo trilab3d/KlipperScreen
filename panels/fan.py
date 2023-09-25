@@ -14,6 +14,7 @@ def create_panel(*args):
 
 
 CHANGEABLE_FANS = ["fan", "fan_generic", "servo_flap", "stepper_flap"]
+FLAPS = ["servo_flap", "stepper_flap"]
 
 
 class FanPanel(ScreenPanel):
@@ -61,9 +62,11 @@ class FanPanel(ScreenPanel):
 
         logging.info(f"Adding fan: {fan}")
         changeable = any(fan.startswith(x) or fan == x for x in CHANGEABLE_FANS)
+        flap = any(fan.startswith(x) or fan == x for x in FLAPS)
         name = Gtk.Label()
         fan_name = _("Part Fan") if fan == "fan" else fan.split()[1]
-        name.set_markup(f"\n<big><b>{fan_name}</b></big>\n")
+        fan_name_pretty = ' '.join(x.capitalize() for x in fan_name.split('_'))
+        name.set_markup(f"\n<big><b>{fan_name_pretty}</b></big>\n")
         name.set_hexpand(True)
         name.set_vexpand(True)
         name.set_halign(Gtk.Align.START)
@@ -72,10 +75,14 @@ class FanPanel(ScreenPanel):
         name.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
 
         fan_col = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
-        stop_btn = self._gtk.Button("cancel", None, "color1")
+        if flap:
+            stop_btn = self._gtk.Button("flap-closed", _("Min"), "color1")
+            max_btn = self._gtk.Button("flap-opened", _("Max"), "color2")
+        else:
+            stop_btn = self._gtk.Button("cancel", _("Off"), "color1")
+            max_btn = self._gtk.Button("fan-on", _("Max"), "color2")
         stop_btn.set_hexpand(False)
         stop_btn.connect("clicked", self.update_fan_speed, fan, 0)
-        max_btn = self._gtk.Button("fan-on", _("Max"), "color2")
         max_btn.set_hexpand(False)
         max_btn.connect("clicked", self.update_fan_speed, fan, 100)
 

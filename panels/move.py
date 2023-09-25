@@ -91,9 +91,9 @@ class MovePanel(ScreenPanel):
 
         for p in ('pos_x', 'pos_y', 'pos_z'):
             self.labels[p] = Gtk.Label()
-        adjust = self._gtk.Button("settings", None, "color2", 1, Gtk.PositionType.LEFT, 1)
-        adjust.connect("clicked", self.load_menu, 'options', _('Settings'))
-        adjust.set_hexpand(False)
+        #adjust = self._gtk.Button("settings", None, "color2", 1, Gtk.PositionType.LEFT, 1)
+        #adjust.connect("clicked", self.load_menu, 'options', _('Settings'))
+        #adjust.set_hexpand(False)
         self.labels['move_dist'] = Gtk.Label(_("Move Distance (mm)"))
 
         bottomgrid = self._gtk.HomogeneousGrid()
@@ -102,7 +102,7 @@ class MovePanel(ScreenPanel):
         bottomgrid.attach(self.labels['pos_y'], 1, 0, 1, 1)
         bottomgrid.attach(self.labels['pos_z'], 2, 0, 1, 1)
         bottomgrid.attach(self.labels['move_dist'], 0, 1, 3, 1)
-        bottomgrid.attach(adjust, 3, 0, 1, 2)
+        #bottomgrid.attach(adjust, 3, 0, 1, 2)
 
         self.labels['move_menu'] = self._gtk.HomogeneousGrid()
         self.labels['move_menu'].attach(grid, 0, 0, 1, 3)

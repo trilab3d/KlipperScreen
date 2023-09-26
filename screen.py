@@ -966,6 +966,20 @@ class KlipperScreen(Gtk.Window):
         self.base_panel.content.pack_end(box, False, False, 0)
         self.base_panel.content.show_all()
 
+    def show_keypad(self, change_target_temp, pid_calibrate, hide_numpad):
+        if self.keyboard is not None:
+            self.remove_keyboard()
+
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        box.set_size_request(self.gtk.content_width, self.gtk.keyboard_height)
+        box.set_vexpand(False)
+
+        box.get_style_context().add_class("keyboard_box")
+        box.add(Keypad(self, change_target_temp, pid_calibrate, hide_numpad))
+        self.keyboard = {"box": box}
+        self.base_panel.content.pack_end(box, False, False, 0)
+        self.base_panel.content.show_all()
+
     def _show_matchbox_keyboard(self, box):
         env = os.environ.copy()
         usrkbd = os.path.expanduser("~/.matchbox/keyboard.xml")
@@ -996,11 +1010,17 @@ class KlipperScreen(Gtk.Window):
 
     def remove_keyboard(self, widget=None, event=None):
         if self.keyboard is None:
-            return
+            return False
         if 'process' in self.keyboard:
             os.kill(self.keyboard['process'].pid, SIGTERM)
+        keyboard = self.keyboard['box'].get_children()[0]
+        print(keyboard)
+        if getattr(keyboard, "close_function", None) and callable(getattr(keyboard, "close_function", None)):
+            print("close function found")
+            keyboard.close_function()
         self.base_panel.content.remove(self.keyboard['box'])
         self.keyboard = None
+        return True
 
     def _key_press_event(self, widget, event):
         keyval_name = Gdk.keyval_name(event.keyval)

@@ -419,6 +419,7 @@ class TemperaturePanel(ScreenPanel):
             logging.info(f"Unknown heater: {self.active_heater}")
             self._screen.show_popup_message(_("Unknown Heater") + " " + self.active_heater)
         self._printer.set_dev_stat(self.active_heater, "target", temp)
+        self._screen.remove_keyboard()
 
     def verify_max_temp(self, temp):
         temp = int(temp)
@@ -537,19 +538,13 @@ class TemperaturePanel(ScreenPanel):
         self.active_heater = self.popover_device if device is None else device
         self.devices[self.active_heater]['name'].get_style_context().add_class("button_active")
 
-        if "keypad" not in self.labels:
-            self.labels["keypad"] = Keypad(self._screen, self.change_target_temp, self.pid_calibrate, self.hide_numpad)
-        can_pid = self._printer.state not in ["printing", "paused"] \
-            and self._screen.printer.config[self.active_heater]['control'] == 'pid'
-        self.labels["keypad"].show_pid(can_pid)
-        self.labels["keypad"].clear()
+        self._screen.show_keypad(self.change_target_temp, self.pid_calibrate, self.hide_numpad)
 
+        #hide temperature profile buttons
         if self._screen.vertical_mode:
             self.grid.remove_row(1)
-            self.grid.attach(self.labels["keypad"], 0, 1, 1, 1)
         else:
             self.grid.remove_column(1)
-            self.grid.attach(self.labels["keypad"], 1, 0, 1, 1)
         self.grid.show_all()
 
         self.labels['popover'].popdown()

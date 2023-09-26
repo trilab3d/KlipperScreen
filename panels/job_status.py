@@ -34,6 +34,7 @@ class JobStatusPanel(ScreenPanel):
         self.can_close = False
         self.flow_timeout = self.animation_timeout = None
         self.file_metadata = self.fans = {}
+        self.flaps = {}
         self.state = "standby"
         self.timeleft_type = "auto"
         self.progress = self.zoffset = self.flowrate = self.vel = 0
@@ -73,12 +74,25 @@ class JobStatusPanel(ScreenPanel):
 
         for fan in self._printer.get_fans():
             # fan_types = ["controller_fan", "fan_generic", "heater_fan"]
-            if fan == "fan":
-                name = " "
+            if fan == "heater_fan heatbreak_fan":
+                name = "Fan: "
             elif fan.startswith("fan_generic"):
                 name = " ".join(fan.split(" ")[1:])[:1].upper() + ":"
                 if name.startswith("_"):
                     continue
+            elif fan.startswith("servo_flap") or fan.startswith("stepper_flap"):
+                name = fan.split(" ")[1]
+                if name == "my_flap":
+                    self.flaps[fan] = {
+                        "name": "head",
+                        "value": "-"
+                    }
+                elif name == "intake_flap":
+                    self.flaps[fan] = {
+                        "name": "intake",
+                        "value": "-"
+                    }
+                continue
             else:
                 continue
             self.fans[fan] = {
@@ -153,12 +167,16 @@ class JobStatusPanel(ScreenPanel):
             'z': self._gtk.Button("home-z", "-", None, self.bts, Gtk.PositionType.LEFT, 1),
             'extrusion': self._gtk.Button("extrude", "-", None, self.bts, Gtk.PositionType.LEFT, 1),
             'fan': self._gtk.Button("fan", "-", None, self.bts, Gtk.PositionType.LEFT, 1),
+            'flap': self._gtk.Button("flap", "-", None, self.bts, Gtk.PositionType.LEFT, 1),
+            'intake_flap': self._gtk.Button("flap", "-", None, self.bts, Gtk.PositionType.LEFT, 1),
             'elapsed': self._gtk.Button("clock", "-", None, self.bts, Gtk.PositionType.LEFT, 1),
             'left': self._gtk.Button("hourglass", "-", None, self.bts, Gtk.PositionType.LEFT, 1),
         }
         for button in buttons:
             buttons[button].set_halign(Gtk.Align.START)
         buttons['fan'].connect("clicked", self.menu_item_clicked, "fan", {"panel": "fan", "name": _("Fan")})
+        buttons['flap'].connect("clicked", self.menu_item_clicked, "fan", {"panel": "fan", "name": _("Fan")})
+        buttons['intake_flap'].connect("clicked", self.menu_item_clicked, "fan", {"panel": "fan", "name": _("Fan")})
         self.buttons.update(buttons)
 
         self.labels['temp_grid'] = Gtk.Grid()
@@ -169,7 +187,7 @@ class JobStatusPanel(ScreenPanel):
             self.current_extruder = self._printer.get_stat("toolhead", "extruder")
             for i, extruder in enumerate(self._printer.get_tools()):
                 self.labels[extruder] = Gtk.Label("-")
-                self.buttons['extruder'][extruder] = self._gtk.Button(f"extruder-{i}", "", None, self.bts,
+                self.buttons['extruder'][extruder] = self._gtk.Button(f"extruder", "", None, self.bts,
                                                                       Gtk.PositionType.LEFT, 1)
                 self.buttons['extruder'][extruder].set_label(self.labels[extruder].get_text())
                 self.buttons['extruder'][extruder].connect("clicked", self.menu_item_clicked, "temperature",
@@ -194,8 +212,17 @@ class JobStatusPanel(ScreenPanel):
         for dev in self._printer.get_heaters():
             if n >= nlimit:
                 break
-            if dev.startswith("heater_generic"):
+            if dev.startswith("heater_generic") and dev != "heater_generic panel":
                 self.buttons['heater'][dev] = self._gtk.Button("heater", "", None, self.bts, Gtk.PositionType.LEFT, 1)
+                self.labels[dev] = Gtk.Label("-")
+                self.buttons['heater'][dev].set_label(self.labels[dev].get_text())
+                self.buttons['heater'][dev].connect("clicked", self.menu_item_clicked, "temperature",
+                                                    {"panel": "temperature", "name": _("Temperature"), "extra": dev})
+                self.buttons['heater'][dev].set_halign(Gtk.Align.START)
+                self.labels['temp_grid'].attach(self.buttons['heater'][dev], n, 0, 1, 1)
+                n += 1
+            elif dev.startswith("heater_chamber"):
+                self.buttons['heater'][dev] = self._gtk.Button("chamber", "", None, self.bts, Gtk.PositionType.LEFT, 2)
                 self.labels[dev] = Gtk.Label("-")
                 self.buttons['heater'][dev].set_label(self.labels[dev].get_text())
                 self.buttons['heater'][dev].connect("clicked", self.menu_item_clicked, "temperature",
@@ -233,17 +260,19 @@ class JobStatusPanel(ScreenPanel):
 
         szfe = Gtk.Grid()
         szfe.set_column_homogeneous(True)
-        szfe.attach(self.buttons['speed'], 0, 0, 3, 1)
-        szfe.attach(self.buttons['z'], 2, 0, 2, 1)
-        if self._printer.get_tools():
-            szfe.attach(self.buttons['extrusion'], 0, 1, 3, 1)
-        if self._printer.get_fans():
-            szfe.attach(self.buttons['fan'], 2, 1, 2, 1)
+        szfe.attach(self.buttons['speed'], 0, 0, 1, 1)
+        szfe.attach(self.buttons['extrusion'], 0, 1, 1, 1)
+        szfe.attach(self.buttons['z'], 0, 2, 1, 1)
+
+        szfe.attach(self.buttons['fan'], 1, 0, 1, 1)
+        szfe.attach(self.buttons['flap'], 1, 1, 1, 1)
+        szfe.attach(self.buttons['intake_flap'], 1, 2, 1, 1)
 
         info = Gtk.Grid()
         info.set_vexpand(False)
-        info.set_row_homogeneous(True)
+        info.set_row_homogeneous(False)
         info.get_style_context().add_class("printing-info")
+        self.labels['temp_grid'].set_margin_bottom(20)
         info.attach(self.labels['temp_grid'], 0, 0, 1, 1)
         info.attach(szfe, 0, 1, 1, 2)
         info.attach(self.buttons['elapsed'], 0, 3, 1, 1)
@@ -377,7 +406,7 @@ class JobStatusPanel(ScreenPanel):
         self.buttons = {
             'cancel': self._gtk.Button("stop", _("Cancel"), "color2"),
             'control': self._gtk.Button("settings", _("Settings"), "color3"),
-            'fine_tune': self._gtk.Button("fine-tune", _("Fine Tuning"), "color4"),
+            'fine_tune': self._gtk.Button("fine-tune", _("Tuning"), "color4"),
             'menu': self._gtk.Button("complete", _("Main Menu"), "color4"),
             'pause': self._gtk.Button("pause", _("Pause"), "color1"),
             'restart': self._gtk.Button("refresh", _("Restart"), "color3"),
@@ -596,9 +625,16 @@ class JobStatusPanel(ScreenPanel):
         for fan in self.fans:
             with contextlib.suppress(KeyError):
                 self.fans[fan]['speed'] = f"{self._printer.get_fan_speed(fan) * 100:3.0f}%"
-                fan_label += f" {self.fans[fan]['name']}{self.fans[fan]['speed']}"
+                fan_label += f"{self.fans[fan]['name']}{self.fans[fan]['speed']} "
         if fan_label:
             self.buttons['fan'].set_label(fan_label[:12])
+        for flap in self.flaps:
+            with contextlib.suppress(KeyError):
+                self.flaps[flap]['speed'] = f"{self._printer.get_fan_speed(flap) * 100:3.0f}%"
+                if self.flaps[flap]['name'] == "head":
+                    self.buttons['flap'].set_label(f"Head: {self.flaps[flap]['speed']}")
+                if self.flaps[flap]['name'] == "intake":
+                    self.buttons['intake_flap'].set_label(f"Intake: {self.flaps[flap]['speed']}")
 
         self.state_check()
         if self.state not in ["printing", "paused"]:

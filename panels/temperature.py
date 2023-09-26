@@ -484,8 +484,9 @@ class TemperaturePanel(ScreenPanel):
         return self.left_panel
 
     def hide_numpad(self, widget=None):
-        self.devices[self.active_heater]['name'].get_style_context().remove_class("button_active")
-        self.active_heater = None
+        if self.active_heater is not None:
+            self.devices[self.active_heater]['name'].get_style_context().remove_class("button_active")
+            self.active_heater = None
 
         for d in self.active_heaters:
             self.devices[d]['name'].get_style_context().add_class("button_active")

@@ -156,7 +156,7 @@ class NetworkManagerInterfacePanel(ScreenPanel):
 
     def edit_connection(self, widget, connection):
         name = connection["name"]
-        self._screen.show_panel(name, "network_manager_connection", name, 1, False, connection=connection,
+        self._screen.show_panel(f"network_manager_connection_{name}", "network_manager_connection", name, 1, False, connection=connection,
                                 wireless=self.wireless)
 
     def up_connection(self, widget, connection):

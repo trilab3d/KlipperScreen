@@ -14,7 +14,7 @@ def create_panel(*args):
 class NetworkManagerPanel(ScreenPanel):
     def __init__(self, screen, title):
         super().__init__(screen, title)
-        self.do_schedule_refresh = False
+        self.do_schedule_refresh = True
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         box.set_vexpand(True)
         self.labels['networklist'] = Gtk.Grid()
@@ -103,4 +103,11 @@ class NetworkManagerPanel(ScreenPanel):
 
     def show_interface_settings(self, widget, interface):
         name = interface['GENERAL']['DEVICE']
-        self._screen.show_panel(name, "network_manager_interface", name, 1, False, interface=interface)
+        self._screen.show_panel(f"network_manager_interface_{name}", "network_manager_interface", name, 1, False, interface=interface)
+
+    def activate(self):
+        self.do_schedule_refresh = True
+        self.load_interfaces()
+
+    def deactivate(self):
+       self.do_schedule_refresh = False

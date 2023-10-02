@@ -15,7 +15,6 @@ class NetworkManagerWifiPanel(ScreenPanel):
     def __init__(self, screen, title, **kvargs):
         super().__init__(screen, title)
         self.interface = kvargs['interface']
-        self.do_schedule_refresh = False
         scroll = self._gtk.ScrolledWindow()
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         box.set_vexpand(True)
@@ -77,16 +76,13 @@ class NetworkManagerWifiPanel(ScreenPanel):
             self.labels['networklist'].attach(network, 0, i, 1, 1)
         self.content.show_all()
 
-        if self.do_schedule_refresh:
-            GLib.timeout_add_seconds(3, self.load_networks)
-
     def connect_network_password(self, widget, network):
         if network['SSID'] != "--":
             name = network["SSID"]
         else:
             name = network["BSSID"]
-        self._screen.show_panel(name, "network_manager_wifi_connect", name, 1, False, network=network,
-                                interface=self.interface)
+        self._screen.show_panel(f"network_manager_wifi_connect_{name}", "network_manager_wifi_connect", name, 1, False,
+                                network=network, interface=self.interface)
 
     def connect_network(self, widget, network):
         b = {
@@ -97,3 +93,6 @@ class NetworkManagerWifiPanel(ScreenPanel):
         b["bssid"] = network["BSSID"]
 
         self._screen.tpcclient.send_request("/network-manager/connect-wifi", "POST", body=b)
+
+    def activate(self):
+        self.load_networks()

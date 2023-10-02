@@ -227,3 +227,7 @@ textview .time {
 .content {
     margin: 0.1em;
 }
+
+.frame-item {
+    border-bottom: 1px solid #3b3b3b
+}

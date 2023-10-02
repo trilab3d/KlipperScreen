@@ -12,6 +12,22 @@ window {
     -gtk-icon-shadow: none;
 }
 
+notebook > header.top {
+    background-color: #222222;
+}
+
+notebook tab {
+    background-color: #444444;
+}
+
+notebook tab:checked {
+    background-color: #666666;
+}
+
+notebook > stack {
+    background-color: #13181C;
+}
+
 button {
     background-image: none;
     background-color: #13181C;

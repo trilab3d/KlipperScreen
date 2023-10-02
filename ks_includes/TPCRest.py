@@ -14,17 +14,16 @@ class TPCRest:
     def endpoint(self):
         return f"http://{self.ip}:{self.port}"
 
-    def send_request(self, endpoint, method="GET", json=True):
+    def send_request(self, endpoint, method="GET", body={}, json=True, timeout=3):
         url = f"{self.endpoint}/{endpoint}"
         data = False
         try:
             if method == "GET":
-                response = requests.get(url, timeout=3)
+                response = requests.get(url, timeout=timeout)
             elif method == "POST":
-                response = requests.post(url, timeout=3)
+                response = requests.post(url, timeout=timeout, json=body)
             response.raise_for_status()
             if json:
-                #logging.debug(f"Sending request to {url}")
                 data = response.json()
             else:
                 data = response.content

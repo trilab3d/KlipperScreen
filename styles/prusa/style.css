@@ -9,6 +9,24 @@ window {
     background-color: #000000;
 }
 
+notebook > header.top {
+    background-color: #000000;
+    border-bottom: 3px solid #3b3b3b
+}
+
+notebook tab {
+    background-color: #3b3b3b;
+}
+
+notebook tab:checked {
+    background-color: #686868;
+}
+
+notebook > stack {
+    margin-top: 20px;
+    background-color: #000000;
+}
+
 .active_device {
     background-color: #1c1c1c;
 }
@@ -36,7 +54,7 @@ button.color1, button.color2, button.color3, button.color4 {
 
 button.color1:active, button.color2:active, button.color3:active, button.color4:active, button.update:active, button.invalid:active, .dialog button:active {
     border-style: none;
-    background-color: #424242;
+    background-color: #686868;
 }
 
 button.update {

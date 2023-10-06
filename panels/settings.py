@@ -201,4 +201,5 @@ class SettingsPanel(ScreenPanel):
 
     def chamge_timezone(self, widget, timezone):
         os.system(f"timedatectl set-timezone {timezone}")
+        os.system(f"echo '{timezone}' > /opt/timezone")  # to have timezone persistent between updates
         os.system(f"systemctl restart klipper-screen")

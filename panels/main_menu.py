@@ -213,7 +213,7 @@ class MainPanel(MenuPanel):
             self._screen._ws.klippy.set_tool_temp(self._printer.get_tool_number(self.active_heater), temp)
         elif self.active_heater == "heater_bed":
             self._screen._ws.klippy.set_bed_temp(temp)
-        elif self.active_heater.startswith('heater_generic '):
+        elif self.active_heater.startswith('heater_generic ') or self.active_heater.startswith('heater_chamber'):
             self._screen._ws.klippy.set_heater_temp(name, temp)
         elif self.active_heater.startswith('temperature_fan '):
             self._screen._ws.klippy.set_temp_fan_temp(name, temp)

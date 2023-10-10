@@ -278,26 +278,6 @@ class KlipperScreenConfig:
                 "value": "off", "callback": screen.set_screenblanking_timeout, "options": [
                     {"name": _("Never"), "value": "off"}]
             }},
-            {"24htime": {"section": "main", "name": _("24 Hour Time"), "type": "binary", "value": "True"}},
-            {"side_macro_shortcut": {
-                "section": "main", "name": _("Macro shortcut on sidebar"), "type": "binary",
-                "value": "True", "callback": screen.toggle_macro_shortcut}},
-            {"font_size": {
-                "section": "main", "name": _("Font Size"), "type": "dropdown",
-                "value": "medium", "callback": screen.restart_ks, "options": [
-                    {"name": _("Small"), "value": "small"},
-                    {"name": _("Medium") + " " + _("(default)"), "value": "medium"},
-                    {"name": _("Large"), "value": "large"},
-                    {"name": _("Extra Large"), "value": "extralarge"},
-                    {"name": _("Maximum"), "value": "max"}]}},
-            {"confirm_estop": {"section": "main", "name": _("Confirm Emergency Stop"), "type": "binary",
-                               "value": "False"}},
-            {"only_heaters": {"section": "main", "name": _("Hide sensors in Temp."), "type": "binary",
-                              "value": "False", "callback": screen.reload_panels}},
-            {"use_dpms": {"section": "main", "name": _("Screen DPMS"), "type": "binary",
-                          "value": "True", "callback": screen.set_dpms}},
-            {"autoclose_popups": {"section": "main", "name": _("Auto-close notifications"), "type": "binary",
-                                  "value": "True"}},
             {"show_heater_power": {"section": "main", "name": _("Show Heater Power"), "type": "binary",
                                    "value": "False", "callback": screen.reload_panels}},
             {"view_group": {"section": "main", "name": _("View Mode"), "type": "dropdown",
@@ -315,7 +295,7 @@ class KlipperScreenConfig:
             {"invert_z": {"section": "main", "name": _("Invert Z"), "type": None, "value": "False"}},
             {"move_speed_xy": {"section": "main", "name": _("XY Move Speed (mm/s)"), "type": None, "value": "50"}},
             {"move_speed_z": {"section": "main", "name": _("Z Move Speed (mm/s)"), "type": None, "value": "10"}},
-            {"print_sort_dir": {"section": "main", "type": None, "value": "name_asc"}},
+            {"print_sort_dir": {"section": "main", "type": None, "value": "date_desc"}},
         ]
 
         self.configurable_options.extend(panel_options)

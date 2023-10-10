@@ -39,6 +39,9 @@ class SettingsPanel(ScreenPanel):
         self.labels['settings_menu'].add(self.labels['settings'])
         for option in options:
             name = list(option)[0]
+            # this can't be removed from config.py. KS won't start. I don't know why :/
+            if name == 'theme':
+                continue
             self.add_option('settings', self.settings, name, option[name])
 
         self.labels['lang_menu'] = self._gtk.ScrolledWindow()

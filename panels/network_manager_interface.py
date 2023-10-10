@@ -48,11 +48,12 @@ class NetworkManagerInterfacePanel(ScreenPanel):
         for conn in connections:
             id = conn["UUID"]
             found = False
-            for ifc_conn in self.interface["CONNECTIONS"]["AVAILABLE-CONNECTIONS"]:
-                conn_id = ifc_conn.split("|")[0].strip()
-                if conn_id == id:
-                    found = True
-                    break
+            if "AVAILABLE-CONNECTIONS" in self.interface["CONNECTIONS"]:
+                for ifc_conn in self.interface["CONNECTIONS"]["AVAILABLE-CONNECTIONS"]:
+                    conn_id = ifc_conn.split("|")[0].strip()
+                    if conn_id == id:
+                        found = True
+                        break
             if not found:
                 conn_full = self._screen.tpcclient.send_request(f"network-manager/show-connection/{id}")
                 if conn_full["connection"]["interface-name"] != self.interface["GENERAL"]["DEVICE"]:

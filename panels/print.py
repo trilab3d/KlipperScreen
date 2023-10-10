@@ -129,9 +129,9 @@ class PrintPanel(ScreenPanel):
                 if curdir != "gcodes" and fileinfo['modified'] > self.filelist[curdir]['modified']:
                     self.filelist[curdir]['modified'] = fileinfo['modified']
                     if self.time_24:
-                        time = f':<b>  {datetime.fromtimestamp(fileinfo["modified"]):%Y-%m-%d %H:%M}</b>'
+                        time = f':<b>  {datetime.fromtimestamp(fileinfo["modified"]):\n%Y-%m-%d %H:%M}</b>'
                     else:
-                        time = f':<b>  {datetime.fromtimestamp(fileinfo["modified"]):%Y-%m-%d %I:%M %p}</b>'
+                        time = f':<b>  {datetime.fromtimestamp(fileinfo["modified"]):\n%Y-%m-%d %I:%M %p}</b>'
                     info = _("Modified") + time
                     info += "\n" + _("Size") + f':<b>  {self.format_size(fileinfo["size"])}</b>'
                     self.labels['directories'][curdir]['info'].set_markup(info)
@@ -373,9 +373,9 @@ class PrintPanel(ScreenPanel):
             return
         info = _("Uploaded")
         if self.time_24:
-            info += f':<b>  {datetime.fromtimestamp(fileinfo["modified"]):%Y-%m-%d %H:%M}</b>\n'
+            info += f':<b>  {datetime.fromtimestamp(fileinfo["modified"]):\n%Y-%m-%d %H:%M}</b>\n'
         else:
-            info += f':<b>  {datetime.fromtimestamp(fileinfo["modified"]):%Y-%m-%d %I:%M %p}</b>\n'
+            info += f':<b>  {datetime.fromtimestamp(fileinfo["modified"]):\n%Y-%m-%d %I:%M %p}</b>\n'
 
         if "size" in fileinfo:
             info += _("Size") + f':  <b>{self.format_size(fileinfo["size"])}</b>\n'

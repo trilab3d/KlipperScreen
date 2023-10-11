@@ -285,7 +285,7 @@ class KlipperScreen(Gtk.Window):
         for p in self.printer.get_output_pins():
             requested_updates['objects'][p] = ["value"]
         for s in self.printer.get_door_sensors():
-            requested_updates['objects'][s] = ["door_closed"]
+            requested_updates['objects'][s] = ["door_closed", "enabled"]
 
         self._ws.klippy.object_subscription(requested_updates)
 

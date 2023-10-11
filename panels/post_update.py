@@ -42,8 +42,8 @@ class PostUpdatePanel(ScreenPanel):
                 logging.info(f"Read post-update-status {status}")
                 f.close()
             if status.strip() == "DONE":
-                logging.info(f"post-update done, proceed to connect")
-                self._screen.initial_connection()
+                logging.info(f"post-update done, restart KS")
+                self._screen.restart_ks()
         except Exception:
             pass
 

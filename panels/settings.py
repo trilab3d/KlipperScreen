@@ -201,4 +201,5 @@ class SettingsPanel(ScreenPanel):
         os.system(f"timedatectl set-timezone {timezone}")
         os.system(f"cp -P /etc/timezone /opt/timezone")  # to have timezone persistent between updates
         os.system(f"cp -P /etc/localtime /opt/localtime")
-        self._screen.restart_ks()
+        #self._screen.restart_ks()
+        os.system("systemctl restart klipper-screen")

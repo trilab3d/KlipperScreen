@@ -18,11 +18,6 @@ class SettingsPanel(ScreenPanel):
         self.printers = self.settings = self.langs = self.time_zones = {}
         self.menu = ['settings_menu']
         options = self._config.get_configurable_options().copy()
-        options.append({"printers": {
-            "name": _("Printer Connections"),
-            "type": "menu",
-            "menu": "printers"
-        }})
         options.append({"lang": {
             "name": _("Language"),
             "type": "menu",

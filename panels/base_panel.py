@@ -325,7 +325,8 @@ class BasePanel(ScreenPanel):
                             and (update_status == "INSTALLED"
                                  or update_status == "USB_UPDATE_AVAILABLE"))
                 ):
-                    self._screen.show_panel("system", "system", "System", 1, False)
+                    if 'system' not in self._screen.panels:
+                        self._screen.show_panel("system", "system", "System", 1, False)
         except Exception as e:
             logging.warning(f"Exception on update_updater: {e}")
         return True

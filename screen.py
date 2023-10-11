@@ -113,6 +113,7 @@ class KlipperScreen(Gtk.Window):
         self.dialogs = []
         self.confirm = None
         self.panels_reinit = []
+        self.post_update_done = False
 
         configfile = os.path.normpath(os.path.expanduser(args.configfile))
 
@@ -164,6 +165,22 @@ class KlipperScreen(Gtk.Window):
         self.initial_connection()
 
     def initial_connection(self):
+        if not self.post_update_done:
+            try:
+                with open("/home/trilab/post-update-status","r") as f:
+                    status = f.readline().strip()
+                    logging.info(f"Read post-update-status {status}")
+                    f.close()
+            except Exception:
+                status = None
+            if status == "DONE":
+                logging.info(f"Post-update done. Continue to connect")
+                self.post_update_done = True
+            else:
+                if 'post_update' not in self.panels:
+                    self.show_panel('post_update', "post_update", None, 2)
+                return
+
         self.printers = self._config.get_printers()
         state_callbacks = {
             "disconnected": self.state_disconnected,

@@ -46,29 +46,34 @@ class SystemPanel(ScreenPanel):
         self.refresh_button = self._gtk.Button('refresh', _('Refresh'), 'color1')
         self.refresh_button.connect("clicked", self.refresh_omaha)
         self.refresh_button.set_vexpand(False)
+        self.refresh_button.set_hexpand(True)
 
         self.download_button = self._gtk.Button('arrow-down', _('Download'), 'color1')
         self.download_button.connect("clicked", self.download)
         self.download_button.set_vexpand(False)
+        self.download_button.set_hexpand(True)
 
         self.update_button = self._gtk.Button('arrow-up', _('Update'), 'color2')
         self.update_button.connect("clicked", self.show_update_info)
         self.update_button.set_vexpand(False)
+        self.update_button.set_hexpand(True)
 
         self.install_usb_button = self._gtk.Button('arrow-right', _('Install'), 'color1')
         self.install_usb_button.connect("clicked", self.install_usb_update)
         self.install_usb_button.set_vexpand(False)
+        self.install_usb_button.set_hexpand(True)
 
         self.discard_usb_button = self._gtk.Button('arrow-left', _('Discard'), 'color1')
         self.discard_usb_button.connect("clicked", self.discard_usb_update)
         self.discard_usb_button.set_vexpand(False)
+        self.discard_usb_button.set_hexpand(True)
 
-        reboot = self._gtk.Button('refresh', _('Restart'), 'color3')
-        reboot.connect("clicked", self.reboot_poweroff, "reboot")
-        reboot.set_vexpand(False)
-        shutdown = self._gtk.Button('shutdown', _('Shutdown'), 'color4')
-        shutdown.connect("clicked", self.reboot_poweroff, "poweroff")
-        shutdown.set_vexpand(False)
+        self.reboot = self._gtk.Button('refresh', _('Restart'), 'color3')
+        self.reboot.connect("clicked", self.reboot_poweroff, "reboot")
+        self.reboot.set_vexpand(False)
+        #shutdown = self._gtk.Button('shutdown', _('Shutdown'), 'color4')
+        #shutdown.connect("clicked", self.reboot_poweroff, "poweroff")
+        #shutdown.set_vexpand(False)
 
         scroll = self._gtk.ScrolledWindow()
         scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
@@ -86,9 +91,9 @@ class SystemPanel(ScreenPanel):
         self.button_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.button_box.set_hexpand(True)
         self.button_box.set_vexpand(False)
-        self.button_box.set_halign(Gtk.Align.CENTER)
+        #self.button_box.set_halign(Gtk.Align.CENTER)
         self.button_box.set_homogeneous(True)
-        self.button_box.set_size_request(self._gtk.content_width, -1)
+        #self.button_box.set_size_request(self._gtk.content_width, -1)
 
         self.get_updates()
         GLib.timeout_add_seconds(3, self.get_updates)
@@ -101,8 +106,8 @@ class SystemPanel(ScreenPanel):
         grid.attach(scroll, 0, 0, 1, 1)
         grid.attach(self.update_channel_dropdown, 0, 1, 1, 1)
         grid.attach(self.button_box, 0, 2, 1, 1)
-        grid.attach(reboot, 0, 3, 1, 1)
-        grid.attach(shutdown, 0, 4, 1, 1)
+        grid.attach(self.reboot, 0, 3, 1, 1)
+        #grid.attach(shutdown, 0, 4, 1, 1)
         self.content.add(grid)
 
     def activate(self):
@@ -115,6 +120,8 @@ class SystemPanel(ScreenPanel):
 
     def get_updates(self):
         self.fetch_settings()
+        is_printing = self._screen.printer.data['print_stats']['state'] == 'printing'
+        self.reboot.set_sensitive(not is_printing)
         try:
             update_resp = self._screen.tpcclient.send_request(f"check_update")
             #logging.info(f"update_resp: {update_resp}")
@@ -140,6 +147,7 @@ class SystemPanel(ScreenPanel):
                                             f"{_('Update version')}: {update_resp['update_version']}\n"
                                             f"{_('Release notes')}:\n{update_resp['release_notes']}")
                 self.button_box.add(self.update_button)
+                self.update_button.set_sensitive(not is_printing)
             elif update_resp["update_status"] == "UP_TO_DATE":
                 self.update_header.set_markup("<span size='xx-large'>"+_("System is up to date")+"</span>")
                 self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}")
@@ -163,6 +171,8 @@ class SystemPanel(ScreenPanel):
                                             f"{_('Update version')}: {update_resp['update_version']}")
                 self.button_box.add(self.update_button)
                 self.button_box.add(self.discard_usb_button)
+                is_printing = self._screen.printer.data['print_stats']['state'] == 'printing'
+                self.update_button.set_sensitive(not is_printing)
             else:
                 self.update_header.set_markup("")
                 self.update_label.set_label("")

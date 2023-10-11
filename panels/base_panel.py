@@ -284,6 +284,9 @@ class BasePanel(ScreenPanel):
             self.buttons_showing['printer_select'] = False
 
     def set_title(self, title):
+        if not self._screen.post_update_done:
+            self.titlelbl.set_label('')
+            return
         if not title:
             self.titlelbl.set_label(f"{self._screen.connecting_to_printer}")
             return
@@ -298,6 +301,9 @@ class BasePanel(ScreenPanel):
         self.titlelbl.set_label(f"{self._screen.connecting_to_printer} | {title}")
 
     def update_time(self):
+        if not self._screen.post_update_done:
+            self.control['time'].set_text('')
+            return True
         now = datetime.now()
         confopt = self._config.get_main_config().getboolean("24htime", True)
         if now.minute != self.time_min or self.time_format != confopt:

@@ -316,6 +316,8 @@ class BasePanel(ScreenPanel):
         return True
 
     def update_updater(self):
+        if not self._screen.post_update_done:
+            return False
         try:
             update_resp = self._screen.tpcclient.send_request(f"check_update")
             update_status = update_resp["update_status"]

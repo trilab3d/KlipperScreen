@@ -63,11 +63,9 @@ class PostUpdatePanel(ScreenPanel):
 
 
     def fetch_post_update_status(self):
-        logging.info("Called fetch_post_update_status")
         if has_gpio:
             logging.info("has gpio")
             if not GPIO.input(EMERGENCY_STOP_PIN):
-                logging.info("Emergency triggered")
                 if not self.last_emergency_state:
                     self.last_emergency_state = True
                     for ch in self.content.get_children():
@@ -76,7 +74,6 @@ class PostUpdatePanel(ScreenPanel):
                     self._screen.show_all()
                 return self.do_schedule_refresh
             else:
-                logging.info("Emergency NOT triggered")
                 if self.last_emergency_state:
                     self.last_emergency_state = False
                     for ch in self.content.get_children():

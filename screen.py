@@ -32,14 +32,6 @@ from ks_includes.widgets.keypad import Keypad
 from ks_includes.config import KlipperScreenConfig
 from panels.base_panel import BasePanel
 
-has_gpio = False
-try:
-    import RPi.GPIO as GPIO
-    has_gpio = True
-    EMERGENCY_STOP_PIN = 27
-except:
-    pass
-
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 PRINTER_BASE_STATUS_OBJECTS = [
@@ -171,7 +163,6 @@ class KlipperScreen(Gtk.Window):
         self.set_screenblanking_timeout(self._config.get_main_config().get('screen_blanking'))
 
         self.initial_connection()
-        self.init_emergency_stop()
 
     def initial_connection(self):
         if not self.post_update_done:
@@ -198,7 +189,8 @@ class KlipperScreen(Gtk.Window):
             "printing": self.state_printing,
             "ready": self.state_ready,
             "startup": self.state_startup,
-            "shutdown": self.state_shutdown
+            "shutdown": self.state_shutdown,
+            "emergency_stop": self.state_emergency_stop
         }
         for printer in self.printers:
             printer["data"] = Printer(state_execute, state_callbacks, self.process_busy_state)
@@ -745,13 +737,13 @@ class KlipperScreen(Gtk.Window):
     def state_shutdown(self):
         self.close_screensaver()
 
-        if not GPIO.input(EMERGENCY_STOP_PIN):
-            self.emergency_stop_set_callback()
-            return
-
         msg = self.printer.get_stat("webhooks", "state_message")
         msg = msg if "ready" not in msg else ""
         self.printer_initializing(_("Klipper has shutdown") + "\n\n" + msg, remove=True)
+
+    def state_emergency_stop(self):
+        self.close_screensaver()
+        self.show_panel('emergency_stop', "emergency_stop", None, 2)
 
     def toggle_macro_shortcut(self, value):
         self.base_panel.show_macro_shortcut(value)
@@ -1074,37 +1066,6 @@ class KlipperScreen(Gtk.Window):
             self.vertical_mode = new_mode
             self.aspect_ratio = new_ratio
             logging.info(f"Vertical mode: {self.vertical_mode}")
-
-    def emergency_stop_set_callback(self):
-        logging.info("Emergency stop FALLING edge")
-        self.show_panel('emergency_stop', "emergency_stop", None, 2)
-
-    def emergency_stop_reset_callback(self):
-        logging.info("Emergency stop RISING edge")
-        if self.post_update_done:
-            for printer in self.printers:
-                printer["data"].state = ""  # to force state update
-                printer["data"].process_status_update()
-        else:
-            self.show_panel('post_update', "post_update", None, 2)
-
-    def init_emergency_stop(self):
-        if has_gpio:
-            def cb(channel):
-                if GPIO.input(EMERGENCY_STOP_PIN):
-                    self.emergency_stop_reset_callback()
-                else:
-                    self.emergency_stop_set_callback()
-
-            GPIO.setmode(GPIO.BCM)
-            GPIO.setup(EMERGENCY_STOP_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-            GPIO.add_event_detect(EMERGENCY_STOP_PIN, GPIO.BOTH,
-                                  callback=cb, bouncetime=100)
-
-            if not GPIO.input(EMERGENCY_STOP_PIN):
-                self.emergency_stop_set_callback()
-
-            return True
 
 
 def main():

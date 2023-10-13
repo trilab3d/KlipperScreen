@@ -12,7 +12,7 @@ def create_panel(*args):
     return EmergencyStopPanel(*args)
 
 class EmergencyStopPanel(ScreenPanel):
-    def __init__(self, screen, title):
+    def __init__(self, screen, title=None):
         super().__init__(screen, title)
         self.screen = screen
         self.do_schedule_refresh = True

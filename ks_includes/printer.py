@@ -6,6 +6,14 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import GLib
 
 
+has_gpio = False
+try:
+    import RPi.GPIO as GPIO
+    has_gpio = True
+    EMERGENCY_STOP_PIN = 27
+except:
+    pass
+
 class Printer:
     def __init__(self, state_cb, state_callbacks, busy_cb):
         self.config = {}
@@ -25,6 +33,7 @@ class Printer:
         self.busy_cb = busy_cb
         self.busy = False
         self.tempstore_size = 1200
+        self.init_emergency_stop()
 
     def reinit(self, printer_info, data):
         self.config = data['configfile']['config']
@@ -116,6 +125,8 @@ class Printer:
         # webhooks states: startup, ready, shutdown, error
         # print_stats: standby, printing, paused, error, complete
         # idle_timeout: Idle, Printing, Ready
+        if has_gpio and not GPIO.input(EMERGENCY_STOP_PIN):
+            return "emergency_stop"
         if self.data['webhooks']['state'] == "ready":
             with contextlib.suppress(KeyError):
                 if self.data['print_stats']['state'] == 'paused':
@@ -371,3 +382,12 @@ class Printer:
                     temp = 0
                 self.tempstore[device][x].append(temp)
         return True
+
+    def init_emergency_stop(self):
+        if has_gpio:
+            def cb(channel):
+                self.process_status_update()
+            GPIO.setmode(GPIO.BCM)
+            GPIO.setup(EMERGENCY_STOP_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+            GPIO.add_event_detect(EMERGENCY_STOP_PIN, GPIO.BOTH,
+                                  callback=cb, bouncetime=100)

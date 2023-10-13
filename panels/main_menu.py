@@ -19,18 +19,21 @@ class MainPanel(MenuPanel):
         super().__init__(screen, title, items)
         self.graph_retry_timeout = None
         # self.left_panel = None
-        self.image = self._gtk.Image(
+        logo_image = self._gtk.Image(
                 "prusa_azteq", self._gtk.content_width*0.9,
                 self._gtk.content_height * 0.6)
-        self.image.set_size_request(self._gtk.content_width*0.9,
-                                    self._gtk.content_height * 0.6)
+        self.logo = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.logo.pack_end(logo_image, False, False, 0)
+        self.logo.set_baseline_position(Gtk.BaselinePosition.BOTTOM)
+        self.logo.set_size_request(self._gtk.content_width*0.9,
+                                    self._gtk.content_height * 0.55)
         self.devices = {}
         self.graph_update = None
         self.active_heater = None
         self.h = self.f = 0
-        self.main_menu = self._gtk.HomogeneousGrid()
+        self.main_menu = self._gtk.HomogeneousGrid(row_homogenous=False)
         self.grid.set_margin_left(20)
-        self.grid.set_margin_right(20)
+        # self.grid.set_margin_right(20)
         self.main_menu.set_hexpand(True)
         self.main_menu.set_vexpand(True)
         self.graph_retry = 0
@@ -42,7 +45,7 @@ class MainPanel(MenuPanel):
         #if stats["temperature_devices"]["count"] > 0 or stats["extruders"]["count"] > 0:
         if True:
             self._gtk.reset_temp_color()
-            self.main_menu.attach(self.image, 0, 0, 1, 1)
+            self.main_menu.attach(self.logo, 0, 0, 1, 1)
             # self.main_menu.attach(self.create_left_panel(), 0, 0, 1, 1)
         if self._screen.vertical_mode:
             self.labels['menu'] = self.arrangeMenuItems(items, 3, False)

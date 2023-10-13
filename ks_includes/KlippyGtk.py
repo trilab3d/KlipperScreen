@@ -107,8 +107,10 @@ class KlippyGtk:
             self.color_list[key]['state'] = 0
 
     @staticmethod
-    def Label(label, style=None):
+    def Label(label, style=None, xalign = None):
         la = Gtk.Label(label)
+        if xalign is not None:
+            la.set_xalign(xalign)
         if style is not None:
             la.get_style_context().add_class(style)
         return la
@@ -225,10 +227,10 @@ class KlippyGtk:
         logging.debug(f"Cannot remove dialog {dialog}")
 
     @staticmethod
-    def HomogeneousGrid(width=None, height=None):
+    def HomogeneousGrid(width=None, height=None, row_homogenous=False, column_homogenous=True):
         g = Gtk.Grid()
-        g.set_row_homogeneous(False)
-        g.set_column_homogeneous(True)
+        g.set_row_homogeneous(row_homogenous)
+        g.set_column_homogeneous(column_homogenous)
         if width is not None and height is not None:
             g.set_size_request(width, height)
         return g

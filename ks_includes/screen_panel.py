@@ -13,6 +13,7 @@ class ScreenPanel:
     _printer = None
     _gtk = None
     ks_printer_cfg = None
+    show_bg = False
 
     def __init__(self, screen, title, **kwargs):
         self.menu = None
@@ -147,8 +148,8 @@ class ScreenPanel:
         minutes = seconds // 60
         eta = datetime.datetime.now() + datetime.timedelta(days=days, hours=hours, minutes=minutes)
         if self._config.get_main_config().getboolean("24htime", True):
-            return f"{self.format_time(total - elapsed)} | {eta:%H:%M} {f' +{days:2.0f}d' if days > 0 else ''}"
-        return f"{self.format_time(total - elapsed)} | {eta:%I:%M %p} {f' +{days:2.0f}d' if days > 0 else ''}"
+            return f"{self.format_time(total - elapsed)}", f"{eta:%H:%M} {f' +{days:2.0f}d' if days > 0 else ''}"
+        return f"{self.format_time(total - elapsed)}", f"{eta:%I:%M %p} {f' +{days:2.0f}d' if days > 0 else ''}"
 
     @staticmethod
     def format_size(size):

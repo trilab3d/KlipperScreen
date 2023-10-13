@@ -145,7 +145,7 @@ class KlipperScreen(Gtk.Window):
         self.set_icon_from_file(os.path.join(klipperscreendir, "styles", "icon.svg"))
 
         self.base_panel = BasePanel(self, title="Base Panel")
-        self.add(self.base_panel.main_grid)
+        self.add(self.base_panel.main_layout)
         self.show_all()
         if self.show_cursor:
             self.get_window().set_cursor(
@@ -335,6 +335,7 @@ class KlipperScreen(Gtk.Window):
                 logging.info("Reinitializing panel")
                 self.panels[panel_name].__init__(self, title, **kwargs)
                 self.panels_reinit.remove(panel_name)
+
             self.attach_panel(panel_name)
         except Exception as e:
             logging.exception(f"Error attaching panel:\n{e}")
@@ -350,6 +351,7 @@ class KlipperScreen(Gtk.Window):
         if hasattr(self.panels[panel_name], "activate"):
             self.panels[panel_name].activate()
         self.show_all()
+        self.base_panel.show_background(self.panels[panel_name].show_bg)
 
     # Handles commands from RESPOND TYPE=command MSG=...
     def handle_message_command(self, command):
@@ -592,7 +594,7 @@ class KlipperScreen(Gtk.Window):
         box.pack_start(close, True, True, 0)
         box.set_halign(Gtk.Align.CENTER)
         box.get_style_context().add_class("screensaver")
-        self.remove(self.base_panel.main_grid)
+        self.remove(self.base_panel.main_layout)
         self.add(box)
 
         # Avoid leaving a cursor-handle
@@ -611,7 +613,7 @@ class KlipperScreen(Gtk.Window):
         logging.debug("Closing Screensaver")
         self.remove(self.screensaver)
         self.screensaver = None
-        self.add(self.base_panel.main_grid)
+        self.add(self.base_panel.main_layout)
         if self.use_dpms:
             self.wake_screen()
         else:

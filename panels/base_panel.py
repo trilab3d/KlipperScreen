@@ -5,7 +5,7 @@ import logging
 import gi
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import GLib, Gtk, Pango
+from gi.repository import GLib, Gtk, Pango, GdkPixbuf
 from jinja2 import Environment
 from datetime import datetime
 from math import log
@@ -98,6 +98,7 @@ class BasePanel(ScreenPanel):
 
         # Main layout
         self.main_grid = Gtk.Grid()
+        self.main_layout = Gtk.Layout()
 
         if self._screen.vertical_mode:
             self.main_grid.attach(self.titlebar, 0, 0, 1, 1)
@@ -109,8 +110,32 @@ class BasePanel(ScreenPanel):
             self.action_bar.set_orientation(orientation=Gtk.Orientation.VERTICAL)
             self.main_grid.attach(self.titlebar, 1, 0, 1, 1)
             self.main_grid.attach(self.content, 1, 1, 1, 1)
+           
+            
+        self.main_grid.set_vexpand(True)
+        self.main_layout.set_vexpand(True)
+        self.main_layout.set_hexpand(True)
+        self.main_grid.set_size_request(self._gtk.width, self._gtk.height)
+        self.main_layout.set_size_request(self._gtk.width, self._gtk.height)
+        
+        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+            filename="styles/prusa/images/extruder.jpg", 
+            width=self._gtk.content_width, 
+            height=self._gtk.content_height, 
+            preserve_aspect_ratio=True
+        )
+        self.background_image = Gtk.Image.new_from_pixbuf(pixbuf)
+
+        self.main_layout.put(self.background_image, 0, 0)
+        self.main_layout.put(self.main_grid, 0, 0)
 
         self.update_time()
+
+    def show_background(self, value=True):
+        if value:
+            self.background_image.show()
+        else:
+            self.background_image.hide()
 
     def show_heaters(self, show=True):
         try:
@@ -185,6 +210,7 @@ class BasePanel(ScreenPanel):
         self.current_panel = panel
         self.set_title(panel.title)
         self.content.add(panel.content)
+
 
     def back(self, widget=None):
         if self.current_panel is None:

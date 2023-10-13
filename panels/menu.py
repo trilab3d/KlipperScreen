@@ -5,7 +5,7 @@ import gi
 import json
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk
+from gi.repository import Gtk, GdkPixbuf
 from jinja2 import Template
 
 from ks_includes.screen_panel import ScreenPanel
@@ -22,7 +22,7 @@ class MenuPanel(ScreenPanel):
         super().__init__(screen, title)
         self.items = items
         self.create_menu_items()
-        self.grid = self._gtk.HomogeneousGrid()
+        self.grid = self._gtk.HomogeneousGrid(row_homogenous=True, column_homogenous=True)
         self.grid.set_margin_left(20)
         self.grid.set_margin_right(20)
         self.grid.set_column_spacing(20)
@@ -30,6 +30,7 @@ class MenuPanel(ScreenPanel):
         self.grid.set_vexpand(False)
         self.scroll = self._gtk.ScrolledWindow()
         self.scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        self.show_bg = True
 
     def activate(self):
         self.add_content()
@@ -77,9 +78,9 @@ class MenuPanel(ScreenPanel):
         return self.grid
 
     def create_menu_items(self):
-        for i in range(len(self.items)):
-            key = list(self.items[i])[0]
-            item = self.items[i][key]
+        for i, entry in enumerate(self.items):
+            key = list(entry)[0]
+            item = entry[key]
             scale = 1.1 if 12 < len(self.items) <= 16 else None  # hack to fit a 4th row
 
             printer = self._printer.get_printer_status_data()
@@ -88,11 +89,20 @@ class MenuPanel(ScreenPanel):
             icon = self._screen.env.from_string(item['icon']).render(printer) if item['icon'] else None
             style = self._screen.env.from_string(item['style']).render(printer) if item['style'] else None
 
-            b = self._gtk.Button(icon, name, style or f"color{i % 4 + 1}", scale=scale)
+            button = self._gtk.Button(icon, label=None, style=style or f"color{i % 4 + 1}", scale=scale)
+            label = self._gtk.Label(name)
+            
+            grid = self._gtk.HomogeneousGrid(row_homogenous=False)
+            grid.attach(button, 0, 0, 1, 1)
+            grid.attach(label, 0, 1, 1, 1)
+
+            button_width, _button_height = button.get_size_request()
+            button.set_size_request(button_width, button_width) 
 
             if item['panel'] is not None:
                 panel = self._screen.env.from_string(item['panel']).render(printer)
-                b.connect("clicked", self.menu_item_clicked, panel, item)
+                button.connect("clicked", self.menu_item_clicked, panel, item)
+
             elif item['method'] is not None:
                 params = {}
 
@@ -105,12 +115,12 @@ class MenuPanel(ScreenPanel):
                         params = {}
 
                 if item['confirm'] is not None:
-                    b.connect("clicked", self._screen._confirm_send_action, item['confirm'], item['method'], params)
+                    button.connect("clicked", self._screen._confirm_send_action, item['confirm'], item['method'], params)
                 else:
-                    b.connect("clicked", self._screen._send_action, item['method'], params)
+                    button.connect("clicked", self._screen._send_action, item['method'], params)
             else:
-                b.connect("clicked", self._screen._go_to_submenu, key)
-            self.labels[key] = b
+                button.connect("clicked", self._screen._go_to_submenu, key)
+            self.labels[key] = grid
 
     def evaluate_enable(self, enable):
         if enable == "{{ moonraker_connected }}":

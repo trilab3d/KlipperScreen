@@ -33,6 +33,7 @@ notebook > stack {
 
 button {
     background-color: #000000;
+    border-radius: .2em; 
 }
 
 button:active {
@@ -45,11 +46,16 @@ button:active {
     background-color: #424242;
 }
 
+button.highlight {
+    background-color: #ffffff;
+    margin: 15px;
+    border-style: none;
+}
+
 button.color1, button.color2, button.color3, button.color4 {
     background-color: #3b3b3b;
     margin: 15px;
     border-style: none;
-    border-radius: .5em;
 }
 
 button.color1:active, button.color2:active, button.color3:active, button.color4:active, button.update:active, button.invalid:active, .dialog button:active {
@@ -88,6 +94,10 @@ switch:checked {
 
 label {
     color: #e2e2e2;
+}
+
+.property-name {
+    color: #a2a2a2;
 }
 
 menu {
@@ -190,6 +200,7 @@ textview .time {
 
 .printing-progress-text {
     color: #e2e2e2;
+    font-size: 4.0em;
 }
 
 .printing-status-label {

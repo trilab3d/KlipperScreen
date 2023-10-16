@@ -76,7 +76,6 @@ class DoorOpenPanel(ScreenPanel):
 
     def fetch_door_sensor(self):
         door_sensor = self.screen.printer.data['door_sensor']
-        #logging.info(f"Door sensor object: {door_sensor}")
 
         self.indicator.set_active(door_sensor["door_closed"] and door_sensor["enabled"])
         self.switch.set_active(door_sensor["enabled"])

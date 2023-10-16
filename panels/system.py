@@ -4,7 +4,7 @@ import os
 import gi
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, Pango, GLib
+from gi.repository import Gtk, Pango, GLib, Gdk
 
 from ks_includes.screen_panel import ScreenPanel
 
@@ -35,6 +35,7 @@ class SystemPanel(ScreenPanel):
         grid = self._gtk.HomogeneousGrid()
         grid.set_row_homogeneous(False)
         self.do_schedule_refresh = True
+        self.service_counter = 0
 
         self.update_channel_dropdown = Gtk.ComboBoxText()
         self.update_channels = [("dev", "Develop"), ("beta", "Beta"), ("stable", "Stable")]
@@ -103,7 +104,11 @@ class SystemPanel(ScreenPanel):
 
         scroll.add(infogrid)
 
-        grid.attach(scroll, 0, 0, 1, 1)
+        event_box = Gtk.EventBox()
+        event_box.add(scroll)
+        event_box.connect("button-press-event", self.header_clicked)
+
+        grid.attach(event_box, 0, 0, 1, 1)
         grid.attach(self.update_channel_dropdown, 0, 1, 1, 1)
         grid.attach(self.button_box, 0, 2, 1, 1)
         grid.attach(self.reboot, 0, 3, 1, 1)
@@ -113,6 +118,7 @@ class SystemPanel(ScreenPanel):
     def activate(self):
         self.do_schedule_refresh = True
         self.get_updates()
+        self.service_counter = 0
         GLib.timeout_add_seconds(3, self.get_updates)
 
     def deactivate(self):
@@ -253,6 +259,12 @@ class SystemPanel(ScreenPanel):
         self._screen._ws.send_method("machine.update.recover", {"name": program, "hard": hard})
 
     def reboot_poweroff(self, widget, method):
+        if self.service_counter == 7:
+            self._config.set("main", "view_group", "service")
+            self._screen.reload_panels()
+            return
+        else:
+            self.service_counter = 0
         scroll = self._gtk.ScrolledWindow()
         scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -303,3 +315,7 @@ class SystemPanel(ScreenPanel):
             "release_channel": value
         }
         self._screen.tpcclient.send_request("/settings", "POST", body=b)
+
+    def header_clicked(self, widget, argument):
+        self.service_counter += 1
+        logging.info(f"Service counter: {self.service_counter}")

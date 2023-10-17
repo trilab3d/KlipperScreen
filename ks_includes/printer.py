@@ -200,6 +200,15 @@ class Printer:
             fans.extend(iter(self.get_config_section_list(f"{fan_type} ")))
         return fans
 
+    def get_lights(self):
+        lights = []
+        if self.config_section_exists("fan"):
+            lights.append("fan")
+        light_types = ["led"]
+        for light_type in light_types:
+            lights.extend(iter(self.get_config_section_list(f"{light_type} ")))
+        return lights
+
     def get_output_pins(self):
         output_pins = []
         output_pins.extend(iter(self.get_config_section_list("output_pin ")))
@@ -298,6 +307,16 @@ class Printer:
             if speed < off_below:
                 speed = 0
         return speed
+
+    def get_light_val(self, light):
+        value = 0
+        if light not in self.config or light not in self.data:
+            logging.debug(f"Error getting {light} config")
+            return value
+        if "color_data" in self.data[light]:
+            logging.info(f"light: {light} - {self.data[light]}")
+            value = self.data[light]["color_data"][0][3]
+        return value
 
     def get_pin_value(self, pin):
         if pin in self.data:

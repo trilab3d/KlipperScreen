@@ -37,13 +37,6 @@ class SystemPanel(ScreenPanel):
         self.do_schedule_refresh = True
         self.service_counter = 0
 
-        self.update_channel_dropdown = Gtk.ComboBoxText()
-        self.update_channels = [("dev", "Develop"), ("beta", "Beta"), ("stable", "Stable")]
-        for i, opt in enumerate(self.update_channels):
-            self.update_channel_dropdown.append(opt[0], opt[1])
-        self.update_channel_dropdown.connect("changed", self.switch_release_channel)
-        self.update_channel_dropdown.set_entry_text_column(0)
-
         self.refresh_button = self._gtk.Button('refresh', _('Refresh'), 'color1')
         self.refresh_button.connect("clicked", self.refresh_omaha)
         self.refresh_button.set_vexpand(False)
@@ -109,9 +102,8 @@ class SystemPanel(ScreenPanel):
         event_box.connect("button-press-event", self.header_clicked)
 
         grid.attach(event_box, 0, 0, 1, 1)
-        grid.attach(self.update_channel_dropdown, 0, 1, 1, 1)
-        grid.attach(self.button_box, 0, 2, 1, 1)
-        grid.attach(self.reboot, 0, 3, 1, 1)
+        grid.attach(self.button_box, 0, 1, 1, 1)
+        grid.attach(self.reboot, 0, 2, 1, 1)
         #grid.attach(shutdown, 0, 4, 1, 1)
         self.content.add(grid)
 
@@ -302,19 +294,6 @@ class SystemPanel(ScreenPanel):
 
     def fetch_settings(self):
         settings = self._screen.tpcclient.send_request("/settings")
-
-        for i, opt in enumerate(self.update_channels):
-            if opt[0] == settings["release_channel"]:
-                self.update_channel_dropdown.set_active(i)
-
-    def switch_release_channel(self, widget):
-        tree_iter = widget.get_active_iter()
-        model = widget.get_model()
-        value = model[tree_iter][1]
-        b = {
-            "release_channel": value
-        }
-        self._screen.tpcclient.send_request("/settings", "POST", body=b)
 
     def header_clicked(self, widget, argument):
         self.service_counter += 1

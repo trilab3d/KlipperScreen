@@ -98,6 +98,20 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         self.grid.attach(mfd_label, 0, index, 2, 1)
         self.grid.attach(mfd_entry, 2, index, 3, 1)
 
+        index += 1
+        update_channel_label = Gtk.Label(label="Manufacture Date:")
+        update_channel_label.set_halign(Gtk.Align.END)
+        self.update_channel_dropdown = Gtk.ComboBoxText()
+        self.update_channels = [("dev", "Develop"), ("beta", "Beta"), ("stable", "Stable"), ("prusa-beta","Prusa Beta")]
+        for i, opt in enumerate(self.update_channels):
+            self.update_channel_dropdown.append(opt[0], opt[1])
+            if opt[0] == self.settings["release_channel"]:
+                self.update_channel_dropdown.set_active(i)
+        self.update_channel_dropdown.connect("changed", self.switch_release_channel)
+        self.update_channel_dropdown.set_entry_text_column(0)
+        self.grid.attach(update_channel_label, 0, index, 2, 1)
+        self.grid.attach(self.update_channel_dropdown, 2, index, 3, 1)
+
         for entry in entries:
             entry.connect("button-press-event", self._screen.show_keyboard)
             entry.set_hexpand(True)
@@ -116,6 +130,12 @@ class NetworkManagerConnectionPanel(ScreenPanel):
 
     def change_mfd(self, widget):
         self.changed_fields["date_of_manufacture"] = widget.get_text()
+
+    def switch_release_channel(self, widget):
+        tree_iter = widget.get_active_iter()
+        model = widget.get_model()
+        value = model[tree_iter][1]
+        self.changed_fields["release_channel"] = value
 
     def save_changes(self, widget):
         #print(json.dumps(self.changed_fields, indent=2))

@@ -17,7 +17,16 @@ class NetworkManagerPanel(ScreenPanel):
         self.do_schedule_refresh = True
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         box.set_vexpand(True)
+        self.labels['top-bar'] = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        self.labels['top-bar'].set_vexpand(False)
+        self.labels['top-bar'].set_hexpand(True)
         self.labels['networklist'] = Gtk.Grid()
+        change_hostname_button = self._gtk.Button("settings", "Printer Name", "color1", 0.5)
+        change_hostname_button.set_hexpand(False)
+        change_hostname_button.set_halign(Gtk.Align.END)
+        change_hostname_button.connect("clicked", self.show_change_hostname)
+        self.labels['top-bar'].add(change_hostname_button)
+        box.pack_start(self.labels['top-bar'], False, False, 0)
         box.pack_start(self.labels['networklist'], False, False, 0)
         self.content.add(box)
         self.load_interfaces()
@@ -104,6 +113,9 @@ class NetworkManagerPanel(ScreenPanel):
     def show_interface_settings(self, widget, interface):
         name = interface['GENERAL']['DEVICE']
         self._screen.show_panel(f"network_manager_interface_{name}", "network_manager_interface", name, 1, False, interface=interface)
+
+    def show_change_hostname(self, widget):
+        self._screen.show_panel(f"hostname", "hostname", "Hostname", 1, False)
 
     def activate(self):
         self.do_schedule_refresh = True

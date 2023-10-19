@@ -45,7 +45,7 @@ class PostUpdatePanel(ScreenPanel):
 
         emergency_image_box = Gtk.Box()
         emergency_image_box.set_vexpand(True)
-        image = self._gtk.Image("warning-big", self._gtk.content_width * .9, self._gtk.content_height * .9)
+        image = self._gtk.Image("warning", self._gtk.content_width * .9, self._gtk.content_height * .9)
         emergency_image_box.add(image)
         self.emergency_box.add(emergency_image_box)
 

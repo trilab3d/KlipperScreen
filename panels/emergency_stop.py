@@ -25,7 +25,7 @@ class EmergencyStopPanel(ScreenPanel):
 
         image_box = Gtk.Box()
         image_box.set_vexpand(True)
-        image = self._gtk.Image("warning-big", self._gtk.content_width * .9, self._gtk.content_height * .9)
+        image = self._gtk.Image("warning", self._gtk.content_width * .9, self._gtk.content_height * .9)
         image_box.add(image)
         box.add(image_box)
 

@@ -235,7 +235,6 @@ class SettingsPanel(ScreenPanel):
         if obj["update_deadtime"] > 0:
             obj["update_deadtime"] -= 1
             return
-        logging.info(f"Called _filament_sensor_callback with obj {id(obj)} - {obj}")
         obj["update_deadtime"] = 5
         self._screen._ws.klippy.gcode_script(f"SET_DOOR_SENSOR_DISABLED DISABLED={0 if switch.get_active() else 1}")
         self._screen.show_all()

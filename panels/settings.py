@@ -3,7 +3,7 @@ import os
 import gi
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, Pango
+from gi.repository import Gtk, GLib, Pango
 
 from ks_includes.screen_panel import ScreenPanel
 
@@ -15,6 +15,7 @@ def create_panel(*args):
 class SettingsPanel(ScreenPanel):
     def __init__(self, screen, title):
         super().__init__(screen, title)
+        self.do_schedule_refresh = True
         self.printers = self.settings = self.langs = self.time_zones = {}
         self.menu = ['settings_menu']
         options = self._config.get_configurable_options().copy()
@@ -28,6 +29,22 @@ class SettingsPanel(ScreenPanel):
             "type": "menu",
             "menu": "time_zone"
         }})
+
+        self.nonlocal_options = {
+            "enable_door_sensor": {"name": _("Enable door sensor"), "type": "binary",
+                                    "value_getter": self._door_sensor_getter, "callback": self._door_sensor_callback},
+            "enable_filament_sensor": {"name": _("Enable filament sensor"), "type": "binary",
+                                   "value_getter": self._filament_sensor_getter, "callback": self._filament_sensor_callback},
+        }
+
+        for nlo in self.nonlocal_options:
+            self.nonlocal_options[nlo]["section"] = "_nonlocal"
+            self.nonlocal_options[nlo]["label"] = None
+            self.nonlocal_options[nlo]["control"] = None
+            self.nonlocal_options[nlo]["update_deadtime"] = 0
+            obj = {}
+            obj[nlo] = self.nonlocal_options[nlo]
+            options.append(obj)
 
         self.labels['settings_menu'] = self._gtk.ScrolledWindow()
         self.labels['settings'] = Gtk.Grid()
@@ -52,33 +69,6 @@ class SettingsPanel(ScreenPanel):
         self.labels['time_zone_menu'] = self._gtk.ScrolledWindow()
         self.labels['time_zone'] = Gtk.Grid()
         self.labels['time_zone_menu'].add(self.labels['time_zone'])
-        """
-        for tz in self._config.timezone_list:
-            if tz == 'nodes':
-                for tzn in self._config.timezone_list[tz]:
-                    self.time_zones[tzn] = {
-                        "name": tzn,
-                        "type": "time_zone",
-                    }
-                    self.add_option("time_zone", self.time_zones, tzn, self.time_zones[tzn])
-            else:
-                self.labels[f"time_zone-{tz}"] = Gtk.Grid()
-                self.time_zones[tz] = {
-                    "name": tz,
-                    "type": "menu",
-                    "menu": f"time_zone-{tz}"
-                }
-                self.add_option("time_zone", self.time_zones, tz, self.time_zones[tz])
-                subzones = {}
-                for tzn in self._config.timezone_list[tz]:
-                    if tzn == 'nodes':
-                        for tzni in self._config.timezone_list[tzn]:
-                            subzones[tzni] = {
-                                "name": tzni,
-                                "type": "time_zone",
-                            }
-                            self.add_option(f"time_zone-{tz}", subzones, tzni, subzones[tzni])
-        """
         for tz in self._config.timezone_list:
             self.time_zones[tz] = {
                 "name": tz,
@@ -102,10 +92,18 @@ class SettingsPanel(ScreenPanel):
             self.add_option("printers", self.printers, pname, self.printers[pname])
 
         self.content.add(self.labels['settings_menu'])
+        self.update_nonlocals()
+        GLib.timeout_add_seconds(1, self.update_nonlocals)
 
     def activate(self):
+        self.do_schedule_refresh = True
+        self.update_nonlocals()
+        GLib.timeout_add_seconds(1, self.update_nonlocals)
         while len(self.menu) > 1:
             self.unload_menu()
+
+    def deactivate(self):
+        self.do_schedule_refresh = False
 
     def back(self):
         if len(self.menu) > 1:
@@ -137,9 +135,14 @@ class SettingsPanel(ScreenPanel):
         dev.add(labels)
         if option['type'] == "binary":
             switch = Gtk.Switch()
-            switch.set_active(self._config.get_config().getboolean(option['section'], opt_name))
-            switch.connect("notify::active", self.switch_config_option, option['section'], opt_name,
-                           option['callback'] if "callback" in option else None)
+            if option['section'] == '_nonlocal':
+                switch.connect("notify::active", option['callback'], option)
+                option['label'] = name
+                option['control'] = switch
+            else:
+                switch.set_active(self._config.get_config().getboolean(option['section'], opt_name))
+                switch.connect("notify::active", self.switch_config_option, option['section'], opt_name,
+                               option['callback'] if "callback" in option else None)
             dev.add(switch)
         elif option['type'] == "dropdown":
             dropdown = Gtk.ComboBoxText()
@@ -203,3 +206,60 @@ class SettingsPanel(ScreenPanel):
         os.system(f"cp -P /etc/localtime /opt/localtime")
         #self._screen.restart_ks()
         os.system("systemctl restart klipper-screen")
+
+    def update_nonlocals(self):
+        for nlo in self.nonlocal_options:
+            opt = self.nonlocal_options[nlo]
+            opt["value_getter"](opt)
+
+        self._screen.show_all()
+        return self.do_schedule_refresh
+
+    def _door_sensor_getter(self, obj):
+        door_sensor = self._screen.printer.data['door_sensor']
+        #obj["label"].set_text("")
+        if not obj["update_deadtime"]:
+            if obj["control"].get_active() != door_sensor["enabled"]:
+                obj["update_deadtime"] = 1
+                obj["control"].set_active(door_sensor["enabled"])
+        else:
+            obj["update_deadtime"] -= 1
+        if door_sensor["enabled"]:
+            badge = f" (<span foreground='#00FF00'>{_('Closed')}</span>)" if door_sensor["door_closed"] else \
+                f" (<span foreground='#FF0000'>{_('Opened')}</span>)"
+        else:
+            badge = f" (<span foreground='#666666'>{_('Disabled')}</span>)"
+        obj["label"].set_markup(f"<big><b>{obj['name']}{badge}</b></big>")
+
+    def _door_sensor_callback(self, switch, gparam, obj):
+        if obj["update_deadtime"] > 0:
+            obj["update_deadtime"] -= 1
+            return
+        logging.info(f"Called _filament_sensor_callback with obj {id(obj)} - {obj}")
+        obj["update_deadtime"] = 5
+        self._screen._ws.klippy.gcode_script(f"SET_DOOR_SENSOR_DISABLED DISABLED={0 if switch.get_active() else 1}")
+        self._screen.show_all()
+
+    def _filament_sensor_getter(self, obj):
+        filament_sensor = self._screen.printer.data['filament_switch_sensor fil_sensor']
+        #obj["label"].set_text("")
+        if not obj["update_deadtime"]:
+            if obj["control"].get_active() != filament_sensor["enabled"]:
+                obj["update_deadtime"] = 1
+                obj["control"].set_active(filament_sensor["enabled"])
+        else:
+            obj["update_deadtime"] -= 1
+        if filament_sensor["enabled"]:
+            badge = f" (<span foreground='#00FF00'>{_('Filament')}</span>)" if filament_sensor["filament_detected"] else \
+                f" (<span foreground='#FF0000'>{_('NO Filament')}</span>)"
+        else:
+            badge = f" (<span foreground='#666666'>{_('Disabled')}</span>)"
+        obj["label"].set_markup(f"<big><b>{obj['name']}{badge}</b></big>")
+
+    def _filament_sensor_callback(self, switch, gparam, obj):
+        if obj["update_deadtime"] > 0:
+            obj["update_deadtime"] -= 1
+            return
+        self._screen._ws.klippy.gcode_script(f"SET_FILAMENT_SENSOR SENSOR=fil_sensor ENABLE={1 if switch.get_active() else 0}")
+        obj["update_deadtime"] = 5
+        self._screen.show_all()

@@ -81,6 +81,7 @@ def get_wireless_interfaces():
 
 
 def get_software_version():
+    """
     prog = ('git', '-C', os.path.dirname(__file__), 'describe', '--always',
             '--tags', '--long', '--dirty')
     try:
@@ -97,6 +98,7 @@ def get_software_version():
             logging.debug(f"Error getting git version: {err}")
     except OSError:
         logging.exception("Error runing git describe")
+    """
     return "?"
 
 

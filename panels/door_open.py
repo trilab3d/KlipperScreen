@@ -35,7 +35,7 @@ class DoorOpenPanel(ScreenPanel):
             'fine_tune': self._gtk.Button("fine-tune", _("Fine Tuning"), "color4"),
             'resume': self._gtk.Button("resume", _("Resume"), "color1"),
         }
-        #self.buttons['cancel'].connect("clicked", self.cancel)
+        self.buttons['cancel'].connect("clicked", self.cancel)
         self.buttons['control'].connect("clicked", self.screen._go_to_submenu, "")
         self.buttons['fine_tune'].connect("clicked", self.menu_item_clicked, "fine_tune", {
             "panel": "fine_tune", "name": _("Fine Tuning")})
@@ -56,8 +56,12 @@ class DoorOpenPanel(ScreenPanel):
         self.content.add(box)
 
     def activate(self):
+        self.do_schedule_refresh = True
         self.fetch_door_sensor()
         GLib.timeout_add_seconds(1, self.fetch_door_sensor)
+
+    def deactivate(self):
+        self.do_schedule_refresh = False
 
     def fetch_door_sensor(self):
         closed = self.screen.printer.data['door_sensor']['door_closed']
@@ -72,3 +76,45 @@ class DoorOpenPanel(ScreenPanel):
         self.screen._ws.klippy.print_resume()
         self.screen.show_panel('job_status', "job_status", _("Printing"), 2)
 
+    def cancel(self, widget):
+        buttons = [
+            {"name": _("Cancel Print"), "response": Gtk.ResponseType.OK},
+            {"name": _("Go Back"), "response": Gtk.ResponseType.CANCEL},
+        ]
+        if len(self._printer.get_stat("exclude_object", "objects")) > 1:
+            buttons.insert(
+                0, {"name": _("Exclude Object"), "response": Gtk.ResponseType.APPLY}
+            )
+        label = Gtk.Label()
+        label.set_markup(_("Are you sure you wish to cancel this print?"))
+        label.set_hexpand(True)
+        label.set_halign(Gtk.Align.CENTER)
+        label.set_vexpand(True)
+        label.set_valign(Gtk.Align.CENTER)
+        label.set_line_wrap(True)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+
+        dialog = self._gtk.Dialog(self._screen, buttons, label, self.cancel_confirm)
+        dialog.set_title(_("Cancel"))
+
+    def cancel_confirm(self, dialog, response_id):
+        self._gtk.remove_dialog(dialog)
+        if response_id == Gtk.ResponseType.APPLY:
+            self.menu_item_clicked(
+                None, "exclude", {"panel": "exclude", "name": _("Exclude Object")}
+            )
+            return
+        if response_id == Gtk.ResponseType.CANCEL:
+            self.enable_button("resume", "cancel")
+            return
+        logging.debug("Canceling print")
+        self.disable_button("resume", "cancel")
+        self._screen._ws.klippy.print_cancel()
+
+    def enable_button(self, *args):
+        for arg in args:
+            self.buttons[arg].set_sensitive(True)
+
+    def disable_button(self, *args):
+        for arg in args:
+            self.buttons[arg].set_sensitive(False)

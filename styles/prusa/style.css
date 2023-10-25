@@ -14,6 +14,10 @@ notebook > header.top {
     border-bottom: 3px solid #3b3b3b
 }
 
+progressbar trough progress{
+    background-color: #fa6831;
+}
+
 notebook tab {
     background-color: #3b3b3b;
 }

@@ -13,6 +13,7 @@ class KlippyGcodes:
 
     SET_EXT_TEMP = "M104"
     SET_BED_TEMP = "M140"
+    SET_CHAMBER_TEMP = "M141"
 
     SET_EXT_FACTOR = "M221"
     SET_FAN_SPEED = "M106"
@@ -27,6 +28,10 @@ class KlippyGcodes:
     @staticmethod
     def set_bed_temp(temp):
         return f"{KlippyGcodes.SET_BED_TEMP} S{temp}"
+
+    @staticmethod
+    def set_chamber_temp(temp):
+        return f"{KlippyGcodes.SET_CHAMBER_TEMP} S{temp}"
 
     @staticmethod
     def set_ext_temp(temp, tool=0):

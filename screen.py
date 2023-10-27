@@ -360,6 +360,11 @@ class KlipperScreen(Gtk.Window):
         logging.info(f"Incomming command {command}")
         if command == "DOOR_OPEN":
             self.show_panel("door_open", "door_open", _("Door Opened"), 2, False)
+        elif command == "FS_CHANGE":
+            self.files.refresh_files()
+        elif command == "UPDATE_AVAILABLE":
+            if 'system' not in self._screen.panels:
+                self._screen.show_panel("system", "system", "System", 1, False)
     def show_popup_message(self, message, level=3):
         self.close_screensaver()
         if self.popup_message is not None:

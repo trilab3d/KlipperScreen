@@ -589,7 +589,7 @@ class JobStatusPanel(ScreenPanel):
             ),
             "menu": self.create_button("complete", _("Main Menu"), "color4", self.close_panel),
             "pause": self.create_button("pause", _("Pause"), "color1", self.pause),
-            "restart": self.create_button("refresh", _("Restart"), "color3", self.restart),
+            "restart": self.create_button("refresh", _("Reprint"), "color3", self.restart),
             "resume": self.create_button("resume", _("Resume"), "color1", self.resume),
             "save_offset_probe": self.create_button(
                 "home-z", _("Save Z") + "\n" + "Probe", "color1", self.save_offset, "probe"

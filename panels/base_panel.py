@@ -204,7 +204,7 @@ class BasePanel(ScreenPanel):
             self.time_update = GLib.timeout_add_seconds(1, self.update_time)
 
         if self.updater_update is None:
-            self.updater_update = GLib.timeout_add_seconds(3, self.update_updater)
+            self.updater_update = GLib.timeout_add_seconds(30, self.update_updater)
 
     def add_content(self, panel):
         self.current_panel = panel

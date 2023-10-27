@@ -24,6 +24,7 @@ class LoadFilamentPanel(ScreenPanel):
         super().__init__(screen, title)
         self.screen = screen
         self.preheat_options = self._screen._config.get_preheat_options()
+        self.max_head_temp = float(self.screen.printer.data['configfile']["config"]["extruder"]["max_temp"]) - 10
         logging.info(self.preheat_options)
         self.do_schedule_refresh = True
         self.state = STATE.STARTED
@@ -65,7 +66,8 @@ class LoadFilamentPanel(ScreenPanel):
             self.labels["preheat_grid"] = self._gtk.HomogeneousGrid()
             i = 0
             for option in self.preheat_options:
-                if option != "cooldown":
+                if (option != "cooldown" and "extruder" in self.preheat_options[option]
+                        and self.preheat_options[option]["extruder"] <= self.max_head_temp):
                     self.labels[option] = self._gtk.Button(label=option, style=f"color{(i % 4) + 1}")
                     self.labels[option].connect("clicked", self.set_temperature, option)
                     self.labels[option].set_vexpand(False)
@@ -157,18 +159,6 @@ class LoadFilamentPanel(ScreenPanel):
                 if heater.startswith('extruder'):
                     if self.validate(heater, target, max_temp):
                         self._screen._ws.klippy.set_tool_temp(self._printer.get_tool_number(heater), target)
-                elif heater.startswith('heater_bed'):
-                    if target is None:
-                        with contextlib.suppress(KeyError):
-                            target = self.preheat_options[setting]["bed"]
-                    if self.validate(heater, target, max_temp):
-                        self._screen._ws.klippy.set_bed_temp(target)
-                elif heater.startswith('heater_chamber'):
-                    if target is None:
-                        with contextlib.suppress(KeyError):
-                            target = self.preheat_options[setting]["chamber"]
-                    if self.validate(heater, target, max_temp):
-                        self._screen._ws.klippy.set_chamber_temp(target)
                 elif heater.startswith('heater_generic '):
                     if target is None:
                         with contextlib.suppress(KeyError):

@@ -26,6 +26,7 @@ class LoadFilamentPanel(ScreenPanel):
         super().__init__(screen, title)
         self.screen = screen
         self.preheat_options = self._screen._config.get_preheat_options()
+        self.max_head_temp = float(self.screen.printer.data['configfile']["config"]["extruder"]["max_temp"]) - 10
         logging.info(self.preheat_options)
         self.do_schedule_refresh = True
         self.state = STATE.STARTED
@@ -67,7 +68,8 @@ class LoadFilamentPanel(ScreenPanel):
             self.labels["preheat_grid"] = self._gtk.HomogeneousGrid()
             i = 0
             for option in self.preheat_options:
-                if option != "cooldown":
+                if (option != "cooldown" and "extruder" in self.preheat_options[option]
+                        and self.preheat_options[option]["extruder"] <= self.max_head_temp):
                     self.labels[option] = self._gtk.Button(label=option, style=f"color{(i % 4) + 1}")
                     self.labels[option].connect("clicked", self.set_temperature, option)
                     self.labels[option].set_vexpand(False)

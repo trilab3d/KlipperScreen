@@ -363,7 +363,7 @@ class KlipperScreen(Gtk.Window):
         elif command == "FS_CHANGE":
             self.files.refresh_files()
         elif command == "UPDATE_AVAILABLE":
-            if 'system' not in self.panels:
+            if 'system' not in self._cur_panels:
                 self.show_panel("system", "system", "System", 1, False)
     def show_popup_message(self, message, level=3):
         self.close_screensaver()

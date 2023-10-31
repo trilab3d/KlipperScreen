@@ -84,12 +84,12 @@ class NetworkManagerPanel(ScreenPanel):
                 ssid.set_halign(Gtk.Align.START)
                 labels.add(ssid)
 
-            for addr in interface['IP4']['ADDRESS'] if "ADDRESS" in interface['IP4'] else []:
+            for addr in interface['IP4']['ADDRESS'] if 'IP4' in interface and "ADDRESS" in interface['IP4'] else []:
                 ip = Gtk.Label()
                 ip.set_markup(f"<big><b>IP:</b> {addr}</big>")
                 ip.set_halign(Gtk.Align.START)
                 labels.add(ip)
-            for addr in interface['IP6']['ADDRESS'] if "ADDRESS" in interface['IP6'] else []:
+            for addr in interface['IP6']['ADDRESS'] if 'IP6' in interface and "ADDRESS" in interface['IP6'] else []:
                 ip = Gtk.Label()
                 ip.set_markup(f"<big><b>IP:</b> {addr}</big>")
                 ip.set_halign(Gtk.Align.START)

@@ -8,6 +8,8 @@ from gi.repository import Gtk, Gdk, GLib, Pango
 from ks_includes.screen_panel import ScreenPanel
 
 
+HIDDEN_TYPES = ["loopback", "wifi-p2p"]
+
 def create_panel(*args):
     return NetworkManagerPanel(*args)
 
@@ -44,7 +46,7 @@ class NetworkManagerPanel(ScreenPanel):
 
         for i, interface in enumerate(interfaces):
 
-            if interface['GENERAL']['DEVICE'] == "lo":
+            if interface['GENERAL']['TYPE'] in HIDDEN_TYPES:
                 continue
 
             network = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)

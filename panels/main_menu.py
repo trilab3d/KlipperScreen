@@ -20,7 +20,7 @@ class MainPanel(MenuPanel):
         self.graph_retry_timeout = None
         # self.left_panel = None
         logo_image = self._gtk.Image(
-                "prusa_azteq", self._gtk.content_width*0.9,
+                "logo_prusa_pro_ht90", self._gtk.content_width*0.9,
                 self._gtk.content_height * 0.6)
         self.logo = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.logo.pack_end(logo_image, False, False, 0)

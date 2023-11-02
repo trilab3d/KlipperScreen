@@ -20,8 +20,9 @@ class MainPanel(MenuPanel):
         self.graph_retry_timeout = None
         # self.left_panel = None
         logo_image = self._gtk.Image(
-                "logo_prusa_pro_ht90", self._gtk.content_width*0.9,
-                self._gtk.content_height * 0.6)
+                "logo_prusa_pro_ht90", self._gtk.content_width * 0.88,
+                self._gtk.content_height * 0.5)
+        logo_image.set_margin_bottom(20)
         self.logo = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.logo.pack_end(logo_image, False, False, 0)
         self.logo.set_baseline_position(Gtk.BaselinePosition.BOTTOM)

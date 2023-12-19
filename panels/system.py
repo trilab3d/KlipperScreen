@@ -186,7 +186,7 @@ class SystemPanel(ScreenPanel):
         self._screen.tpcclient.send_request(f"download_update","POST")
 
     def refresh_omaha(self, widget):
-        self._screen.tpcclient.send_request(f"download_update", "POST")
+        self._screen.tpcclient.send_request(f"refresh_updater", "POST")
 
     def install_usb_update(self, widget):
         self._screen.tpcclient.send_request(f"install_usb_update","POST")

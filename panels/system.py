@@ -135,7 +135,7 @@ class SystemPanel(ScreenPanel):
                 self.update_header.set_markup("<span size='xx-large'>"+_("Downloading")+"</span>")
                 self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"
                                             f"{_('Update version')}: {update_resp['update_version']}\n"
-                                            f"{_('Progress')}: {update_resp['progress']*100}%\n"
+                                            f"{_('Progress')}: {int(float(update_resp['progress']))}%\n"
                                             f"{_('Release notes')}:\n{update_resp['release_notes']}")
             elif update_resp["update_status"] == "UNPACKING":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Unpacking")+"</span>")

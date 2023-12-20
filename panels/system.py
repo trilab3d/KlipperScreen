@@ -62,13 +62,6 @@ class SystemPanel(ScreenPanel):
         self.discard_usb_button.set_vexpand(False)
         self.discard_usb_button.set_hexpand(True)
 
-        self.reboot = self._gtk.Button('refresh', _('Restart'), 'color3')
-        self.reboot.connect("clicked", self.reboot_poweroff, "reboot")
-        self.reboot.set_vexpand(False)
-        #shutdown = self._gtk.Button('shutdown', _('Shutdown'), 'color4')
-        #shutdown.connect("clicked", self.reboot_poweroff, "poweroff")
-        #shutdown.set_vexpand(False)
-
         scroll = self._gtk.ScrolledWindow()
         scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
 
@@ -103,8 +96,6 @@ class SystemPanel(ScreenPanel):
 
         grid.attach(event_box, 0, 0, 1, 1)
         grid.attach(self.button_box, 0, 1, 1, 1)
-        grid.attach(self.reboot, 0, 2, 1, 1)
-        #grid.attach(shutdown, 0, 4, 1, 1)
         self.content.add(grid)
 
     def activate(self):
@@ -119,7 +110,6 @@ class SystemPanel(ScreenPanel):
     def get_updates(self):
         self.fetch_settings()
         is_printing = self._screen.printer.data['print_stats']['state'] == 'printing'
-        self.reboot.set_sensitive(not is_printing)
         try:
             update_resp = self._screen.tpcclient.send_request(f"check_update")
             #logging.info(f"update_resp: {update_resp}")
@@ -255,48 +245,6 @@ class SystemPanel(ScreenPanel):
                                          {'application': {program}, 'message': msg, 'complete': False})
         logging.info(f"Sending machine.update.recover name: {program} hard: {hard}")
         self._screen._ws.send_method("machine.update.recover", {"name": program, "hard": hard})
-
-    def reboot_poweroff(self, widget, method):
-        if self.service_counter == 7:
-            self._config.set("main", "view_group", "service")
-            self._screen.reload_panels()
-            return
-        else:
-            self.service_counter = 0
-        scroll = self._gtk.ScrolledWindow()
-        scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        vbox.set_halign(Gtk.Align.CENTER)
-        vbox.set_valign(Gtk.Align.CENTER)
-        if method == "reboot":
-            label = Gtk.Label(label=_("Are you sure you wish to reboot the system?"))
-        else:
-            label = Gtk.Label(label=_("Are you sure you wish to shutdown the system?"))
-        vbox.add(label)
-        scroll.add(vbox)
-        buttons = [
-            {"name": _("OK"), "response": Gtk.ResponseType.OK},
-            {"name": _("Cancel"), "response": Gtk.ResponseType.CANCEL}
-        ]
-        dialog = self._gtk.Dialog(self._screen, buttons, scroll, self.reboot_poweroff_confirm, method)
-        if method == "reboot":
-            dialog.set_title(_("Restart"))
-        else:
-            dialog.set_title(_("Shutdown"))
-
-    def reboot_poweroff_confirm(self, dialog, response_id, method):
-        self._gtk.remove_dialog(dialog)
-        if response_id == Gtk.ResponseType.OK:
-            if method == "reboot":
-                os.system("systemctl reboot")
-            else:
-                os.system("systemctl poweroff")
-        elif response_id == Gtk.ResponseType.APPLY:
-            if method == "reboot":
-                self._screen._ws.send_method("machine.reboot")
-            else:
-                self._screen._ws.send_method("machine.shutdown")
-
 
     def fetch_settings(self):
         settings = self._screen.tpcclient.send_request("/settings")

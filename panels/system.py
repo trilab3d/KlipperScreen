@@ -158,7 +158,8 @@ class SystemPanel(ScreenPanel):
             elif update_resp["update_status"] == "USB_UNPACKING":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Unpacking")+"</span>")
                 self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"
-                                            f"{_('Update version')}: {update_resp['update_version']}")
+                                            f"{_('Update version')}: {update_resp['update_version']}\n"
+                                            f"{_('Progress')}: {update_resp['progress']}%")
             elif update_resp["update_status"] == "USB_INSTALLED":
                 self.update_header.set_markup("<span size='xx-large'>"+_("USB update ready")+"</span>")
                 self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"

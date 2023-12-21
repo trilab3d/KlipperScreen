@@ -32,6 +32,12 @@ from ks_includes.widgets.keypad import Keypad
 from ks_includes.config import KlipperScreenConfig
 from panels.base_panel import BasePanel
 
+# Exception formater for Zabbix
+def my_except_hook(exctype, value, traceback):
+    logging.error(f"Uncaught Exception Handler: {exctype} - {value}")
+    sys.__excepthook__(exctype, value, traceback)
+sys.excepthook = my_except_hook
+
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 PRINTER_BASE_STATUS_OBJECTS = [

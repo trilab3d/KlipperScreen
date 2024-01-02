@@ -88,12 +88,16 @@ class NetworkManagerPanel(ScreenPanel):
 
             for addr in interface['IP4']['ADDRESS'] if 'IP4' in interface and "ADDRESS" in interface['IP4'] else []:
                 ip = Gtk.Label()
-                ip.set_markup(f"<big><b>IP:</b> {addr}</big>")
+                ip.set_markup(f"<big><b>IPv4:</b> {addr}</big>")
                 ip.set_halign(Gtk.Align.START)
                 labels.add(ip)
             for addr in interface['IP6']['ADDRESS'] if 'IP6' in interface and "ADDRESS" in interface['IP6'] else []:
                 ip = Gtk.Label()
-                ip.set_markup(f"<big><b>IP:</b> {addr}</big>")
+                ip.set_line_wrap(True)
+                ip.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+                ip.set_xalign(0.0)
+                ip.set_justify(Gtk.Justification.LEFT)
+                ip.set_markup(f"<big><b>IPv6:</b> {addr}</big>")
                 ip.set_halign(Gtk.Align.START)
                 labels.add(ip)
 

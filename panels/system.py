@@ -70,9 +70,12 @@ class SystemPanel(ScreenPanel):
 
         self.icon_ok = self._gtk.Image("complete", self._gtk.content_width * .9, self._gtk.content_height * .5)
         self.icon_update = self._gtk.Image("update-available", self._gtk.content_width * .9, self._gtk.content_height * .5)
+        self.icon_update_usb = self._gtk.Image("update-available-usb", self._gtk.content_width * .9, self._gtk.content_height * .5)
         self.icon_downloading = self._gtk.Image("update-downloading", self._gtk.content_width * .9, self._gtk.content_height * .5)
         self.icon_unpacking = self._gtk.Image("unpacking", self._gtk.content_width * .9, self._gtk.content_height * .5)
+        self.icon_unpacking_usb = self._gtk.Image("unpacking-usb", self._gtk.content_width * .9, self._gtk.content_height * .5)
         self.icon_installed = self._gtk.Image("info", self._gtk.content_width * .9, self._gtk.content_height * .5)
+        self.icon_installed_usb = self._gtk.Image("info", self._gtk.content_width * .9, self._gtk.content_height * .5)
         self.icon_warning = self._gtk.Image("warning", self._gtk.content_width * .9, self._gtk.content_height * .5)
 
         self.icon_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
@@ -201,14 +204,14 @@ class SystemPanel(ScreenPanel):
                 self.update_label.set_label(f"{_('Progress')}: {int(float(update_resp['progress']))}%\n"
                                             f"{_('Current version')}: {update_resp['current_version']}\n"
                                             f"{_('Update version')}: {update_resp['update_version']}\n")
-                self.icon_box.add(self.icon_unpacking)
+                self.icon_box.add(self.icon_unpacking_usb)
                 self.progress.set_fraction(float(update_resp['progress']) / 100)
                 self.progress_box.add(self.progress)
             elif update_resp["update_status"] == "USB_INSTALLED":
                 self.update_header.set_markup("<span size='xx-large'>"+_("USB update ready")+"</span>")
                 self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"
                                             f"{_('Update version')}: {update_resp['update_version']}")
-                self.icon_box.add(self.icon_installed)
+                self.icon_box.add(self.icon_installed_usb)
                 self.button_box.add(self.update_button)
                 self.button_box.add(self.discard_usb_button)
                 is_printing = self._screen.printer.data['print_stats']['state'] == 'printing'

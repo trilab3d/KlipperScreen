@@ -20,7 +20,6 @@ class BasePanel(ScreenPanel):
         self.time_min = -1
         self.time_format = self._config.get_main_config().getboolean("24htime", True)
         self.time_update = None
-        self.updater_update = None
         self.last_update_status = None
         self.last_update_status_time = datetime.now()
         self.titlebar_items = []
@@ -226,9 +225,6 @@ class BasePanel(ScreenPanel):
         if self.time_update is None:
             self.time_update = GLib.timeout_add_seconds(1, self.update_time)
 
-        if self.updater_update is None:
-            self.updater_update = GLib.timeout_add_seconds(30, self.update_updater)
-
     def add_content(self, panel):
         self.current_panel = panel
         self.set_title(panel.title)
@@ -333,9 +329,6 @@ class BasePanel(ScreenPanel):
             self.buttons_showing['printer_select'] = False
 
     def set_title(self, title):
-        if not self._screen.post_update_done:
-            self.titlelbl.set_label('')
-            return
         if not title:
             self.titlelbl.set_label(f"{self._screen.connecting_to_printer}")
             return
@@ -350,9 +343,6 @@ class BasePanel(ScreenPanel):
         self.titlelbl.set_label(f"{self._screen.connecting_to_printer} | {title}")
 
     def update_time(self):
-        if not self._screen.post_update_done:
-            self.control['time'].set_text('')
-            return True
         now = datetime.now()
         confopt = self._config.get_main_config().getboolean("24htime", True)
         if now.minute != self.time_min or self.time_format != confopt:
@@ -362,30 +352,6 @@ class BasePanel(ScreenPanel):
                 self.control['time'].set_text(f'{now:%I:%M %p}')
             self.time_min = now.minute
             self.time_format = confopt
-        return True
-
-    def update_updater(self):
-        if not self._screen.post_update_done:
-            return False
-        try:
-            update_resp = self._screen.tpcclient.send_request(f"check_update")
-            update_status = update_resp["update_status"]
-            now = datetime.now()
-            INTERVAL = 3600
-            if update_status != self.last_update_status \
-                    or self.last_update_status_time.timestamp() + INTERVAL < now.timestamp():
-                self.last_update_status = update_status
-                self.last_update_status_time = now
-                if (
-                        update_status == "UPDATE_AVAILABLE"
-                        or ((self._printer.state != "printing")
-                            and (update_status == "INSTALLED"
-                                 or update_status == "USB_UPDATE_AVAILABLE"))
-                ):
-                    if 'system' not in self._screen.panels:
-                        self._screen.show_panel("system", "system", "System", 1, False)
-        except Exception as e:
-            logging.warning(f"Exception on update_updater: {e}")
         return True
 
     def show_estop(self, show=True):

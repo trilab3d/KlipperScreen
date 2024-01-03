@@ -35,7 +35,7 @@ class SystemPanel(ScreenPanel):
         grid = self._gtk.HomogeneousGrid()
         grid.set_row_homogeneous(False)
         self.do_schedule_refresh = True
-        self.service_counter = 0
+        self.service_sequence = ""
 
         self.refresh_button = self._gtk.Button('refresh', _('Refresh'), 'color1')
         self.refresh_button.connect("clicked", self.refresh_omaha)
@@ -110,25 +110,37 @@ class SystemPanel(ScreenPanel):
         self.get_updates()
         GLib.timeout_add_seconds(3, self.get_updates)
 
-        infogrid.attach(self.icon_box, 0, 0, 1, 1)
-        infogrid.attach(self.update_header, 0, 1, 1, 1)
-        infogrid.attach(self.progress_box, 0, 2, 1, 1)
-        infogrid.attach(self.update_label, 0, 3, 1, 1)
+        event_box_icon = Gtk.EventBox()
+        event_box_icon.add(self.icon_box)
+        event_box_icon.connect("button-press-event", self.service_sequence_add, "I")
+
+        event_box_header = Gtk.EventBox()
+        event_box_header.add(self.update_header)
+        event_box_header.connect("button-press-event", self.service_sequence_add, "L")
+
+        event_box_progress = Gtk.EventBox()
+        event_box_progress.add(self.progress_box)
+        event_box_progress.connect("button-press-event", self.service_sequence_add, "L")
+
+        event_box_label = Gtk.EventBox()
+        event_box_label.add(self.update_label)
+        event_box_label.connect("button-press-event", self.service_sequence_add, "L")
+
+        infogrid.attach(event_box_icon, 0, 0, 1, 1)
+        infogrid.attach(event_box_header, 0, 1, 1, 1)
+        infogrid.attach(event_box_progress, 0, 2, 1, 1)
+        infogrid.attach(event_box_label, 0, 3, 1, 1)
 
         scroll.add(infogrid)
 
-        event_box = Gtk.EventBox()
-        event_box.add(scroll)
-        event_box.connect("button-press-event", self.header_clicked)
-
-        grid.attach(event_box, 0, 0, 1, 1)
+        grid.attach(scroll, 0, 0, 1, 1)
         grid.attach(self.button_box, 0, 1, 1, 1)
         self.content.add(grid)
 
     def activate(self):
         self.do_schedule_refresh = True
         self.get_updates()
-        self.service_counter = 0
+        self.service_sequence = ""
         GLib.timeout_add_seconds(3, self.get_updates)
 
     def deactivate(self):
@@ -298,6 +310,9 @@ class SystemPanel(ScreenPanel):
     def fetch_settings(self):
         settings = self._screen.tpcclient.send_request("/settings")
 
-    def header_clicked(self, widget, argument):
-        self.service_counter += 1
-        logging.info(f"Service counter: {self.service_counter}")
+    def service_sequence_add(self, widget, argument, letter):
+        self.service_sequence += letter
+        logging.info(f"Service sequence: {self.service_sequence}")
+        if self.service_sequence == "LLILLII":
+            self._config.set("main", "view_group", "service")
+            self._screen.reload_panels()

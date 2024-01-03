@@ -948,6 +948,8 @@ class KlipperScreen(Gtk.Window):
                        + self.printer.get_filament_sensors()
                        + self.printer.get_output_pins()
                        + self.printer.get_door_sensors()
+                       + ["config_constant printhead"]
+                            if self.printer.config_section_exists("config_constant printhead") else []
                        )
 
         data = self.apiclient.send_request("printer/objects/query?" + "&".join(PRINTER_BASE_STATUS_OBJECTS +
@@ -957,6 +959,10 @@ class KlipperScreen(Gtk.Window):
         self.printer.process_update(data['result']['status'])
         self.init_tempstore()
         GLib.timeout_add_seconds(2, self.init_tempstore)  # If devices changed it takes a while to register
+
+        # change head image
+        self.base_panel.set_background(self.printer.data['config_constant printhead']['value']
+                                       if 'config_constant printhead' in self.printer.data else None )
 
         self.files.initialize()
         self.files.refresh_files()

@@ -124,18 +124,41 @@ class BasePanel(ScreenPanel):
             height=self._gtk.content_height, 
             preserve_aspect_ratio=True
         )
-        self.background_image = Gtk.Image.new_from_pixbuf(pixbuf)
+        background_image = Gtk.Image.new_from_pixbuf(pixbuf)
+        self.background_image_box = Gtk.Box()
+        self.background_image_box.add(background_image)
 
-        self.main_layout.put(self.background_image, 0, 0)
+        self.main_layout.put(self.background_image_box, 0, 0)
         self.main_layout.put(self.main_grid, 0, 0)
 
         self.update_time()
 
+    def set_background(self, printhead):
+
+        icon = "styles/prusa/images/extruder-unknown.png"
+        if printhead is None:
+            icon = "styles/prusa/images/extruder-none.png"
+        elif printhead == "revohf-stepper-flap":
+            icon = "styles/prusa/images/extruder-STD.png"
+        elif printhead == "revoht":
+            icon = "styles/prusa/images/extruder-HT.png"
+
+        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+            filename=icon,
+            width=self._gtk.content_width,
+            height=self._gtk.content_height,
+            preserve_aspect_ratio=True
+        )
+
+        for child in self.background_image_box.get_children():
+            self.background_image_box.remove(child)
+        self.background_image_box.add(Gtk.Image.new_from_pixbuf(pixbuf))
+
     def show_background(self, value=True):
         if value:
-            self.background_image.show()
+            self.background_image_box.show()
         else:
-            self.background_image.hide()
+            self.background_image_box.hide()
 
     def show_heaters(self, show=True):
         try:

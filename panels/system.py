@@ -68,15 +68,15 @@ class SystemPanel(ScreenPanel):
         infogrid = Gtk.Grid()
         infogrid.get_style_context().add_class("system-program-grid")
 
-        self.icon_ok = self._gtk.Image("complete", self._gtk.content_width * .9, self._gtk.content_height * .5)
-        self.icon_update = self._gtk.Image("update-available", self._gtk.content_width * .9, self._gtk.content_height * .5)
-        self.icon_update_usb = self._gtk.Image("update-available-usb", self._gtk.content_width * .9, self._gtk.content_height * .5)
-        self.icon_downloading = self._gtk.Image("update-downloading", self._gtk.content_width * .9, self._gtk.content_height * .5)
-        self.icon_unpacking = self._gtk.Image("unpacking", self._gtk.content_width * .9, self._gtk.content_height * .5)
-        self.icon_unpacking_usb = self._gtk.Image("unpacking-usb", self._gtk.content_width * .9, self._gtk.content_height * .5)
-        self.icon_installed = self._gtk.Image("info", self._gtk.content_width * .9, self._gtk.content_height * .5)
-        self.icon_installed_usb = self._gtk.Image("info", self._gtk.content_width * .9, self._gtk.content_height * .5)
-        self.icon_warning = self._gtk.Image("warning", self._gtk.content_width * .9, self._gtk.content_height * .5)
+        self.icon_ok = self._gtk.Image("complete", self._gtk.content_width * .9, self._gtk.content_height * .2)
+        self.icon_update = self._gtk.Image("update-available", self._gtk.content_width * .9, self._gtk.content_height * .2)
+        self.icon_update_usb = self._gtk.Image("update-available-usb", self._gtk.content_width * .9, self._gtk.content_height * .2)
+        self.icon_downloading = self._gtk.Image("update-downloading", self._gtk.content_width * .9, self._gtk.content_height * .2)
+        self.icon_unpacking = self._gtk.Image("unpacking", self._gtk.content_width * .9, self._gtk.content_height * .2)
+        self.icon_unpacking_usb = self._gtk.Image("unpacking-usb", self._gtk.content_width * .9, self._gtk.content_height * .2)
+        self.icon_installed = self._gtk.Image("info", self._gtk.content_width * .9, self._gtk.content_height * .2)
+        self.icon_installed_usb = self._gtk.Image("info", self._gtk.content_width * .9, self._gtk.content_height * .2)
+        self.icon_warning = self._gtk.Image("warning", self._gtk.content_width * .9, self._gtk.content_height * .2)
 
         self.icon_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.icon_box.set_hexpand(True)
@@ -85,11 +85,18 @@ class SystemPanel(ScreenPanel):
         self.icon_box.add(self.icon_ok)
 
         self.update_header = Gtk.Label()
-        self.update_label = Gtk.Label()
         self.update_header.set_hexpand(True)  # align to center
+        self.update_header.set_margin_top(40)
+        self.update_label = Gtk.Label()
         self.update_label.set_hexpand(False)
+        self.update_label.set_halign(Gtk.Align.START)
+        self.update_label.set_margin_top(5)
         self.update_label.set_line_wrap(True)
-        self.update_header.set_margin_top(60)
+        self.release_notes_label = Gtk.Label()
+        self.release_notes_label.set_line_wrap(True)
+        #self.release_notes_label.set_margin_top(5)
+        self.release_notes_label.set_halign(Gtk.Align.START)
+
 
         self.progress = Gtk.ProgressBar()
         self.progress.set_fraction(0)
@@ -111,25 +118,26 @@ class SystemPanel(ScreenPanel):
         GLib.timeout_add_seconds(3, self.get_updates)
 
         event_box_icon = Gtk.EventBox()
+        event_box_icon.set_margin_top(20)
         event_box_icon.add(self.icon_box)
         event_box_icon.connect("button-press-event", self.service_sequence_add, "I")
 
-        event_box_header = Gtk.EventBox()
-        event_box_header.add(self.update_header)
-        event_box_header.connect("button-press-event", self.service_sequence_add, "L")
+        event_box_labels = Gtk.EventBox()
+        grid_text = Gtk.Grid()
+        grid_labels = Gtk.Grid()
+        grid_labels.set_halign(Gtk.Align.CENTER)
+        event_box_labels.set_margin_top(20)
+        event_box_labels.add(grid_text)
+        #grid_text.attach(self.update_header, 0, 0, 1, 1)
+        grid_text.attach(grid_labels, 0, 1, 1, 1)
+        grid_labels.attach(self.progress_box, 0, 0, 1, 1)
+        grid_labels.attach(self.update_label, 0, 1, 1, 1)
+        grid_labels.attach(self.release_notes_label, 0, 2, 1, 1)
+        event_box_labels.connect("button-press-event", self.service_sequence_add, "L")
 
-        event_box_progress = Gtk.EventBox()
-        event_box_progress.add(self.progress_box)
-        event_box_progress.connect("button-press-event", self.service_sequence_add, "L")
-
-        event_box_label = Gtk.EventBox()
-        event_box_label.add(self.update_label)
-        event_box_label.connect("button-press-event", self.service_sequence_add, "L")
-
-        infogrid.attach(event_box_icon, 0, 0, 1, 1)
-        infogrid.attach(event_box_header, 0, 1, 1, 1)
-        infogrid.attach(event_box_progress, 0, 2, 1, 1)
-        infogrid.attach(event_box_label, 0, 3, 1, 1)
+        infogrid.attach(self.update_header, 0, 0, 1, 1)
+        infogrid.attach(event_box_icon, 0, 1, 1, 1)
+        infogrid.attach(event_box_labels, 0, 2, 1, 1)
 
         scroll.add(infogrid)
 
@@ -160,34 +168,32 @@ class SystemPanel(ScreenPanel):
                 self.icon_box.remove(child)
             if update_resp["update_status"] == "UPDATE_AVAILABLE":
                 self.update_header.set_markup("<span size='xx-large'>"+_("New update available")+"</span>")
-                self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"
-                                            f"{_('Update version')}: {update_resp['update_version']}\n"
-                                            f"{_('Release notes')}:\n{update_resp['release_notes']}")
+                self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}\n"
+                                            f"<b>{_('Update version')}</b>: {update_resp['update_version']}")
+                self.release_notes_label.set_markup(f"<b>{_('Release notes')}</b>:\n{update_resp['release_notes']}")
                 self.icon_box.add(self.icon_update)
                 self.button_box.add(self.download_button)
             elif update_resp["update_status"] == "DOWNLOADING":
-                self.update_header.set_markup("<span size='xx-large'>"+_("Downloading")+"</span>")
-                self.update_label.set_label(f"{_('Progress')}: {int(float(update_resp['progress']))}%\n"
-                                            f"{_('Current version')}: {update_resp['current_version']}\n"
-                                            f"{_('Update version')}: {update_resp['update_version']}\n"
-                                            f"{_('Release notes')}:\n{update_resp['release_notes']}")
+                self.update_header.set_markup("<span size='xx-large'>"+_("Downloading")+f" ({int(float(update_resp['progress']))}%)</span>")
+                self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}\n"
+                                            f"<b>{_('Update version')}</b>: {update_resp['update_version']}")
+                self.release_notes_label.set_markup(f"<b>{_('Release notes')}</b>:\n{update_resp['release_notes']}")
                 self.icon_box.add(self.icon_downloading)
                 self.progress.set_fraction(float(update_resp['progress'])/100)
                 self.progress_box.add(self.progress)
             elif update_resp["update_status"] == "UNPACKING":
-                self.update_header.set_markup("<span size='xx-large'>"+_("Unpacking")+"</span>")
-                self.update_label.set_label(f"{_('Progress')}: {int(float(update_resp['progress']))}%\n"
-                                            f"{_('Current version')}: {update_resp['current_version']}\n"
-                                            f"{_('Update version')}: {update_resp['update_version']}\n"
-                                            f"{_('Release notes')}:\n{update_resp['release_notes']}")
+                self.update_header.set_markup("<span size='xx-large'>"+_("Unpacking")+f" ({int(float(update_resp['progress']))}%)</span>")
+                self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}\n"
+                                            f"<b>{_('Update version')}</b>: {update_resp['update_version']}")
+                self.release_notes_label.set_markup(f"<b>{_('Release notes')}</b>:\n{update_resp['release_notes']}")
                 self.icon_box.add(self.icon_unpacking)
                 self.progress.set_fraction(float(update_resp['progress']) / 100)
                 self.progress_box.add(self.progress)
             elif update_resp["update_status"] == "INSTALLED":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Update ready")+"</span>")
-                self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"
-                                            f"{_('Update version')}: {update_resp['update_version']}\n"
-                                            f"{_('Release notes')}:\n{update_resp['release_notes']}")
+                self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}\n"
+                                            f"<b>{_('Update version')}</b>: {update_resp['update_version']}")
+                self.release_notes_label.set_markup(f"<b>{_('Release notes')}</b>:\n{update_resp['release_notes']}")
                 self.icon_box.add(self.icon_installed)
                 self.progress.set_fraction(1)
                 self.progress_box.add(self.progress)
@@ -195,34 +201,37 @@ class SystemPanel(ScreenPanel):
                 self.update_button.set_sensitive(not is_printing)
             elif update_resp["update_status"] == "UP_TO_DATE":
                 self.update_header.set_markup("<span size='xx-large'>"+_("System is up to date")+"</span>")
-                self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}")
+                self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}")
+                self.release_notes_label.set_label("")
                 self.icon_box.add(self.icon_ok)
                 self.button_box.add(self.refresh_button)
             elif update_resp["update_status"] == "DOWNLOAD_FAILED":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Download failed")+"</span>")
-                self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"
-                                            f"{_('Update version')}: {update_resp['update_version']}\n"
-                                            f"{_('Release notes')}:\n{update_resp['release_notes']}")
+                self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}\n"
+                                            f"<b>{_('Update version')}</b>: {update_resp['update_version']}")
+                self.release_notes_label.set_markup(f"<b>{_('Release notes')}</b>:\n{update_resp['release_notes']}")
                 self.icon_box.add(self.icon_warning)
                 self.button_box.add(self.download_button)
             elif update_resp["update_status"] == "USB_UPDATE_AVAILABLE":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Update found on USB")+"</span>")
-                self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"
-                                            f"{_('Update version')}: {update_resp['update_version']}")
+                self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}\n"
+                                            f"<b>{_('Update version')}</b>: {update_resp['update_version']}")
+                self.release_notes_label.set_label("")
                 self.icon_box.add(self.icon_update_usb)
                 self.button_box.add(self.install_usb_button)
             elif update_resp["update_status"] == "USB_UNPACKING":
-                self.update_header.set_markup("<span size='xx-large'>"+_("Unpacking")+"</span>")
-                self.update_label.set_label(f"{_('Progress')}: {int(float(update_resp['progress']))}%\n"
-                                            f"{_('Current version')}: {update_resp['current_version']}\n"
-                                            f"{_('Update version')}: {update_resp['update_version']}\n")
+                self.update_header.set_markup("<span size='xx-large'>"+_("Unpacking")+f" ({int(float(update_resp['progress']))}%)</span>")
+                self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}\n"
+                                            f"<b>{_('Update version')}</b>: {update_resp['update_version']}\n")
+                self.release_notes_label.set_label("")
                 self.icon_box.add(self.icon_unpacking_usb)
                 self.progress.set_fraction(float(update_resp['progress']) / 100)
                 self.progress_box.add(self.progress)
             elif update_resp["update_status"] == "USB_INSTALLED":
                 self.update_header.set_markup("<span size='xx-large'>"+_("USB update ready")+"</span>")
-                self.update_label.set_label(f"{_('Current version')}: {update_resp['current_version']}\n"
-                                            f"{_('Update version')}: {update_resp['update_version']}")
+                self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}\n"
+                                            f"<b>{_('Update version')}</b>: {update_resp['update_version']}")
+                self.release_notes_label.set_label("")
                 self.icon_box.add(self.icon_installed_usb)
                 self.button_box.add(self.update_button)
                 self.button_box.add(self.discard_usb_button)
@@ -231,7 +240,9 @@ class SystemPanel(ScreenPanel):
             else:
                 self.update_header.set_markup("")
                 self.update_label.set_label("")
-        except:
+                self.release_notes_label.set_label("")
+        except Exception as e:
+            logging.error(e)
             self.update_header.set_markup("")
             self.update_label.set_label("")
 

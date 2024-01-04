@@ -2,7 +2,7 @@
 
 # this needs to be run on very beginning for corrct screen orientation
 import os
-#os.system("/usr/bin/xrandr -display :0.0 -o left")
+os.system("/usr/bin/xrandr -display :0.0 -o left")
 
 import argparse
 import json
@@ -15,7 +15,7 @@ import sys
 import gi
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, Gdk, GLib, Pango, GdkPixbuf
+from gi.repository import Gtk, Gdk, GLib, Pango
 from importlib import import_module
 from jinja2 import Environment
 from signal import SIGTERM
@@ -354,8 +354,6 @@ class KlipperScreen(Gtk.Window):
         elif command == "UPDATE_AVAILABLE":
             if 'system' not in self._cur_panels:
                 self.show_panel("system", "system", "System", 1, False)
-            else:
-                logging.info(f"There is system panel shown, do not show it again. Current panel stack: {self._cur_panels}")
     def show_popup_message(self, message, level=3):
         self.close_screensaver()
         if self.popup_message is not None:
@@ -930,7 +928,6 @@ class KlipperScreen(Gtk.Window):
         extra_items = (self.printer.get_tools()
                        + self.printer.get_heaters()
                        + self.printer.get_fans()
-                       + self.printer.get_lights()
                        + self.printer.get_filament_sensors()
                        + self.printer.get_output_pins()
                        + self.printer.get_door_sensors()

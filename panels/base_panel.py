@@ -80,7 +80,7 @@ class BasePanel(ScreenPanel):
         self.titlelbl = Gtk.Label()
         self.titlelbl.set_hexpand(True)
         self.titlelbl.set_halign(Gtk.Align.CENTER)
-        self.titlelbl.set_ellipsize(Pango.EllipsizeMode.END)
+        self.titlelbl.set_ellipsize(Pango.EllipsizeMode.START)
         self.set_title(title)
 
         self.control['time'] = Gtk.Label("00:00 AM")
@@ -329,8 +329,13 @@ class BasePanel(ScreenPanel):
             self.buttons_showing['printer_select'] = False
 
     def set_title(self, title):
+
+        hostname = ""
+        if self._printer:
+            hostname = self._printer.hostname
+
         if not title:
-            self.titlelbl.set_label(f"{self._screen.connecting_to_printer}")
+            self.titlelbl.set_label(hostname)
             return
         try:
             env = Environment(extensions=["jinja2.ext.i18n"], autoescape=True)
@@ -340,7 +345,7 @@ class BasePanel(ScreenPanel):
         except Exception as e:
             logging.debug(f"Error parsing jinja for title: {title}\n{e}")
 
-        self.titlelbl.set_label(f"{self._screen.connecting_to_printer} | {title}")
+        self.titlelbl.set_label(f"{hostname} | {title}")
 
     def update_time(self):
         now = datetime.now()

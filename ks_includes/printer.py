@@ -34,6 +34,7 @@ class Printer:
         self.busy = False
         self.tempstore_size = 1200
         self.init_emergency_stop()
+        self.hostname = ""
 
     def reinit(self, printer_info, data):
         self.config = data['configfile']['config']
@@ -96,6 +97,8 @@ class Printer:
                 except KeyError:
                     logging.debug(f"Couldn't load mesh {x}: {self.config[x]}")
         self.process_update(data)
+
+        self.hostname = printer_info['hostname']
 
         logging.info(f"Klipper version: {printer_info['software_version']}")
         logging.info(f"# Extruders: {self.extrudercount}")

@@ -65,7 +65,10 @@ class FanPanel(ScreenPanel):
         flap = any(fan.startswith(x) or fan == x for x in FLAPS)
         name = Gtk.Label()
         fan_name = _("Part Fan") if fan == "fan" else fan.split()[1]
-        fan_name_pretty = ' '.join(x.capitalize() for x in fan_name.split('_'))
+        if fan_name == "intake_flap":
+            fan_name_pretty = "Chamber Intake Flap"
+        else:
+            fan_name_pretty = ' '.join(x.capitalize() for x in fan_name.split('_'))
         name.set_markup(f"\n<big><b>{fan_name_pretty}</b></big>\n")
         name.set_hexpand(True)
         name.set_vexpand(True)

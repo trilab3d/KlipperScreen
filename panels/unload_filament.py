@@ -28,6 +28,10 @@ class LoadFilamentPanel(ScreenPanel):
         logging.info(self.preheat_options)
         self.do_schedule_refresh = True
         self.state = STATE.STARTED
+        self.waiting_for_unload_start = False
+
+        self.prusament_img = self._gtk.Image("prusament", self._gtk.content_width * .9, self._gtk.content_height * .5)
+        self.load_guide_img = self._gtk.Image("load_guide", self._gtk.content_width * .9, self._gtk.content_height * .5)
 
         self.heaters = []
         self.heaters.extend(iter(self._printer.get_tools()))
@@ -38,6 +42,9 @@ class LoadFilamentPanel(ScreenPanel):
         logging.info(self.heaters)
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+
+        self.img_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.img_box.set_hexpand(True)
 
         self.status_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         box.add(self.status_box)
@@ -56,25 +63,46 @@ class LoadFilamentPanel(ScreenPanel):
 
     def _update_loop(self):
         if self.state == STATE.STARTED:
+            save_variables = self._screen.printer.data['save_variables']['variables'] \
+                if 'save_variables' in self._screen.printer.data else None
             for ch in self.status_box.get_children():
                 self.status_box.remove(ch)
+            for ch in self.img_box.get_children():
+                self.img_box.remove(ch)
+            self.img_box.add(self.prusament_img)
+            self.status_box.add(self.img_box)
             self.labels["select_material_label"] = self._gtk.Label("")
-            self.labels["select_material_label"].set_margin_top(60)
-            self.labels["select_material_label"].set_markup("<span size='large'>"+_("Which material is loaded in printer?")+"</span>")
-            self.status_box.add(self.labels['select_material_label'])
-
-            self.labels["preheat_grid"] = self._gtk.HomogeneousGrid()
-            i = 0
-            for option in self.preheat_options:
-                if (option != "cooldown" and "extruder" in self.preheat_options[option]
-                        and self.preheat_options[option]["extruder"] <= self.max_head_temp):
-                    self.labels[option] = self._gtk.Button(label=option, style=f"color{(i % 4) + 1}")
-                    self.labels[option].connect("clicked", self.set_temperature, option)
-                    self.labels[option].set_vexpand(False)
-                    self.labels['preheat_grid'].attach(self.labels[option], (i % 2), int(i / 2), 1, 1)
-                    i += 1
+            self.labels["select_material_label"].set_margin_top(20)
             scroll = self._gtk.ScrolledWindow()
-            scroll.add(self.labels["preheat_grid"])
+            if (save_variables and "loaded_filament" in save_variables and save_variables["loaded_filament"] in self.preheat_options):
+                self.labels["select_material_label"].set_markup(
+                    "<span size='large'>" + _(_("Is the loaded material ") + f"{save_variables['loaded_filament']}?") + "</span>")
+                grid = self._gtk.HomogeneousGrid()
+                yes = self._gtk.Button(label=_(_("Yes, unload ") + save_variables['loaded_filament']), style=f"color1")
+                yes.connect("clicked", self.set_temperature, save_variables["loaded_filament"])
+                yes.set_vexpand(False)
+                grid.attach(yes, 0,0, 1, 1)
+                yes = self._gtk.Button(label=_("No, select a different material"), style=f"color1")
+                yes.connect("clicked", self.set_filament_unknown)
+                yes.set_vexpand(False)
+                grid.attach(yes, 0, 1, 1, 1)
+                scroll.add(grid)
+            else:
+                self.labels["select_material_label"].set_markup(
+                    "<span size='large'>" + _("Which material is loaded in printer?") + "</span>")
+
+                self.labels["preheat_grid"] = self._gtk.HomogeneousGrid()
+                i = 0
+                for option in self.preheat_options:
+                    if (option != "cooldown" and "extruder" in self.preheat_options[option]
+                            and self.preheat_options[option]["extruder"] <= self.max_head_temp):
+                        self.labels[option] = self._gtk.Button(label=option, style=f"color{(i % 4) + 1}")
+                        self.labels[option].connect("clicked", self.set_temperature, option)
+                        self.labels[option].set_vexpand(False)
+                        self.labels['preheat_grid'].attach(self.labels[option], (i % 2), int(i / 2), 1, 1)
+                        i += 1
+                scroll.add(self.labels["preheat_grid"])
+            self.status_box.add(self.labels['select_material_label'])
             self.status_box.add(scroll)
             self.state = STATE.WAIT_FOR_PROFILE
         elif self.state == STATE.WAIT_FOR_PROFILE:
@@ -96,31 +124,47 @@ class LoadFilamentPanel(ScreenPanel):
                     for ch in self.status_box.get_children():
                         self.status_box.remove(ch)
 
+                    for ch in self.img_box.get_children():
+                        self.img_box.remove(ch)
+                    self.img_box.add(self.prusament_img)
+                    self.status_box.add(self.img_box)
+
                     self.labels["loading_label"] = self._gtk.Label("")
-                    self.labels["loading_label"].set_margin_top(60)
+                    self.labels["loading_label"].set_margin_top(20)
                     self.labels["loading_label"].set_markup(
                         "<span size='large'>" + _("Filament is unloading...") + "</span>")
                     self.status_box.add(self.labels['loading_label'])
                     self._screen.show_all()
 
+                    self.waiting_for_unload_start = True
                     self.state = STATE.UNLOADING
         elif self.state == STATE.UNLOADING:
             it = self.fetch_idle_timeout()
-            if it["state"] == "Ready":
+            if not it["state"] == "Ready":
+                self.waiting_for_unload_start = False
+            if it["state"] == "Ready" and not self.waiting_for_unload_start:
                 for ch in self.status_box.get_children():
                     self.status_box.remove(ch)
+                for ch in self.img_box.get_children():
+                    self.img_box.remove(ch)
+                self.img_box.add(self.load_guide_img)
+                self.status_box.add(self.img_box)
                 self.labels["confirm_label"] = self._gtk.Label("")
-                self.labels["confirm_label"].set_margin_top(60)
+                self.labels["confirm_label"].set_margin_top(20)
                 self.labels["confirm_label"].set_markup(
                     "<span size='large'>" + _("Filament unloaded successfully") + "</span>")
                 self.status_box.add(self.labels['confirm_label'])
+                self.labels["load_button"] = self._gtk.Button(label=_("Load new material"), style=f"color1")
+                self.labels["load_button"].set_vexpand(False)
+                self.labels["load_button"].connect("clicked", self.got_to_load)
+                self.status_box.add(self.labels['load_button'])
                 self.labels["cooldown_button"] = self._gtk.Button(label=_("Cooldown and Close"), style=f"color1")
                 self.labels["cooldown_button"].set_vexpand(False)
                 self.labels["cooldown_button"].connect("clicked", self.cooldown_pressed)
                 self.status_box.add(self.labels['cooldown_button'])
                 self.labels["back_button"] = self._gtk.Button(label=_("Close"), style=f"color1")
                 self.labels["back_button"].set_vexpand(False)
-                self.labels["back_button"].connect("clicked", self._screen._menu_go_back)
+                self.labels["back_button"].connect("clicked", self._screen._menu_go_back, True)
                 self.status_box.add(self.labels['back_button'])
                 self.state = STATE.DONE
         elif self.state == STATE.DONE:
@@ -134,6 +178,10 @@ class LoadFilamentPanel(ScreenPanel):
     def fetch_idle_timeout(self):
         idle_timeout = self.screen.printer.data['idle_timeout']
         return idle_timeout
+
+    def set_filament_unknown(self, widget):
+        self._screen._ws.klippy.gcode_script(f"SAVE_VARIABLE VARIABLE=loaded_filament VALUE='\"unknown\"'")
+        self.state = STATE.STARTED
 
     def set_temperature(self, widget, setting):
         if len(self.heaters) == 0:
@@ -175,6 +223,10 @@ class LoadFilamentPanel(ScreenPanel):
         self.state = STATE.HEATING
         for ch in self.status_box.get_children():
             self.status_box.remove(ch)
+        for ch in self.img_box.get_children():
+            self.img_box.remove(ch)
+        self.img_box.add(self.prusament_img)
+        self.status_box.add(self.img_box)
         self.labels["heating_label"] = self._gtk.Label("")
         self.labels["heating_label"].set_margin_top(60)
         self.labels["heating_label"].set_markup(
@@ -212,7 +264,10 @@ class LoadFilamentPanel(ScreenPanel):
                 self._screen._ws.klippy.set_heater_temp(name, target)
             elif heater.startswith('temperature_fan '):
                 self._screen._ws.klippy.set_temp_fan_temp(name, target)
-        self._screen._menu_go_back()
+        self._screen._menu_go_back(True)
+
+    def got_to_load(self, widget):
+        self._screen.show_panel(f"Load", "load_filament", "Load", 1, False)
 
     def validate(self, heater, target=None, max_temp=None):
         if target is not None and max_temp is not None:

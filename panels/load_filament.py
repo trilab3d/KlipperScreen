@@ -30,6 +30,14 @@ class LoadFilamentPanel(ScreenPanel):
         logging.info(self.preheat_options)
         self.do_schedule_refresh = True
         self.state = STATE.STARTED
+        self.currently_loading = ""
+        self.filament_sensor = self._screen.printer.data['filament_switch_sensor fil_sensor']
+        self.waiting_for_purge_start = False
+
+        self.prusament_img = self._gtk.Image("prusament", self._gtk.content_width * .9, self._gtk.content_height * .5)
+        self.load_guide_img = self._gtk.Image("load_guide", self._gtk.content_width * .9, self._gtk.content_height * .5)
+        self.load_guide_2_img = self._gtk.Image("load_guide_2", self._gtk.content_width * .9, self._gtk.content_height * .5)
+        self.purging = self._gtk.Image("purging", self._gtk.content_width * .9, self._gtk.content_height * .5)
 
         self.heaters = []
         self.heaters.extend(iter(self._printer.get_tools()))
@@ -40,6 +48,9 @@ class LoadFilamentPanel(ScreenPanel):
         logging.info(self.heaters)
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+
+        self.img_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.img_box.set_hexpand(True)
 
         self.status_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         box.add(self.status_box)
@@ -60,8 +71,12 @@ class LoadFilamentPanel(ScreenPanel):
         if self.state == STATE.STARTED:
             for ch in self.status_box.get_children():
                 self.status_box.remove(ch)
+            for ch in self.img_box.get_children():
+                self.img_box.remove(ch)
+            self.img_box.add(self.prusament_img)
+            self.status_box.add(self.img_box)
             self.labels["select_material_label"] = self._gtk.Label("")
-            self.labels["select_material_label"].set_margin_top(60)
+            self.labels["select_material_label"].set_margin_top(20)
             self.labels["select_material_label"].set_markup("<span size='large'>"+_("Which material would you like to load?")+"</span>")
             self.status_box.add(self.labels['select_material_label'])
 
@@ -89,8 +104,12 @@ class LoadFilamentPanel(ScreenPanel):
                 if extruder["temperature"] >= extruder["target"]:
                     for ch in self.status_box.get_children():
                         self.status_box.remove(ch)
+                    for ch in self.img_box.get_children():
+                        self.img_box.remove(ch)
+                    self.img_box.add(self.prusament_img)
+                    self.status_box.add(self.img_box)
                     self.labels["load_label"] = self._gtk.Label("")
-                    self.labels["load_label"].set_margin_top(60)
+                    self.labels["load_label"].set_margin_top(20)
                     self.labels["load_label"].set_markup(
                         "<span size='large'>" + _("Insert filament and press continue.") + "</span>")
                     self.status_box.add(self.labels['load_label'])
@@ -100,14 +119,27 @@ class LoadFilamentPanel(ScreenPanel):
                     self.status_box.add(self.labels['load_button'])
                     self.state = STATE.WAIT_FOR_FILAMENT
         elif self.state == STATE.WAIT_FOR_FILAMENT:
-            pass
+            if self.filament_sensor["filament_detected"] and self.filament_sensor["enabled"]:
+                for ch in self.img_box.get_children():
+                    self.img_box.remove(ch)
+                self.img_box.add(self.load_guide_2_img)
+            else:
+                for ch in self.img_box.get_children():
+                    self.img_box.remove(ch)
+                self.img_box.add(self.load_guide_img)
         elif self.state == STATE.PURGING:
             it = self.fetch_idle_timeout()
-            if it["state"] == "Ready":
+            if it["state"] != "Ready":
+                self.waiting_for_purge_start = False
+            if it["state"] == "Ready" and not self.waiting_for_purge_start:
                 for ch in self.status_box.get_children():
                     self.status_box.remove(ch)
+                for ch in self.img_box.get_children():
+                    self.img_box.remove(ch)
+                self.img_box.add(self.purging)
+                self.status_box.add(self.img_box)
                 self.labels["confirm_label"] = self._gtk.Label("")
-                self.labels["confirm_label"].set_margin_top(60)
+                self.labels["confirm_label"].set_margin_top(20)
                 self.labels["confirm_label"].set_markup(
                     "<span size='large'>" + _("Is color clean?") + "</span>")
                 self.status_box.add(self.labels['confirm_label'])
@@ -121,9 +153,9 @@ class LoadFilamentPanel(ScreenPanel):
                 self.status_box.add(self.labels['cooldown_button'])
                 self.labels["back_button"] = self._gtk.Button(label=_("Close"), style=f"color1")
                 self.labels["back_button"].set_vexpand(False)
-                self.labels["back_button"].connect("clicked", self._screen._menu_go_back)
+                self.labels["back_button"].connect("clicked", self._screen._menu_go_back, True)
                 self.status_box.add(self.labels['back_button'])
-                self.state = STATE.WAIT_FOR_FILAMENT
+                self.state = STATE.WAIT_FOR_CONFIRM
         elif self.state == STATE.WAIT_FOR_CONFIRM:
             pass
         self._screen.show_all()
@@ -137,6 +169,7 @@ class LoadFilamentPanel(ScreenPanel):
         return idle_timeout
 
     def set_temperature(self, widget, setting):
+        self.currently_loading = setting
         if len(self.heaters) == 0:
             self._screen.show_popup_message(_("Nothing selected"))
         else:
@@ -188,8 +221,12 @@ class LoadFilamentPanel(ScreenPanel):
         self.state = STATE.HEATING
         for ch in self.status_box.get_children():
             self.status_box.remove(ch)
+        for ch in self.img_box.get_children():
+            self.img_box.remove(ch)
+        self.img_box.add(self.prusament_img)
+        self.status_box.add(self.img_box)
         self.labels["heating_label"] = self._gtk.Label("")
-        self.labels["heating_label"].set_margin_top(60)
+        self.labels["heating_label"].set_margin_top(20)
         self.labels["heating_label"].set_markup(
             "<span size='large'>" + _("Wait for temperature...") + "</span>")
         self.status_box.add(self.labels['heating_label'])
@@ -206,6 +243,7 @@ class LoadFilamentPanel(ScreenPanel):
 
     def load_filament_pressed(self, widget):
         self._screen._ws.klippy.gcode_script(f"SAVE_GCODE_STATE NAME=LOAD_FILAMENT")
+        self._screen._ws.klippy.gcode_script(f"SAVE_VARIABLE VARIABLE=loaded_filament VALUE='\"{self.currently_loading}\"'")
         self._screen._ws.klippy.gcode_script(f"M83")
         self._screen._ws.klippy.gcode_script(f"G0 E35 F600")
         self._screen._ws.klippy.gcode_script(f"G0 E50 F300")
@@ -215,13 +253,19 @@ class LoadFilamentPanel(ScreenPanel):
         for ch in self.status_box.get_children():
             self.status_box.remove(ch)
 
+        for ch in self.img_box.get_children():
+            self.img_box.remove(ch)
+        self.img_box.add(self.purging)
+        self.status_box.add(self.img_box)
+
         self.labels["loading_label"] = self._gtk.Label("")
-        self.labels["loading_label"].set_margin_top(60)
+        self.labels["loading_label"].set_margin_top(20)
         self.labels["loading_label"].set_markup(
             "<span size='large'>" + _("Filament is loading...") + "</span>")
         self.status_box.add(self.labels['loading_label'])
         self._screen.show_all()
 
+        self.waiting_for_purge_start = True
         self.state = STATE.PURGING
 
     def purge_filament_pressed(self, widget):
@@ -235,8 +279,13 @@ class LoadFilamentPanel(ScreenPanel):
         for ch in self.status_box.get_children():
             self.status_box.remove(ch)
 
+        for ch in self.img_box.get_children():
+            self.img_box.remove(ch)
+        self.img_box.add(self.purging)
+        self.status_box.add(self.img_box)
+
         self.labels["purging_label"] = self._gtk.Label("")
-        self.labels["purging_label"].set_margin_top(60)
+        self.labels["purging_label"].set_margin_top(20)
         self.labels["purging_label"].set_markup(
             "<span size='large'>" + _("Filament is purging...") + "</span>")
         self.status_box.add(self.labels['purging_label'])
@@ -265,7 +314,7 @@ class LoadFilamentPanel(ScreenPanel):
                 self._screen._ws.klippy.set_heater_temp(name, target)
             elif heater.startswith('temperature_fan '):
                 self._screen._ws.klippy.set_temp_fan_temp(name, target)
-        self._screen._menu_go_back()
+        self._screen._menu_go_back(True)
 
     def validate(self, heater, target=None, max_temp=None):
         if target is not None and max_temp is not None:

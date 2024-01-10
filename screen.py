@@ -931,8 +931,10 @@ class KlipperScreen(Gtk.Window):
                        + self.printer.get_filament_sensors()
                        + self.printer.get_output_pins()
                        + self.printer.get_door_sensors()
-                       + ["config_constant printhead"]
-                            if self.printer.config_section_exists("config_constant printhead") else []
+                       + (["config_constant printhead"]
+                            if self.printer.config_section_exists("config_constant printhead") else [])
+                       + (["save_variables"]
+                            if self.printer.config_section_exists("save_variables") else [])
                        )
 
         data = self.apiclient.send_request("printer/objects/query?" + "&".join(PRINTER_BASE_STATUS_OBJECTS +

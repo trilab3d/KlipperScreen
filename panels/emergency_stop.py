@@ -23,9 +23,10 @@ class EmergencyStopPanel(ScreenPanel):
         self.header.set_markup("<span size='xx-large'>"+_("Emergency Stop Triggered!")+"</span>\n<span size='large'>Release Emerency Stop to continue.</span>")
         box.add(self.header)
 
-        image_box = Gtk.Box()
+        image_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         image_box.set_vexpand(True)
-        image = self._gtk.Image("warning", self._gtk.content_width * .9, self._gtk.content_height * .9)
+        image = self._gtk.Image("emergency-button", self._gtk.content_width * .9, self._gtk.content_height * .9)
+        image.set_margin_top(60)
         image_box.add(image)
         box.add(image_box)
 

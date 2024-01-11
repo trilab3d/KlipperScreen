@@ -37,7 +37,7 @@ class KlipperScreenConfig:
 
     def __init__(self, configfile, screen=None):
         self.lang_list = None
-        self.timezone_list = None
+        self.timezones = None
         self.errors = []
         self.default_config_path = os.path.join(klipperscreendir, "ks_includes", "defaults.conf")
         self.config = configparser.ConfigParser()
@@ -149,14 +149,26 @@ class KlipperScreenConfig:
     """
 
     def create_time_zones(self):
-        self.timezone_list = []
+        self.timezones = {}
         proc = subprocess.Popen(['timedatectl', 'list-timezones'], stdout=subprocess.PIPE)
         while True:
             line = proc.stdout.readline()
             if not line:
                 break
-            line = line.decode('utf-8')
-            self.timezone_list.append(line)
+            line = line.decode('utf-8').strip()
+            if line.split("/")[0] not in ["Africa", "America", "Antarctica", "Antarctica", "Asia", "Atlantic",
+                                          "Australia", "Etc", "Europe", "Pacific"]:
+                continue
+            self.add_timezone(self.timezones, line, line)
+
+    def add_timezone(self, obj:dict, timezone:str, timezone_full:str):
+        parts = timezone.split('/')
+        if len(parts) == 1:
+            obj[timezone] = timezone_full
+            return
+        if parts[0] not in obj:
+            obj[parts[0]] = {}
+        self.add_timezone(obj[parts[0]], "/".join(parts[1:]), timezone_full)
 
     def install_language(self, lang):
         if lang is None or lang == "system_lang":

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="800px"
+   height="800px"
+   viewBox="0 0 48 48"
+   version="1.1"
+   id="svg250"
+   sodipodi:docname="help.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs254" />
+  <sodipodi:namedview
+     id="namedview252"
+     pagecolor="#000000"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="1.05"
+     inkscape:cx="400.47619"
+     inkscape:cy="400"
+     inkscape:window-width="1920"
+     inkscape:window-height="1019"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg250" />
+  <title
+     id="title237">help-circle</title>
+  <g
+     id="invisible_box"
+     data-name="invisible box">
+    <rect
+       width="48"
+       height="48"
+       fill="none"
+       id="rect239"
+       x="0"
+       y="0" />
+  </g>
+  <g
+     id="icons_Q2"
+     data-name="icons Q2"
+     style="fill:#ffffff">
+    <path
+       d="M 24,2 A 22,22 0 1 0 46,24 21.9,21.9 0 0 0 24,2 Z m 0,40 A 18,18 0 1 1 42,24 18.1,18.1 0 0 1 24,42 Z"
+       id="path242"
+       style="fill:#ffffff" />
+    <path
+       d="m 24,38 h -0.4 l -0.4,-0.2 h -0.3 l -0.3,-0.3 -0.3,-0.3 c 0,-0.1 -0.1,-0.2 -0.2,-0.3 -0.1,-0.1 0,-0.3 -0.1,-0.4 v -0.8 c 0.1,-0.1 0.1,-0.2 0.1,-0.4 0,-0.2 0.2,-0.2 0.2,-0.3 l 0.3,-0.3 a 1.9,1.9 0 0 1 1.8,-0.6 h 0.4 l 0.3,0.2 0.3,0.3 0.3,0.3 c 0,0.1 0.1,0.2 0.1,0.3 0,0.1 0.1,0.3 0.2,0.4 v 0.8 c -0.1,0.1 -0.1,0.2 -0.2,0.4 -0.1,0.2 -0.1,0.2 -0.1,0.3 l -0.3,0.3 -0.3,0.3 h -0.3 l -0.4,0.2 z"
+       id="path244"
+       style="fill:#ffffff" />
+    <path
+       d="m 24.4,30 h -0.8 a 2,2 0 0 1 -1.1,-2.6 7.3,7.3 0 0 1 3.6,-3.9 4.9,4.9 0 0 0 -1.1,-9.4 5.3,5.3 0 0 0 -4.2,1 5.3,5.3 0 0 0 -1.8,3.8 2,2 0 0 1 -4,0 8.8,8.8 0 0 1 3.3,-6.8 8.8,8.8 0 0 1 7.5,-1.9 8.9,8.9 0 0 1 2,16.8 3.7,3.7 0 0 0 -1.6,1.7 1.9,1.9 0 0 1 -1.8,1.3 z"
+       id="path246"
+       style="fill:#ffffff" />
+  </g>
+  <metadata
+     id="metadata446">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>help-circle</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

@@ -17,6 +17,7 @@ class SplashScreenPanel(ScreenPanel):
 
     def __init__(self, screen, title):
         super().__init__(screen, title)
+        self.is_shutdown = False
         image = self._gtk.Image("warning", self._gtk.content_width * .9, self._gtk.content_height * .5)
         self.labels['text'] = Gtk.Label(_("Initializing printer..."))
         self.labels['text'].set_line_wrap(True)
@@ -55,7 +56,11 @@ class SplashScreenPanel(ScreenPanel):
 
         self.content.add(main)
 
-    def update_text(self, text):
+    def update_text(self, text:str):
+        if text.startswith("Klipper has shutdown"):
+            self.is_shutdown = True
+        else:
+            self.is_shutdown = False
         self.labels['text'].set_label(f"{text}")
         self.show_restart_buttons()
 
@@ -75,7 +80,8 @@ class SplashScreenPanel(ScreenPanel):
         if self._screen.initialized:
             self.labels['actions'].add(self.labels['firmware_restart'])
         self.labels['actions'].add(self.labels['menu'])
-        if self._screen._ws and not self._screen._ws.connecting or self._screen.reinit_count > self._screen.max_retries:
+        if (self._screen._ws and not self._screen._ws.connecting
+            or self._screen.reinit_count > self._screen.max_retries) and not self.is_shutdown:
             self.labels['actions'].add(self.labels['retry'])
         self.labels['actions'].show_all()
 

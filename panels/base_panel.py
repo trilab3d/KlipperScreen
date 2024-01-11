@@ -11,6 +11,7 @@ from datetime import datetime
 from math import log
 
 from ks_includes.screen_panel import ScreenPanel
+from panels.manual import ManualPanel
 
 
 class BasePanel(ScreenPanel):
@@ -227,6 +228,9 @@ class BasePanel(ScreenPanel):
         self.content.add(panel.content)
 
     def show_help(self, widget=None):
+        if type(self.current_panel) == ManualPanel:
+            self.back()
+            return
         self._screen.show_panel(f"manual", "manual", "Help", 1, False)
 
     def back(self, widget=None):

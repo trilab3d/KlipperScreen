@@ -116,7 +116,7 @@ class LoadFilamentPanel(ScreenPanel):
                     self._screen._ws.klippy.gcode_script(f"SAVE_GCODE_STATE NAME=LOAD_FILAMENT")
                     self._screen._ws.klippy.gcode_script(f"M83")
                     self._screen._ws.klippy.gcode_script(f"G0 E3.0 F300")
-                    self._screen._ws.klippy.gcode_script(f"G1 E-18.0 F1800")
+                    self._screen._ws.klippy.gcode_script(f"_FILAMENT_RETRACT")
                     self._screen._ws.klippy.gcode_script(f"G4 P4000")
                     self._screen._ws.klippy.gcode_script(f"G1 E-30.0 F900")
                     self._screen._ws.klippy.gcode_script(f"RESTORE_GCODE_STATE NAME=LOAD_FILAMENT")

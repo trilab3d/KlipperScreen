@@ -263,6 +263,7 @@ class KlipperScreen(Gtk.Window):
                 "manual_probe": ['is_active'],
             }
         }
+        requested_updates['objects']["save_variables"] = ["variables"]
         for extruder in self.printer.get_tools():
             requested_updates['objects'][extruder] = [
                 "target", "temperature", "pressure_advance", "smooth_time", "power"]

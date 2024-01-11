@@ -743,9 +743,6 @@ class KlipperScreen(Gtk.Window):
         self.close_screensaver()
         self.show_panel('emergency_stop', "emergency_stop", None, 2)
 
-    def toggle_macro_shortcut(self, value):
-        self.base_panel.show_macro_shortcut(value)
-
     def change_language(self, widget, lang):
         self._config.install_language(lang)
         self.lang_ltr = set_text_direction(lang)
@@ -970,7 +967,6 @@ class KlipperScreen(Gtk.Window):
         return False
 
     def base_panel_show_all(self):
-        self.base_panel.show_macro_shortcut(self._config.get_main_config().getboolean('side_macro_shortcut', True))
         self.base_panel.show_heaters(True)
         self.base_panel.show_estop(True)
 

@@ -1,5 +1,6 @@
 import logging
 import os
+import time
 
 import gi
 
@@ -52,9 +53,24 @@ class NetworkManagerWifiConnectPanel(ScreenPanel):
             }
         if self.network['SSID'] != "--":
             b["ssid"] = self.network["SSID"]
-        b["bssid"] = self.network["BSSID"]
+            name = self.network["SSID"]
+        else:
+            name = self.network["BSSID"]
+            b["bssid"] = self.network["BSSID"]
 
-        self._screen.tpcclient.send_request("/network-manager/connect-wifi", "POST", body=b)
-        self._screen.remove_keyboard()
-        self._screen._menu_go_back()
-        self._screen._menu_go_back()
+        logging.info(self.password)
+
+        res = self._screen.tpcclient.send_request("/network-manager/connect-wifi", "POST", body=b)
+        while True:
+            time.sleep(1)
+            res = self._screen.tpcclient.send_request("/network-manager/connect-wifi-result")
+            if ("stderr" in res and len(res["stderr"]) > 0) or ("stdout" in res and len(res["stdout"]) > 0):
+                break
+        logging.info(res)
+        if len(res["stderr"]):
+            self._screen.show_popup_message("Connection Failed", 3)
+        else:
+            self._screen.remove_keyboard()
+            self._screen._menu_go_back()
+            self._screen._menu_go_back()
+            self._screen.show_popup_message(f"Connected to {name}", 1)

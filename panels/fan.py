@@ -13,7 +13,7 @@ def create_panel(*args):
     return FanPanel(*args)
 
 
-CHANGEABLE_FANS = ["fan", "fan_generic", "servo_flap", "stepper_flap"]
+CHANGEABLE_FANS = ["fan", "fan_generic", "servo_flap", "stepper_flap", "heater_fan"]
 FLAPS = ["servo_flap", "stepper_flap"]
 
 
@@ -76,18 +76,23 @@ class FanPanel(ScreenPanel):
         name.set_valign(Gtk.Align.CENTER)
         name.set_line_wrap(True)
         name.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        if_heater_fan = fan.startswith("heater_fan")
 
         fan_col = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
         if flap:
             stop_btn = self._gtk.Button("flap-closed", _("Min"), "color1")
             max_btn = self._gtk.Button("flap-opened", _("Max"), "color2")
         else:
-            stop_btn = self._gtk.Button("cancel", _("Off"), "color1")
-            max_btn = self._gtk.Button("fan-on", _("Max"), "color2")
+            if if_heater_fan:
+                stop_btn = self._gtk.Button("fan-on", _("Min"), "color1")
+                max_btn = self._gtk.Button("fan-on", _("Max"), "color2")
+            else:
+                stop_btn = self._gtk.Button("cancel", _("Off"), "color1")
+                max_btn = self._gtk.Button("fan-on", _("Max"), "color2")
         stop_btn.set_hexpand(False)
-        stop_btn.connect("clicked", self.update_fan_speed, fan, 0)
+        stop_btn.connect("clicked", self.update_fan_speed, fan, 0.4 if if_heater_fan else 0)
         max_btn.set_hexpand(False)
-        max_btn.connect("clicked", self.update_fan_speed, fan, 100)
+        max_btn.connect("clicked", self.update_fan_speed, fan, 1)
 
         speed = float(self._printer.get_fan_speed(fan))
         if changeable:
@@ -141,11 +146,16 @@ class FanPanel(ScreenPanel):
                 continue
             self.add_fan(fan)
 
-    def set_fan_speed(self, widget, event, fan):
+    def set_fan_speed(self, widget, event, fan:str):
         value = self.devices[fan]['scale'].get_value()
 
         if fan == "fan":
             self._screen._ws.klippy.gcode_script(KlippyGcodes.set_fan_speed(value))
+        elif fan.startswith("heater_fan"):
+            if value < 40:
+                value = 40
+                self.devices[fan]['scale'].set_value(40)
+            self._screen._ws.klippy.gcode_script(f"HEATER_FAN_SET_SPEED FAN={fan.split()[1]} SPEED={float(value) / 100}")
         else:
             self._screen._ws.klippy.gcode_script(f"SET_FAN_SPEED FAN={fan.split()[1]} SPEED={float(value) / 100}")
         # Check the speed in case it wasn't applied

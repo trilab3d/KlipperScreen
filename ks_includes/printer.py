@@ -301,6 +301,8 @@ class Printer:
             return speed
         if "speed" in self.data[fan]:
             speed = self.data[fan]["speed"]
+        if "set_speed" in self.data[fan]:
+            speed = self.data[fan]["set_speed"]
         if 'max_power' in self.config[fan]:
             max_power = float(self.config[fan]['max_power'])
             if max_power > 0:

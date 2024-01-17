@@ -46,6 +46,8 @@ class NetworkManagerPanel(ScreenPanel):
 
         for i, interface in enumerate(interfaces):
 
+            if 'GENERAL' not in interface:
+                continue
             if interface['GENERAL']['TYPE'] in HIDDEN_TYPES:
                 continue
 

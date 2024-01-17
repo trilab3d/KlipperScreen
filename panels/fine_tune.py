@@ -17,51 +17,12 @@ def create_panel(*args):
 
 class FineTunePanel(ScreenPanel):
     bs_deltas = ["0.01", "0.05"]
-    bs_delta = bs_deltas[-1]
-    percent_deltas = ['1', '5', '10', '25']
-    percent_delta = percent_deltas[-2]
+    bs_delta = "0.01"
+    percent_delta = '5'
     speed = extrusion = 100
 
     def __init__(self, screen, title):
         super().__init__(screen, title)
-        if self.ks_printer_cfg is not None:
-            bs = self.ks_printer_cfg.get("z_babystep_values", "0.01, 0.05")
-            if re.match(r'^[0-9,\.\s]+$', bs):
-                bs = [str(i.strip()) for i in bs.split(',')]
-                if 1 < len(bs) < 3:
-                    self.bs_deltas = bs
-                    self.bs_delta = self.bs_deltas[-1]
-
-        # babystepping grid
-        bsgrid = Gtk.Grid()
-        for j, i in enumerate(self.bs_deltas):
-            self.labels[f"bdelta{i}"] = self._gtk.Button(label=i)
-            self.labels[f"bdelta{i}"].connect("clicked", self.change_bs_delta, float(i))
-            ctx = self.labels[f"bdelta{i}"].get_style_context()
-            if j == 0:
-                ctx.add_class("distbutton_top")
-            elif j == len(self.bs_deltas) - 1:
-                ctx.add_class("distbutton_bottom")
-            else:
-                ctx.add_class("distbutton")
-            if i == self.bs_delta:
-                ctx.add_class("distbutton_active")
-            bsgrid.attach(self.labels[f"bdelta{i}"], j, 0, 1, 1)
-        # Grid for percentage
-        deltgrid = Gtk.Grid()
-        for j, i in enumerate(self.percent_deltas):
-            self.labels[f"pdelta{i}"] = self._gtk.Button(label=f"{i}%")
-            self.labels[f"pdelta{i}"].connect("clicked", self.change_percent_delta, int(i))
-            ctx = self.labels[f"pdelta{i}"].get_style_context()
-            if j == 0:
-                ctx.add_class("distbutton_top")
-            elif j == len(self.percent_deltas) - 1:
-                ctx.add_class("distbutton_bottom")
-            else:
-                ctx.add_class("distbutton")
-            if i == self.percent_delta:
-                ctx.add_class("distbutton_active")
-            deltgrid.attach(self.labels[f"pdelta{i}"], j, 0, 1, 1)
 
         grid = self._gtk.HomogeneousGrid()
         grid.set_row_homogeneous(False)
@@ -75,34 +36,47 @@ class FineTunePanel(ScreenPanel):
         self.labels['speedfactor'] = self._gtk.Button("refresh", "  100%",
                                                       "color3", self.bts, Gtk.PositionType.LEFT, 1)
 
+        self.labels['extruder+'] = self._gtk.Button("extruder+", _("Hotend +"), "color4")
+        self.labels['extruder-'] = self._gtk.Button("extruder-", _("Hotend -"), "color4")
+        self.labels['extruder'] = self._gtk.Button(None, "  100%",
+                                                        "color4", self.bts, Gtk.PositionType.LEFT, 1)
+        self.labels['extruder'].set_sensitive(False)
+
+        self.labels['heater_bed+'] = self._gtk.Button("bed+", _("Bed +"), "color4")
+        self.labels['heater_bed-'] = self._gtk.Button("bed-", _("Bed -"), "color4")
+        self.labels['heater_bed'] = self._gtk.Button(None, "  100%",
+                                                        "color4", self.bts, Gtk.PositionType.LEFT, 1)
+        self.labels['heater_bed'].set_sensitive(False)
+
+        self.labels['heater_chamber+'] = self._gtk.Button("chamber+", _("Chamber +"), "color4")
+        self.labels['heater_chamber-'] = self._gtk.Button("chamber-", _("Chamber -"), "color4")
+        self.labels['heater_chamber'] = self._gtk.Button(None, "  100%",
+                                                        "color4", self.bts, Gtk.PositionType.LEFT, 1)
+        self.labels['heater_chamber'].set_sensitive(False)
+
         self.labels['extrude+'] = self._gtk.Button("flow+", _("Extrusion +"), "color4")
         self.labels['extrude-'] = self._gtk.Button("flow-", _("Extrusion -"), "color4")
         self.labels['extrudefactor'] = self._gtk.Button("refresh", "  100%",
                                                         "color4", self.bts, Gtk.PositionType.LEFT, 1)
-        if self._screen.vertical_mode:
-            grid.attach(self.labels['z+'], 0, 0, 1, 1)
-            grid.attach(self.labels['z-'], 1, 0, 1, 1)
-            grid.attach(self.labels['zoffset'], 2, 0, 1, 1)
-            grid.attach(bsgrid, 0, 1, 3, 1)
-            grid.attach(self.labels['speed-'], 0, 2, 1, 1)
-            grid.attach(self.labels['speed+'], 1, 2, 1, 1)
-            grid.attach(self.labels['speedfactor'], 2, 2, 1, 1)
-            grid.attach(self.labels['extrude-'], 0, 3, 1, 1)
-            grid.attach(self.labels['extrude+'], 1, 3, 1, 1)
-            grid.attach(self.labels['extrudefactor'], 2, 3, 1, 1)
-            grid.attach(deltgrid, 0, 4, 3, 1)
-        else:
-            grid.attach(self.labels['zoffset'], 0, 0, 1, 1)
-            grid.attach(self.labels['z+'], 0, 1, 1, 1)
-            grid.attach(self.labels['z-'], 0, 2, 1, 1)
-            grid.attach(bsgrid, 0, 3, 1, 1)
-            grid.attach(self.labels['speedfactor'], 1, 0, 1, 1)
-            grid.attach(self.labels['speed+'], 1, 1, 1, 1)
-            grid.attach(self.labels['speed-'], 1, 2, 1, 1)
-            grid.attach(self.labels['extrudefactor'], 2, 0, 1, 1)
-            grid.attach(self.labels['extrude+'], 2, 1, 1, 1)
-            grid.attach(self.labels['extrude-'], 2, 2, 1, 1)
-            grid.attach(deltgrid, 1, 3, 2, 1)
+
+        grid.attach(self.labels['z+'], 0, 0, 1, 1)
+        grid.attach(self.labels['zoffset'], 1, 0, 1, 1)
+        grid.attach(self.labels['z-'], 2, 0, 1, 1)
+        grid.attach(self.labels['speed-'], 0, 1, 1, 1)
+        grid.attach(self.labels['speedfactor'], 1, 1, 1, 1)
+        grid.attach(self.labels['speed+'], 2, 1, 1, 1)
+        grid.attach(self.labels['extruder-'], 0, 2, 1, 1)
+        grid.attach(self.labels['extruder'], 1, 2, 1, 1)
+        grid.attach(self.labels['extruder+'], 2, 2, 1, 1)
+        grid.attach(self.labels['heater_bed-'], 0, 3, 1, 1)
+        grid.attach(self.labels['heater_bed'], 1, 3, 1, 1)
+        grid.attach(self.labels['heater_bed+'], 2, 3, 1, 1)
+        grid.attach(self.labels['heater_chamber-'], 0, 4, 1, 1)
+        grid.attach(self.labels['heater_chamber'], 1, 4, 1, 1)
+        grid.attach(self.labels['heater_chamber+'], 2, 4, 1, 1)
+        grid.attach(self.labels['extrude-'], 0, 5, 1, 1)
+        grid.attach(self.labels['extrudefactor'], 1, 5, 1, 1)
+        grid.attach(self.labels['extrude+'], 2, 5, 1, 1)
 
         self.labels['z+'].connect("clicked", self.change_babystepping, "+")
         self.labels['zoffset'].connect("clicked", self.change_babystepping, "reset")
@@ -110,11 +84,22 @@ class FineTunePanel(ScreenPanel):
         self.labels['speed+'].connect("clicked", self.change_speed, "+")
         self.labels['speedfactor'].connect("clicked", self.change_speed, "reset")
         self.labels['speed-'].connect("clicked", self.change_speed, "-")
+        self.labels['extruder+'].connect("clicked", self.change_temperature, "extruder", "+")
+        self.labels['extruder-'].connect("clicked", self.change_temperature, "extruder", "-")
+        self.labels['heater_bed+'].connect("clicked", self.change_temperature, "heater_bed", "+")
+        self.labels['heater_bed-'].connect("clicked", self.change_temperature, "heater_bed", "-")
+        self.labels['heater_chamber+'].connect("clicked", self.change_temperature, "heater_chamber", "+")
+        self.labels['heater_chamber-'].connect("clicked", self.change_temperature, "heater_chamber", "-")
         self.labels['extrude+'].connect("clicked", self.change_extrusion, "+")
         self.labels['extrudefactor'].connect("clicked", self.change_extrusion, "reset")
         self.labels['extrude-'].connect("clicked", self.change_extrusion, "-")
 
         self.content.add(grid)
+
+    def activate(self):
+        for heater in ["extruder", "heater_bed", "heater_chamber"]:
+            target = self._printer.get_dev_stat(heater, "target")
+            self.labels[heater].set_label(f'{target} °C')
 
     def process_update(self, action, data):
 
@@ -145,12 +130,6 @@ class FineTunePanel(ScreenPanel):
                 self.labels['zoffset'].set_label(f'  {z_offset:.3f}mm')
             self._screen._ws.klippy.gcode_script(f"SET_GCODE_OFFSET Z_ADJUST={direction}{self.bs_delta} MOVE=1")
 
-    def change_bs_delta(self, widget, bs):
-        logging.info(f"### BabyStepping {bs}")
-        self.labels[f"bdelta{self.bs_delta}"].get_style_context().remove_class("distbutton_active")
-        self.labels[f"bdelta{bs}"].get_style_context().add_class("distbutton_active")
-        self.bs_delta = bs
-
     def change_extrusion(self, widget, direction):
         if direction == "+":
             self.extrusion += int(self.percent_delta)
@@ -175,8 +154,20 @@ class FineTunePanel(ScreenPanel):
         self.labels['speedfactor'].set_label(f"  {self.speed:3}%")
         self._screen._ws.klippy.gcode_script(KlippyGcodes.set_speed_rate(self.speed))
 
-    def change_percent_delta(self, widget, delta):
-        logging.info(f"### Delta {delta}")
-        self.labels[f"pdelta{self.percent_delta}"].get_style_context().remove_class("distbutton_active")
-        self.labels[f"pdelta{delta}"].get_style_context().add_class("distbutton_active")
-        self.percent_delta = delta
+    def change_temperature(self, widget, heater, direction):
+        tempdelta = 1
+        if direction == "-":
+            tempdelta = -1
+
+        if heater == "extruder" or heater == "heater_bed":
+            tempdelta *= 5
+
+        target = self._printer.get_dev_stat(heater, "target") + tempdelta
+        max_temp = int(float(self._printer.get_config_section(heater)['max_temp']))
+        if target > max_temp:
+            target = max_temp
+            self._screen.show_popup_message(_("Can't set above the maximum:") + f' {target}')
+
+        self._screen._ws.klippy.gcode_script(f"SET_HEATER_TEMPERATURE HEATER={heater} TARGET={target}")
+        self.labels[heater].set_label(f'{target} °C')
+

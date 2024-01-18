@@ -8,7 +8,7 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import GLib, Gtk, Pango, GdkPixbuf
 from ks_includes.screen_panel import ScreenPanel
 from math import pi, sqrt
-from statistics import median
+#from statistics import median
 from time import time
 
 
@@ -902,7 +902,7 @@ class JobStatusPanel(ScreenPanel):
     def update_flow(self):
         if not self.flowstore:
             self.flowstore.append(0)
-        self.flowrate = median(self.flowstore)
+        #self.flowrate = median(self.flowstore)
         self.flowstore = []
         self.labels["flowrate"].set_label(f"{self.flowrate:.1f} {self.mms3}")
         self.buttons["extrusion"].set_label(

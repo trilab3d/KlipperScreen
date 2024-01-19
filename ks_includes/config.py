@@ -226,7 +226,8 @@ class KlipperScreenConfig:
                 )
             elif section.startswith('preheat '):
                 strs = ('gcode', '')
-                numbers = [f'{option}' for option in self.config[section] if option != 'gcode']
+                bools = ('abrasive', )
+                numbers = [f'{option}' for option in self.config[section] if option not in ('gcode', 'abrasive')]
             elif section.startswith('menu '):
                 strs = ('name', 'icon', 'panel', 'method', 'params', 'enable', 'confirm', 'style', 'view_groups')
             elif section == 'bed_screws':
@@ -480,7 +481,9 @@ class KlipperScreenConfig:
         if name not in self.config:
             return False
         cfg = self.config[name]
-        return {opt: cfg.get("gcode", None) if opt == "gcode" else cfg.getfloat(opt, None) for opt in cfg}
+        return {opt: cfg.get("gcode", None) if opt == "gcode"
+            else cfg.getboolean(opt, None) if opt == "abrasive"
+            else cfg.getfloat(opt, None) for opt in cfg}
 
     def get_printer_config(self, name):
         if not name.startswith("printer "):

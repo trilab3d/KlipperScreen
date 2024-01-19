@@ -168,7 +168,31 @@ class LoadFilamentPanel(ScreenPanel):
         idle_timeout = self.screen.printer.data['idle_timeout']
         return idle_timeout
 
-    def set_temperature(self, widget, setting):
+    def confirm_temperature(self, dialog, response_id, setting):
+        self._gtk.remove_dialog(dialog)
+        if response_id == Gtk.ResponseType.APPLY:
+            self.set_temperature(None, setting, True)
+
+    def set_temperature(self, widget, setting, confirmed=False):
+        if self.preheat_options[setting]["abrasive"] and not confirmed:
+            label = Gtk.Label(_("You are about to load abrasive material. Are you sure you have a hardened nozzle installed?"))
+            label.set_hexpand(True)
+            label.set_halign(Gtk.Align.CENTER)
+            label.set_vexpand(True)
+            label.set_valign(Gtk.Align.CENTER)
+            label.set_line_wrap(True)
+            label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+            grid = self._gtk.HomogeneousGrid()
+            grid.attach(label, 0, 0, 1, 1)
+            buttons = [
+                {"name": _("Load"), "response": Gtk.ResponseType.APPLY},
+                {"name": _("Cancel"), "response": Gtk.ResponseType.CANCEL},
+            ]
+            dialog = self._gtk.Dialog(
+                self._screen, buttons, grid, self.confirm_temperature, setting
+            )
+            dialog.set_title(_("Save Z"))
+            return
         self.currently_loading = setting
         if len(self.heaters) == 0:
             self._screen.show_popup_message(_("Nothing selected"))

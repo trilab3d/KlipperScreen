@@ -101,6 +101,8 @@ class LoadFilamentPanel(ScreenPanel):
             if extruder["target"] > 0:
                 fract = extruder["temperature"]/extruder["target"]
                 self.labels['temperature_progressbar'].set_fraction(fract)
+                self.labels["actual_temperature"].set_label(f"{extruder['temperature']} °C")
+                self.labels["target_temperature"].set_label(f"{extruder['target']} °C")
                 if extruder["temperature"] >= extruder["target"]:
                     for ch in self.status_box.get_children():
                         self.status_box.remove(ch)
@@ -259,6 +261,16 @@ class LoadFilamentPanel(ScreenPanel):
         self.labels['temperature_progressbar'].set_show_text(False)
         self.labels['temperature_progressbar'].set_hexpand(True)
         self.status_box.add(self.labels['temperature_progressbar'])
+        self.labels["actual_temperature"] = self._gtk.Label("0 °C")
+        self.labels["actual_temperature"].set_hexpand(True)
+        self.labels["actual_temperature"].set_halign(Gtk.Align.START)
+        self.labels["target_temperature"] = self._gtk.Label("0 °C")
+        self.labels["target_temperature"].set_halign(Gtk.Align.END)
+        temperature_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, margin_start=20, margin_end=20)
+        temperature_box.set_hexpand(True)
+        temperature_box.add(self.labels["actual_temperature"])
+        temperature_box.add(self.labels["target_temperature"])
+        self.status_box.add(temperature_box)
         self.labels["cancel_button"] = self._gtk.Button(label=_("Cancel"), style=f"color1")
         self.labels["cancel_button"].set_vexpand(False)
         self.labels["cancel_button"].connect("clicked", self.cancel_pressed)

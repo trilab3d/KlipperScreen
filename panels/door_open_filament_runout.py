@@ -8,19 +8,22 @@ from gi.repository import Gtk, Gdk, GLib, Pango
 from ks_includes.screen_panel import ScreenPanel
 
 
-def create_panel(*args):
-    return DoorOpenPanel(*args)
+def create_panel(*args, **kvargs):
+    return DoorOpenFilamentRunoutPanel(*args, **kvargs)
 
-class DoorOpenPanel(ScreenPanel):
-    def __init__(self, screen, title):
+class DoorOpenFilamentRunoutPanel(ScreenPanel):
+    def __init__(self, screen, title, **kvargs):
         super().__init__(screen, title)
         self.screen = screen
         self.do_schedule_refresh = True
+
+        self.reason = "filament" if "reason" in kvargs and kvargs["reason"] == "filament" else "door"
+
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         box.set_vexpand(True)
         self.header = Gtk.Label()
-        self.header.set_margin_top(60)
-        self.header.set_markup("<span size='xx-large'>"+_("Door opened!")+"</span>")
+        self.header.set_margin_top(40)
+        self.header.set_margin_bottom(20)
         box.add(self.header)
 
         image_box = Gtk.Box()
@@ -28,6 +31,17 @@ class DoorOpenPanel(ScreenPanel):
         image = self._gtk.Image("door-opened", self._gtk.content_width * .9, self._gtk.content_height * .9)
         image_box.add(image)
         box.add(image_box)
+        self.image_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.image_box.set_vexpand(True)
+        self.image_door = self._gtk.Image("door-opened", self._gtk.content_width * .9, self._gtk.content_height * .9)
+        self.image_prusament = self._gtk.Image("unload_guide", self._gtk.content_width * .8, self._gtk.content_height * .8)
+        if self.reason == "filament":
+            self.header.set_markup("<span size='xx-large'>" + _("Filament Run Out!") + "</span>")
+            self.image_box.add(self.image_prusament)
+        else:
+            self.header.set_markup("<span size='xx-large'>" + _("Door opened!") + "</span>")
+            self.image_box.add(self.image_door)
+        box.add(self.image_box)
 
         self.buttons = {
             'cancel': self._gtk.Button("stop", _("Cancel"), "color2"),
@@ -50,24 +64,24 @@ class DoorOpenPanel(ScreenPanel):
 
         box.add(self.button_grid)
 
-        self.fetch_door_sensor()
-        GLib.timeout_add_seconds(1, self.fetch_door_sensor)
+        self.fetch_sensors()
+        GLib.timeout_add_seconds(1, self.fetch_sensors)
 
         self.content.add(box)
 
     def activate(self):
         self.do_schedule_refresh = True
-        self.fetch_door_sensor()
-        GLib.timeout_add_seconds(1, self.fetch_door_sensor)
+        self.fetch_sensors()
+        GLib.timeout_add_seconds(1, self.fetch_sensors)
 
     def deactivate(self):
         self.do_schedule_refresh = False
 
-    def fetch_door_sensor(self):
+    def fetch_sensors(self):
+        filament = self.screen.printer.data['filament_switch_sensor fil_sensor']['filament_detected']
         closed = self.screen.printer.data['door_sensor']['door_closed']
-        logging.info(f"Door sensor object: {self.screen.printer.data['door_sensor']}")
 
-        self.buttons['resume'].set_sensitive(closed)
+        self.buttons['resume'].set_sensitive(closed and filament)
 
         return self.do_schedule_refresh
 

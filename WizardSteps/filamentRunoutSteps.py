@@ -125,5 +125,6 @@ class ContinuePrintDialog(BaseWizardStep):
         self.content.add(continue_button)
 
     def restore(self, wizard):
+        self._screen._ws.klippy.print_resume()
         self._screen.show_panel('job_status', "job_status", _("Printing"), 2)
 

@@ -229,7 +229,7 @@ class KlipperScreenConfig:
                 bools = ('abrasive', )
                 numbers = [f'{option}' for option in self.config[section] if option not in ('gcode', 'abrasive')]
             elif section.startswith('menu '):
-                strs = ('name', 'icon', 'panel', 'method', 'params', 'enable', 'confirm', 'style', 'view_groups')
+                strs = ('name', 'icon', 'panel', 'method', 'params', 'enable', 'confirm', 'style', 'view_groups', 'wizard', 'wizard_name')
             elif section == 'bed_screws':
                 # This section may be deprecated in favor of moving this options under the printer section
                 numbers = ('rotation', '')
@@ -591,7 +591,9 @@ class KlipperScreenConfig:
             "confirm": cfg.get("confirm", None),
             "enable": cfg.get("enable", "True"),
             "params": cfg.get("params", "{}"),
-            "style": cfg.get("style", None)
+            "style": cfg.get("style", None),
+            "wizard": cfg.get("wizard", None),
+            "wizard_name": cfg.get("wizard_name", None)
         }
 
         return {name[(len(menu) + 6):]: item}

@@ -62,6 +62,10 @@ class ScreenPanel:
         return None
 
     def menu_item_clicked(self, widget, panel_type, item):
+        if item['panel'] == 'wizard':
+            self._screen.show_panel(f"wizard_{item['name']}", item['panel'], item['name'], 1, False, wizard=item['wizard'],
+                                    wizard_name=item['wizard_name'])
+            return
         if 'extra' in item:
             self._screen.show_panel(panel_type, item['panel'], item['name'], 1, False, extra=item['extra'])
             return

@@ -161,7 +161,10 @@ class Printer:
             return  # disconnected, startup, ready, shutdown, error, paused, printing
         if state != self.state:
             logging.debug(f"Changing state from '{self.state}' to '{state}'")
+            last_state = self.state
             self.state = state
+            if last_state == 'printing' and state == 'paused':
+                return # do not handle print callback on pause
         if self.state_callbacks[state] is not None:
             logging.debug(f"Adding callback for state: {state}")
             GLib.idle_add(self.state_cb, self.state_callbacks[state])

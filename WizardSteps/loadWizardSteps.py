@@ -267,7 +267,7 @@ class Purging(BaseWizardStep):
         else:
             self._screen._ws.klippy.gcode_script(f"SAVE_GCODE_STATE NAME=LOAD_FILAMENT")
             self._screen._ws.klippy.gcode_script(f"M83")
-            self._screen._ws.klippy.gcode_script(f"_FILAMENT_UNRETRACT")
+            self._screen._ws.klippy.gcode_script(f"_FILAMENT_DERETRACT")
             self._screen._ws.klippy.gcode_script(f"G0 E50 F300")
             self._screen._ws.klippy.gcode_script(f"_FILAMENT_RETRACT")
             self._screen._ws.klippy.gcode_script(f"RESTORE_GCODE_STATE NAME=LOAD_FILAMENT")

@@ -59,9 +59,9 @@ class FineTunePanel(ScreenPanel):
         self.labels['extrudefactor'] = self._gtk.Button("refresh", "  100%",
                                                         "color4", self.bts, Gtk.PositionType.LEFT, 1)
 
-        grid.attach(self.labels['z+'], 0, 0, 1, 1)
+        grid.attach(self.labels['z-'], 0, 0, 1, 1)
         grid.attach(self.labels['zoffset'], 1, 0, 1, 1)
-        grid.attach(self.labels['z-'], 2, 0, 1, 1)
+        grid.attach(self.labels['z+'], 2, 0, 1, 1)
         grid.attach(self.labels['speed-'], 0, 1, 1, 1)
         grid.attach(self.labels['speedfactor'], 1, 1, 1, 1)
         grid.attach(self.labels['speed+'], 2, 1, 1, 1)

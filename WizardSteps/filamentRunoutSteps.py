@@ -17,7 +17,7 @@ class RemoveFilamentDialog(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("unload_guide", self._screen.gtk.content_width * .9,
+        img = self._screen.gtk.Image("unload_guide_disassembled", self._screen.gtk.content_width * .9,
                                      self._screen.gtk.content_height * .5)
         self.content.add(img)
         confirm_label = self._screen.gtk.Label("")
@@ -25,6 +25,16 @@ class RemoveFilamentDialog(BaseWizardStep):
         confirm_label.set_markup(
             "<span size='large'>" + _("Remove Remaining Filament.") + "</span>")
         self.content.add(confirm_label)
+        second_label = self._screen.gtk.Label("")
+        second_label.set_margin_top(20)
+        second_label.set_margin_left(10)
+        second_label.set_margin_right(10)
+        second_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        second_label.set_line_wrap(True)
+        second_label.set_markup(
+            "<span size='small'>" + _("If you can't reach filament end, disconnect magnetic bowden coupler. "
+                                      "Don't forget to put it back before next filament load.") + "</span>")
+        self.content.add(second_label)
         self.continue_button = self._screen.gtk.Button(label=_("Filament unloaded, continue"), style=f"color1")
         self.continue_button.set_vexpand(False)
         self.continue_button.set_sensitive(False)
@@ -118,8 +128,12 @@ class ContinuePrintDialog(BaseWizardStep):
         confirm_label.set_margin_top(20)
         confirm_label.set_markup(
             "<span size='large'>" + _("Clean extruded material and close the door.") + "</span>")
-        self.content.add(confirm_label)
-        continue_button = self._screen.gtk.Button(label=_("Restore Print"), style=f"color1")
+        second_label = self._screen.gtk.Label("")
+        second_label.set_margin_top(5)
+        second_label.set_markup(
+            "<span size='small'>" + _("Then click Resume print") + "</span>")
+        self.content.add(second_label)
+        continue_button = self._screen.gtk.Button(label=_("Resume Print"), style=f"color1")
         continue_button.set_vexpand(False)
         continue_button.connect("clicked", self.restore)
         self.content.add(continue_button)

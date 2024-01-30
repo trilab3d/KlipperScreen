@@ -150,7 +150,7 @@ class WaitForTemperature(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("prusament", self._screen.gtk.content_width * .9,
+        img = self._screen.gtk.Image("heating", self._screen.gtk.content_width * .9,
                                      self._screen.gtk.content_height * .5)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
@@ -214,10 +214,24 @@ class WaitForFilamentInserted(BaseWizardStep):
         self.img_box.set_hexpand(True)
         self.img_box.add(self.load_guide)
         self.content.add(self.img_box)
+
         load_label = self._screen.gtk.Label("")
         load_label.set_margin_top(20)
+        load_label.set_margin_left(10)
+        load_label.set_margin_right(10)
+        load_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        load_label.set_line_wrap(True)
         load_label.set_markup("<span size='large'>" + _("Insert filament and press continue.") + "</span>")
         self.content.add(load_label)
+        load_comment = self._screen.gtk.Label("")
+        load_comment.set_margin_top(5)
+        load_comment.set_margin_left(10)
+        load_comment.set_margin_right(10)
+        load_comment.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        load_comment.set_line_wrap(True)
+        load_comment.set_markup("<span size='small'>" + _("Feed the filament fully into the extruder until it stops "
+                                                          "at the gears.") + "</span>")
+        self.content.add(load_comment)
         self.load_button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
         self.load_button.set_vexpand(False)
         self.load_button.connect("clicked", self.load_filament_pressed)

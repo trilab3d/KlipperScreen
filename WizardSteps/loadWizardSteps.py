@@ -207,6 +207,9 @@ class WaitForFilamentInserted(BaseWizardStep):
         self.load_guide2 = self._screen.gtk.Image("load_guide_2_arrow", self._screen.gtk.content_width * .9,
                                                  self._screen.gtk.content_height * .5)
 
+        self.loaded = False
+        self.update_deadtime = 0
+
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
@@ -238,7 +241,35 @@ class WaitForFilamentInserted(BaseWizardStep):
         self.load_button.set_sensitive(False)
         self.content.add(self.load_button)
 
+        self.fs_label = Gtk.Label()
+        self.fs_label.set_markup(f"<big><b>{_('Filament sensor')}</b></big>")
+        self.fs_label.set_hexpand(True)
+        self.fs_label.set_vexpand(True)
+        self.fs_label.set_halign(Gtk.Align.START)
+        self.fs_label.set_valign(Gtk.Align.CENTER)
+        self.fs_label.set_line_wrap(True)
+        self.fs_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+
+        labels = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        labels.add(self.fs_label)
+
+        dev = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        #dev.get_style_context().add_class("frame-item")
+        dev.set_hexpand(True)
+        dev.set_vexpand(False)
+        dev.set_margin_left(20)
+        dev.set_margin_right(10)
+        dev.set_valign(Gtk.Align.CENTER)
+        dev.add(labels)
+        self.switch = Gtk.Switch()
+        self.switch.connect("notify::active", self._filament_sensor_callback)
+        dev.add(self.switch)
+
+        self.content.add(dev)
+        self._filament_sensor_getter()
+
     def update_loop(self):
+        self._filament_sensor_getter()
         if self.filament_sensor and self.filament_sensor["enabled"] and not self.filament_sensor["filament_detected"]:
             self.load_button.set_sensitive(False)
         else:
@@ -257,6 +288,34 @@ class WaitForFilamentInserted(BaseWizardStep):
 
     def load_filament_pressed(self, widget):
         self.wizard_manager.set_step(self.next_step)
+
+    def _filament_sensor_getter(self):
+        filament_sensor = self._screen.printer.data['filament_switch_sensor fil_sensor']
+        #obj["label"].set_text("")
+        if not self.update_deadtime:
+            self.switch.set_sensitive(True)
+            if self.switch.get_active() != filament_sensor["enabled"]:
+                self.update_deadtime = 1
+                self.switch.set_active(filament_sensor["enabled"])
+        else:
+            self.switch.set_sensitive(False)
+            self.update_deadtime -= 1
+        if filament_sensor["enabled"]:
+            badge = f" (<span foreground='#00FF00'>{_('Filament')}</span>)" if filament_sensor["filament_detected"] else \
+                f" (<span foreground='#FF0000'>{_('No Filament')}</span>)"
+        else:
+            badge = f" (<span foreground='#666666'>{_('Disabled')}</span>)"
+        self.fs_label.set_markup(f"<big><b>{_('Filament Sensor')}{badge}</b></big>")
+
+    def _filament_sensor_callback(self, switch, gparam):
+        self._screen._ws.klippy.gcode_script(f"SET_FILAMENT_SENSOR SENSOR=fil_sensor ENABLE={1 if switch.get_active() else 0}")
+        self._screen.show_all()
+        if not self.loaded:
+            self.loaded = True
+            if switch.get_active():
+                return
+        self.update_deadtime = 3
+        self.switch.set_sensitive(False)
 
 
 class Purging(BaseWizardStep):

@@ -40,7 +40,9 @@ class ExtrudePanel(ScreenPanel):
         self.buttons = {
             'extrude': self._gtk.Button("arrow-up", _("Extrude"), "color4"),
             'retract': self._gtk.Button("arrow-down", _("Retract"), "color1"),
-            'temperature': self._gtk.Button("heat-up", _("Temperature"), "color4"),
+            'temperature': self._gtk.Button("heat-up", _(""), "color4"),
+            'temperature+': self._gtk.Button("arrow-up", _("+5°C"), "color4"),
+            'temperature-': self._gtk.Button("arrow-down", _("-5°C"), "color4"),
         }
         self.buttons['extrude'].connect("clicked", self.extrude, "+")
         self.buttons['retract'].connect("clicked", self.extrude, "-")
@@ -48,15 +50,14 @@ class ExtrudePanel(ScreenPanel):
             "name": "Temperature",
             "panel": "temperature"
         })
+        self.buttons['temperature+'].connect("clicked", self.change_temp, 5)
+        self.buttons['temperature-'].connect("clicked", self.change_temp, -5)
 
         extgrid = self._gtk.HomogeneousGrid()
         limit = 5
         i = 0
-        for extruder in self._printer.get_tools():
-            if self._printer.extrudercount > 1:
-                self.labels[extruder] = self._gtk.Button(f"extruder-{i}", f"T{self._printer.get_tool_number(extruder)}")
-            else:
-                self.labels[extruder] = self._gtk.Button("extruder", "")
+        for extruder in self._printer.get_tools() if self._printer.extrudercount > 1 else []:
+            self.labels[extruder] = self._gtk.Button(f"extruder-{i}", f"T{self._printer.get_tool_number(extruder)}")
             if len(self._printer.get_tools()) > 1:
                 self.labels[extruder].connect("clicked", self.change_extruder, extruder)
             if extruder == self.current_extruder:
@@ -64,7 +65,11 @@ class ExtrudePanel(ScreenPanel):
             if i < limit:
                 extgrid.attach(self.labels[extruder], i, 0, 1, 1)
                 i += 1
-        if i < (limit - 1):
+        if i == 0:
+            extgrid.attach(self.buttons['temperature-'], 1, 0, 1, 1)
+            extgrid.attach(self.buttons['temperature'], 2, 0, 1, 1)
+            extgrid.attach(self.buttons['temperature+'], 3, 0, 1, 1)
+        elif i < (limit - 1):
             extgrid.attach(self.buttons['temperature'], i + 1, 0, 1, 1)
 
         distgrid = Gtk.Grid()
@@ -129,7 +134,7 @@ class ExtrudePanel(ScreenPanel):
 
     def process_busy(self, busy):
         for button in self.buttons:
-            if button == "temperature":
+            if button in ["temperature", "temperature+", "temperature-"]:
                 continue
             self.buttons[button].set_sensitive((not busy))
 
@@ -147,6 +152,11 @@ class ExtrudePanel(ScreenPanel):
                 self._printer.get_dev_stat(x, "power"),
                 lines=2,
             )
+
+        if "extruder" in data and ("temperature" in data["extruder"] or "target" in data["extruder"]):
+            cur_temp = self._printer.data["extruder"]["temperature"]
+            target_temp = self._printer.data["extruder"]["target"]
+            self.buttons["temperature"].set_label(f"{int(cur_temp)}°C / {int(target_temp)}°C")
 
         if ("toolhead" in data and "extruder" in data["toolhead"] and
                 data["toolhead"]["extruder"] != self.current_extruder):
@@ -178,3 +188,16 @@ class ExtrudePanel(ScreenPanel):
     def extrude(self, widget, direction):
         self._screen._ws.klippy.gcode_script(KlippyGcodes.EXTRUDE_REL)
         self._screen._ws.klippy.gcode_script(KlippyGcodes.extrude(f"{direction}{self.distance}", f"{self.speed * 60}"))
+
+    def change_temp(self, widget, tempdelta):
+        target = self._printer.get_dev_stat("extruder", "target") + tempdelta
+        max_temp = int(float(self._printer.get_config_section("extruder")['max_temp']))
+
+        if target > max_temp:
+            target = max_temp
+            self._screen.show_popup_message(_("Can't set above the maximum:") + f' {target}')
+
+        self._screen._ws.klippy.gcode_script(f"SET_HEATER_TEMPERATURE HEATER=extruder TARGET={target}")
+
+        cur_temp = self._printer.data["extruder"]["temperature"]
+        self.buttons["temperature"].set_label(f"{int(cur_temp)}°C / {int(target)}°C")

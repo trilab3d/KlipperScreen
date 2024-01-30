@@ -349,7 +349,7 @@ class KlipperScreen(Gtk.Window):
     def handle_message_command(self, command):
         logging.info(f"Incomming command {command}")
         if command == "DOOR_OPEN":
-            self.show_panel("door_open", "door_open_filament_runout", _("Door Opened"), 2,
+            self.show_panel("door_open", "door_open", _("Door Opened"), 2,
                             False, reason="door")
         elif command == "FILAMENT_RUNOUT":
             self.show_panel("filament_runout", "wizard", _("Filament Runout"), 2,

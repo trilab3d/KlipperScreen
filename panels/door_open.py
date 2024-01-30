@@ -17,13 +17,12 @@ class DoorOpenFilamentRunoutPanel(ScreenPanel):
         self.screen = screen
         self.do_schedule_refresh = True
 
-        self.reason = "filament" if "reason" in kvargs and kvargs["reason"] == "filament" else "door"
-
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         box.set_vexpand(True)
         self.header = Gtk.Label()
         self.header.set_margin_top(40)
         self.header.set_margin_bottom(20)
+        self.header.set_markup("<span size='xx-large'>" + _("Door opened!") + "</span>")
         box.add(self.header)
 
         image_box = Gtk.Box()
@@ -35,13 +34,6 @@ class DoorOpenFilamentRunoutPanel(ScreenPanel):
         self.image_box.set_vexpand(True)
         self.image_door = self._gtk.Image("door-opened", self._gtk.content_width * .9, self._gtk.content_height * .9)
         self.image_prusament = self._gtk.Image("unload_guide", self._gtk.content_width * .8, self._gtk.content_height * .8)
-        if self.reason == "filament":
-            self.header.set_markup("<span size='xx-large'>" + _("Filament Run Out!") + "</span>")
-            self.image_box.add(self.image_prusament)
-        else:
-            self.header.set_markup("<span size='xx-large'>" + _("Door opened!") + "</span>")
-            self.image_box.add(self.image_door)
-        box.add(self.image_box)
 
         self.buttons = {
             'cancel': self._gtk.Button("stop", _("Cancel"), "color2"),
@@ -59,7 +51,7 @@ class DoorOpenFilamentRunoutPanel(ScreenPanel):
         self.button_grid.set_vexpand(False)
         self.button_grid.attach(self.buttons['resume'], 0, 0, 1, 1)
         self.button_grid.attach(self.buttons['cancel'], 1, 0, 1, 1)
-        self.button_grid.attach(self.buttons['fine_tune'], 2, 0, 1, 1)
+        #self.button_grid.attach(self.buttons['fine_tune'], 2, 0, 1, 1)
         self.button_grid.attach(self.buttons['control'], 3, 0, 1, 1)
 
         box.add(self.button_grid)
@@ -78,10 +70,9 @@ class DoorOpenFilamentRunoutPanel(ScreenPanel):
         self.do_schedule_refresh = False
 
     def fetch_sensors(self):
-        filament = self.screen.printer.data['filament_switch_sensor fil_sensor']['filament_detected']
         closed = self.screen.printer.data['door_sensor']['door_closed']
 
-        self.buttons['resume'].set_sensitive(closed and filament)
+        self.buttons['resume'].set_sensitive(closed)
 
         return self.do_schedule_refresh
 

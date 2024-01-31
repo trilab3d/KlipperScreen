@@ -26,7 +26,7 @@ class SelectFilament(BaseWizardStep):
 
         self.next_step = WaitForTemperature(self._screen)
         self.label = _("Which material would you like to load?")
-        self.label2 = _("Is the loaded material ")
+        self.label2 = _("Would you like to load ")
 
     def activate(self, wizard):
         super().activate(wizard)
@@ -146,6 +146,7 @@ class WaitForTemperature(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
         self.next_step = WaitForFilamentInserted(self._screen)
+        self.settling_counter = self.settling_counter_max = 3
 
     def activate(self, wizard):
         super().activate(wizard)
@@ -186,9 +187,13 @@ class WaitForTemperature(BaseWizardStep):
         self.target_temperature.set_label(f"{extruder['target']} °C")
 
         if extruder['temperature'] >= extruder['target']:
-            logging.info(f"Next step: {self.next_step}")
-            logging.info(f"WIzard manager: {self.wizard_manager}")
-            self.wizard_manager.set_step(self.next_step)
+            self.settling_counter -= 1
+            if self.settling_counter < 1:
+                logging.info(f"Next step: {self.next_step}")
+                logging.info(f"WIzard manager: {self.wizard_manager}")
+                self.wizard_manager.set_step(self.next_step)
+        else:
+            self.settling_counter = self.settling_counter_max
 
     def fetch_extruder(self):
         extruder = self._screen.printer.data['extruder']

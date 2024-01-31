@@ -24,6 +24,7 @@ class Unloading(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
         self.waiting_for_start = 5
+        self.next_step = DoneDialog(self._screen)
     def activate(self, wizard):
         super().activate(wizard)
 
@@ -51,7 +52,7 @@ class Unloading(BaseWizardStep):
         if it["state"] not in ["Ready", "Idle"]:
             self.waiting_for_start = 0
         if self.waiting_for_start <= 0 and it["state"] in ["Ready", "Idle"]:
-            self.wizard_manager.set_step(DoneDialog(self._screen))
+            self.wizard_manager.set_step(self.next_step)
 
 class DoneDialog(loadWizardSteps.PurgingMoreDialog):
     def __init__(self, screen):

@@ -8,6 +8,7 @@ from gi.repository import Gtk, Gdk, GLib, Pango
 from WizardSteps.baseWizardStep import BaseWizardStep
 
 currently_loading = ""
+speed_request = 1
 
 class SelectFilament(BaseWizardStep):
     def __init__(self, screen, load_var = False):
@@ -127,6 +128,11 @@ class SelectFilament(BaseWizardStep):
                         self._screen._ws.klippy.set_temp_fan_temp(name, target)
 
         self.wizard_manager.set_step(self.next_step)
+            global speed_request
+            if "speed" in self.preheat_options[setting]:
+                speed_request = float(self.preheat_options[setting]["speed"])
+            else:
+                speed_request = 1
 
     def validate(self, heater, target=None, max_temp=None):
         if target is not None and max_temp is not None:
@@ -338,15 +344,15 @@ class Purging(BaseWizardStep):
             self._screen._ws.klippy.gcode_script(
                 f"SAVE_VARIABLE VARIABLE=loaded_filament VALUE='\"{currently_loading}\"'")
             self._screen._ws.klippy.gcode_script(f"M83")
-            self._screen._ws.klippy.gcode_script(f"G0 E35 F600")
-            self._screen._ws.klippy.gcode_script(f"G0 E50 F300")
+            self._screen._ws.klippy.gcode_script(f"G0 E35 F{int(600*speed_request)}")
+            self._screen._ws.klippy.gcode_script(f"G0 E50 F{int(300*speed_request)}")
             self._screen._ws.klippy.gcode_script(f"_FILAMENT_RETRACT")
             self._screen._ws.klippy.gcode_script(f"RESTORE_GCODE_STATE NAME=LOAD_FILAMENT")
         else:
             self._screen._ws.klippy.gcode_script(f"SAVE_GCODE_STATE NAME=LOAD_FILAMENT")
             self._screen._ws.klippy.gcode_script(f"M83")
             self._screen._ws.klippy.gcode_script(f"_FILAMENT_DERETRACT")
-            self._screen._ws.klippy.gcode_script(f"G0 E50 F300")
+            self._screen._ws.klippy.gcode_script(f"G0 E50 F{int(300*speed_request)}")
             self._screen._ws.klippy.gcode_script(f"_FILAMENT_RETRACT")
             self._screen._ws.klippy.gcode_script(f"RESTORE_GCODE_STATE NAME=LOAD_FILAMENT")
 

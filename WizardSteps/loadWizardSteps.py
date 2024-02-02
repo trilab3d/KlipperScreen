@@ -25,7 +25,7 @@ class SelectFilament(BaseWizardStep):
             if not h.endswith("panel"):
                 self.heaters.append(h)
 
-        self.next_step = WaitForTemperature(self._screen)
+        self.next_step = WaitForTemperature
         self.label = _("Which material would you like to load?")
         self.label2 = _("Would you like to load ")
 
@@ -135,7 +135,8 @@ class SelectFilament(BaseWizardStep):
             else:
                 speed_request = 1
 
-    def validate(self, heater, target=None, max_temp=None):
+        self.wizard_manager.set_step(self.next_step(self._screen))
+
     def validate(self, heater, target=None, max_temp=None, target_actual=None):
         if target is not None and target_actual is not None and target <= target_actual:
             logging.debug(f"Actual target {target_actual} is greater or equal than target {target}. Skipping.")
@@ -156,7 +157,7 @@ class SelectFilament(BaseWizardStep):
 class WaitForTemperature(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
-        self.next_step = WaitForFilamentInserted(self._screen)
+        self.next_step = WaitForFilamentInserted
         self.settling_counter = self.settling_counter_max = 3
 
     def activate(self, wizard):
@@ -200,9 +201,7 @@ class WaitForTemperature(BaseWizardStep):
         if extruder['temperature'] >= extruder['target']:
             self.settling_counter -= 1
             if self.settling_counter < 1:
-                logging.info(f"Next step: {self.next_step}")
-                logging.info(f"WIzard manager: {self.wizard_manager}")
-                self.wizard_manager.set_step(self.next_step)
+                self.wizard_manager.set_step(self.next_step(self._screen))
         else:
             self.settling_counter = self.settling_counter_max
 
@@ -213,7 +212,7 @@ class WaitForTemperature(BaseWizardStep):
 class WaitForFilamentInserted(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
-        self.next_step = Purging(self._screen)
+        self.next_step = Purging
         self.filament_sensor = self._screen.printer.data['filament_switch_sensor fil_sensor']\
             if 'filament_switch_sensor fil_sensor' in self._screen.printer.data else None
 
@@ -294,16 +293,14 @@ class WaitForFilamentInserted(BaseWizardStep):
         for ch in self.img_box.get_children():
             self.img_box.remove(ch)
         if self.filament_sensor and self.filament_sensor["filament_detected"] and self.filament_sensor["enabled"]:
-            logging.info(f"Load guide 2: {self.load_guide2}")
             self.img_box.add(self.load_guide2)
             self.load_guide2.show()
         else:
-            logging.info(f"Load guide: {self.load_guide}")
             self.img_box.add(self.load_guide)
             self.load_guide.show()
 
     def load_filament_pressed(self, widget):
-        self.wizard_manager.set_step(self.next_step)
+        self.wizard_manager.set_step(self.next_step(self._screen))
 
     def _filament_sensor_getter(self):
         filament_sensor = self._screen.printer.data['filament_switch_sensor fil_sensor']
@@ -338,7 +335,7 @@ class Purging(BaseWizardStep):
     def __init__(self, screen, first_purge=True):
         super().__init__(screen)
         self.first_purge = first_purge
-        self.next_step = PurgingMoreDialog(self._screen)
+        self.next_step = PurgingMoreDialog
         self.waiting_for_start = 5
 
     def activate(self, wizard):
@@ -377,7 +374,7 @@ class Purging(BaseWizardStep):
         if it["state"] not in ["Ready", "Idle"]:
             self.waiting_for_start = 0
         if self.waiting_for_start <= 0 and it["state"] in ["Ready", "Idle"]:
-            self.wizard_manager.set_step(self.next_step)
+            self.wizard_manager.set_step(self.next_step(self._screen))
 
 class PurgingMoreDialog(BaseWizardStep):
     def __init__(self, screen):

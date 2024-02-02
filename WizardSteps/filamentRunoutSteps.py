@@ -54,7 +54,7 @@ class RemoveFilamentDialog(BaseWizardStep):
 class SelectFilament(loadWizardSteps.SelectFilament):
     def __init__(self, screen, load_var = True):
         super().__init__(screen, load_var)
-        self.next_step = WaitForTemperature(self._screen)
+        self.next_step = WaitForTemperature
         self.label = _("Which material would you like to load?")
         self.label2 = _("Would you like to load ")
 
@@ -62,20 +62,20 @@ class SelectFilament(loadWizardSteps.SelectFilament):
 class WaitForTemperature(loadWizardSteps.WaitForTemperature):
     def __init__(self, screen):
         super().__init__(screen)
-        self.next_step = WaitForFilamentInserted(self._screen)
+        self.next_step = WaitForFilamentInserted
 
 
 class WaitForFilamentInserted(loadWizardSteps.WaitForFilamentInserted):
     def __init__(self, screen):
         super().__init__(screen)
-        self.next_step = Purging(self._screen)
+        self.next_step = Purging
 
 
 class Purging(loadWizardSteps.Purging):
     def __init__(self, screen, first_purge=True):
         super().__init__(screen)
         self.first_purge = first_purge
-        self.next_step = PurgingMoreDialog(self._screen)
+        self.next_step = PurgingMoreDialog
 
 
 class PurgingMoreDialog(BaseWizardStep):

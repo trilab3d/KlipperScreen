@@ -11,20 +11,20 @@ from WizardSteps import loadWizardSteps
 class SelectFilament(loadWizardSteps.SelectFilament):
     def __init__(self, screen, load_var = True):
         super().__init__(screen, load_var)
-        self.next_step = WaitForTemperature(self._screen)
+        self.next_step = WaitForTemperature
         self.label = _("Which material would you like to unload?")
         self.label2 = _("Is the loaded material ")
 
 class WaitForTemperature(loadWizardSteps.WaitForTemperature):
     def __init__(self, screen):
         super().__init__(screen)
-        self.next_step = Unloading(self._screen)
+        self.next_step = Unloading
 
 class Unloading(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
         self.waiting_for_start = 5
-        self.next_step = DoneDialog(self._screen)
+        self.next_step = DoneDialog
     def activate(self, wizard):
         super().activate(wizard)
 
@@ -52,7 +52,7 @@ class Unloading(BaseWizardStep):
         if it["state"] not in ["Ready", "Idle"]:
             self.waiting_for_start = 0
         if self.waiting_for_start <= 0 and it["state"] in ["Ready", "Idle"]:
-            self.wizard_manager.set_step(self.next_step)
+            self.wizard_manager.set_step(self.next_step(self._screen))
 
 class DoneDialog(loadWizardSteps.PurgingMoreDialog):
     def __init__(self, screen):

@@ -56,19 +56,19 @@ class ConfirmPause(BaseWizardStep):
 class SelectFilament(unloadWizardSteps.SelectFilament):
     def __init__(self, screen, load_var = True):
         super().__init__(screen, load_var)
-        self.next_step = WaitForTemperature(self._screen)
+        self.next_step = WaitForTemperature
 
 
 class WaitForTemperature(unloadWizardSteps.WaitForTemperature):
     def __init__(self, screen):
         super().__init__(screen)
-        self.next_step = Unloading(self._screen)
+        self.next_step = Unloading
 
 
 class Unloading(unloadWizardSteps.Unloading):
     def __init__(self, screen):
         super().__init__(screen)
-        self.next_step = UnloadedDialog(self._screen)
+        self.next_step = UnloadedDialog
 
 
 class UnloadedDialog(BaseWizardStep):
@@ -105,26 +105,26 @@ class UnloadedDialog(BaseWizardStep):
 class SelectFilamentLoad(loadWizardSteps.SelectFilament):
     def __init__(self, screen, load_var = True):
         super().__init__(screen, load_var)
-        self.next_step = WaitForTemperatureLoad(self._screen)
+        self.next_step = WaitForTemperatureLoad
 
 
 class WaitForTemperatureLoad(loadWizardSteps.WaitForTemperature):
     def __init__(self, screen):
         super().__init__(screen)
-        self.next_step = WaitForFilamentInserted(self._screen)
+        self.next_step = WaitForFilamentInserted
 
 
 class WaitForFilamentInserted(loadWizardSteps.WaitForFilamentInserted):
     def __init__(self, screen):
         super().__init__(screen)
-        self.next_step = Purging(self._screen)
+        self.next_step = Purging
 
 
 class Purging(loadWizardSteps.Purging):
     def __init__(self, screen, first_purge=True):
         super().__init__(screen)
         self.first_purge = first_purge
-        self.next_step = PurgingMoreDialog(self._screen)
+        self.next_step = PurgingMoreDialog
 
 
 class PurgingMoreDialog(BaseWizardStep):

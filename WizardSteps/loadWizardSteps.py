@@ -128,7 +128,8 @@ class SelectFilament(BaseWizardStep):
                     if self.validate(heater, target, max_temp, target_actual):
                         self._screen._ws.klippy.set_temp_fan_temp(name, target)
 
-        self.wizard_manager.set_step(self.next_step)
+            if "flap" in self.preheat_options[setting]:
+                pass
             global speed_request
             if "speed" in self.preheat_options[setting]:
                 speed_request = float(self.preheat_options[setting]["speed"])

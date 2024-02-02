@@ -18,7 +18,6 @@ def create_panel(*args):
 class FineTunePanel(ScreenPanel):
     bs_deltas = ["0.01", "0.05"]
     bs_delta = "0.01"
-    percent_delta = '5'
     speed = extrusion = 100
 
     def __init__(self, screen, title):
@@ -132,9 +131,9 @@ class FineTunePanel(ScreenPanel):
 
     def change_extrusion(self, widget, direction):
         if direction == "+":
-            self.extrusion += int(self.percent_delta)
+            self.extrusion += 1
         elif direction == "-":
-            self.extrusion -= int(self.percent_delta)
+            self.extrusion -= 1
         elif direction == "reset":
             self.extrusion = 100
 
@@ -144,9 +143,9 @@ class FineTunePanel(ScreenPanel):
 
     def change_speed(self, widget, direction):
         if direction == "+":
-            self.speed += int(self.percent_delta)
+            self.speed += 5
         elif direction == "-":
-            self.speed -= int(self.percent_delta)
+            self.speed -= 5
         elif direction == "reset":
             self.speed = 100
 

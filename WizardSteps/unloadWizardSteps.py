@@ -15,6 +15,10 @@ class SelectFilament(loadWizardSteps.SelectFilament):
         self.label = _("Which material would you like to unload?")
         self.label2 = _("Is the loaded material ")
 
+        self.heaters = []
+        self.heaters.extend(iter(self._screen.printer.get_tools()))
+
+
 class WaitForTemperature(loadWizardSteps.WaitForTemperature):
     def __init__(self, screen):
         super().__init__(screen)

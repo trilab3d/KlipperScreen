@@ -18,7 +18,8 @@ class SplashScreenPanel(ScreenPanel):
     def __init__(self, screen, title):
         super().__init__(screen, title)
         self.is_shutdown = False
-        image = self._gtk.Image("warning", self._gtk.content_width * .9, self._gtk.content_height * .5)
+        self.image_warning = self._gtk.Image("warning", self._gtk.content_width * .9, self._gtk.content_height * .5)
+        self.image_connecting = self._gtk.Image("info", self._gtk.content_width * .9, self._gtk.content_height * .5)
         self.labels['text'] = Gtk.Label(_("Initializing printer..."))
         self.labels['text'].set_line_wrap(True)
         self.labels['text'].set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
@@ -44,8 +45,10 @@ class SplashScreenPanel(ScreenPanel):
         scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         scroll.add(self.labels['text'])
 
+        self.image_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+
         info = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        info.pack_start(image, False, True, 8)
+        info.pack_start(self.image_box, False, True, 8)
         info.pack_end(scroll, True, True, 8)
 
         main = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
@@ -56,6 +59,12 @@ class SplashScreenPanel(ScreenPanel):
 
         self.content.add(main)
 
+    def update_image(self, image):
+        for child in self.image_box.get_children():
+            self.image_box.remove(child)
+        self.image_box.add(image)
+        self.content.show_all()
+
     def update_text(self, text:str):
         if text.startswith("Klipper has shutdown"):
             self.is_shutdown = True
@@ -63,6 +72,10 @@ class SplashScreenPanel(ScreenPanel):
             self.is_shutdown = False
         self.labels['text'].set_label(f"{text}")
         self.show_restart_buttons()
+        if text.startswith("Connecting"):
+            self.update_image(self.image_connecting)
+        else:
+            self.update_image(self.image_warning)
 
     def clear_action_bar(self):
         for child in self.labels['actions'].get_children():

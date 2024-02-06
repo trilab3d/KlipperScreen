@@ -55,8 +55,9 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         entries = []
 
         index = 0
-        model_name_label = Gtk.Label(label="Model Name:")
+        model_name_label = Gtk.Label(label="Model Name")
         model_name_label.set_halign(Gtk.Align.END)
+        model_name_label.set_margin_right(10)
         model_name_entry = Gtk.Entry()
         model_name_entry.set_text(self.settings["model_name"])
         model_name_entry.connect("changed", self.change_model_name)
@@ -66,8 +67,9 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         self.grid.attach(model_name_entry, 2, index, 3, 1)
 
         index += 1
-        model_revision_label = Gtk.Label(label="Model Revision:")
+        model_revision_label = Gtk.Label(label="Model Revision")
         model_revision_label.set_halign(Gtk.Align.END)
+        model_revision_label.set_margin_right(10)
         model_revision_entry = Gtk.Entry()
         model_revision_entry.set_text(self.settings["model_revision"])
         model_revision_entry.connect("changed", self.change_model_revision)
@@ -77,19 +79,26 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         self.grid.attach(model_revision_entry, 2, index, 3, 1)
 
         index += 1
-        serial_label = Gtk.Label(label="Serial Number:")
+        serial_label = Gtk.Label(label="Serial Number")
         serial_label.set_halign(Gtk.Align.END)
+        serial_label.set_margin_right(10)
+        serial_entry_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
+        serial_prefix = Gtk.Label(label="SN")
+        serial_prefix.set_halign(Gtk.Align.END)
         serial_entry = Gtk.Entry()
         serial_entry.set_text(self.settings["serial_number"])
         serial_entry.connect("changed", self.change_serial_number)
         serial_entry.set_visibility(True)
         entries.append(serial_entry)
         self.grid.attach(serial_label, 0, index, 2, 1)
-        self.grid.attach(serial_entry, 2, index, 3, 1)
+        serial_entry_box.add(serial_prefix)
+        serial_entry_box.add(serial_entry)
+        self.grid.attach(serial_entry_box, 2, index, 3, 1)
 
         index += 1
-        mfd_label = Gtk.Label(label="Manufacture Date:")
+        mfd_label = Gtk.Label(label="Manufacture Date")
         mfd_label.set_halign(Gtk.Align.END)
+        mfd_label.set_margin_right(10)
         mfd_entry = Gtk.Entry()
         mfd_entry.set_text(self.settings["date_of_manufacture"])
         mfd_entry.connect("changed", self.change_mfd)
@@ -99,8 +108,9 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         self.grid.attach(mfd_entry, 2, index, 3, 1)
 
         index += 1
-        update_channel_label = Gtk.Label(label="Manufacture Date:")
+        update_channel_label = Gtk.Label(label="Release Channel")
         update_channel_label.set_halign(Gtk.Align.END)
+        update_channel_label.set_margin_right(10)
         self.update_channel_dropdown = Gtk.ComboBoxText()
         self.update_channels = [("dev", "Develop"), ("beta", "Beta"), ("stable", "Stable"), ("prusa-beta","Prusa Beta")]
         for i, opt in enumerate(self.update_channels):
@@ -139,6 +149,8 @@ class NetworkManagerConnectionPanel(ScreenPanel):
 
     def save_changes(self, widget):
         #print(json.dumps(self.changed_fields, indent=2))
+        if "serial_number" in self.changed_fields:
+            self.changed_fields["serial_number"] = f"SN{self.changed_fields['serial_number']}"
         self._screen.tpcclient.send_request(f"settings", "POST",
                                             body=self.changed_fields)
         #self.rebuild_pages()

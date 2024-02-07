@@ -62,7 +62,7 @@ class SystemPanel(ScreenPanel):
         self.discard_usb_button.set_vexpand(False)
         self.discard_usb_button.set_hexpand(True)
 
-        self.export_logs_button = self._gtk.Button('arrow-down', _('Export Logs to USB'), 'color2')
+        self.export_logs_button = self._gtk.Button('logs', _('Export Logs to USB'), 'color2')
         self.export_logs_button.connect("clicked", self.export_logs)
         self.export_logs_button.set_vexpand(False)
         self.export_logs_button.set_hexpand(True)

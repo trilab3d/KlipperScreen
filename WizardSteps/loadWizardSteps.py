@@ -129,7 +129,7 @@ class SelectFilament(BaseWizardStep):
                         self._screen._ws.klippy.set_temp_fan_temp(name, target)
 
             if "flap" in self.preheat_options[setting]:
-                pass
+                self._screen._ws.klippy.gcode_script(f"SET_FAN_SPEED FAN=intake_flap SPEED={self.preheat_options[setting]['flap']}")
             global speed_request
             if "speed" in self.preheat_options[setting]:
                 speed_request = float(self.preheat_options[setting]["speed"])

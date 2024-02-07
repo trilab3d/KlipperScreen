@@ -72,7 +72,7 @@ class BasePanel(ScreenPanel):
         # Titlebar
 
         # This box will be populated by show_heaters
-        self.control['temp_box'] = Gtk.Box(spacing=10)
+        self.control['temp_box'] = Gtk.Box(spacing=0)
 
         self.titlelbl = Gtk.Label()
         self.titlelbl.set_hexpand(True)
@@ -166,7 +166,7 @@ class BasePanel(ScreenPanel):
             img_size = self._gtk.img_scale * self.bts
             for device in self._printer.get_temp_store_devices():
                 self.labels[device] = Gtk.Label(label="100º")
-                self.labels[device].set_ellipsize(Pango.EllipsizeMode.START)
+                self.labels[device].set_ellipsize(Pango.EllipsizeMode.NONE)
 
                 self.labels[f'{device}_box'] = Gtk.Box()
                 icon = self.get_icon(device, img_size)
@@ -274,15 +274,8 @@ class BasePanel(ScreenPanel):
                 temp = self._printer.get_dev_stat(device, "temperature")
                 target = self._printer.get_dev_stat(device, "target")
                 if temp is not None and device in self.labels:
-                    name = ""
-                    if not (device.startswith("extruder") or device.startswith("heater_bed")):
-                        if self.titlebar_name_type == "full":
-                            name = device.split()[1] if len(device.split()) > 1 else device
-                            name = f'{name.capitalize().replace("_", " ")}: '
-                        elif self.titlebar_name_type == "short":
-                            name = device.split()[1] if len(device.split()) > 1 else device
-                            name = f"{name[:1].upper()}: "
-                    self.labels[device].set_markup(f"{name}{int(temp)}° {f'/ {int(target)}°' if target > 0 else ''}")
+                    self.labels[device].set_markup(
+                            f" {int(temp)}°<span size='xx-small'>{f'/ {int(target)}°' if target > 0 else ''}</span>")
 
         with contextlib.suppress(Exception):
             if data["toolhead"]["extruder"] != self.current_extruder:

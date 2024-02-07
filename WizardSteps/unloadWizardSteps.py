@@ -18,6 +18,13 @@ class SelectFilament(loadWizardSteps.SelectFilament):
         self.heaters = []
         self.heaters.extend(iter(self._screen.printer.get_tools()))
 
+    def set_temperature(self, widget, setting):
+        if ('save_variables' in self._screen.printer.data and
+                "filamentretracted" in self._screen.printer.data['save_variables']['variables'] and
+                self._screen.printer.data['save_variables']['variables']['filamentretracted'] == 1):
+            self.wizard_manager.set_step(Unloading(self._screen))
+            return
+        super().set_temperature(widget,setting)
 
 class WaitForTemperature(loadWizardSteps.WaitForTemperature):
     def __init__(self, screen):
@@ -34,10 +41,13 @@ class Unloading(BaseWizardStep):
 
         self._screen._ws.klippy.gcode_script(f"SAVE_GCODE_STATE NAME=LOAD_FILAMENT")
         self._screen._ws.klippy.gcode_script(f"M83")
-        self._screen._ws.klippy.gcode_script(f"G0 E3.0 F300")
-        self._screen._ws.klippy.gcode_script(f"_FILAMENT_RETRACT")
-        self._screen._ws.klippy.gcode_script(f"G4 P4000")
-        self._screen._ws.klippy.gcode_script(f"G1 E-30.0 F900")
+        if not('save_variables' in self._screen.printer.data and
+                "filamentretracted" in self._screen.printer.data['save_variables']['variables'] and
+                self._screen.printer.data['save_variables']['variables']['filamentretracted'] == 1):
+            self._screen._ws.klippy.gcode_script(f"G0 E3.0 F300")
+            self._screen._ws.klippy.gcode_script(f"_FILAMENT_RETRACT")
+            self._screen._ws.klippy.gcode_script(f"G4 P4000")
+        self._screen._ws.klippy.gcode_script(f"G1 E-30.0 F900 C")
         self._screen._ws.klippy.gcode_script(f"RESTORE_GCODE_STATE NAME=LOAD_FILAMENT")
 
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)

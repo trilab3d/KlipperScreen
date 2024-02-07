@@ -272,6 +272,7 @@ class BasePanel(ScreenPanel):
         if devices is not None:
             for device in devices:
                 temp = self._printer.get_dev_stat(device, "temperature")
+                target = self._printer.get_dev_stat(device, "target")
                 if temp is not None and device in self.labels:
                     name = ""
                     if not (device.startswith("extruder") or device.startswith("heater_bed")):
@@ -281,7 +282,7 @@ class BasePanel(ScreenPanel):
                         elif self.titlebar_name_type == "short":
                             name = device.split()[1] if len(device.split()) > 1 else device
                             name = f"{name[:1].upper()}: "
-                    self.labels[device].set_label(f"{name}{int(temp)}°")
+                    self.labels[device].set_markup(f"{name}{int(temp)}° {f'/ {int(target)}°' if target > 0 else ''}")
 
         with contextlib.suppress(Exception):
             if data["toolhead"]["extruder"] != self.current_extruder:

@@ -72,7 +72,7 @@ class BasePanel(ScreenPanel):
         # Titlebar
 
         # This box will be populated by show_heaters
-        self.control['temp_box'] = Gtk.Box(spacing=10)
+        self.control['temp_box'] = Gtk.Box(spacing=0)
 
         self.titlelbl = Gtk.Label()
         self.titlelbl.set_hexpand(True)
@@ -166,9 +166,10 @@ class BasePanel(ScreenPanel):
             img_size = self._gtk.img_scale * self.bts
             for device in self._printer.get_temp_store_devices():
                 self.labels[device] = Gtk.Label(label="100º")
-                self.labels[device].set_ellipsize(Pango.EllipsizeMode.START)
+                self.labels[device].set_ellipsize(Pango.EllipsizeMode.NONE)
 
                 self.labels[f'{device}_box'] = Gtk.Box()
+                self.labels[f'{device}_box'].set_margin_right(5)
                 icon = self.get_icon(device, img_size)
                 if icon is not None:
                     self.labels[f'{device}_box'].pack_start(icon, False, False, 3)
@@ -274,21 +275,18 @@ class BasePanel(ScreenPanel):
                 temp = self._printer.get_dev_stat(device, "temperature")
                 target = self._printer.get_dev_stat(device, "target")
                 if temp is not None and device in self.labels:
-                    name = ""
-                    if not (device.startswith("extruder") or device.startswith("heater_bed")):
-                        if self.titlebar_name_type == "full":
-                            name = device.split()[1] if len(device.split()) > 1 else device
-                            name = f'{name.capitalize().replace("_", " ")}: '
-                        elif self.titlebar_name_type == "short":
-                            name = device.split()[1] if len(device.split()) > 1 else device
-                            name = f"{name[:1].upper()}: "
-                    self.labels[device].set_markup(f"{name}{int(temp)}° {f'/ {int(target)}°' if target > 0 else ''}")
+                    if target > 0:
+                        self.labels[device].set_markup(
+                            f"<span>{int(temp)}</span><span size='xx-small'>{f'/{int(target)}'}</span>")
+                    else:
+                        self.labels[device].set_markup(
+                            f"{int(temp)}")
 
         with contextlib.suppress(Exception):
             if data["toolhead"]["extruder"] != self.current_extruder:
                 self.control['temp_box'].remove(self.labels[f"{self.current_extruder}_box"])
                 self.current_extruder = data["toolhead"]["extruder"]
-                self.control['temp_box'].pack_start(self.labels[f"{self.current_extruder}_box"], True, True, 3)
+                self.control['temp_box'].pack_start(self.labels[f"{self.current_extruder}_box"], True, True, 0)
                 self.control['temp_box'].reorder_child(self.labels[f"{self.current_extruder}_box"], 0)
                 self.control['temp_box'].show_all()
 
@@ -332,7 +330,7 @@ class BasePanel(ScreenPanel):
         except Exception as e:
             logging.debug(f"Error parsing jinja for title: {title}\n{e}")
 
-        self.titlelbl.set_label(f"{hostname} | {title}")
+        self.titlelbl.set_markup(f"{hostname} {title}")
 
     def update_time(self):
         now = datetime.now()

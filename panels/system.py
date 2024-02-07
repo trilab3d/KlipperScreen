@@ -62,6 +62,11 @@ class SystemPanel(ScreenPanel):
         self.discard_usb_button.set_vexpand(False)
         self.discard_usb_button.set_hexpand(True)
 
+        self.export_logs_button = self._gtk.Button('arrow-down', _('Export Logs to USB'), 'color2')
+        self.export_logs_button.connect("clicked", self.export_logs)
+        self.export_logs_button.set_vexpand(False)
+        self.export_logs_button.set_hexpand(True)
+
         scroll = self._gtk.ScrolledWindow()
         scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
 
@@ -109,7 +114,7 @@ class SystemPanel(ScreenPanel):
         self.progress_box.set_vexpand(False)
         self.progress_box.set_homogeneous(True)
 
-        self.button_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        self.button_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.button_box.set_hexpand(True)
         self.button_box.set_vexpand(False)
         self.button_box.set_homogeneous(True)
@@ -198,6 +203,7 @@ class SystemPanel(ScreenPanel):
                 self.progress.set_fraction(1)
                 self.progress_box.add(self.progress)
                 self.button_box.add(self.update_button)
+                self.button_box.add(self.export_logs_button)
                 self.update_button.set_sensitive(not is_printing)
             elif update_resp["update_status"] == "UP_TO_DATE":
                 self.update_header.set_markup("<span size='xx-large'>"+_("System is up to date")+"</span>")
@@ -205,6 +211,7 @@ class SystemPanel(ScreenPanel):
                 self.release_notes_label.set_label("")
                 self.icon_box.add(self.icon_ok)
                 self.button_box.add(self.refresh_button)
+                self.button_box.add(self.export_logs_button)
             elif update_resp["update_status"] == "DOWNLOAD_FAILED":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Download failed")+"</span>")
                 self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}\n"
@@ -212,6 +219,7 @@ class SystemPanel(ScreenPanel):
                 self.release_notes_label.set_markup(f"<b>{_('Release notes')}</b>:\n{update_resp['release_notes']}")
                 self.icon_box.add(self.icon_warning)
                 self.button_box.add(self.download_button)
+                self.button_box.add(self.export_logs_button)
             elif update_resp["update_status"] == "USB_UPDATE_AVAILABLE":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Update found on USB")+"</span>")
                 self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}\n"
@@ -219,6 +227,7 @@ class SystemPanel(ScreenPanel):
                 self.release_notes_label.set_label("")
                 self.icon_box.add(self.icon_update_usb)
                 self.button_box.add(self.install_usb_button)
+                self.button_box.add(self.export_logs_button)
             elif update_resp["update_status"] == "USB_UNPACKING":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Unpacking")+f" ({int(float(update_resp['progress']))}%)</span>")
                 self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}\n"
@@ -227,6 +236,7 @@ class SystemPanel(ScreenPanel):
                 self.icon_box.add(self.icon_unpacking_usb)
                 self.progress.set_fraction(float(update_resp['progress']) / 100)
                 self.progress_box.add(self.progress)
+                self.button_box.add(self.export_logs_button)
             elif update_resp["update_status"] == "USB_INSTALLED":
                 self.update_header.set_markup("<span size='xx-large'>"+_("USB update ready")+"</span>")
                 self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}\n"
@@ -237,16 +247,18 @@ class SystemPanel(ScreenPanel):
                 self.button_box.add(self.discard_usb_button)
                 is_printing = self._screen.printer.data['print_stats']['state'] == 'printing'
                 self.update_button.set_sensitive(not is_printing)
+                self.button_box.add(self.export_logs_button)
             else:
                 self.update_header.set_markup("")
                 self.update_label.set_label("")
                 self.release_notes_label.set_label("")
+                self.button_box.add(self.export_logs_button)
         except Exception as e:
             logging.error(e)
             self.update_header.set_markup("")
             self.update_label.set_label("")
 
-        self._screen.close_popup_message()
+        #self._screen.close_popup_message()
         self.content.show_all()
         return self.do_schedule_refresh
 
@@ -261,6 +273,23 @@ class SystemPanel(ScreenPanel):
 
     def discard_usb_update(self, widget):
         self._screen.tpcclient.send_request(f"discard_usb_update","POST")
+
+    def export_logs(self, widget):
+        if not os.path.exists("/mnt/part4/opt/gcodes/usb"):
+            self._screen.show_popup_message("USB storage missing", 3)
+            return
+        os.system("rm -rf /tmp/log-export")
+        os.system("mkdir /tmp/log-export")
+        os.system("cp /tmp/moonraker.log* /tmp/log-export")
+        os.system("cp /tmp/klippy.log* /tmp/log-export")
+        os.system("cp /tmp/tpc.log /tmp/log-export")
+        p = os.popen("echo $(hostname)-logs-$(date +%m%b%y-%H-%M-%S).tar.gz",'r',1)
+        filename = p.read().strip()
+        p.close()
+        os.system(f"tar -C /tmp/ -czvf /tmp/log-export/{filename} log-export")
+        os.system("cp /tmp/log-export/*.tar.gz /mnt/part4/opt/gcodes/usb")
+        os.system(f"sync")
+        self._screen.show_popup_message(f"Logs exported to {filename}", 1)
 
     def show_update_info(self, widget):
 

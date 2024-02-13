@@ -349,6 +349,7 @@ class Purging(BaseWizardStep):
             self._screen._ws.klippy.gcode_script(f"M83")
             self._screen._ws.klippy.gcode_script(f"G0 E35 F{int(600*speed_request)}")
             self._screen._ws.klippy.gcode_script(f"G0 E50 F{int(300*speed_request)}")
+            self._screen._ws.klippy.gcode_script(f"SAVE_VARIABLE VARIABLE=filamentretracted VALUE=0")
             self._screen._ws.klippy.gcode_script(f"_FILAMENT_RETRACT")
             self._screen._ws.klippy.gcode_script(f"RESTORE_GCODE_STATE NAME=LOAD_FILAMENT")
         else:

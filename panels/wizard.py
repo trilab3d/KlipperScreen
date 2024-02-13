@@ -24,8 +24,7 @@ class WizardPanel(ScreenPanel):
         self.name_label = self._gtk.Label("")
         #self.name_label.set_margin_top(10)
         self.name_label.set_margin_bottom(10)
-        self.name_label.set_markup(
-            "<span size='xx-large'>" + name + "</span>")
+        self.set_heading(name)
 
         self.first_step: BaseWizardStep = getattr(module,parts[1])(screen)
         self.current_step: BaseWizardStep = self.first_step
@@ -48,6 +47,10 @@ class WizardPanel(ScreenPanel):
         if self.do_schedule_refresh:
             self.current_step.update_loop()
         return self.do_schedule_refresh
+
+    def set_heading(self, name):
+        self.name_label.set_markup(
+            "<span size='xx-large'>" + name + "</span>")
 
     def set_step(self, step):
         self.current_step = step

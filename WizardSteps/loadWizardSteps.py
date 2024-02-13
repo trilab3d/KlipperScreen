@@ -389,7 +389,7 @@ class Purging(Cancelable, BaseWizardStep):
         if self.waiting_for_start <= 0 and it["state"] in ["Ready", "Idle"]:
             self.wizard_manager.set_step(self.next_step(self._screen))
 
-class PurgingMoreDialog(Cancelable, BaseWizardStep):
+class PurgingMoreDialog(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
         self.heaters = []
@@ -440,5 +440,34 @@ class PurgingMoreDialog(Cancelable, BaseWizardStep):
         self._screen._menu_go_back()
 
     def purge_filament_pressed(self, widget):
+        self.wizard_manager.set_step(CheckReheatNeeded(self._screen))
+
+
+class CheckReheatNeeded(SelectFilament):
+    def __init__(self, screen):
+        super().__init__(screen)
+
+    def activate(self, wizard):
+        super(SelectFilament,self).activate(wizard)
+        if ("extruder" in self.preheat_options[currently_loading] and
+                self.preheat_options[currently_loading]["extruder"] > self._screen.printer.data['extruder']["target"]):
+            self.next_step = WaitForTemperatureForPurge
+            self.set_temperature(None, currently_loading)
+        else:
+            self.wizard_manager.set_step(Purging(self._screen, False))
+
+
+class WaitForTemperatureForPurge(WaitForTemperature):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.next_step = DoPurgeAfterReheat
+
+
+class DoPurgeAfterReheat(BaseWizardStep):
+    def __init__(self, screen):
+        super().__init__(screen)
+
+    def activate(self, wizard):
+        super().activate(wizard)
         self.wizard_manager.set_step(Purging(self._screen, False))
 

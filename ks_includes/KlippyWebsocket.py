@@ -294,7 +294,7 @@ class MoonrakerApi:
         )
 
     def set_chamber_temp(self, target, callback=None, *args):
-        logging.debug(f"Sending set_bed_temp: {KlippyGcodes.set_bed_temp(target)}")
+        logging.debug(f"Sending set_chamber_temp: {KlippyGcodes.set_chamber_temp(target)}")
         return self._ws.send_method(
             "printer.gcode.script",
             {

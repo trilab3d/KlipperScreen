@@ -10,6 +10,13 @@ from WizardSteps.baseWizardStep import BaseWizardStep
 currently_loading = ""
 speed_request = 1
 
+
+class Cancelable():
+    def on_cancel(self):
+        self._screen._ws.klippy.gcode_script("_FILAMENT_RETRACT")
+        self._screen._ws.klippy.gcode_script("_RESTORE_TEMPERATURE")
+
+
 class SelectFilament(BaseWizardStep):
     def __init__(self, screen, load_var = False):
         super().__init__(screen)
@@ -77,6 +84,7 @@ class SelectFilament(BaseWizardStep):
             self.content.add(scroll)
 
     def set_temperature(self, widget, setting):
+        self._screen._ws.klippy.gcode_script("_SAVE_TEMPERATURE")
         global currently_loading
         currently_loading = setting
         if len(self.heaters) == 0:
@@ -155,7 +163,7 @@ class SelectFilament(BaseWizardStep):
     def set_filament_unknown(self, widget):
         self.wizard_manager.set_step(self.__class__(self._screen, False))
 
-class WaitForTemperature(BaseWizardStep):
+class WaitForTemperature(Cancelable, BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
         self.next_step = WaitForFilamentInserted
@@ -189,15 +197,15 @@ class WaitForTemperature(BaseWizardStep):
         self.content.add(temperature_box)
         cancel_button = self._screen.gtk.Button(label=_("Cancel"), style=f"color1")
         cancel_button.set_vexpand(False)
-        #cancel_button.connect("clicked", self.cancel_pressed)
+        cancel_button.connect("clicked", self.cancel_pressed)
         self.content.add(cancel_button)
 
     def update_loop(self):
         extruder = self.fetch_extruder()
         fract = extruder["temperature"]/extruder["target"] if extruder["target"] > 0 else 1
         self.temperature_progressbar.set_fraction(fract)
-        self.actual_temperature.set_label(f"{extruder['temperature']} °C")
-        self.target_temperature.set_label(f"{extruder['target']} °C")
+        self.actual_temperature.set_label(f"{extruder['temperature']:.1f} °C")
+        self.target_temperature.set_label(f"{extruder['target']:.1f} °C")
 
         if extruder['temperature'] >= extruder['target']:
             self.settling_counter -= 1
@@ -210,7 +218,10 @@ class WaitForTemperature(BaseWizardStep):
         extruder = self._screen.printer.data['extruder']
         return extruder
 
-class WaitForFilamentInserted(BaseWizardStep):
+    def cancel_pressed(self, widget):
+        self._screen._menu_go_back()
+
+class WaitForFilamentInserted(Cancelable, BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
         self.next_step = Purging
@@ -332,7 +343,7 @@ class WaitForFilamentInserted(BaseWizardStep):
         self.switch.set_sensitive(False)
 
 
-class Purging(BaseWizardStep):
+class Purging(Cancelable, BaseWizardStep):
     def __init__(self, screen, first_purge=True):
         super().__init__(screen)
         self.first_purge = first_purge
@@ -378,7 +389,7 @@ class Purging(BaseWizardStep):
         if self.waiting_for_start <= 0 and it["state"] in ["Ready", "Idle"]:
             self.wizard_manager.set_step(self.next_step(self._screen))
 
-class PurgingMoreDialog(BaseWizardStep):
+class PurgingMoreDialog(Cancelable, BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
         self.heaters = []

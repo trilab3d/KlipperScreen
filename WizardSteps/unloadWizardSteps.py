@@ -31,7 +31,7 @@ class WaitForTemperature(loadWizardSteps.WaitForTemperature):
         super().__init__(screen)
         self.next_step = Unloading
 
-class Unloading(BaseWizardStep):
+class Unloading(loadWizardSteps.Cancelable, BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
         self.waiting_for_start = 5

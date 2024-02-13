@@ -11,3 +11,6 @@ class BaseWizardStep():
     def update_loop(self):
         pass
 
+    def on_cancel(self):
+        pass
+

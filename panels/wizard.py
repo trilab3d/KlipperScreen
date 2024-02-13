@@ -42,9 +42,11 @@ class WizardPanel(ScreenPanel):
 
     def deactivate(self):
         self.do_schedule_refresh = False
+        self.current_step.on_cancel()
 
     def _update_loop(self):
-        self.current_step.update_loop()
+        if self.do_schedule_refresh:
+            self.current_step.update_loop()
         return self.do_schedule_refresh
 
     def set_step(self, step):

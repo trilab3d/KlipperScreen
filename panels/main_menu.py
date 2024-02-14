@@ -56,6 +56,7 @@ class MainPanel(MenuPanel):
             scroll.add(self.labels['menu'])
             self.main_menu.attach(scroll, 1, 0, 1, 1)
         self.content.add(self.main_menu)
+        self.show_bg = True
 
     def update_graph_visibility(self):
         if self.left_panel is None or not self._printer.get_temp_store_devices():

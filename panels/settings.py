@@ -18,6 +18,7 @@ class SettingsPanel(ScreenPanel):
         self.do_schedule_refresh = True
         self.printers = self.settings = self.langs = {}
         self.menu = ['settings_menu']
+        self.show_bg = False
         options = self._config.get_configurable_options().copy()
         #options.append({"lang": {
         #    "name": _("Language"),

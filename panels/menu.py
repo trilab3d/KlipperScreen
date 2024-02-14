@@ -30,7 +30,6 @@ class MenuPanel(ScreenPanel):
         self.grid.set_vexpand(False)
         self.scroll = self._gtk.ScrolledWindow()
         self.scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        self.show_bg = True
 
     def activate(self):
         self.add_content()

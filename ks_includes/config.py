@@ -228,6 +228,8 @@ class KlipperScreenConfig:
                 strs = ('gcode', '')
                 bools = ('abrasive', )
                 numbers = [f'{option}' for option in self.config[section] if option not in ('gcode', 'abrasive')]
+            elif section.startswith('nozzle_type '):
+                strs = ('diameters', )
             elif section.startswith('menu '):
                 strs = ('name', 'icon', 'panel', 'method', 'params', 'enable', 'confirm', 'style', 'view_groups', 'wizard', 'wizard_name')
             elif section == 'bed_screws':
@@ -477,6 +479,11 @@ class KlipperScreenConfig:
         items = [i[len(index):] for i in self.config.sections() if i.startswith(index)]
         return {item: self._build_preheat_item(index + item) for item in items}
 
+    def get_nozzle_types(self):
+        index = "nozzle_type "
+        items = [i[len(index):] for i in self.config.sections() if i.startswith(index)]
+        return {item: self._build_nozzle_type(index + item) for item in items}
+
     def _build_preheat_item(self, name):
         if name not in self.config:
             return False
@@ -484,6 +491,17 @@ class KlipperScreenConfig:
         return {opt: cfg.get("gcode", None) if opt == "gcode"
             else cfg.getboolean(opt, None) if opt == "abrasive"
             else cfg.getfloat(opt, None) for opt in cfg}
+
+    def _build_nozzle_type(self, name):
+        if name not in self.config:
+            return False
+        cfg = self.config[name]
+        resp = {opt: cfg.get(opt, None) for opt in cfg}
+        if 'diameters' in resp:
+            vals = resp['diameters'].split(',')
+            vals = list(x.strip() for x in vals)
+            resp['diameters'] = vals
+        return resp
 
     def get_printer_config(self, name):
         if not name.startswith("printer "):

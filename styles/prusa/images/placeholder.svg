@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="800px"
+   height="800px"
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="placeholder.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     id="namedview6"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="1.05"
+     inkscape:cx="400.47619"
+     inkscape:cy="476.19048"
+     inkscape:window-width="1920"
+     inkscape:window-height="1019"
+     inkscape:window-x="0"
+     inkscape:window-y="542"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
+  <path
+     d="m 4 1 c -1.644531 0 -3 1.355469 -3 3 v 1 h 1 v -1 c 0 -1.109375 0.890625 -2 2 -2 h 1 v -1 z m 2 0 v 1 h 4 v -1 z m 5 0 v 1 h 1 c 1.109375 0 2 0.890625 2 2 v 1 h 1 v -1 c 0 -1.644531 -1.355469 -3 -3 -3 z m -5 4 c -0.550781 0 -1 0.449219 -1 1 s 0.449219 1 1 1 s 1 -0.449219 1 -1 s -0.449219 -1 -1 -1 z m -5 1 v 4 h 1 v -4 z m 13 0 v 4 h 1 v -4 z m -4.5 2 l -2 2 l -1.5 -1 l -2 2 v 0.5 c 0 0.5 0.5 0.5 0.5 0.5 h 7 s 0.472656 -0.035156 0.5 -0.5 v -1 z m -8.5 3 v 1 c 0 1.644531 1.355469 3 3 3 h 1 v -1 h -1 c -1.109375 0 -2 -0.890625 -2 -2 v -1 z m 13 0 v 1 c 0 1.109375 -0.890625 2 -2 2 h -1 v 1 h 1 c 1.644531 0 3 -1.355469 3 -3 v -1 z m -8 3 v 1 h 4 v -1 z m 0 0"
+     fill="#2e3434"
+     fill-opacity="0.34902"
+     id="path2"
+     style="fill:#808080;fill-opacity:0.98333967" />
+  <path
+     id="path1629"
+     style="color:#000000;fill:#fa6831;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none;paint-order:markers stroke fill"
+     d="M 10.603516 10.261406 A 0.40000001 0.40000001 0 0 0 10.320312 10.378906 A 0.40000001 0.40000001 0 0 0 10.320312 10.945312 L 11.801758 12.426758 L 10.320312 13.908203 A 0.40000001 0.40000001 0 0 0 10.320312 14.474609 A 0.40000001 0.40000001 0 0 0 10.886719 14.474609 L 12.368164 12.993164 L 13.849609 14.474609 A 0.40000001 0.40000001 0 0 0 14.416016 14.474609 A 0.40000001 0.40000001 0 0 0 14.416016 13.908203 L 12.93457 12.426758 L 14.416016 10.945312 A 0.40000001 0.40000001 0 0 0 14.416016 10.378906 A 0.40000001 0.40000001 0 0 0 13.849609 10.378906 L 12.368164 11.860352 L 10.886719 10.378906 A 0.40000001 0.40000001 0 0 0 10.603516 10.261406 z " />
+</svg>

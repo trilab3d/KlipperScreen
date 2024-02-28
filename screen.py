@@ -935,6 +935,8 @@ class KlipperScreen(Gtk.Window):
                        + self.printer.get_door_sensors()
                        + (["config_constant printhead"]
                             if self.printer.config_section_exists("config_constant printhead") else [])
+                       + (["config_constant printhead_pretty"]
+                          if self.printer.config_section_exists("config_constant printhead_pretty") else [])
                        + (["save_variables"]
                             if self.printer.config_section_exists("save_variables") else [])
                        )

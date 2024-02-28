@@ -19,10 +19,34 @@ class MainPanel(MenuPanel):
         super().__init__(screen, title, items)
         self.graph_retry_timeout = None
         # self.left_panel = None
+        info_grid = self._gtk.HomogeneousGrid(column_homogenous=False)
+        printhead_label = Gtk.Label("Printhead:")
+        printhead_label.set_halign(Gtk.Align.END)
+        self.printhead_value = Gtk.Label("")
+        self.printhead_value.set_halign(Gtk.Align.START)
+        nozzle_label = Gtk.Label("Nozzle:")
+        nozzle_label.set_halign(Gtk.Align.END)
+        self.nozzle_value = Gtk.Label("")
+        self.nozzle_value.set_halign(Gtk.Align.START)
+        filament_label = Gtk.Label("Filament:")
+        filament_label.set_halign(Gtk.Align.END)
+        self.filament_value = Gtk.Label("")
+        self.filament_value.set_halign(Gtk.Align.START)
+        info_grid.attach(printhead_label, 0, 0, 1, 1)
+        info_grid.attach(self.printhead_value, 1, 0, 1, 1)
+        info_grid.attach(nozzle_label, 0, 1, 1, 1)
+        info_grid.attach(self.nozzle_value, 1, 1, 1, 1)
+        info_grid.attach(filament_label, 0, 2, 1, 1)
+        info_grid.attach(self.filament_value, 1, 2, 1, 1)
+        info_grid.set_margin_left(20)
+        info_grid.set_margin_top(250)
+        info_grid.set_row_spacing(10)
+        info_grid.set_column_spacing(10)
         logo_image = self._gtk.Image(
                 "PrusaPRO_HT90_bile", self._gtk.content_width*0.875,
                 self._gtk.content_height * 0.6)
         self.logo = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.logo.add(info_grid)
         self.logo.pack_end(logo_image, False, False, 0)
         self.logo.set_baseline_position(Gtk.BaselinePosition.BOTTOM)
         self.logo.set_size_request(self._gtk.content_width*0.9,
@@ -103,6 +127,19 @@ class MainPanel(MenuPanel):
     def activate(self):
         # self.update_graph_visibility()
         self._screen.base_panel_show_all()
+        printhead = self._printer.data['config_constant printhead_pretty']['value']\
+            if 'config_constant printhead_pretty' in self._printer.data else ""
+        self.printhead_value.set_label(printhead)
+        nozzle = self._printer.data['save_variables']['variables']['nozzle'] \
+            if ('save_variables' in self._printer.data and
+                'nozzle' in self._printer.data['save_variables']['variables']) \
+            else ""
+        self.nozzle_value.set_label(f"{nozzle}")
+        filament = self._printer.data['save_variables']['variables']['loaded_filament']\
+            if ('save_variables' in self._printer.data and
+                'loaded_filament' in self._printer.data['save_variables']['variables'] )\
+            else ""
+        self.filament_value.set_label(filament)
 
     def deactivate(self):
         if self.graph_update is not None:

@@ -69,7 +69,7 @@ class Cooling(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder", self._screen.gtk.content_width * .9,
+        img = self._screen.gtk.Image("cooling", self._screen.gtk.content_width * .9,
                                      self._screen.gtk.content_height * .5)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")

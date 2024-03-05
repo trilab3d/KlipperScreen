@@ -90,7 +90,6 @@ class SelectFilament(BaseWizardStep):
         if len(self.heaters) == 0:
             self._screen.show_popup_message(_("Nothing selected"))
         else:
-            logging.info(f"{self.preheat_options[setting]}")
             for heater in self.heaters:
                 logging.info(f"Looking for settings for heater {heater}")
                 target = None
@@ -110,36 +109,44 @@ class SelectFilament(BaseWizardStep):
                     target = 0
                 if heater.startswith('extruder'):
                     if self.validate(heater, target, max_temp, target_actual):
+                    if setting == 'cooldown' or self.validate(heater, target, max_temp, target_actual):
                         self._screen._ws.klippy.set_tool_temp(self._screen.printer.get_tool_number(heater), target)
                 elif heater.startswith('heater_bed'):
                     if target is None:
                         with contextlib.suppress(KeyError):
                             target = self.preheat_options[setting]["bed"]
                     if self.validate(heater, target, max_temp, target_actual):
+                    if setting == 'cooldown' or self.validate(heater, target, max_temp, target_actual):
                         self._screen._ws.klippy.set_bed_temp(target)
                 elif heater.startswith('heater_chamber'):
                     if target is None:
                         with contextlib.suppress(KeyError):
                             target = self.preheat_options[setting]["chamber"]
                     if self.validate(heater, target, max_temp, target_actual):
+                    if setting == 'cooldown' or self.validate(heater, target, max_temp, target_actual):
                         self._screen._ws.klippy.set_chamber_temp(target)
                 elif heater.startswith('heater_generic '):
                     if target is None:
                         with contextlib.suppress(KeyError):
                             target = self.preheat_options[setting]["heater_generic"]
                     if self.validate(heater, target, max_temp, target_actual):
+                    if setting == 'cooldown' or self.validate(heater, target, max_temp, target_actual):
                         self._screen._ws.klippy.set_heater_temp(name, target)
                 elif heater.startswith('temperature_fan '):
                     if target is None:
                         with contextlib.suppress(KeyError):
                             target = self.preheat_options[setting]["temperature_fan"]
                     if self.validate(heater, target, max_temp, target_actual):
+                    if setting == 'cooldown' or self.validate(heater, target, max_temp, target_actual):
                         self._screen._ws.klippy.set_temp_fan_temp(name, target)
 
             if "flap" in self.preheat_options[setting]:
+            if setting == 'cooldown':
+                self._screen._ws.klippy.gcode_script(f"SET_FAN_SPEED FAN=intake_flap SPEED=1")
+            elif "flap" in self.preheat_options[setting]:
                 self._screen._ws.klippy.gcode_script(f"SET_FAN_SPEED FAN=intake_flap SPEED={self.preheat_options[setting]['flap']}")
             global speed_request
-            if "speed" in self.preheat_options[setting]:
+            if setting in self.preheat_options and "speed" in self.preheat_options[setting]:
                 speed_request = float(self.preheat_options[setting]["speed"])
             else:
                 speed_request = 1

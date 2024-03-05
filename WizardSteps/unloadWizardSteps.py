@@ -8,6 +8,9 @@ from gi.repository import Gtk, Gdk, GLib, Pango
 from WizardSteps.baseWizardStep import BaseWizardStep
 from WizardSteps import loadWizardSteps
 
+currently_unloading = None
+second_attempt = False
+
 class SelectFilament(loadWizardSteps.SelectFilament):
     def __init__(self, screen, load_var = True):
         super().__init__(screen, load_var)
@@ -18,7 +21,12 @@ class SelectFilament(loadWizardSteps.SelectFilament):
         self.heaters = []
         self.heaters.extend(iter(self._screen.printer.get_tools()))
 
+        global second_attempt
+        second_attempt = False
+
     def set_temperature(self, widget, setting):
+        global currently_unloading
+        currently_unloading = setting
         if ('save_variables' in self._screen.printer.data and
                 "filamentretracted" in self._screen.printer.data['save_variables']['variables'] and
                 self._screen.printer.data['save_variables']['variables']['filamentretracted'] == 1):
@@ -35,13 +43,13 @@ class Unloading(loadWizardSteps.Cancelable, BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
         self.waiting_for_start = 5
-        self.next_step = DoneDialog
+        self.next_step = ConfirmUnloadedDialog
     def activate(self, wizard):
         super().activate(wizard)
 
         self._screen._ws.klippy.gcode_script(f"SAVE_GCODE_STATE NAME=LOAD_FILAMENT")
         self._screen._ws.klippy.gcode_script(f"M83")
-        if not('save_variables' in self._screen.printer.data and
+        if second_attempt or not('save_variables' in self._screen.printer.data and
                 "filamentretracted" in self._screen.printer.data['save_variables']['variables'] and
                 self._screen.printer.data['save_variables']['variables']['filamentretracted'] == 1):
             self._screen._ws.klippy.gcode_script(f"G0 E3.0 F300")
@@ -67,6 +75,46 @@ class Unloading(loadWizardSteps.Cancelable, BaseWizardStep):
             self.waiting_for_start = 0
         if self.waiting_for_start <= 0 and it["state"] in ["Ready", "Idle"]:
             self.wizard_manager.set_step(self.next_step(self._screen))
+
+class ConfirmUnloadedDialog(loadWizardSteps.SelectFilament):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.next_step = WaitForTemperature
+    def activate(self, wizard):
+        super().activate(wizard)
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        img = self._screen.gtk.Image("unload_guide", self._screen.gtk.content_width * .9,
+                                     self._screen.gtk.content_height * .5)
+        self.content.add(img)
+        confirm_label = self._screen.gtk.Label("")
+        confirm_label.set_margin_top(20)
+        confirm_label.set_markup(
+            "<span size='large'>" + _("Was unload succesfull?") + "</span>")
+        self.content.add(confirm_label)
+        second_label = self._screen.gtk.Label("")
+        second_label.set_margin_left(40)
+        second_label.set_margin_right(40)
+        second_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        second_label.set_line_wrap(True)
+        second_label.set_markup(
+            "<span size='small'>" + _("Try pull filament out.") + "</span>")
+        self.content.add(second_label)
+        continue_button = self._screen.gtk.Button(label=_("Yes, continue"), style=f"color1")
+        continue_button.set_vexpand(False)
+        continue_button.connect("clicked", self.continue_pressed)
+        self.content.add(continue_button)
+        retry_button = self._screen.gtk.Button(label=_("No, unload again"), style=f"color1")
+        retry_button.set_vexpand(False)
+        retry_button.connect("clicked", self.retry)
+        self.content.add(retry_button)
+
+    def retry(self, widget):
+        global second_attempt
+        second_attempt = True
+        self.set_temperature(None, currently_unloading)
+
+    def continue_pressed(self, widget):
+        self.wizard_manager.set_step(DoneDialog(self._screen))
 
 class DoneDialog(loadWizardSteps.PurgingMoreDialog):
     def __init__(self, screen):

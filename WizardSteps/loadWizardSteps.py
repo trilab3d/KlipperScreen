@@ -209,9 +209,12 @@ class WaitForTemperature(Cancelable, BaseWizardStep):
         if extruder['temperature'] >= extruder['target']:
             self.settling_counter -= 1
             if self.settling_counter < 1:
-                self.wizard_manager.set_step(self.next_step(self._screen))
+                self.go_to_next()
         else:
             self.settling_counter = self.settling_counter_max
+
+    def go_to_next(self):
+        self.wizard_manager.set_step(self.next_step(self._screen))
 
     def fetch_extruder(self):
         extruder = self._screen.printer.data['extruder']

@@ -70,9 +70,13 @@ class SelectFilament(BaseWizardStep):
             self.content.add(label)
             preheat_grid = self._screen.gtk.HomogeneousGrid()
             i = 0
+            printhead = self._screen.printer.data['config_constant printhead']['value'] \
+                if 'config_constant printhead_pretty' in self._screen.printer.data else ""
             for option in self.preheat_options:
-                if (option != "cooldown" and "extruder" in self.preheat_options[option]
-                        and self.preheat_options[option]["extruder"] <= self.max_head_temp):
+                if ((option != "cooldown" and "extruder" in self.preheat_options[option]
+                        and self.preheat_options[option]["extruder"] <= self.max_head_temp) and
+                        ("printheads" not in self.preheat_options[option] or
+                         printhead in self.preheat_options[option]["printheads"])):
                     option_btn = self._screen.gtk.Button(label=option, style=f"color{(i % 4) + 1}")
                     option_btn.connect("clicked", self.set_temperature, option)
                     option_btn.set_vexpand(False)

@@ -225,9 +225,9 @@ class KlipperScreenConfig:
                     'calibrate_x_position', 'calibrate_y_position',
                 )
             elif section.startswith('preheat '):
-                strs = ('gcode', '')
+                strs = ('gcode', 'printheads', '')
                 bools = ('abrasive', )
-                numbers = [f'{option}' for option in self.config[section] if option not in ('gcode', 'abrasive')]
+                numbers = [f'{option}' for option in self.config[section] if option not in [*strs, *bools]]
             elif section.startswith('nozzle_type '):
                 strs = ('diameters', )
             elif section.startswith('menu '):
@@ -489,6 +489,7 @@ class KlipperScreenConfig:
             return False
         cfg = self.config[name]
         return {opt: cfg.get("gcode", None) if opt == "gcode"
+            else [a.strip() for a in cfg.get(opt, None).split(",")] if opt == "printheads"
             else cfg.getboolean(opt, None) if opt == "abrasive"
             else cfg.getfloat(opt, None) for opt in cfg}
 

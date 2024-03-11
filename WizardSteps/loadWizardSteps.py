@@ -216,7 +216,8 @@ class WaitForTemperature(Cancelable, BaseWizardStep):
         self.target_temperature.set_label(f"{extruder['target']:.1f} °C")
 
         if (abs(extruder['temperature'] - extruder['target']) < 3 or
-                ("extruder_max" in self.setting and self.setting["extruder_max"] > extruder['temperature'])):
+                ("extruder_max" in self.setting and self.setting["extruder_max"] > extruder['temperature'] and
+                 extruder['temperature'] > extruder['target'])):
             self.settling_counter -= 1
             if self.settling_counter < 1:
                 self.go_to_next()

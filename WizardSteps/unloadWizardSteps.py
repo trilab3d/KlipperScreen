@@ -59,8 +59,7 @@ class Unloading(loadWizardSteps.Cancelable, BaseWizardStep):
         self._screen._ws.klippy.gcode_script(f"RESTORE_GCODE_STATE NAME=LOAD_FILAMENT")
 
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("prusament", self._screen.gtk.content_width * .9,
-                                     self._screen.gtk.content_height * .5)
+        img = self._screen.gtk.Image("purging", self._screen.gtk.content_width * .945,450)
         self.content.add(img)
         unload_label = self._screen.gtk.Label("")
         unload_label.set_margin_top(20)
@@ -83,8 +82,7 @@ class ConfirmUnloadedDialog(loadWizardSteps.SelectFilament):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("unload_guide", self._screen.gtk.content_width * .9,
-                                     self._screen.gtk.content_height * .5)
+        img = self._screen.gtk.Image("unload_guide32", self._screen.gtk.content_width * .945,450)
         self.content.add(img)
         confirm_label = self._screen.gtk.Label("")
         confirm_label.set_margin_top(20)

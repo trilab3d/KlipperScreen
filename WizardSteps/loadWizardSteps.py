@@ -39,8 +39,7 @@ class SelectFilament(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("prusament", self._screen.gtk.content_width * .9,
-                                          self._screen.gtk.content_height * .5)
+        img = self._screen.gtk.Image("prusament", self._screen.gtk.content_width * .945, 450)
         self.content.add(img)
 
         if (self.load_var and 'save_variables' in self._screen.printer.data and
@@ -173,8 +172,7 @@ class WaitForTemperature(Cancelable, BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("heating", self._screen.gtk.content_width * .9,
-                                     self._screen.gtk.content_height * .5)
+        img = self._screen.gtk.Image("heating", self._screen.gtk.content_width * .945,450)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)
@@ -229,11 +227,9 @@ class WaitForFilamentInserted(Cancelable, BaseWizardStep):
         self.filament_sensor = self._screen.printer.data['filament_switch_sensor fil_sensor']\
             if 'filament_switch_sensor fil_sensor' in self._screen.printer.data else None
 
-        self.load_guide = self._screen.gtk.Image("load_guide_arrow", self._screen.gtk.content_width * .9,
-                                     self._screen.gtk.content_height * .5)
+        self.load_guide = self._screen.gtk.Image("load_guide_arrow", self._screen.gtk.content_width * .945,450)
 
-        self.load_guide2 = self._screen.gtk.Image("load_guide_2_arrow", self._screen.gtk.content_width * .9,
-                                                 self._screen.gtk.content_height * .5)
+        self.load_guide2 = self._screen.gtk.Image("load_guide_2_arrow", self._screen.gtk.content_width * .945,450)
 
         self.loaded = False
         self.update_deadtime = 0
@@ -373,8 +369,7 @@ class Purging(Cancelable, BaseWizardStep):
             self._screen._ws.klippy.gcode_script(f"RESTORE_GCODE_STATE NAME=LOAD_FILAMENT")
 
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("purging", self._screen.gtk.content_width * .9,
-                                     self._screen.gtk.content_height * .5)
+        img = self._screen.gtk.Image("purging", self._screen.gtk.content_width * .945, 450)
         self.content.add(img)
         load_label = self._screen.gtk.Label("")
         load_label.set_margin_top(20)
@@ -402,8 +397,7 @@ class PurgingMoreDialog(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("purging", self._screen.gtk.content_width * .9,
-                                     self._screen.gtk.content_height * .5)
+        img = self._screen.gtk.Image("purging", self._screen.gtk.content_width * .945,450)
         self.content.add(img)
         confirm_label = self._screen.gtk.Label("")
         confirm_label.set_margin_top(20)

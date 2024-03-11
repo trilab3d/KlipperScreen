@@ -103,7 +103,7 @@ class UnscrewNozzle(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder", self._screen.gtk.content_width * .9,
+        img = self._screen.gtk.Image("unscrew", self._screen.gtk.content_width * .9,
                                      self._screen.gtk.content_height * .5)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
@@ -142,7 +142,7 @@ class SelectNozzleType(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder", self._screen.gtk.content_width * .9,
+        img = self._screen.gtk.Image("revos", self._screen.gtk.content_width * .9,
                                      self._screen.gtk.content_height * .5)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
@@ -180,7 +180,7 @@ class SelectNozzleDiameter(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder", self._screen.gtk.content_width * .9,
+        img = self._screen.gtk.Image("revos", self._screen.gtk.content_width * .9,
                                      self._screen.gtk.content_height * .5)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
@@ -223,7 +223,7 @@ class ScrewNozzleIn(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder", self._screen.gtk.content_width * .9,
+        img = self._screen.gtk.Image("screw-in", self._screen.gtk.content_width * .9,
                                      self._screen.gtk.content_height * .5)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")

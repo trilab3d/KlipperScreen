@@ -107,7 +107,10 @@ class SelectFilament(BaseWizardStep):
                 if target is None and setting == "cooldown" and not heater.startswith('temperature_fan '):
                     target = 0
                 if heater.startswith('extruder'):
-                    if setting == 'cooldown' or self.validate(heater, target, max_temp, target_actual):
+                    if setting == 'cooldown' or self.validate(heater, target, max_temp, target_actual,
+                                                              self.preheat_options[setting]["extruder_max"]
+                                                              if "extruder_max" in self.preheat_options[setting]
+                                                              else None):
                         self._screen._ws.klippy.set_tool_temp(self._screen.printer.get_tool_number(heater), target)
                 elif heater.startswith('heater_bed'):
                     if target is None:
@@ -144,10 +147,11 @@ class SelectFilament(BaseWizardStep):
             else:
                 speed_request = 1
 
-        self.wizard_manager.set_step(self.next_step(self._screen))
+        self.wizard_manager.set_step(self.next_step(self._screen,self.preheat_options[setting]))
 
-    def validate(self, heater, target=None, max_temp=None, target_actual=None):
-        if target is not None and target_actual is not None and target <= target_actual:
+    def validate(self, heater, target=None, max_temp=None, target_actual=None, target_max=None):
+        if (target is not None and target_actual is not None and target <= target_actual and
+                (target_max is None or target_max > target_actual)):
             logging.debug(f"Actual target {target_actual} is greater or equal than target {target}. Skipping.")
             return False
         if target is not None and max_temp is not None:
@@ -164,10 +168,11 @@ class SelectFilament(BaseWizardStep):
         self.wizard_manager.set_step(self.__class__(self._screen, False))
 
 class WaitForTemperature(Cancelable, BaseWizardStep):
-    def __init__(self, screen):
+    def __init__(self, screen, setting):
         super().__init__(screen)
         self.next_step = WaitForFilamentInserted
         self.settling_counter = self.settling_counter_max = 3
+        self.setting = setting
 
     def activate(self, wizard):
         super().activate(wizard)
@@ -206,7 +211,8 @@ class WaitForTemperature(Cancelable, BaseWizardStep):
         self.actual_temperature.set_label(f"{extruder['temperature']:.1f} °C")
         self.target_temperature.set_label(f"{extruder['target']:.1f} °C")
 
-        if extruder['temperature'] >= extruder['target']:
+        if (abs(extruder['temperature'] - extruder['target']) < 3 or
+                ("extruder_max" in self.setting and self.setting["extruder_max"] > extruder['temperature'])):
             self.settling_counter -= 1
             if self.settling_counter < 1:
                 self.go_to_next()

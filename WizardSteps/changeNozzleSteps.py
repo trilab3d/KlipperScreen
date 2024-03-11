@@ -78,7 +78,7 @@ class Cooling(BaseWizardStep):
             "<span size='large'>" + _("Wait for nozzle cooldown") + "</span>")
         self.content.add(heating_label)
         extruder = self._screen.printer.data['extruder']
-        self.actual_temperature = self._screen.gtk.Label(f"Temperature: {extruder['temperature']:.1f} °C")
+        self.actual_temperature = self._screen.gtk.Label(f"Temperature: {int(extruder['temperature'])} °C")
         self.actual_temperature.set_hexpand(True)
         self.content.add(self.actual_temperature)
         cancel_button = self._screen.gtk.Button(label=_("Cancel"), style=f"color1")
@@ -88,7 +88,7 @@ class Cooling(BaseWizardStep):
 
     def update_loop(self):
         extruder = self._screen.printer.data['extruder']
-        self.actual_temperature.set_label(f"{extruder['temperature']:.1f} °C")
+        self.actual_temperature.set_label(f"{int(extruder['temperature'])} °C")
 
         if extruder['temperature'] < 60:
             self.wizard_manager.set_step(UnscrewNozzle(self._screen))
@@ -112,7 +112,7 @@ class UnscrewNozzle(BaseWizardStep):
             "<span size='large'>" + _("Unscrew Nozzle") + "</span>")
         self.content.add(heating_label)
         extruder = self._screen.printer.data['extruder']
-        self.actual_temperature = self._screen.gtk.Label(f"Temperature: {extruder['temperature']:.1f} °C")
+        self.actual_temperature = self._screen.gtk.Label(f"Temperature: {int(extruder['temperature'])} °C")
         self.actual_temperature.set_hexpand(True)
         self.content.add(self.actual_temperature)
         continue_button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
@@ -126,7 +126,7 @@ class UnscrewNozzle(BaseWizardStep):
 
     def update_loop(self):
         extruder = self._screen.printer.data['extruder']
-        self.actual_temperature.set_label(f"{extruder['temperature']:.1f} °C")
+        self.actual_temperature.set_label(f"{int(extruder['temperature'])} °C")
 
     def cancel_pressed(self, widget):
         self._screen._menu_go_back()

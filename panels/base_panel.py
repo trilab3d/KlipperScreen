@@ -18,6 +18,8 @@ class BasePanel(ScreenPanel):
     def __init__(self, screen, title):
         super().__init__(screen, title)
         self.current_panel = None
+        self.background_image = None
+        self.background_visible = True
         self.time_min = -1
         self.time_format = self._config.get_main_config().getboolean("24htime", True)
         self.time_update = None
@@ -130,7 +132,8 @@ class BasePanel(ScreenPanel):
         self.update_time()
 
     def set_background(self, printhead):
-
+        print(f"======================================SET BACKGROUND=============================")
+        print(f"printhead: {printhead}")
         icon = "styles/prusa/images/extruder-unknown.png"
         if printhead is None:
             icon = "styles/prusa/images/extruder-none.png"
@@ -145,16 +148,24 @@ class BasePanel(ScreenPanel):
             height=self._gtk.content_height,
             preserve_aspect_ratio=True
         )
-
-        for child in self.background_image_box.get_children():
-            self.background_image_box.remove(child)
-        self.background_image_box.add(Gtk.Image.new_from_pixbuf(pixbuf))
+        self.background_image = Gtk.Image.new_from_pixbuf(pixbuf)
+        if self.background_visible:
+            for child in self.background_image_box.get_children():
+                self.background_image_box.remove(child)
+            self.background_image_box.add(self.background_image)
+            self.background_image_box.show()
+            self._screen.show_all()
 
     def show_background(self, value=True):
-        if value:
-            self.background_image_box.show()
-        else:
-            self.background_image_box.hide()
+        print(f"======================================SHOW BACKGROUND=============================")
+        print(f"value: {value}")
+        self.background_visible = value
+        for child in self.background_image_box.get_children():
+            self.background_image_box.remove(child)
+        if value and self.background_image:
+            self.background_image_box.add(self.background_image)
+        self.background_image_box.show()
+        self._screen.show_all()
 
     def show_heaters(self, show=True):
         try:

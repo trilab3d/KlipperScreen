@@ -8,8 +8,6 @@ from gi.repository import Gtk, Gdk, GLib, Pango
 from WizardSteps.baseWizardStep import BaseWizardStep
 from WizardSteps import loadWizardSteps
 
-currently_unloading = None
-
 class SelectFilament(loadWizardSteps.SelectFilament):
     def __init__(self, screen, load_var = True, is_second_attempt = False):
         super().__init__(screen, load_var)
@@ -29,14 +27,9 @@ class SelectFilament(loadWizardSteps.SelectFilament):
             wizard.set_step(Unloading(self._screen))
         super().activate(wizard)
 
-    def set_temperature(self, widget, setting):
-        global currently_unloading
-        currently_unloading = setting
-        super().set_temperature(widget,setting)
-
 class WaitForTemperature(loadWizardSteps.WaitForTemperature):
-    def __init__(self, screen, is_second_attempt=False):
-        super().__init__(screen)
+    def __init__(self, screen, setting, is_second_attempt=False):
+        super().__init__(screen, setting)
         self.second_attempt = is_second_attempt
 
     def go_to_next(self):

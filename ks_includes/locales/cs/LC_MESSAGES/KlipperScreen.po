@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Czech\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-02 16:32-0300\n"
+"POT-Creation-Date: 2024-03-12 13:43+0100\n"
 "PO-Revision-Date: 2023-01-29 09:27-0600\n"
 "Last-Translator: \n"
 "Language-Team: Jan Stanka (stanky@email.cz)\n"
@@ -18,21 +18,23 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 2.4.2\n"
 
-#, python-format
-msgid "%s will be updated to version"
-msgstr "%s bude aktualizováno na verzi"
-
 msgid "(default)"
 msgstr ""
 
-msgid "24 Hour Time"
-msgstr "24 hod formát"
+msgid "+5°C"
+msgstr ""
+
+msgid "-5°C"
+msgstr ""
 
 msgid "A FIRMWARE_RESTART may fix the issue."
 msgstr "FW restart může fixnout chyby."
 
 msgid "ADXL Not Configured"
 msgstr "ADXL není nastaven"
+
+msgid "AP"
+msgstr ""
 
 msgid "Abort"
 msgstr "Zrušit"
@@ -43,8 +45,14 @@ msgstr "Zrychlení:"
 msgid "Accept"
 msgstr "Přijmout"
 
+msgid "Ad-hoc"
+msgstr ""
+
 msgid "Add profile"
 msgstr "Přidat profil"
+
+msgid "Advanced"
+msgstr ""
 
 msgid "Apply"
 msgstr "Použít"
@@ -69,23 +77,23 @@ msgstr "Opravdu chcete zrušit tisk?"
 msgid "Are you sure you wish to disable motors?"
 msgstr "Opravdu chcete uvolnit motory?"
 
-msgid "Are you sure you wish to reboot the system?"
-msgstr "Opravdu chcete rebootovat systém?"
-
-msgid "Are you sure you wish to shutdown the system?"
-msgstr "Opravdu chcete vypnout systém?"
-
 msgid "Auto"
 msgstr "Auto"
 
 msgid "Auto-calibrate"
 msgstr "Auto-kalibrace"
 
-msgid "Auto-close notifications"
-msgstr "Automaticky zavřít upozornění"
-
 msgid "Auto-scroll"
 msgstr "Auto posun"
+
+msgid "Basic"
+msgstr ""
+
+msgid "Bed +"
+msgstr ""
+
+msgid "Bed -"
+msgstr ""
 
 msgid "Bed Level"
 msgstr "Vyrovnání podložky"
@@ -126,26 +134,32 @@ msgstr "Ruším"
 msgid "Cannot connect to Moonraker"
 msgstr "Nelze se připojit k Moonraker"
 
+msgid "Chamber +"
+msgstr ""
+
+msgid "Chamber -"
+msgstr ""
+
+msgid "Change Filament"
+msgstr ""
+
 msgid "Channel"
 msgstr "Kanál"
 
 msgid "Check ADXL Wiring"
 msgstr "Zkontroluj zapojení ADXL"
 
-msgid "Checking for updates, please wait..."
-msgstr "Kontrola aktualizací, čekej ..."
-
 msgid "Clear"
 msgstr "Vymaž"
+
+msgid "Client"
+msgstr ""
 
 msgid "Close"
 msgstr "Zavřít"
 
 msgid "Complete"
 msgstr "Hotovo"
-
-msgid "Confirm Emergency Stop"
-msgstr "Potvrzovat Emergency Stop"
 
 msgid "Connected"
 msgstr "Připojeno"
@@ -178,15 +192,35 @@ msgstr "Odznačit"
 msgid "Disable Motors"
 msgstr "Uvolnit motory"
 
+msgid "Discard"
+msgstr ""
+
 msgid "Distance (mm)"
 msgstr "Vzdálenost (mm)"
 
-#, python-format
-msgid "Do you want to recover %s?"
-msgstr "Obnovit %s?"
+msgid "Door Opened"
+msgstr ""
+
+msgid "Door opened!"
+msgstr ""
+
+msgid "Door sensor"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Download failed"
+msgstr ""
+
+msgid "Downloading"
+msgstr ""
 
 msgid "Elapsed:"
 msgstr "Uplynulo:"
+
+msgid "Emergency Stop Triggered!"
+msgstr ""
 
 msgid "Error"
 msgstr "Chyba"
@@ -197,8 +231,8 @@ msgstr "Výpočet doby tisku"
 msgid "Exclude Object"
 msgstr "Vyloučit objekt"
 
-msgid "Extra Large"
-msgstr "Extra velký"
+msgid "Export Logs to USB"
+msgstr ""
 
 msgid "Extrude"
 msgstr "Extruze"
@@ -215,8 +249,14 @@ msgstr "Chyba, nastav nejprve pozici"
 msgid "Fan"
 msgstr "Větrák"
 
+msgid "Filament Runout"
+msgstr ""
+
 msgid "Filament Used"
 msgstr "Typ filamentu"
+
+msgid "Filament sensor"
+msgstr ""
 
 msgid "Filament total:"
 msgstr "Filament celkem:"
@@ -251,12 +291,6 @@ msgstr "Tok:"
 msgid "Flowrate:"
 msgstr "Rychlost toku:"
 
-msgid "Font Size"
-msgstr "Velikost fontu"
-
-msgid "Full Update"
-msgstr "Úplný update"
-
 msgid "Fullscreen"
 msgstr ""
 
@@ -271,9 +305,6 @@ msgstr "Skrytý"
 
 msgid "Hide"
 msgstr "Skrýt"
-
-msgid "Hide sensors in Temp."
-msgstr "Skrýt senzory v Temp."
 
 msgid "Hide temp."
 msgstr "Skrýt teplotu"
@@ -296,11 +327,14 @@ msgstr "Zaparkovat Y"
 msgid "Home Z"
 msgstr "Zaparkovat Z"
 
-msgid "Host"
-msgstr "Host"
-
 msgid "Hostname"
 msgstr "Hostname"
+
+msgid "Hotend +"
+msgstr ""
+
+msgid "Hotend -"
+msgstr ""
 
 msgid "Icon Theme"
 msgstr "Sada ikon"
@@ -314,11 +348,11 @@ msgstr ""
 msgid "Input Shaper"
 msgstr ""
 
+msgid "Install"
+msgstr ""
+
 msgid "Interface"
 msgstr "Rozhraní"
-
-msgid "Invalid"
-msgstr "Špatně"
 
 msgid "Invalid password"
 msgstr "Špatné heslo"
@@ -334,9 +368,6 @@ msgstr "Otočit Z"
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr ""
-
-msgid "Klipper Restart"
-msgstr "Klipper Restart"
 
 msgid "Klipper has disconnected"
 msgstr "Klipper odpojen"
@@ -359,14 +390,14 @@ msgstr "KlipperScreen se restartuje"
 msgid "Language"
 msgstr "Jazyk"
 
-msgid "Large"
-msgstr "Velký"
-
 msgid "Layer:"
 msgstr "Vrstva:"
 
 msgid "Left:"
 msgstr "Zbývá:"
+
+msgid "Light"
+msgstr ""
 
 msgid "Limits"
 msgstr "Limity"
@@ -374,11 +405,11 @@ msgstr "Limity"
 msgid "Load"
 msgstr "Zasuň"
 
+msgid "Load Filament"
+msgstr ""
+
 msgid "Lower Nozzle"
 msgstr "Trysku níž"
-
-msgid "Macro shortcut on sidebar"
-msgstr "Macro shortcut on sidebar"
 
 msgid "Macros"
 msgstr "Makra"
@@ -398,9 +429,6 @@ msgstr "Z max. zrychlení do zpomalení"
 msgid "Max Velocity"
 msgstr "Max. rychlost"
 
-msgid "Maximum"
-msgstr "Maximum"
-
 msgid "Measure Both"
 msgstr "Změřit oboje"
 
@@ -410,14 +438,17 @@ msgstr "Změřit X"
 msgid "Measure Y"
 msgstr "Změřit Y"
 
-msgid "Medium"
-msgstr "Střední"
-
 msgid "Menu"
 msgstr "Menu"
 
+msgid "Mesh"
+msgstr ""
+
 msgid "Mesh calibrate"
 msgstr "Kalibrace sítě"
+
+msgid "Min"
+msgstr ""
 
 msgid "Modified"
 msgstr "Změněno"
@@ -446,6 +477,9 @@ msgstr "Nikdy"
 msgid "New"
 msgstr "Nový"
 
+msgid "New update available"
+msgstr ""
+
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
 "conf"
@@ -454,18 +488,20 @@ msgstr "Nepodporováno autodetekcí, nakonfiguruj v klipperscreen.conf"
 msgid "Nothing selected"
 msgstr "Nevybráno nic"
 
-#, python-format
-msgid "Outdated by %d"
-msgstr "Zastaralý %d"
+msgid "Nozzle Change"
+msgstr ""
+
+msgid "Nozzle:"
+msgstr ""
+
+msgid "Off"
+msgstr ""
+
+msgid "On"
+msgstr ""
 
 msgid "PSK for"
 msgstr "PSK pro"
-
-msgid "Package will be updated"
-msgid_plural "Packages will be updated"
-msgstr[0] "Balíček bude aktualizován"
-msgstr[1] "Balíčky budou aktualizovány"
-msgstr[2] ""
 
 msgid "Part Fan"
 msgstr "Částečný ofuk"
@@ -506,14 +542,17 @@ msgstr "Nastavení tisku"
 msgid "Print Time"
 msgstr "Čas tisku"
 
-msgid "Printer"
-msgstr "Tiskárna"
+msgid "Printer Name"
+msgstr ""
 
-msgid "Printer Connections"
-msgstr "Připojení"
+msgid "Printer Name:"
+msgstr ""
 
 msgid "Printer Select"
 msgstr "Výběr tiskárny"
+
+msgid "Printhead:"
+msgstr ""
 
 msgid "Printing"
 msgstr "Probíhá tisk"
@@ -533,26 +572,20 @@ msgstr "Quad Gantry Level"
 msgid "Raise Nozzle"
 msgstr "Zvedni trysku"
 
-msgid "Recover"
-msgstr "Recover"
-
-msgid "Recover Hard"
-msgstr "Recover Hard"
-
-msgid "Recover Soft"
-msgstr "Recover Soft"
-
 msgid "Reference"
 msgstr "Reference"
 
 msgid "Refresh"
 msgstr "Obnovit"
 
+msgid "Release Emerency Stop to continue"
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr ""
 
-msgid "Restart"
-msgstr "Restart"
+msgid "Reprint"
+msgstr ""
 
 msgid "Resume"
 msgstr "Pokračuj"
@@ -594,9 +627,6 @@ msgstr "Uloženo"
 msgid "Saved offset: %s"
 msgstr "Uložený offset: %s"
 
-msgid "Screen DPMS"
-msgstr "Screen DPMS"
-
 msgid "Screen Power Off Time"
 msgstr "Čas vypnutí displeje"
 
@@ -608,6 +638,9 @@ msgstr "Vyber"
 
 msgid "Send"
 msgstr "Odeslat"
+
+msgid "Service"
+msgstr ""
 
 msgid "Set Temp"
 msgstr "Nastav teplotu"
@@ -621,9 +654,6 @@ msgstr "Ukaž"
 msgid "Show Heater Power"
 msgstr "Ukaž odběr topení"
 
-msgid "Shutdown"
-msgstr "Shutdown"
-
 msgid "Size"
 msgstr "Velikost"
 
@@ -632,9 +662,6 @@ msgstr "Slicer"
 
 msgid "Slicer:"
 msgstr "Slicer:"
-
-msgid "Small"
-msgstr "Malý"
 
 msgid "Speed (mm/s)"
 msgstr "Rychlost (mm/s)"
@@ -660,17 +687,11 @@ msgstr "Připojování k WiFi"
 msgid "Starting recovery for"
 msgstr "Obnovuji"
 
-msgid "Starting update for"
-msgstr "Aktualizuji"
-
 msgid "System"
 msgstr "Systém"
 
-msgid "System Restart"
-msgstr "Restart systému"
-
-msgid "System Shutdown"
-msgstr "Vypnutí"
+msgid "System is up to date"
+msgstr ""
 
 msgid "Temp (°C)"
 msgstr "Teplota (°C)"
@@ -678,8 +699,17 @@ msgstr "Teplota (°C)"
 msgid "Temperature"
 msgstr "Teplota"
 
+msgid "Time Zone"
+msgstr ""
+
 msgid "Total:"
 msgstr "Total:"
+
+msgid "Tuning"
+msgstr ""
+
+msgid "USB update ready"
+msgstr ""
 
 msgid "Unknown Heater"
 msgstr "Neznámé topení"
@@ -690,23 +720,38 @@ msgstr "Neznámé nastavení šroubů"
 msgid "Unload"
 msgstr "Vysuň"
 
+msgid "Unload Filament"
+msgstr ""
+
+msgid "Unpacking"
+msgstr ""
+
 msgid "Unretract Extra Length"
 msgstr "Vysuň extra délku"
 
 msgid "Unretract Speed"
 msgstr "Vysunovací rychlost"
 
-msgid "Up To Date"
-msgstr "Aktuální"
-
 msgid "Update"
 msgstr "Aktualizuj"
+
+msgid "Update almost done"
+msgstr ""
+
+msgid "Update found on USB"
+msgstr ""
+
+msgid "Update ready"
+msgstr ""
 
 msgid "Updating"
 msgstr "Aktualizuji"
 
 msgid "Uploaded"
 msgstr "Nahrané"
+
+msgid "View Mode"
+msgstr ""
 
 msgid "XY Move Speed (mm/s)"
 msgstr "Rychlost pohybu XY  (mm/s)"
@@ -728,12 +773,6 @@ msgstr "Z Tilt"
 
 msgid "Z offset:"
 msgstr "Z offset:"
-
-msgid "commit"
-msgid_plural "commits"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
 
 msgid "dBm"
 msgstr "dBm"
@@ -761,6 +800,108 @@ msgstr "mm/s²"
 
 msgid "mm³/s"
 msgstr "mm³/s"
+
+#, python-format
+#~ msgid "%s will be updated to version"
+#~ msgstr "%s bude aktualizováno na verzi"
+
+#~ msgid "24 Hour Time"
+#~ msgstr "24 hod formát"
+
+#~ msgid "Are you sure you wish to reboot the system?"
+#~ msgstr "Opravdu chcete rebootovat systém?"
+
+#~ msgid "Are you sure you wish to shutdown the system?"
+#~ msgstr "Opravdu chcete vypnout systém?"
+
+#~ msgid "Auto-close notifications"
+#~ msgstr "Automaticky zavřít upozornění"
+
+#~ msgid "Checking for updates, please wait..."
+#~ msgstr "Kontrola aktualizací, čekej ..."
+
+#~ msgid "Confirm Emergency Stop"
+#~ msgstr "Potvrzovat Emergency Stop"
+
+#, python-format
+#~ msgid "Do you want to recover %s?"
+#~ msgstr "Obnovit %s?"
+
+#~ msgid "Extra Large"
+#~ msgstr "Extra velký"
+
+#~ msgid "Font Size"
+#~ msgstr "Velikost fontu"
+
+#~ msgid "Full Update"
+#~ msgstr "Úplný update"
+
+#~ msgid "Hide sensors in Temp."
+#~ msgstr "Skrýt senzory v Temp."
+
+#~ msgid "Host"
+#~ msgstr "Host"
+
+#~ msgid "Invalid"
+#~ msgstr "Špatně"
+
+#~ msgid "Klipper Restart"
+#~ msgstr "Klipper Restart"
+
+#~ msgid "Large"
+#~ msgstr "Velký"
+
+#~ msgid "Macro shortcut on sidebar"
+#~ msgstr "Macro shortcut on sidebar"
+
+#~ msgid "Maximum"
+#~ msgstr "Maximum"
+
+#~ msgid "Medium"
+#~ msgstr "Střední"
+
+#, python-format
+#~ msgid "Outdated by %d"
+#~ msgstr "Zastaralý %d"
+
+#~ msgid "Package will be updated"
+#~ msgid_plural "Packages will be updated"
+#~ msgstr[0] "Balíček bude aktualizován"
+#~ msgstr[1] "Balíčky budou aktualizovány"
+#~ msgstr[2] ""
+
+#~ msgid "Printer Connections"
+#~ msgstr "Připojení"
+
+#~ msgid "Recover"
+#~ msgstr "Recover"
+
+#~ msgid "Recover Hard"
+#~ msgstr "Recover Hard"
+
+#~ msgid "Recover Soft"
+#~ msgstr "Recover Soft"
+
+#~ msgid "Restart"
+#~ msgstr "Restart"
+
+#~ msgid "Screen DPMS"
+#~ msgstr "Screen DPMS"
+
+#~ msgid "Shutdown"
+#~ msgstr "Shutdown"
+
+#~ msgid "Small"
+#~ msgstr "Malý"
+
+#~ msgid "Starting update for"
+#~ msgstr "Aktualizuji"
+
+#~ msgid "System Shutdown"
+#~ msgstr "Vypnutí"
+
+#~ msgid "Up To Date"
+#~ msgstr "Aktuální"
 
 #~ msgid "Actions"
 #~ msgstr "Akce"

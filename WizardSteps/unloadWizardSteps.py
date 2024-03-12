@@ -112,7 +112,7 @@ class DoneDialog(loadWizardSteps.PurgingMoreDialog):
         self.content.add(back_button)
 
     def go_to_load(self, widget):
-        self.wizard_manager.set_heading("Load Filament")
+        self.wizard_manager.set_heading(_("Load Filament"))
         self.wizard_manager.set_step(loadWizardSteps.SelectFilament(self._screen))
 
     def retry(self, widget):

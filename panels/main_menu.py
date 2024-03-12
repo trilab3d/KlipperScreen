@@ -20,15 +20,15 @@ class MainPanel(MenuPanel):
         self.graph_retry_timeout = None
         # self.left_panel = None
         info_grid = self._gtk.HomogeneousGrid(column_homogenous=False)
-        printhead_label = Gtk.Label("Printhead:")
+        printhead_label = Gtk.Label(_("Printhead:"))
         printhead_label.set_halign(Gtk.Align.START)
         self.printhead_value = Gtk.Label("")
         self.printhead_value.set_halign(Gtk.Align.START)
-        nozzle_label = Gtk.Label("Nozzle:")
+        nozzle_label = Gtk.Label(_("Nozzle:"))
         nozzle_label.set_halign(Gtk.Align.START)
         self.nozzle_value = Gtk.Label("")
         self.nozzle_value.set_halign(Gtk.Align.START)
-        filament_label = Gtk.Label("Filament:")
+        filament_label = Gtk.Label(_("Filament:"))
         filament_label.set_halign(Gtk.Align.START)
         self.filament_value = Gtk.Label("")
         self.filament_value.set_halign(Gtk.Align.START)

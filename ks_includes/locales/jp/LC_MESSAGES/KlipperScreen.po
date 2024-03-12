@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KlipperScreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-02 16:32-0300\n"
+"POT-Creation-Date: 2024-03-12 13:43+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: boyon\n"
 "Language-Team: \n"
@@ -13,21 +13,23 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.2.1\n"
 
-#, python-format
-msgid "%s will be updated to version"
-msgstr "%s を最新にアップデートします"
-
 msgid "(default)"
 msgstr "(デフォルト)"
 
-msgid "24 Hour Time"
-msgstr "24時間表記"
+msgid "+5°C"
+msgstr ""
+
+msgid "-5°C"
+msgstr ""
 
 msgid "A FIRMWARE_RESTART may fix the issue."
 msgstr "ファームウェアの更新を行うと不具合が解決する場合があります"
 
 msgid "ADXL Not Configured"
 msgstr "ADXL が構成されていません"
+
+msgid "AP"
+msgstr ""
 
 msgid "Abort"
 msgstr "中止する"
@@ -38,8 +40,14 @@ msgstr "加速度:"
 msgid "Accept"
 msgstr "承諾する"
 
+msgid "Ad-hoc"
+msgstr ""
+
 msgid "Add profile"
 msgstr "プロファイルの追加"
+
+msgid "Advanced"
+msgstr ""
 
 msgid "Apply"
 msgstr "適用する"
@@ -64,23 +72,23 @@ msgstr "印刷を中断しますか？"
 msgid "Are you sure you wish to disable motors?"
 msgstr "モーターの制御を無効にしますか？"
 
-msgid "Are you sure you wish to reboot the system?"
-msgstr "システムを再起動しますか？"
-
-msgid "Are you sure you wish to shutdown the system?"
-msgstr "システムをシャットダウンしますか？"
-
 msgid "Auto"
 msgstr "自動"
 
 msgid "Auto-calibrate"
 msgstr "自動校正"
 
-msgid "Auto-close notifications"
-msgstr "自動終了通知"
-
 msgid "Auto-scroll"
 msgstr "自動スクロール"
+
+msgid "Basic"
+msgstr ""
+
+msgid "Bed +"
+msgstr ""
+
+msgid "Bed -"
+msgstr ""
 
 msgid "Bed Level"
 msgstr "ベッドレベル"
@@ -121,26 +129,32 @@ msgstr "キャンセル中"
 msgid "Cannot connect to Moonraker"
 msgstr "Moonrakerに接続できません"
 
+msgid "Chamber +"
+msgstr ""
+
+msgid "Chamber -"
+msgstr ""
+
+msgid "Change Filament"
+msgstr ""
+
 msgid "Channel"
 msgstr "チャンネル"
 
 msgid "Check ADXL Wiring"
 msgstr "ADXL Wiring を検査する"
 
-msgid "Checking for updates, please wait..."
-msgstr ""
-
 msgid "Clear"
 msgstr "クリア"
+
+msgid "Client"
+msgstr ""
 
 msgid "Close"
 msgstr "終了"
 
 msgid "Complete"
 msgstr "完了"
-
-msgid "Confirm Emergency Stop"
-msgstr "緊急停止時に確認する"
 
 msgid "Connected"
 msgstr "接続済み"
@@ -173,15 +187,35 @@ msgstr "選択解除"
 msgid "Disable Motors"
 msgstr "モーターの無効化"
 
+msgid "Discard"
+msgstr ""
+
 msgid "Distance (mm)"
 msgstr "距離(mm)"
 
-#, python-format
-msgid "Do you want to recover %s?"
-msgstr "元に戻しますか %s ？"
+msgid "Door Opened"
+msgstr ""
+
+msgid "Door opened!"
+msgstr ""
+
+msgid "Door sensor"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Download failed"
+msgstr ""
+
+msgid "Downloading"
+msgstr ""
 
 msgid "Elapsed:"
 msgstr "経過時間:"
+
+msgid "Emergency Stop Triggered!"
+msgstr ""
 
 msgid "Error"
 msgstr "エラー"
@@ -192,8 +226,8 @@ msgstr "予定時刻"
 msgid "Exclude Object"
 msgstr "対象の除外"
 
-msgid "Extra Large"
-msgstr "特大"
+msgid "Export Logs to USB"
+msgstr ""
 
 msgid "Extrude"
 msgstr "吐出"
@@ -210,8 +244,14 @@ msgstr "失敗時は最初に位置を調整する"
 msgid "Fan"
 msgstr "ファン"
 
+msgid "Filament Runout"
+msgstr ""
+
 msgid "Filament Used"
 msgstr "使用済フィラメント"
+
+msgid "Filament sensor"
+msgstr ""
 
 msgid "Filament total:"
 msgstr "フィラメント 総量:"
@@ -246,12 +286,6 @@ msgstr "流量:"
 msgid "Flowrate:"
 msgstr "フローレート:"
 
-msgid "Font Size"
-msgstr "フォントサイズ"
-
-msgid "Full Update"
-msgstr "フルアップデート"
-
 msgid "Fullscreen"
 msgstr ""
 
@@ -266,9 +300,6 @@ msgstr "非表示"
 
 msgid "Hide"
 msgstr "隠す"
-
-msgid "Hide sensors in Temp."
-msgstr "温度を非表示にする"
 
 msgid "Hide temp."
 msgstr "温度を非表示にする"
@@ -291,11 +322,14 @@ msgstr "Home Y"
 msgid "Home Z"
 msgstr "Home Z"
 
-msgid "Host"
-msgstr ""
-
 msgid "Hostname"
 msgstr "Hostname"
+
+msgid "Hotend +"
+msgstr ""
+
+msgid "Hotend -"
+msgstr ""
 
 msgid "Icon Theme"
 msgstr "アイコンテーマ"
@@ -309,11 +343,11 @@ msgstr ""
 msgid "Input Shaper"
 msgstr ""
 
+msgid "Install"
+msgstr ""
+
 msgid "Interface"
 msgstr "インターフェース"
-
-msgid "Invalid"
-msgstr "不正"
 
 msgid "Invalid password"
 msgstr ""
@@ -329,9 +363,6 @@ msgstr "X軸を反対にする"
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr ""
-
-msgid "Klipper Restart"
-msgstr "Klipperを再起動する"
 
 msgid "Klipper has disconnected"
 msgstr "Klipperの接続が切れました"
@@ -354,14 +385,14 @@ msgstr "KlipperScreenは再起動します"
 msgid "Language"
 msgstr "言語"
 
-msgid "Large"
-msgstr "大"
-
 msgid "Layer:"
 msgstr "レイヤー:"
 
 msgid "Left:"
 msgstr "左:"
+
+msgid "Light"
+msgstr ""
 
 msgid "Limits"
 msgstr "制限"
@@ -369,11 +400,11 @@ msgstr "制限"
 msgid "Load"
 msgstr ""
 
+msgid "Load Filament"
+msgstr ""
+
 msgid "Lower Nozzle"
 msgstr "ノズルが低い"
-
-msgid "Macro shortcut on sidebar"
-msgstr "サイドバーのマクロショートカット"
 
 msgid "Macros"
 msgstr "マクロ"
@@ -393,9 +424,6 @@ msgstr "減速時の最大加速度"
 msgid "Max Velocity"
 msgstr "最大速度"
 
-msgid "Maximum"
-msgstr "最大"
-
 msgid "Measure Both"
 msgstr "両方計測する"
 
@@ -405,14 +433,17 @@ msgstr "X軸を計測する"
 msgid "Measure Y"
 msgstr "Y軸を計測する"
 
-msgid "Medium"
-msgstr "中"
-
 msgid "Menu"
 msgstr "メニュー"
 
+msgid "Mesh"
+msgstr ""
+
 msgid "Mesh calibrate"
 msgstr "メッシュ較正"
+
+msgid "Min"
+msgstr ""
 
 msgid "Modified"
 msgstr "変更"
@@ -441,6 +472,9 @@ msgstr "未"
 msgid "New"
 msgstr "新"
 
+msgid "New update available"
+msgstr ""
+
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
 "conf"
@@ -449,16 +483,20 @@ msgstr ""
 msgid "Nothing selected"
 msgstr "未選択"
 
-#, python-format
-msgid "Outdated by %d"
+msgid "Nozzle Change"
+msgstr ""
+
+msgid "Nozzle:"
+msgstr ""
+
+msgid "Off"
+msgstr ""
+
+msgid "On"
 msgstr ""
 
 msgid "PSK for"
 msgstr ""
-
-msgid "Package will be updated"
-msgid_plural "Packages will be updated"
-msgstr[0] ""
 
 msgid "Part Fan"
 msgstr ""
@@ -499,14 +537,17 @@ msgstr "印刷制御"
 msgid "Print Time"
 msgstr "印刷時間"
 
-msgid "Printer"
-msgstr "プリンター"
+msgid "Printer Name"
+msgstr ""
 
-msgid "Printer Connections"
-msgstr "プリンター接続状態"
+msgid "Printer Name:"
+msgstr ""
 
 msgid "Printer Select"
 msgstr "プリンターの選択"
+
+msgid "Printhead:"
+msgstr ""
 
 msgid "Printing"
 msgstr "印刷中"
@@ -526,26 +567,20 @@ msgstr "ガントリーレベル"
 msgid "Raise Nozzle"
 msgstr ""
 
-msgid "Recover"
-msgstr ""
-
-msgid "Recover Hard"
-msgstr ""
-
-msgid "Recover Soft"
-msgstr ""
-
 msgid "Reference"
 msgstr ""
 
 msgid "Refresh"
 msgstr "最新表示"
 
+msgid "Release Emerency Stop to continue"
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr ""
 
-msgid "Restart"
-msgstr "再起動"
+msgid "Reprint"
+msgstr ""
 
 msgid "Resume"
 msgstr "再開"
@@ -587,9 +622,6 @@ msgstr "保存しました"
 msgid "Saved offset: %s"
 msgstr "保存しました offset: %s"
 
-msgid "Screen DPMS"
-msgstr ""
-
 msgid "Screen Power Off Time"
 msgstr ""
 
@@ -600,6 +632,9 @@ msgid "Select"
 msgstr ""
 
 msgid "Send"
+msgstr ""
+
+msgid "Service"
 msgstr ""
 
 msgid "Set Temp"
@@ -614,9 +649,6 @@ msgstr "表示"
 msgid "Show Heater Power"
 msgstr ""
 
-msgid "Shutdown"
-msgstr "シャットダウン"
-
 msgid "Size"
 msgstr "サイズ"
 
@@ -625,9 +657,6 @@ msgstr "スライサー"
 
 msgid "Slicer:"
 msgstr "スライサー:"
-
-msgid "Small"
-msgstr "小"
 
 msgid "Speed (mm/s)"
 msgstr ""
@@ -653,17 +682,11 @@ msgstr "Wifi接続開始中"
 msgid "Starting recovery for"
 msgstr "回復中"
 
-msgid "Starting update for"
-msgstr "更新中"
-
 msgid "System"
 msgstr "システム"
 
-msgid "System Restart"
-msgstr "システムの再起動"
-
-msgid "System Shutdown"
-msgstr "システムのシャットダウン"
+msgid "System is up to date"
+msgstr ""
 
 msgid "Temp (°C)"
 msgstr "温度 (°C)"
@@ -671,8 +694,17 @@ msgstr "温度 (°C)"
 msgid "Temperature"
 msgstr "温度"
 
+msgid "Time Zone"
+msgstr ""
+
 msgid "Total:"
 msgstr "全体:"
+
+msgid "Tuning"
+msgstr ""
+
+msgid "USB update ready"
+msgstr ""
 
 msgid "Unknown Heater"
 msgstr "無効なヒーター"
@@ -683,23 +715,38 @@ msgstr "無効なのスクリュー位置"
 msgid "Unload"
 msgstr "アンロード"
 
+msgid "Unload Filament"
+msgstr ""
+
+msgid "Unpacking"
+msgstr ""
+
 msgid "Unretract Extra Length"
 msgstr ""
 
 msgid "Unretract Speed"
 msgstr ""
 
-msgid "Up To Date"
-msgstr "最新"
-
 msgid "Update"
 msgstr "更新"
+
+msgid "Update almost done"
+msgstr ""
+
+msgid "Update found on USB"
+msgstr ""
+
+msgid "Update ready"
+msgstr ""
 
 msgid "Updating"
 msgstr "更新中"
 
 msgid "Uploaded"
 msgstr "アップロード済"
+
+msgid "View Mode"
+msgstr ""
 
 msgid "XY Move Speed (mm/s)"
 msgstr "XY移動速度 (mm/s)"
@@ -721,10 +768,6 @@ msgstr ""
 
 msgid "Z offset:"
 msgstr ""
-
-msgid "commit"
-msgid_plural "commits"
-msgstr[0] ""
 
 msgid "dBm"
 msgstr ""
@@ -748,6 +791,80 @@ msgstr ""
 
 msgid "mm³/s"
 msgstr ""
+
+#, python-format
+#~ msgid "%s will be updated to version"
+#~ msgstr "%s を最新にアップデートします"
+
+#~ msgid "24 Hour Time"
+#~ msgstr "24時間表記"
+
+#~ msgid "Are you sure you wish to reboot the system?"
+#~ msgstr "システムを再起動しますか？"
+
+#~ msgid "Are you sure you wish to shutdown the system?"
+#~ msgstr "システムをシャットダウンしますか？"
+
+#~ msgid "Auto-close notifications"
+#~ msgstr "自動終了通知"
+
+#~ msgid "Confirm Emergency Stop"
+#~ msgstr "緊急停止時に確認する"
+
+#, python-format
+#~ msgid "Do you want to recover %s?"
+#~ msgstr "元に戻しますか %s ？"
+
+#~ msgid "Extra Large"
+#~ msgstr "特大"
+
+#~ msgid "Font Size"
+#~ msgstr "フォントサイズ"
+
+#~ msgid "Full Update"
+#~ msgstr "フルアップデート"
+
+#~ msgid "Hide sensors in Temp."
+#~ msgstr "温度を非表示にする"
+
+#~ msgid "Invalid"
+#~ msgstr "不正"
+
+#~ msgid "Klipper Restart"
+#~ msgstr "Klipperを再起動する"
+
+#~ msgid "Large"
+#~ msgstr "大"
+
+#~ msgid "Macro shortcut on sidebar"
+#~ msgstr "サイドバーのマクロショートカット"
+
+#~ msgid "Maximum"
+#~ msgstr "最大"
+
+#~ msgid "Medium"
+#~ msgstr "中"
+
+#~ msgid "Printer Connections"
+#~ msgstr "プリンター接続状態"
+
+#~ msgid "Restart"
+#~ msgstr "再起動"
+
+#~ msgid "Shutdown"
+#~ msgstr "シャットダウン"
+
+#~ msgid "Small"
+#~ msgstr "小"
+
+#~ msgid "Starting update for"
+#~ msgstr "更新中"
+
+#~ msgid "System Shutdown"
+#~ msgstr "システムのシャットダウン"
+
+#~ msgid "Up To Date"
+#~ msgstr "最新"
 
 #~ msgid "Actions"
 #~ msgstr "操作"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KlipperScreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-02 16:32-0300\n"
+"POT-Creation-Date: 2024-03-12 13:43+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: NSteven\n"
 "Language-Team: NSteven\n"
@@ -13,21 +13,23 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.2.1\n"
 
-#, python-format
-msgid "%s will be updated to version"
-msgstr "%s 버전으로 업데이트 됩니다"
-
 msgid "(default)"
 msgstr "(기본)"
 
-msgid "24 Hour Time"
-msgstr "24시간"
+msgid "+5°C"
+msgstr ""
+
+msgid "-5°C"
+msgstr ""
 
 msgid "A FIRMWARE_RESTART may fix the issue."
 msgstr "펌웨어를 재시작해 문제를 해결할 수 있습니다"
 
 msgid "ADXL Not Configured"
 msgstr "가속도계 설정이 없습니다"
+
+msgid "AP"
+msgstr ""
 
 msgid "Abort"
 msgstr "취소"
@@ -38,7 +40,13 @@ msgstr "가속도:"
 msgid "Accept"
 msgstr "확인"
 
+msgid "Ad-hoc"
+msgstr ""
+
 msgid "Add profile"
+msgstr ""
+
+msgid "Advanced"
 msgstr ""
 
 msgid "Apply"
@@ -64,23 +72,23 @@ msgstr "지금 출력을 취소 하시겠습니까?"
 msgid "Are you sure you wish to disable motors?"
 msgstr "모터 전원을 끄시겠습니까?"
 
-msgid "Are you sure you wish to reboot the system?"
-msgstr "시스템을 재시작 하시겠습니까?"
-
-msgid "Are you sure you wish to shutdown the system?"
-msgstr "시스템을 종료 하시겠습니까?"
-
 msgid "Auto"
 msgstr "오토"
 
 msgid "Auto-calibrate"
 msgstr "자동 교정"
 
-msgid "Auto-close notifications"
-msgstr ""
-
 msgid "Auto-scroll"
 msgstr "오토 스크롤"
+
+msgid "Basic"
+msgstr ""
+
+msgid "Bed +"
+msgstr ""
+
+msgid "Bed -"
+msgstr ""
 
 msgid "Bed Level"
 msgstr "베드 레베"
@@ -121,26 +129,32 @@ msgstr "취소중"
 msgid "Cannot connect to Moonraker"
 msgstr "문래커에 연결할 수 없음"
 
+msgid "Chamber +"
+msgstr ""
+
+msgid "Chamber -"
+msgstr ""
+
+msgid "Change Filament"
+msgstr ""
+
 msgid "Channel"
 msgstr "채널"
 
 msgid "Check ADXL Wiring"
 msgstr "가속도계 배선을 확인해 주세요"
 
-msgid "Checking for updates, please wait..."
-msgstr ""
-
 msgid "Clear"
 msgstr "초기화"
+
+msgid "Client"
+msgstr ""
 
 msgid "Close"
 msgstr "닫기"
 
 msgid "Complete"
 msgstr "완료"
-
-msgid "Confirm Emergency Stop"
-msgstr "비상정지 확인창 표시"
 
 msgid "Connected"
 msgstr "연결됨"
@@ -173,15 +187,35 @@ msgstr "선택 해제"
 msgid "Disable Motors"
 msgstr "모터 전원 끄기"
 
+msgid "Discard"
+msgstr ""
+
 msgid "Distance (mm)"
 msgstr "거리 (mm)"
 
-#, python-format
-msgid "Do you want to recover %s?"
-msgstr "%s을(를) 복구하시겠습니까?"
+msgid "Door Opened"
+msgstr ""
+
+msgid "Door opened!"
+msgstr ""
+
+msgid "Door sensor"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Download failed"
+msgstr ""
+
+msgid "Downloading"
+msgstr ""
 
 msgid "Elapsed:"
 msgstr "경과:"
+
+msgid "Emergency Stop Triggered!"
+msgstr ""
 
 msgid "Error"
 msgstr "오류"
@@ -192,7 +226,7 @@ msgstr "예상시간 옵션"
 msgid "Exclude Object"
 msgstr ""
 
-msgid "Extra Large"
+msgid "Export Logs to USB"
 msgstr ""
 
 msgid "Extrude"
@@ -210,8 +244,14 @@ msgstr "실패, 먼저 위치를 조정해 주세요"
 msgid "Fan"
 msgstr "쿨링 팬 제어"
 
+msgid "Filament Runout"
+msgstr ""
+
 msgid "Filament Used"
 msgstr "사용된 필라멘트"
+
+msgid "Filament sensor"
+msgstr ""
 
 msgid "Filament total:"
 msgstr "필라멘트 총계:"
@@ -246,12 +286,6 @@ msgstr "유량:"
 msgid "Flowrate:"
 msgstr "유량:"
 
-msgid "Font Size"
-msgstr "글꼴 크기"
-
-msgid "Full Update"
-msgstr "전체 업데이트"
-
 msgid "Fullscreen"
 msgstr ""
 
@@ -266,9 +300,6 @@ msgstr "숨김"
 
 msgid "Hide"
 msgstr "가리기"
-
-msgid "Hide sensors in Temp."
-msgstr "온도 섹션에서 센서 항목 숨김."
 
 msgid "Hide temp."
 msgstr "온도 숨김"
@@ -291,11 +322,14 @@ msgstr "Y축 홈"
 msgid "Home Z"
 msgstr "Z축 홈"
 
-msgid "Host"
-msgstr ""
-
 msgid "Hostname"
 msgstr "호스트 이름"
+
+msgid "Hotend +"
+msgstr ""
+
+msgid "Hotend -"
+msgstr ""
 
 msgid "Icon Theme"
 msgstr "아이콘 테마"
@@ -309,11 +343,11 @@ msgstr ""
 msgid "Input Shaper"
 msgstr "인풋 셰이퍼"
 
+msgid "Install"
+msgstr ""
+
 msgid "Interface"
 msgstr "인터페이스"
-
-msgid "Invalid"
-msgstr "존재하지 않음"
 
 msgid "Invalid password"
 msgstr ""
@@ -329,9 +363,6 @@ msgstr "Z축 반전"
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr ""
-
-msgid "Klipper Restart"
-msgstr "클리퍼 재시작"
 
 msgid "Klipper has disconnected"
 msgstr "클리퍼와 연결이 끊어졌습니다"
@@ -354,14 +385,14 @@ msgstr "KlipperScreen가 재부팅됩니다"
 msgid "Language"
 msgstr "언어"
 
-msgid "Large"
-msgstr "크게"
-
 msgid "Layer:"
 msgstr "레이어:"
 
 msgid "Left:"
 msgstr "남음:"
+
+msgid "Light"
+msgstr ""
 
 msgid "Limits"
 msgstr "가속도 설정"
@@ -369,11 +400,11 @@ msgstr "가속도 설정"
 msgid "Load"
 msgstr "필라 넣기"
 
+msgid "Load Filament"
+msgstr ""
+
 msgid "Lower Nozzle"
 msgstr "노즐 낮춤"
-
-msgid "Macro shortcut on sidebar"
-msgstr "사이드바에 매크로 아이콘 표시"
 
 msgid "Macros"
 msgstr "매크로"
@@ -393,9 +424,6 @@ msgstr "감속을 위한 최대 가속"
 msgid "Max Velocity"
 msgstr "출력 속도"
 
-msgid "Maximum"
-msgstr ""
-
 msgid "Measure Both"
 msgstr "XY축 모두 측정"
 
@@ -405,13 +433,16 @@ msgstr "X축 측정"
 msgid "Measure Y"
 msgstr "Y축 측정"
 
-msgid "Medium"
-msgstr "중간"
-
 msgid "Menu"
 msgstr "메뉴"
 
+msgid "Mesh"
+msgstr ""
+
 msgid "Mesh calibrate"
+msgstr ""
+
+msgid "Min"
 msgstr ""
 
 msgid "Modified"
@@ -441,6 +472,9 @@ msgstr ""
 msgid "New"
 msgstr "신규"
 
+msgid "New update available"
+msgstr ""
+
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
 "conf"
@@ -449,16 +483,20 @@ msgstr ""
 msgid "Nothing selected"
 msgstr "아무것도 선택하지 않ㅇ"
 
-#, python-format
-msgid "Outdated by %d"
-msgstr "%d 보다 오래됨"
+msgid "Nozzle Change"
+msgstr ""
+
+msgid "Nozzle:"
+msgstr ""
+
+msgid "Off"
+msgstr "끄기"
+
+msgid "On"
+msgstr ""
 
 msgid "PSK for"
 msgstr "PSK 키 값(비밀번호)"
-
-msgid "Package will be updated"
-msgid_plural "Packages will be updated"
-msgstr[0] "패키지가 업데이트 됩니다"
 
 msgid "Part Fan"
 msgstr ""
@@ -499,13 +537,16 @@ msgstr "출력 제어"
 msgid "Print Time"
 msgstr "출력 시간"
 
-msgid "Printer"
+msgid "Printer Name"
 msgstr ""
 
-msgid "Printer Connections"
-msgstr "프린터 연결"
+msgid "Printer Name:"
+msgstr ""
 
 msgid "Printer Select"
+msgstr ""
+
+msgid "Printhead:"
 msgstr ""
 
 msgid "Printing"
@@ -526,26 +567,20 @@ msgstr "쿼드 갠트리 레벨"
 msgid "Raise Nozzle"
 msgstr "노즐 높임"
 
-msgid "Recover"
-msgstr ""
-
-msgid "Recover Hard"
-msgstr "강화 복구 모드"
-
-msgid "Recover Soft"
-msgstr "일반 복구 모드"
-
 msgid "Reference"
 msgstr "참조"
 
 msgid "Refresh"
 msgstr ""
 
+msgid "Release Emerency Stop to continue"
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr ""
 
-msgid "Restart"
-msgstr "재시작"
+msgid "Reprint"
+msgstr ""
 
 msgid "Resume"
 msgstr "재개"
@@ -587,9 +622,6 @@ msgstr "저장됨"
 msgid "Saved offset: %s"
 msgstr "저장된 옵세: %s"
 
-msgid "Screen DPMS"
-msgstr "화면 DPMS"
-
 msgid "Screen Power Off Time"
 msgstr "화면 절전 시간"
 
@@ -601,6 +633,9 @@ msgstr "선택"
 
 msgid "Send"
 msgstr "보내기"
+
+msgid "Service"
+msgstr ""
 
 msgid "Set Temp"
 msgstr "온도 설정"
@@ -614,9 +649,6 @@ msgstr "보기"
 msgid "Show Heater Power"
 msgstr ""
 
-msgid "Shutdown"
-msgstr ""
-
 msgid "Size"
 msgstr "크기"
 
@@ -625,9 +657,6 @@ msgstr "슬라이서"
 
 msgid "Slicer:"
 msgstr "슬라이서:"
-
-msgid "Small"
-msgstr "작은"
 
 msgid "Speed (mm/s)"
 msgstr "속도 (mm/s)"
@@ -653,17 +682,11 @@ msgstr "WiFi 연결을 시작하는 중"
 msgid "Starting recovery for"
 msgstr "에 대한 복구 시작"
 
-msgid "Starting update for"
-msgstr "업데이트 시작 중"
-
 msgid "System"
 msgstr "시스템"
 
-msgid "System Restart"
-msgstr "시스템 재시작"
-
-msgid "System Shutdown"
-msgstr "시스템 종료"
+msgid "System is up to date"
+msgstr ""
 
 msgid "Temp (°C)"
 msgstr "온도 (°C)"
@@ -671,8 +694,17 @@ msgstr "온도 (°C)"
 msgid "Temperature"
 msgstr "온도 제어"
 
+msgid "Time Zone"
+msgstr ""
+
 msgid "Total:"
 msgstr "총:"
+
+msgid "Tuning"
+msgstr ""
+
+msgid "USB update ready"
+msgstr ""
 
 msgid "Unknown Heater"
 msgstr "알 수 없는 히터"
@@ -683,23 +715,38 @@ msgstr ""
 msgid "Unload"
 msgstr "필라 꺼내기"
 
+msgid "Unload Filament"
+msgstr ""
+
+msgid "Unpacking"
+msgstr ""
+
 msgid "Unretract Extra Length"
 msgstr "필라멘트 퇴출 길이"
 
 msgid "Unretract Speed"
 msgstr "필라멘트 퇴출 속도"
 
-msgid "Up To Date"
-msgstr "최신 버전 유지 중"
-
 msgid "Update"
 msgstr "업데이트"
+
+msgid "Update almost done"
+msgstr ""
+
+msgid "Update found on USB"
+msgstr ""
+
+msgid "Update ready"
+msgstr ""
 
 msgid "Updating"
 msgstr "업데이트 중.."
 
 msgid "Uploaded"
 msgstr "업로드됨"
+
+msgid "View Mode"
+msgstr ""
 
 msgid "XY Move Speed (mm/s)"
 msgstr "XY 이동 속도 (mm/s)"
@@ -721,10 +768,6 @@ msgstr "Z 기울기"
 
 msgid "Z offset:"
 msgstr "Z 옵셋:"
-
-msgid "commit"
-msgid_plural "commits"
-msgstr[0] "커밋"
 
 msgid "dBm"
 msgstr "dBm"
@@ -748,6 +791,89 @@ msgstr "mm/s²"
 
 msgid "mm³/s"
 msgstr ""
+
+#, python-format
+#~ msgid "%s will be updated to version"
+#~ msgstr "%s 버전으로 업데이트 됩니다"
+
+#~ msgid "24 Hour Time"
+#~ msgstr "24시간"
+
+#~ msgid "Are you sure you wish to reboot the system?"
+#~ msgstr "시스템을 재시작 하시겠습니까?"
+
+#~ msgid "Are you sure you wish to shutdown the system?"
+#~ msgstr "시스템을 종료 하시겠습니까?"
+
+#~ msgid "Confirm Emergency Stop"
+#~ msgstr "비상정지 확인창 표시"
+
+#, python-format
+#~ msgid "Do you want to recover %s?"
+#~ msgstr "%s을(를) 복구하시겠습니까?"
+
+#~ msgid "Font Size"
+#~ msgstr "글꼴 크기"
+
+#~ msgid "Full Update"
+#~ msgstr "전체 업데이트"
+
+#~ msgid "Hide sensors in Temp."
+#~ msgstr "온도 섹션에서 센서 항목 숨김."
+
+#~ msgid "Invalid"
+#~ msgstr "존재하지 않음"
+
+#~ msgid "Klipper Restart"
+#~ msgstr "클리퍼 재시작"
+
+#~ msgid "Large"
+#~ msgstr "크게"
+
+#~ msgid "Macro shortcut on sidebar"
+#~ msgstr "사이드바에 매크로 아이콘 표시"
+
+#~ msgid "Medium"
+#~ msgstr "중간"
+
+#, python-format
+#~ msgid "Outdated by %d"
+#~ msgstr "%d 보다 오래됨"
+
+#~ msgid "Package will be updated"
+#~ msgid_plural "Packages will be updated"
+#~ msgstr[0] "패키지가 업데이트 됩니다"
+
+#~ msgid "Printer Connections"
+#~ msgstr "프린터 연결"
+
+#~ msgid "Recover Hard"
+#~ msgstr "강화 복구 모드"
+
+#~ msgid "Recover Soft"
+#~ msgstr "일반 복구 모드"
+
+#~ msgid "Restart"
+#~ msgstr "재시작"
+
+#~ msgid "Screen DPMS"
+#~ msgstr "화면 DPMS"
+
+#~ msgid "Small"
+#~ msgstr "작은"
+
+#~ msgid "Starting update for"
+#~ msgstr "업데이트 시작 중"
+
+#~ msgid "System Shutdown"
+#~ msgstr "시스템 종료"
+
+#~ msgid "Up To Date"
+#~ msgstr "최신 버전 유지 중"
+
+#~ msgid "commit"
+#~ msgid_plural "commits"
+#~ msgstr[0] "커밋"
 
 #~ msgid "Actions"
 #~ msgstr "툴 헤드 제어"
@@ -813,12 +939,6 @@ msgstr ""
 
 #~ msgid "Delete"
 #~ msgstr "삭제"
-
-#~ msgid "Off"
-#~ msgstr "끄기"
-
-#~ msgid "View Mesh"
-#~ msgstr "메쉬 프로파일 보기"
 
 #~ msgid "Sort by: "
 #~ msgstr "분류 기준: "

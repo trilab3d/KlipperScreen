@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KlipperScreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-02 16:32-0300\n"
+"POT-Creation-Date: 2024-03-12 13:43+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SRBJ\n"
 "Language-Team: \n"
@@ -13,20 +13,22 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.2.1\n"
 
-#, python-format
-msgid "%s will be updated to version"
-msgstr "%s vil blive opdateret til version"
-
 msgid "(default)"
 msgstr "(standard)"
 
-msgid "24 Hour Time"
-msgstr "24-timers visning"
+msgid "+5°C"
+msgstr ""
+
+msgid "-5°C"
+msgstr ""
 
 msgid "A FIRMWARE_RESTART may fix the issue."
 msgstr "En FIRMWARE_RESTART kan løse problemet."
 
 msgid "ADXL Not Configured"
+msgstr ""
+
+msgid "AP"
 msgstr ""
 
 msgid "Abort"
@@ -38,7 +40,13 @@ msgstr "Acceleration:"
 msgid "Accept"
 msgstr "OK"
 
+msgid "Ad-hoc"
+msgstr ""
+
 msgid "Add profile"
+msgstr ""
+
+msgid "Advanced"
 msgstr ""
 
 msgid "Apply"
@@ -64,23 +72,23 @@ msgstr "Er du sikker på du vil annullere det igangværende print?"
 msgid "Are you sure you wish to disable motors?"
 msgstr "Er du sikker på, at du vil deaktivere motorer?"
 
-msgid "Are you sure you wish to reboot the system?"
-msgstr "Er du sikker på du vil genstarte systemet?"
-
-msgid "Are you sure you wish to shutdown the system?"
-msgstr "Er du sikker på du vil lukke systemet?"
-
 msgid "Auto"
 msgstr "Auto"
 
 msgid "Auto-calibrate"
 msgstr "Automatisk kalibrering"
 
-msgid "Auto-close notifications"
-msgstr ""
-
 msgid "Auto-scroll"
 msgstr "Auto-scroll"
+
+msgid "Basic"
+msgstr ""
+
+msgid "Bed +"
+msgstr ""
+
+msgid "Bed -"
+msgstr ""
 
 msgid "Bed Level"
 msgstr "Bed-Level"
@@ -121,16 +129,25 @@ msgstr "Annullerer"
 msgid "Cannot connect to Moonraker"
 msgstr "Kan ikke oprette forbindelse til Moonraker"
 
+msgid "Chamber +"
+msgstr ""
+
+msgid "Chamber -"
+msgstr ""
+
+msgid "Change Filament"
+msgstr ""
+
 msgid "Channel"
 msgstr "Kanal"
 
 msgid "Check ADXL Wiring"
 msgstr ""
 
-msgid "Checking for updates, please wait..."
+msgid "Clear"
 msgstr ""
 
-msgid "Clear"
+msgid "Client"
 msgstr ""
 
 msgid "Close"
@@ -138,9 +155,6 @@ msgstr "Luk"
 
 msgid "Complete"
 msgstr "Færdig"
-
-msgid "Confirm Emergency Stop"
-msgstr "Bekræft Nødstop"
 
 msgid "Connected"
 msgstr "Forbundet"
@@ -173,15 +187,35 @@ msgstr "Fravælg"
 msgid "Disable Motors"
 msgstr "Deaktivér motorer"
 
+msgid "Discard"
+msgstr ""
+
 msgid "Distance (mm)"
 msgstr "Længde (mm)"
 
-#, python-format
-msgid "Do you want to recover %s?"
-msgstr "Vil du gendanne %s?"
+msgid "Door Opened"
+msgstr ""
+
+msgid "Door opened!"
+msgstr ""
+
+msgid "Door sensor"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Download failed"
+msgstr ""
+
+msgid "Downloading"
+msgstr ""
 
 msgid "Elapsed:"
 msgstr "Tid:"
+
+msgid "Emergency Stop Triggered!"
+msgstr ""
 
 msgid "Error"
 msgstr "Fejl"
@@ -192,7 +226,7 @@ msgstr "Metode til beregning af tid"
 msgid "Exclude Object"
 msgstr ""
 
-msgid "Extra Large"
+msgid "Export Logs to USB"
 msgstr ""
 
 msgid "Extrude"
@@ -210,8 +244,14 @@ msgstr "Mislykkedes, juster først positionen"
 msgid "Fan"
 msgstr "Blæser"
 
+msgid "Filament Runout"
+msgstr ""
+
 msgid "Filament Used"
 msgstr "Filament forbrug"
+
+msgid "Filament sensor"
+msgstr ""
 
 msgid "Filament total:"
 msgstr "Filament i alt:"
@@ -246,12 +286,6 @@ msgstr ""
 msgid "Flowrate:"
 msgstr ""
 
-msgid "Font Size"
-msgstr "Skriftstørrelse"
-
-msgid "Full Update"
-msgstr "Fuld Opdatering"
-
 msgid "Fullscreen"
 msgstr ""
 
@@ -266,9 +300,6 @@ msgstr "Skjult"
 
 msgid "Hide"
 msgstr "Skjule"
-
-msgid "Hide sensors in Temp."
-msgstr "Skjul sensorer i Temp."
 
 msgid "Hide temp."
 msgstr ""
@@ -291,11 +322,14 @@ msgstr "Home Y"
 msgid "Home Z"
 msgstr "Home Z"
 
-msgid "Host"
-msgstr ""
-
 msgid "Hostname"
 msgstr "Værtsnavn"
+
+msgid "Hotend +"
+msgstr ""
+
+msgid "Hotend -"
+msgstr ""
 
 msgid "Icon Theme"
 msgstr "Ikon-tema"
@@ -309,11 +343,11 @@ msgstr ""
 msgid "Input Shaper"
 msgstr ""
 
+msgid "Install"
+msgstr ""
+
 msgid "Interface"
 msgstr "Interface"
-
-msgid "Invalid"
-msgstr "Ugyldig"
 
 msgid "Invalid password"
 msgstr ""
@@ -329,9 +363,6 @@ msgstr "Invertér Z"
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr ""
-
-msgid "Klipper Restart"
-msgstr "Klipper Genstart"
 
 msgid "Klipper has disconnected"
 msgstr "Klipper er frokoblet"
@@ -354,14 +385,14 @@ msgstr "KlipperScreen vil genstarte"
 msgid "Language"
 msgstr "Sprog"
 
-msgid "Large"
-msgstr "Stor"
-
 msgid "Layer:"
 msgstr ""
 
 msgid "Left:"
 msgstr "Resterende:"
+
+msgid "Light"
+msgstr ""
 
 msgid "Limits"
 msgstr "Grænser"
@@ -369,11 +400,11 @@ msgstr "Grænser"
 msgid "Load"
 msgstr "Indlæs"
 
+msgid "Load Filament"
+msgstr ""
+
 msgid "Lower Nozzle"
 msgstr "Sænk Nozzle"
-
-msgid "Macro shortcut on sidebar"
-msgstr "Makrogenvej på sidelinjen"
 
 msgid "Macros"
 msgstr "Makroer"
@@ -393,9 +424,6 @@ msgstr "Maks. acceleration til decceleration"
 msgid "Max Velocity"
 msgstr "Maks. hastighed"
 
-msgid "Maximum"
-msgstr ""
-
 msgid "Measure Both"
 msgstr ""
 
@@ -405,13 +433,16 @@ msgstr ""
 msgid "Measure Y"
 msgstr ""
 
-msgid "Medium"
-msgstr "Mellem"
-
 msgid "Menu"
 msgstr "Menu"
 
+msgid "Mesh"
+msgstr ""
+
 msgid "Mesh calibrate"
+msgstr ""
+
+msgid "Min"
 msgstr ""
 
 msgid "Modified"
@@ -441,6 +472,9 @@ msgstr ""
 msgid "New"
 msgstr "Ny"
 
+msgid "New update available"
+msgstr ""
+
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
 "conf"
@@ -449,17 +483,20 @@ msgstr ""
 msgid "Nothing selected"
 msgstr "Intet valgt"
 
-#, python-format
-msgid "Outdated by %d"
-msgstr "Forældet med %d"
+msgid "Nozzle Change"
+msgstr ""
+
+msgid "Nozzle:"
+msgstr ""
+
+msgid "Off"
+msgstr "Sluk"
+
+msgid "On"
+msgstr ""
 
 msgid "PSK for"
 msgstr "PSK for"
-
-msgid "Package will be updated"
-msgid_plural "Packages will be updated"
-msgstr[0] "Pakken vil blive opdateret"
-msgstr[1] "Pakker vil blive opdateret"
 
 msgid "Part Fan"
 msgstr ""
@@ -500,13 +537,16 @@ msgstr "Print styring"
 msgid "Print Time"
 msgstr "Printtid"
 
-msgid "Printer"
+msgid "Printer Name"
 msgstr ""
 
-msgid "Printer Connections"
-msgstr "Printer forbindelser"
+msgid "Printer Name:"
+msgstr ""
 
 msgid "Printer Select"
+msgstr ""
+
+msgid "Printhead:"
 msgstr ""
 
 msgid "Printing"
@@ -527,26 +567,20 @@ msgstr "Justering af 4-søjlers konstruktion"
 msgid "Raise Nozzle"
 msgstr "Hæv Nozzle"
 
-msgid "Recover"
-msgstr "Nulstil"
-
-msgid "Recover Hard"
-msgstr "Nulstil alt"
-
-msgid "Recover Soft"
-msgstr "Nulstil"
-
 msgid "Reference"
 msgstr "Reference"
 
 msgid "Refresh"
 msgstr ""
 
+msgid "Release Emerency Stop to continue"
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr ""
 
-msgid "Restart"
-msgstr "Genstart"
+msgid "Reprint"
+msgstr ""
 
 msgid "Resume"
 msgstr "Genoptag"
@@ -588,9 +622,6 @@ msgstr "Gemt"
 msgid "Saved offset: %s"
 msgstr ""
 
-msgid "Screen DPMS"
-msgstr "Skærm DPMS"
-
 msgid "Screen Power Off Time"
 msgstr "Skærm timeout"
 
@@ -602,6 +633,9 @@ msgstr "Vælg"
 
 msgid "Send"
 msgstr "Sende"
+
+msgid "Service"
+msgstr ""
 
 msgid "Set Temp"
 msgstr "Indstil Temp"
@@ -615,9 +649,6 @@ msgstr "At vise"
 msgid "Show Heater Power"
 msgstr ""
 
-msgid "Shutdown"
-msgstr ""
-
 msgid "Size"
 msgstr "Størrelse"
 
@@ -626,9 +657,6 @@ msgstr "Slicer"
 
 msgid "Slicer:"
 msgstr ""
-
-msgid "Small"
-msgstr "Lille"
 
 msgid "Speed (mm/s)"
 msgstr "Hastighed (mm/s)"
@@ -654,17 +682,11 @@ msgstr "Starter WiFi Association"
 msgid "Starting recovery for"
 msgstr "Gendanner"
 
-msgid "Starting update for"
-msgstr "Opdaterer"
-
 msgid "System"
 msgstr "System"
 
-msgid "System Restart"
-msgstr "Genstart system"
-
-msgid "System Shutdown"
-msgstr "Luk system ned"
+msgid "System is up to date"
+msgstr ""
 
 msgid "Temp (°C)"
 msgstr "Temp (°C)"
@@ -672,8 +694,17 @@ msgstr "Temp (°C)"
 msgid "Temperature"
 msgstr "Temperatur"
 
+msgid "Time Zone"
+msgstr ""
+
 msgid "Total:"
 msgstr "Total:"
+
+msgid "Tuning"
+msgstr ""
+
+msgid "USB update ready"
+msgstr ""
 
 msgid "Unknown Heater"
 msgstr "Ukendt varmelegeme"
@@ -684,23 +715,38 @@ msgstr ""
 msgid "Unload"
 msgstr "Tilbagetræk"
 
+msgid "Unload Filament"
+msgstr ""
+
+msgid "Unpacking"
+msgstr ""
+
 msgid "Unretract Extra Length"
 msgstr ""
 
 msgid "Unretract Speed"
 msgstr ""
 
-msgid "Up To Date"
-msgstr "Up-to-Date"
-
 msgid "Update"
 msgstr "Opdater"
+
+msgid "Update almost done"
+msgstr ""
+
+msgid "Update found on USB"
+msgstr ""
+
+msgid "Update ready"
+msgstr ""
 
 msgid "Updating"
 msgstr "Opdatering"
 
 msgid "Uploaded"
 msgstr "Uploadet"
+
+msgid "View Mode"
+msgstr ""
 
 msgid "XY Move Speed (mm/s)"
 msgstr "XY Flyt hastighed (mm/s)"
@@ -722,11 +768,6 @@ msgstr "Z-tilt"
 
 msgid "Z offset:"
 msgstr ""
-
-msgid "commit"
-msgid_plural "commits"
-msgstr[0] "ændring"
-msgstr[1] "ændringer"
 
 msgid "dBm"
 msgstr "dBm"
@@ -752,6 +793,94 @@ msgstr "mm/s²"
 
 msgid "mm³/s"
 msgstr ""
+
+#, python-format
+#~ msgid "%s will be updated to version"
+#~ msgstr "%s vil blive opdateret til version"
+
+#~ msgid "24 Hour Time"
+#~ msgstr "24-timers visning"
+
+#~ msgid "Are you sure you wish to reboot the system?"
+#~ msgstr "Er du sikker på du vil genstarte systemet?"
+
+#~ msgid "Are you sure you wish to shutdown the system?"
+#~ msgstr "Er du sikker på du vil lukke systemet?"
+
+#~ msgid "Confirm Emergency Stop"
+#~ msgstr "Bekræft Nødstop"
+
+#, python-format
+#~ msgid "Do you want to recover %s?"
+#~ msgstr "Vil du gendanne %s?"
+
+#~ msgid "Font Size"
+#~ msgstr "Skriftstørrelse"
+
+#~ msgid "Full Update"
+#~ msgstr "Fuld Opdatering"
+
+#~ msgid "Hide sensors in Temp."
+#~ msgstr "Skjul sensorer i Temp."
+
+#~ msgid "Invalid"
+#~ msgstr "Ugyldig"
+
+#~ msgid "Klipper Restart"
+#~ msgstr "Klipper Genstart"
+
+#~ msgid "Large"
+#~ msgstr "Stor"
+
+#~ msgid "Macro shortcut on sidebar"
+#~ msgstr "Makrogenvej på sidelinjen"
+
+#~ msgid "Medium"
+#~ msgstr "Mellem"
+
+#, python-format
+#~ msgid "Outdated by %d"
+#~ msgstr "Forældet med %d"
+
+#~ msgid "Package will be updated"
+#~ msgid_plural "Packages will be updated"
+#~ msgstr[0] "Pakken vil blive opdateret"
+#~ msgstr[1] "Pakker vil blive opdateret"
+
+#~ msgid "Printer Connections"
+#~ msgstr "Printer forbindelser"
+
+#~ msgid "Recover"
+#~ msgstr "Nulstil"
+
+#~ msgid "Recover Hard"
+#~ msgstr "Nulstil alt"
+
+#~ msgid "Recover Soft"
+#~ msgstr "Nulstil"
+
+#~ msgid "Restart"
+#~ msgstr "Genstart"
+
+#~ msgid "Screen DPMS"
+#~ msgstr "Skærm DPMS"
+
+#~ msgid "Small"
+#~ msgstr "Lille"
+
+#~ msgid "Starting update for"
+#~ msgstr "Opdaterer"
+
+#~ msgid "System Shutdown"
+#~ msgstr "Luk system ned"
+
+#~ msgid "Up To Date"
+#~ msgstr "Up-to-Date"
+
+#~ msgid "commit"
+#~ msgid_plural "commits"
+#~ msgstr[0] "ændring"
+#~ msgstr[1] "ændringer"
 
 #~ msgid "Actions"
 #~ msgstr "Muligheder"
@@ -817,12 +946,6 @@ msgstr ""
 
 #~ msgid "Delete"
 #~ msgstr "Slet"
-
-#~ msgid "Off"
-#~ msgstr "Sluk"
-
-#~ msgid "View Mesh"
-#~ msgstr "Vis mesh"
 
 #~ msgid "Sort by: "
 #~ msgstr "Sortér efter: "

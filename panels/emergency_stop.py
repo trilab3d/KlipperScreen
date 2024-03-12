@@ -20,7 +20,8 @@ class EmergencyStopPanel(ScreenPanel):
         box.set_vexpand(True)
         self.header = Gtk.Label()
         self.header.set_margin_top(60)
-        self.header.set_markup("<span size='xx-large'>"+_("Emergency Stop Triggered!")+"</span>\n<span size='large'>Release Emerency Stop to continue.</span>")
+        self.header.set_markup("<span size='xx-large'>"+_("Emergency Stop Triggered!")+
+                               "</span>\n<span size='large'>"+_("Release Emerency Stop to continue")+".</span>")
         box.add(self.header)
 
         image_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)

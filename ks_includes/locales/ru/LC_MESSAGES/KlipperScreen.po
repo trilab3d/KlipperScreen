@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KlipperScreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-02 16:32-0300\n"
+"POT-Creation-Date: 2024-03-12 13:43+0100\n"
 "PO-Revision-Date: 2022-11-30 18:15-0300\n"
 "Last-Translator: Jakob Kais <schpuntik@freenet.de>\n"
 "Language-Team: \n"
@@ -19,21 +19,23 @@ msgstr ""
 "X-Generator: Poedit 3.2.1\n"
 "X-Poedit-Flags-xgettext: --add-comments\n"
 
-#, python-format
-msgid "%s will be updated to version"
-msgstr "%s будет обновлен до версии"
-
 msgid "(default)"
 msgstr "(дефолт)"
 
-msgid "24 Hour Time"
-msgstr "24-часовой формат"
+msgid "+5°C"
+msgstr ""
+
+msgid "-5°C"
+msgstr ""
 
 msgid "A FIRMWARE_RESTART may fix the issue."
 msgstr "Выполните перезагрузку прошивки, чтобы попытаться исправить проблему."
 
 msgid "ADXL Not Configured"
 msgstr "ADXL не настроен"
+
+msgid "AP"
+msgstr ""
 
 msgid "Abort"
 msgstr "Отменить"
@@ -44,8 +46,14 @@ msgstr "Ускорение:"
 msgid "Accept"
 msgstr "Применить"
 
+msgid "Ad-hoc"
+msgstr ""
+
 msgid "Add profile"
 msgstr "Добавить профиль"
+
+msgid "Advanced"
+msgstr ""
 
 msgid "Apply"
 msgstr "Применить"
@@ -70,23 +78,23 @@ msgstr "Вы хотите отменить эту печать?"
 msgid "Are you sure you wish to disable motors?"
 msgstr "Вы уверены, что хотите отключить двигатели?"
 
-msgid "Are you sure you wish to reboot the system?"
-msgstr "Вы уверены что хотите перезагрузить систему?"
-
-msgid "Are you sure you wish to shutdown the system?"
-msgstr "Вы хотите выключить принтер?"
-
 msgid "Auto"
 msgstr "Авто"
 
 msgid "Auto-calibrate"
 msgstr "Автоматическая калибровка"
 
-msgid "Auto-close notifications"
-msgstr "Автоматическое закрытие уведомлений"
-
 msgid "Auto-scroll"
 msgstr "Автоматическая прокрутка"
+
+msgid "Basic"
+msgstr ""
+
+msgid "Bed +"
+msgstr ""
+
+msgid "Bed -"
+msgstr ""
 
 msgid "Bed Level"
 msgstr "Уровень стола"
@@ -127,26 +135,32 @@ msgstr "Отменить"
 msgid "Cannot connect to Moonraker"
 msgstr "Не удается подключиться к Moonraker"
 
+msgid "Chamber +"
+msgstr ""
+
+msgid "Chamber -"
+msgstr ""
+
+msgid "Change Filament"
+msgstr ""
+
 msgid "Channel"
 msgstr "Канал"
 
 msgid "Check ADXL Wiring"
 msgstr "Проверьте проводку ADXL"
 
-msgid "Checking for updates, please wait..."
-msgstr "Проверка обновлений, подождите..."
-
 msgid "Clear"
 msgstr "Очистить"
+
+msgid "Client"
+msgstr ""
 
 msgid "Close"
 msgstr "Закрыть"
 
 msgid "Complete"
 msgstr "Готово"
-
-msgid "Confirm Emergency Stop"
-msgstr "Подтвердить аварийную остановку"
 
 msgid "Connected"
 msgstr "Соединенный"
@@ -179,15 +193,35 @@ msgstr "Отменить выбор"
 msgid "Disable Motors"
 msgstr "Откл. моторы"
 
+msgid "Discard"
+msgstr ""
+
 msgid "Distance (mm)"
 msgstr "Расстояние (mm)"
 
-#, python-format
-msgid "Do you want to recover %s?"
-msgstr "Вы хотите восстановить%s?"
+msgid "Door Opened"
+msgstr ""
+
+msgid "Door opened!"
+msgstr ""
+
+msgid "Door sensor"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Download failed"
+msgstr ""
+
+msgid "Downloading"
+msgstr ""
 
 msgid "Elapsed:"
 msgstr "Прошло:"
+
+msgid "Emergency Stop Triggered!"
+msgstr ""
 
 msgid "Error"
 msgstr "Ошибка"
@@ -198,8 +232,8 @@ msgstr "Расчётное время"
 msgid "Exclude Object"
 msgstr "Исключить Объект"
 
-msgid "Extra Large"
-msgstr "Очень большой"
+msgid "Export Logs to USB"
+msgstr ""
 
 msgid "Extrude"
 msgstr "Заправить"
@@ -216,8 +250,14 @@ msgstr "Ошибка. Сначала измените положение"
 msgid "Fan"
 msgstr "Обдув"
 
+msgid "Filament Runout"
+msgstr ""
+
 msgid "Filament Used"
 msgstr "Использование филамента"
+
+msgid "Filament sensor"
+msgstr ""
 
 msgid "Filament total:"
 msgstr "Итого филамента:"
@@ -252,12 +292,6 @@ msgstr "Поток:"
 msgid "Flowrate:"
 msgstr "Расход:"
 
-msgid "Font Size"
-msgstr "Размер шрифта"
-
-msgid "Full Update"
-msgstr "Полный Обновлять"
-
 msgid "Fullscreen"
 msgstr ""
 
@@ -272,9 +306,6 @@ msgstr "Скрытый"
 
 msgid "Hide"
 msgstr "Скрывать"
-
-msgid "Hide sensors in Temp."
-msgstr "Скрыть датчики в Temp."
 
 msgid "Hide temp."
 msgstr "Скрыть температуру."
@@ -297,11 +328,14 @@ msgstr "Парковать Y"
 msgid "Home Z"
 msgstr "Парковать Z"
 
-msgid "Host"
-msgstr "Хост"
-
 msgid "Hostname"
 msgstr "Имя хоста"
+
+msgid "Hotend +"
+msgstr ""
+
+msgid "Hotend -"
+msgstr ""
 
 msgid "Icon Theme"
 msgstr "Темы"
@@ -315,11 +349,11 @@ msgstr ""
 msgid "Input Shaper"
 msgstr "Входной шейпер"
 
+msgid "Install"
+msgstr ""
+
 msgid "Interface"
 msgstr "Интерфейс"
-
-msgid "Invalid"
-msgstr "Неверный"
 
 msgid "Invalid password"
 msgstr ""
@@ -335,9 +369,6 @@ msgstr "Инверсия Z"
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr ""
-
-msgid "Klipper Restart"
-msgstr "Klipper Рестарт"
 
 msgid "Klipper has disconnected"
 msgstr "Нет связи с Klipper"
@@ -360,14 +391,14 @@ msgstr "KlipperScreen перезагружается"
 msgid "Language"
 msgstr "Язык"
 
-msgid "Large"
-msgstr "Большой"
-
 msgid "Layer:"
 msgstr "Слой:"
 
 msgid "Left:"
 msgstr "Осталось:"
+
+msgid "Light"
+msgstr ""
 
 msgid "Limits"
 msgstr "Лимиты"
@@ -375,11 +406,11 @@ msgstr "Лимиты"
 msgid "Load"
 msgstr "Загрузить"
 
+msgid "Load Filament"
+msgstr ""
+
 msgid "Lower Nozzle"
 msgstr "Опустить сопло"
-
-msgid "Macro shortcut on sidebar"
-msgstr "Показать макросы в панели"
 
 msgid "Macros"
 msgstr "Макросы"
@@ -399,9 +430,6 @@ msgstr "Ускорения торможения"
 msgid "Max Velocity"
 msgstr "Скорость"
 
-msgid "Maximum"
-msgstr "Максимум"
-
 msgid "Measure Both"
 msgstr "Измерьте и то, и другое"
 
@@ -411,14 +439,17 @@ msgstr "Измерьте X"
 msgid "Measure Y"
 msgstr "Измерьте Y"
 
-msgid "Medium"
-msgstr "Средний"
-
 msgid "Menu"
 msgstr "Меню"
 
+msgid "Mesh"
+msgstr ""
+
 msgid "Mesh calibrate"
 msgstr "Калибровка сетки"
+
+msgid "Min"
+msgstr ""
 
 msgid "Modified"
 msgstr "Изменено"
@@ -447,6 +478,9 @@ msgstr "Никогда"
 msgid "New"
 msgstr "Новый"
 
+msgid "New update available"
+msgstr ""
+
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
 "conf"
@@ -457,18 +491,20 @@ msgstr ""
 msgid "Nothing selected"
 msgstr "Ничего не выбрано"
 
-#, python-format
-msgid "Outdated by %d"
-msgstr "Устарело на %d"
+msgid "Nozzle Change"
+msgstr ""
+
+msgid "Nozzle:"
+msgstr ""
+
+msgid "Off"
+msgstr "Выкл"
+
+msgid "On"
+msgstr ""
 
 msgid "PSK for"
 msgstr "PSK для"
-
-msgid "Package will be updated"
-msgid_plural "Packages will be updated"
-msgstr[0] "Пакет будет обновлен"
-msgstr[1] "Пакеты будут обновляться"
-msgstr[2] "Пакеты будут обновляться"
 
 msgid "Part Fan"
 msgstr "Частичный вентилятор"
@@ -509,14 +545,17 @@ msgstr "Управление печатью"
 msgid "Print Time"
 msgstr "Время печати"
 
-msgid "Printer"
-msgstr "Принтер"
+msgid "Printer Name"
+msgstr ""
 
-msgid "Printer Connections"
-msgstr "Подключение принтера"
+msgid "Printer Name:"
+msgstr ""
 
 msgid "Printer Select"
 msgstr "Выбор принтера"
+
+msgid "Printhead:"
+msgstr ""
 
 msgid "Printing"
 msgstr "Печатается"
@@ -536,26 +575,20 @@ msgstr "Уровень Quad Gantry"
 msgid "Raise Nozzle"
 msgstr "Поднять сопло"
 
-msgid "Recover"
-msgstr "Восстановить"
-
-msgid "Recover Hard"
-msgstr "Восстановить Hard"
-
-msgid "Recover Soft"
-msgstr "Восстановить Soft"
-
 msgid "Reference"
 msgstr "Ссылка"
 
 msgid "Refresh"
 msgstr "Обновить"
 
+msgid "Release Emerency Stop to continue"
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr ""
 
-msgid "Restart"
-msgstr "Перезагрузка"
+msgid "Reprint"
+msgstr ""
 
 msgid "Resume"
 msgstr "Продолжить"
@@ -597,9 +630,6 @@ msgstr "Сохранено"
 msgid "Saved offset: %s"
 msgstr "Сохраненный офсет: %s"
 
-msgid "Screen DPMS"
-msgstr "Экран DPMS"
-
 msgid "Screen Power Off Time"
 msgstr "Время выключения экрана"
 
@@ -611,6 +641,9 @@ msgstr "Выбирать"
 
 msgid "Send"
 msgstr "Отправить"
+
+msgid "Service"
+msgstr ""
 
 msgid "Set Temp"
 msgstr "Заданная температура"
@@ -624,9 +657,6 @@ msgstr "Показывать"
 msgid "Show Heater Power"
 msgstr "Показать мощность нагрева"
 
-msgid "Shutdown"
-msgstr "Выключить"
-
 msgid "Size"
 msgstr "Размер"
 
@@ -635,9 +665,6 @@ msgstr "Слайсер"
 
 msgid "Slicer:"
 msgstr "Слайсер:"
-
-msgid "Small"
-msgstr "Маленький"
 
 msgid "Speed (mm/s)"
 msgstr "Скорость (мм/с)"
@@ -663,17 +690,11 @@ msgstr "Запуск ассоциации WiFi"
 msgid "Starting recovery for"
 msgstr "Запуск восстановления для"
 
-msgid "Starting update for"
-msgstr "Запуск обновления для"
-
 msgid "System"
 msgstr "Система"
 
-msgid "System Restart"
-msgstr "Рестарт Системы"
-
-msgid "System Shutdown"
-msgstr "Выключить"
+msgid "System is up to date"
+msgstr ""
 
 msgid "Temp (°C)"
 msgstr "Темп  (°С)"
@@ -681,8 +702,17 @@ msgstr "Темп  (°С)"
 msgid "Temperature"
 msgstr "Tемпература"
 
+msgid "Time Zone"
+msgstr ""
+
 msgid "Total:"
 msgstr "Итого:"
+
+msgid "Tuning"
+msgstr ""
+
+msgid "USB update ready"
+msgstr ""
 
 msgid "Unknown Heater"
 msgstr "Неизвестный обогреватель"
@@ -693,23 +723,38 @@ msgstr "Неизвестное положение винта"
 msgid "Unload"
 msgstr "Загружено"
 
+msgid "Unload Filament"
+msgstr ""
+
+msgid "Unpacking"
+msgstr ""
+
 msgid "Unretract Extra Length"
 msgstr "Дополнительная длина подачи перед возобновлением печати"
 
 msgid "Unretract Speed"
 msgstr "Скорость дополнительная подачи"
 
-msgid "Up To Date"
-msgstr "Обновлено"
-
 msgid "Update"
 msgstr "Обновить"
+
+msgid "Update almost done"
+msgstr ""
+
+msgid "Update found on USB"
+msgstr ""
+
+msgid "Update ready"
+msgstr ""
 
 msgid "Updating"
 msgstr "Обновление"
 
 msgid "Uploaded"
 msgstr "Загружено"
+
+msgid "View Mode"
+msgstr ""
 
 msgid "XY Move Speed (mm/s)"
 msgstr "Скорость перемещения по осям XY (мм/с)"
@@ -731,12 +776,6 @@ msgstr "Z Наклон"
 
 msgid "Z offset:"
 msgstr "Смещение Z:"
-
-msgid "commit"
-msgid_plural "commits"
-msgstr[0] "изменение"
-msgstr[1] "изменение"
-msgstr[2] "изменение"
 
 msgid "dBm"
 msgstr "dBm"
@@ -764,6 +803,114 @@ msgstr "мм/с²"
 
 msgid "mm³/s"
 msgstr "мм/с³"
+
+#, python-format
+#~ msgid "%s will be updated to version"
+#~ msgstr "%s будет обновлен до версии"
+
+#~ msgid "24 Hour Time"
+#~ msgstr "24-часовой формат"
+
+#~ msgid "Are you sure you wish to reboot the system?"
+#~ msgstr "Вы уверены что хотите перезагрузить систему?"
+
+#~ msgid "Are you sure you wish to shutdown the system?"
+#~ msgstr "Вы хотите выключить принтер?"
+
+#~ msgid "Auto-close notifications"
+#~ msgstr "Автоматическое закрытие уведомлений"
+
+#~ msgid "Checking for updates, please wait..."
+#~ msgstr "Проверка обновлений, подождите..."
+
+#~ msgid "Confirm Emergency Stop"
+#~ msgstr "Подтвердить аварийную остановку"
+
+#, python-format
+#~ msgid "Do you want to recover %s?"
+#~ msgstr "Вы хотите восстановить%s?"
+
+#~ msgid "Extra Large"
+#~ msgstr "Очень большой"
+
+#~ msgid "Font Size"
+#~ msgstr "Размер шрифта"
+
+#~ msgid "Full Update"
+#~ msgstr "Полный Обновлять"
+
+#~ msgid "Hide sensors in Temp."
+#~ msgstr "Скрыть датчики в Temp."
+
+#~ msgid "Host"
+#~ msgstr "Хост"
+
+#~ msgid "Invalid"
+#~ msgstr "Неверный"
+
+#~ msgid "Klipper Restart"
+#~ msgstr "Klipper Рестарт"
+
+#~ msgid "Large"
+#~ msgstr "Большой"
+
+#~ msgid "Macro shortcut on sidebar"
+#~ msgstr "Показать макросы в панели"
+
+#~ msgid "Maximum"
+#~ msgstr "Максимум"
+
+#~ msgid "Medium"
+#~ msgstr "Средний"
+
+#, python-format
+#~ msgid "Outdated by %d"
+#~ msgstr "Устарело на %d"
+
+#~ msgid "Package will be updated"
+#~ msgid_plural "Packages will be updated"
+#~ msgstr[0] "Пакет будет обновлен"
+#~ msgstr[1] "Пакеты будут обновляться"
+#~ msgstr[2] "Пакеты будут обновляться"
+
+#~ msgid "Printer Connections"
+#~ msgstr "Подключение принтера"
+
+#~ msgid "Recover"
+#~ msgstr "Восстановить"
+
+#~ msgid "Recover Hard"
+#~ msgstr "Восстановить Hard"
+
+#~ msgid "Recover Soft"
+#~ msgstr "Восстановить Soft"
+
+#~ msgid "Restart"
+#~ msgstr "Перезагрузка"
+
+#~ msgid "Screen DPMS"
+#~ msgstr "Экран DPMS"
+
+#~ msgid "Shutdown"
+#~ msgstr "Выключить"
+
+#~ msgid "Small"
+#~ msgstr "Маленький"
+
+#~ msgid "Starting update for"
+#~ msgstr "Запуск обновления для"
+
+#~ msgid "System Shutdown"
+#~ msgstr "Выключить"
+
+#~ msgid "Up To Date"
+#~ msgstr "Обновлено"
+
+#~ msgid "commit"
+#~ msgid_plural "commits"
+#~ msgstr[0] "изменение"
+#~ msgstr[1] "изменение"
+#~ msgstr[2] "изменение"
 
 #~ msgid "Actions"
 #~ msgstr "Действия"
@@ -829,12 +976,6 @@ msgstr "мм/с³"
 
 #~ msgid "Delete"
 #~ msgstr "Удалить"
-
-#~ msgid "Off"
-#~ msgstr "Выкл"
-
-#~ msgid "View Mesh"
-#~ msgstr "Смотреть сетку"
 
 #~ msgid "Sort by: "
 #~ msgstr "Орден: "
@@ -920,9 +1061,6 @@ msgstr "мм/с³"
 #~ msgid "..."
 #~ msgstr "..."
 
-#~ msgid "Change Printer"
-#~ msgstr "Сменить принтер"
-
 #~ msgid "Fan Off"
 #~ msgstr "Bыключить"
 
@@ -937,9 +1075,6 @@ msgstr "мм/с³"
 
 #~ msgid "?"
 #~ msgstr "?"
-
-#~ msgid "Cancel Change"
-#~ msgstr "Отменить изменения"
 
 #~ msgid "Control"
 #~ msgstr "Управление"

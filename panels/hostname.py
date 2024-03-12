@@ -26,11 +26,11 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         scroll.add(self.grid)
         self.box.add(scroll)
 
-        btn_save = self._gtk.Button("settings", "Save", "color1")
+        btn_save = self._gtk.Button("settings", _("Save"), "color1")
         btn_save.set_hexpand(False)
         btn_save.set_vexpand(False)
         btn_save.connect("clicked", self.save_changes)
-        btn_discard = self._gtk.Button("cancel", "Discard", "color1")
+        btn_discard = self._gtk.Button("cancel", _("Discard"), "color1")
         btn_discard.set_hexpand(False)
         btn_discard.set_vexpand(False)
         btn_discard.connect("clicked", self.revert_changes)
@@ -54,7 +54,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
 
         entries = []
 
-        hostname_label = Gtk.Label(label="Printer Name:")
+        hostname_label = Gtk.Label(label=_("Printer Name:"))
         hostname_label.set_halign(Gtk.Align.END)
         hostname_entry = Gtk.Entry()
         hostname_entry.set_text(self.settings["hostname"])

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KlipperScreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-02 16:32-0300\n"
+"POT-Creation-Date: 2024-03-12 13:43+0100\n"
 "PO-Revision-Date: 2023-07-06 22:33+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,21 +18,23 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.3.2\n"
 
-#, python-format
-msgid "%s will be updated to version"
-msgstr "%s 将被更新为版本"
-
 msgid "(default)"
 msgstr "(默认)"
 
-msgid "24 Hour Time"
-msgstr "使用24小时制"
+msgid "+5°C"
+msgstr ""
+
+msgid "-5°C"
+msgstr ""
 
 msgid "A FIRMWARE_RESTART may fix the issue."
 msgstr "重启Klipper固件可能会解决这个问题。"
 
 msgid "ADXL Not Configured"
 msgstr "未配置ADXL"
+
+msgid "AP"
+msgstr ""
 
 msgid "Abort"
 msgstr "取消"
@@ -43,8 +45,14 @@ msgstr "加速度："
 msgid "Accept"
 msgstr "应用"
 
+msgid "Ad-hoc"
+msgstr ""
+
 msgid "Add profile"
 msgstr "添加配置文件"
+
+msgid "Advanced"
+msgstr ""
 
 msgid "Apply"
 msgstr "应用"
@@ -69,23 +77,23 @@ msgstr "您确定要取消打印吗？"
 msgid "Are you sure you wish to disable motors?"
 msgstr "您确定要关闭电机吗？"
 
-msgid "Are you sure you wish to reboot the system?"
-msgstr "您确定要重启系统吗？"
-
-msgid "Are you sure you wish to shutdown the system?"
-msgstr "您确定要关闭系统吗？"
-
 msgid "Auto"
 msgstr "自动"
 
 msgid "Auto-calibrate"
 msgstr "自动校准"
 
-msgid "Auto-close notifications"
-msgstr "自动关闭通知"
-
 msgid "Auto-scroll"
 msgstr "自动滚屏"
+
+msgid "Basic"
+msgstr ""
+
+msgid "Bed +"
+msgstr ""
+
+msgid "Bed -"
+msgstr ""
 
 msgid "Bed Level"
 msgstr "热床调平"
@@ -126,26 +134,32 @@ msgstr "正在取消"
 msgid "Cannot connect to Moonraker"
 msgstr "无法连接到Moonraker"
 
+msgid "Chamber +"
+msgstr ""
+
+msgid "Chamber -"
+msgstr ""
+
+msgid "Change Filament"
+msgstr ""
+
 msgid "Channel"
 msgstr "群组"
 
 msgid "Check ADXL Wiring"
 msgstr "检查ADXL的接线"
 
-msgid "Checking for updates, please wait..."
-msgstr "正在检查更新，请稍等..."
-
 msgid "Clear"
 msgstr "清除"
+
+msgid "Client"
+msgstr ""
 
 msgid "Close"
 msgstr "关闭"
 
 msgid "Complete"
 msgstr "完成"
-
-msgid "Confirm Emergency Stop"
-msgstr "紧急停止需确认"
 
 msgid "Connected"
 msgstr "已连接"
@@ -178,15 +192,35 @@ msgstr "取消选择"
 msgid "Disable Motors"
 msgstr "关闭电机"
 
+msgid "Discard"
+msgstr ""
+
 msgid "Distance (mm)"
 msgstr "挤出长度（mm）"
 
-#, python-format
-msgid "Do you want to recover %s?"
-msgstr "你想恢复 %s 吗？"
+msgid "Door Opened"
+msgstr ""
+
+msgid "Door opened!"
+msgstr ""
+
+msgid "Door sensor"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Download failed"
+msgstr ""
+
+msgid "Downloading"
+msgstr ""
 
 msgid "Elapsed:"
 msgstr "已用时间："
+
+msgid "Emergency Stop Triggered!"
+msgstr ""
 
 msgid "Error"
 msgstr "错误"
@@ -197,8 +231,8 @@ msgstr "估算剩余时间方式"
 msgid "Exclude Object"
 msgstr "排除对象"
 
-msgid "Extra Large"
-msgstr "特大"
+msgid "Export Logs to USB"
+msgstr ""
 
 msgid "Extrude"
 msgstr "挤出"
@@ -215,8 +249,14 @@ msgstr "失败，请先调整位置"
 msgid "Fan"
 msgstr "风扇"
 
+msgid "Filament Runout"
+msgstr ""
+
 msgid "Filament Used"
 msgstr "已用耗材"
+
+msgid "Filament sensor"
+msgstr ""
 
 msgid "Filament total:"
 msgstr "使用耗材总数："
@@ -251,12 +291,6 @@ msgstr "流量："
 msgid "Flowrate:"
 msgstr "流速："
 
-msgid "Font Size"
-msgstr "字体大小"
-
-msgid "Full Update"
-msgstr "全部更新"
-
 msgid "Fullscreen"
 msgstr "全屏"
 
@@ -271,9 +305,6 @@ msgstr "隐藏的"
 
 msgid "Hide"
 msgstr "隐藏"
-
-msgid "Hide sensors in Temp."
-msgstr "在温度显示中隐藏其他传感器"
 
 msgid "Hide temp."
 msgstr "隐藏温度"
@@ -296,11 +327,14 @@ msgstr "Y轴归零"
 msgid "Home Z"
 msgstr "Z轴归零"
 
-msgid "Host"
-msgstr "主机"
-
 msgid "Hostname"
 msgstr "主机名"
+
+msgid "Hotend +"
+msgstr ""
+
+msgid "Hotend -"
+msgstr ""
 
 msgid "Icon Theme"
 msgstr "主题"
@@ -314,11 +348,11 @@ msgstr "启动PID校准："
 msgid "Input Shaper"
 msgstr "共振补偿"
 
+msgid "Install"
+msgstr ""
+
 msgid "Interface"
 msgstr "接口"
-
-msgid "Invalid"
-msgstr "无效"
 
 msgid "Invalid password"
 msgstr "密码无效"
@@ -334,9 +368,6 @@ msgstr "反转Z轴"
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr "这可能需要5分钟以上的时间，这取决于加热器的功率。"
-
-msgid "Klipper Restart"
-msgstr "重启Klipper"
 
 msgid "Klipper has disconnected"
 msgstr "Klipper已断开连接"
@@ -359,14 +390,14 @@ msgstr "KlipperScreen将重新启动"
 msgid "Language"
 msgstr "界面语言"
 
-msgid "Large"
-msgstr "大"
-
 msgid "Layer:"
 msgstr "层："
 
 msgid "Left:"
 msgstr "剩余时间："
+
+msgid "Light"
+msgstr ""
 
 msgid "Limits"
 msgstr "打印机限制"
@@ -374,11 +405,11 @@ msgstr "打印机限制"
 msgid "Load"
 msgstr "载入耗材"
 
+msgid "Load Filament"
+msgstr ""
+
 msgid "Lower Nozzle"
 msgstr "降低喷嘴"
-
-msgid "Macro shortcut on sidebar"
-msgstr "显示侧边栏宏按钮"
 
 msgid "Macros"
 msgstr "宏"
@@ -398,9 +429,6 @@ msgstr "最大加速至减速"
 msgid "Max Velocity"
 msgstr "最大速度"
 
-msgid "Maximum"
-msgstr "最大"
-
 msgid "Measure Both"
 msgstr "同时测量"
 
@@ -410,14 +438,17 @@ msgstr "测量X轴"
 msgid "Measure Y"
 msgstr "测量Y轴"
 
-msgid "Medium"
-msgstr "中"
-
 msgid "Menu"
 msgstr "菜单"
 
+msgid "Mesh"
+msgstr ""
+
 msgid "Mesh calibrate"
 msgstr "床网校准"
+
+msgid "Min"
+msgstr ""
 
 msgid "Modified"
 msgstr "已修改"
@@ -446,6 +477,9 @@ msgstr "从不"
 msgid "New"
 msgstr "新的值"
 
+msgid "New update available"
+msgstr ""
+
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
 "conf"
@@ -454,16 +488,20 @@ msgstr "不支持自动检测，需要在klpperscreen.conf中进行配置"
 msgid "Nothing selected"
 msgstr "未选择任何内容"
 
-#, python-format
-msgid "Outdated by %d"
-msgstr "已落后 %d"
+msgid "Nozzle Change"
+msgstr ""
+
+msgid "Nozzle:"
+msgstr ""
+
+msgid "Off"
+msgstr "关闭"
+
+msgid "On"
+msgstr ""
 
 msgid "PSK for"
 msgstr "PSK"
-
-msgid "Package will be updated"
-msgid_plural "Packages will be updated"
-msgstr[0] "软件包将被更新"
 
 msgid "Part Fan"
 msgstr "模型风扇"
@@ -504,14 +542,17 @@ msgstr "打印控制"
 msgid "Print Time"
 msgstr "打印用时"
 
-msgid "Printer"
-msgstr "打印机"
+msgid "Printer Name"
+msgstr ""
 
-msgid "Printer Connections"
-msgstr "打印机连接"
+msgid "Printer Name:"
+msgstr ""
 
 msgid "Printer Select"
 msgstr "打印机选择"
+
+msgid "Printhead:"
+msgstr ""
 
 msgid "Printing"
 msgstr "打印中"
@@ -531,26 +572,20 @@ msgstr "龙门架调平"
 msgid "Raise Nozzle"
 msgstr "升高喷嘴"
 
-msgid "Recover"
-msgstr "恢复"
-
-msgid "Recover Hard"
-msgstr "硬恢复(git recover hard)"
-
-msgid "Recover Soft"
-msgstr "软恢复(git reset)"
-
 msgid "Reference"
 msgstr "参考"
 
 msgid "Refresh"
 msgstr "刷新"
 
+msgid "Release Emerency Stop to continue"
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr "重命名/移动："
 
-msgid "Restart"
-msgstr "重启"
+msgid "Reprint"
+msgstr ""
 
 msgid "Resume"
 msgstr "继续"
@@ -592,9 +627,6 @@ msgstr "已保存"
 msgid "Saved offset: %s"
 msgstr "保存偏移：%s"
 
-msgid "Screen DPMS"
-msgstr "屏幕省电管理系统"
-
 msgid "Screen Power Off Time"
 msgstr "关闭屏幕时间"
 
@@ -606,6 +638,9 @@ msgstr "选择"
 
 msgid "Send"
 msgstr "发送"
+
+msgid "Service"
+msgstr ""
 
 msgid "Set Temp"
 msgstr "设定温度"
@@ -619,9 +654,6 @@ msgstr "显示"
 msgid "Show Heater Power"
 msgstr "显示加热器功率"
 
-msgid "Shutdown"
-msgstr "关闭"
-
 msgid "Size"
 msgstr "大小"
 
@@ -630,9 +662,6 @@ msgstr "切片软件"
 
 msgid "Slicer:"
 msgstr "切片软件："
-
-msgid "Small"
-msgstr "小"
 
 msgid "Speed (mm/s)"
 msgstr "速度(mm/s)"
@@ -658,17 +687,11 @@ msgstr "开始WiFi连接"
 msgid "Starting recovery for"
 msgstr "开始恢复"
 
-msgid "Starting update for"
-msgstr "开始更新"
-
 msgid "System"
 msgstr "系统"
 
-msgid "System Restart"
-msgstr "重启系统"
-
-msgid "System Shutdown"
-msgstr "关闭系统"
+msgid "System is up to date"
+msgstr ""
 
 msgid "Temp (°C)"
 msgstr "温度 (°C)"
@@ -676,8 +699,17 @@ msgstr "温度 (°C)"
 msgid "Temperature"
 msgstr "温度"
 
+msgid "Time Zone"
+msgstr ""
+
 msgid "Total:"
 msgstr "合计："
+
+msgid "Tuning"
+msgstr ""
+
+msgid "USB update ready"
+msgstr ""
 
 msgid "Unknown Heater"
 msgstr "未知加热器"
@@ -688,23 +720,38 @@ msgstr "未知螺丝位置"
 msgid "Unload"
 msgstr "卸载耗材"
 
+msgid "Unload Filament"
+msgstr ""
+
+msgid "Unpacking"
+msgstr ""
+
 msgid "Unretract Extra Length"
 msgstr "回料长度"
 
 msgid "Unretract Speed"
 msgstr "回料速度"
 
-msgid "Up To Date"
-msgstr "最新版本"
-
 msgid "Update"
 msgstr "更新"
+
+msgid "Update almost done"
+msgstr ""
+
+msgid "Update found on USB"
+msgstr ""
+
+msgid "Update ready"
+msgstr ""
 
 msgid "Updating"
 msgstr "正在更新"
 
 msgid "Uploaded"
 msgstr "上传于"
+
+msgid "View Mode"
+msgstr ""
 
 msgid "XY Move Speed (mm/s)"
 msgstr "XY轴移动速度(mm/s)"
@@ -726,10 +773,6 @@ msgstr "Z轴倾斜校准"
 
 msgid "Z offset:"
 msgstr "Z轴偏移："
-
-msgid "commit"
-msgid_plural "commits"
-msgstr[0] "更改"
 
 msgid "dBm"
 msgstr "dBm"
@@ -753,6 +796,110 @@ msgstr "mm/s²"
 
 msgid "mm³/s"
 msgstr "mm³/s"
+
+#, python-format
+#~ msgid "%s will be updated to version"
+#~ msgstr "%s 将被更新为版本"
+
+#~ msgid "24 Hour Time"
+#~ msgstr "使用24小时制"
+
+#~ msgid "Are you sure you wish to reboot the system?"
+#~ msgstr "您确定要重启系统吗？"
+
+#~ msgid "Are you sure you wish to shutdown the system?"
+#~ msgstr "您确定要关闭系统吗？"
+
+#~ msgid "Auto-close notifications"
+#~ msgstr "自动关闭通知"
+
+#~ msgid "Checking for updates, please wait..."
+#~ msgstr "正在检查更新，请稍等..."
+
+#~ msgid "Confirm Emergency Stop"
+#~ msgstr "紧急停止需确认"
+
+#, python-format
+#~ msgid "Do you want to recover %s?"
+#~ msgstr "你想恢复 %s 吗？"
+
+#~ msgid "Extra Large"
+#~ msgstr "特大"
+
+#~ msgid "Font Size"
+#~ msgstr "字体大小"
+
+#~ msgid "Full Update"
+#~ msgstr "全部更新"
+
+#~ msgid "Hide sensors in Temp."
+#~ msgstr "在温度显示中隐藏其他传感器"
+
+#~ msgid "Host"
+#~ msgstr "主机"
+
+#~ msgid "Invalid"
+#~ msgstr "无效"
+
+#~ msgid "Klipper Restart"
+#~ msgstr "重启Klipper"
+
+#~ msgid "Large"
+#~ msgstr "大"
+
+#~ msgid "Macro shortcut on sidebar"
+#~ msgstr "显示侧边栏宏按钮"
+
+#~ msgid "Maximum"
+#~ msgstr "最大"
+
+#~ msgid "Medium"
+#~ msgstr "中"
+
+#, python-format
+#~ msgid "Outdated by %d"
+#~ msgstr "已落后 %d"
+
+#~ msgid "Package will be updated"
+#~ msgid_plural "Packages will be updated"
+#~ msgstr[0] "软件包将被更新"
+
+#~ msgid "Printer Connections"
+#~ msgstr "打印机连接"
+
+#~ msgid "Recover"
+#~ msgstr "恢复"
+
+#~ msgid "Recover Hard"
+#~ msgstr "硬恢复(git recover hard)"
+
+#~ msgid "Recover Soft"
+#~ msgstr "软恢复(git reset)"
+
+#~ msgid "Restart"
+#~ msgstr "重启"
+
+#~ msgid "Screen DPMS"
+#~ msgstr "屏幕省电管理系统"
+
+#~ msgid "Shutdown"
+#~ msgstr "关闭"
+
+#~ msgid "Small"
+#~ msgstr "小"
+
+#~ msgid "Starting update for"
+#~ msgstr "开始更新"
+
+#~ msgid "System Shutdown"
+#~ msgstr "关闭系统"
+
+#~ msgid "Up To Date"
+#~ msgstr "最新版本"
+
+#~ msgid "commit"
+#~ msgid_plural "commits"
+#~ msgstr[0] "更改"
 
 #~ msgid "Actions"
 #~ msgstr "控制"
@@ -800,12 +947,6 @@ msgstr "mm³/s"
 
 #~ msgid "Delete"
 #~ msgstr "删除"
-
-#~ msgid "Off"
-#~ msgstr "关闭"
-
-#~ msgid "View Mesh"
-#~ msgstr "查看热床网格"
 
 #~ msgid "Sort by: "
 #~ msgstr "排序: "
@@ -902,9 +1043,6 @@ msgstr "mm³/s"
 
 #~ msgid "?"
 #~ msgstr "?"
-
-#~ msgid "Cancel Change"
-#~ msgstr "取消更改"
 
 #~ msgid "Control"
 #~ msgstr "控制"

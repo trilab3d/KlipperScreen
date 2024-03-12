@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-02 16:32-0300\n"
+"POT-Creation-Date: 2024-03-12 13:43+0100\n"
 "PO-Revision-Date: 2022-11-21 21:31-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,20 +18,22 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.2.1\n"
 
-#, python-format
-msgid "%s will be updated to version"
-msgstr "%s uppdateras till version"
-
 msgid "(default)"
 msgstr "(standard)"
 
-msgid "24 Hour Time"
-msgstr "24 timmars tid"
+msgid "+5°C"
+msgstr ""
+
+msgid "-5°C"
+msgstr ""
 
 msgid "A FIRMWARE_RESTART may fix the issue."
 msgstr "En FIRMWARE_RESTART kan lösa problemet."
 
 msgid "ADXL Not Configured"
+msgstr ""
+
+msgid "AP"
 msgstr ""
 
 msgid "Abort"
@@ -43,7 +45,13 @@ msgstr ""
 msgid "Accept"
 msgstr "Godkänn"
 
+msgid "Ad-hoc"
+msgstr ""
+
 msgid "Add profile"
+msgstr ""
+
+msgid "Advanced"
 msgstr ""
 
 msgid "Apply"
@@ -69,23 +77,23 @@ msgstr "Är du säker på att du vill avbryta denna utskrift?"
 msgid "Are you sure you wish to disable motors?"
 msgstr "Är du säker på att du vill inaktivera motorer?"
 
-msgid "Are you sure you wish to reboot the system?"
-msgstr "Är du säker på att du vill starta om systemet?"
-
-msgid "Are you sure you wish to shutdown the system?"
-msgstr "Är du säker på att du vill stänga av systemet?"
-
 msgid "Auto"
 msgstr "Automatisk"
 
 msgid "Auto-calibrate"
 msgstr ""
 
-msgid "Auto-close notifications"
-msgstr ""
-
 msgid "Auto-scroll"
 msgstr "Auto-scrolla"
+
+msgid "Basic"
+msgstr ""
+
+msgid "Bed +"
+msgstr ""
+
+msgid "Bed -"
+msgstr ""
 
 msgid "Bed Level"
 msgstr ""
@@ -126,16 +134,25 @@ msgstr "Avbryter"
 msgid "Cannot connect to Moonraker"
 msgstr "Kan inte ansluta till Moonraker"
 
+msgid "Chamber +"
+msgstr ""
+
+msgid "Chamber -"
+msgstr ""
+
+msgid "Change Filament"
+msgstr ""
+
 msgid "Channel"
 msgstr ""
 
 msgid "Check ADXL Wiring"
 msgstr ""
 
-msgid "Checking for updates, please wait..."
+msgid "Clear"
 msgstr ""
 
-msgid "Clear"
+msgid "Client"
 msgstr ""
 
 msgid "Close"
@@ -143,9 +160,6 @@ msgstr "Stäng"
 
 msgid "Complete"
 msgstr "Färdig"
-
-msgid "Confirm Emergency Stop"
-msgstr "Bekräfta nödstopp"
 
 msgid "Connected"
 msgstr "Ansluten"
@@ -178,15 +192,35 @@ msgstr "Avmarkera"
 msgid "Disable Motors"
 msgstr "Inaktivera motorer"
 
+msgid "Discard"
+msgstr ""
+
 msgid "Distance (mm)"
 msgstr "Avstånd (mm)"
 
-#, python-format
-msgid "Do you want to recover %s?"
-msgstr "Vill du återställa %s?"
+msgid "Door Opened"
+msgstr ""
+
+msgid "Door opened!"
+msgstr ""
+
+msgid "Door sensor"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Download failed"
+msgstr ""
+
+msgid "Downloading"
+msgstr ""
 
 msgid "Elapsed:"
 msgstr "Förfluten:"
+
+msgid "Emergency Stop Triggered!"
+msgstr ""
 
 msgid "Error"
 msgstr "Fel"
@@ -197,7 +231,7 @@ msgstr ""
 msgid "Exclude Object"
 msgstr ""
 
-msgid "Extra Large"
+msgid "Export Logs to USB"
 msgstr ""
 
 msgid "Extrude"
@@ -215,7 +249,13 @@ msgstr "Misslyckades, justera positionen först"
 msgid "Fan"
 msgstr "Fläkt"
 
+msgid "Filament Runout"
+msgstr ""
+
 msgid "Filament Used"
+msgstr ""
+
+msgid "Filament sensor"
 msgstr ""
 
 msgid "Filament total:"
@@ -251,12 +291,6 @@ msgstr ""
 msgid "Flowrate:"
 msgstr ""
 
-msgid "Font Size"
-msgstr "Textstorlek"
-
-msgid "Full Update"
-msgstr "Fullständig Uppdatering"
-
 msgid "Fullscreen"
 msgstr ""
 
@@ -271,9 +305,6 @@ msgstr "Dold"
 
 msgid "Hide"
 msgstr "Dölj"
-
-msgid "Hide sensors in Temp."
-msgstr "Dölj sensorer i Temp."
 
 msgid "Hide temp."
 msgstr ""
@@ -296,11 +327,14 @@ msgstr "Hem Y"
 msgid "Home Z"
 msgstr "Hem Z"
 
-msgid "Host"
-msgstr ""
-
 msgid "Hostname"
 msgstr "Värdnamn"
+
+msgid "Hotend +"
+msgstr ""
+
+msgid "Hotend -"
+msgstr ""
 
 msgid "Icon Theme"
 msgstr "Ikon tema"
@@ -314,11 +348,11 @@ msgstr ""
 msgid "Input Shaper"
 msgstr ""
 
+msgid "Install"
+msgstr ""
+
 msgid "Interface"
 msgstr "Gränssnitt"
-
-msgid "Invalid"
-msgstr "Ogiltig"
 
 msgid "Invalid password"
 msgstr ""
@@ -334,9 +368,6 @@ msgstr "Invertera Z"
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr ""
-
-msgid "Klipper Restart"
-msgstr "Klipper Omstart"
 
 msgid "Klipper has disconnected"
 msgstr ""
@@ -359,14 +390,14 @@ msgstr ""
 msgid "Language"
 msgstr "Språk"
 
-msgid "Large"
-msgstr "Stor"
-
 msgid "Layer:"
 msgstr ""
 
 msgid "Left:"
 msgstr "Återstående:"
+
+msgid "Light"
+msgstr ""
 
 msgid "Limits"
 msgstr "Begränsningar"
@@ -374,11 +405,11 @@ msgstr "Begränsningar"
 msgid "Load"
 msgstr "Ladda"
 
+msgid "Load Filament"
+msgstr ""
+
 msgid "Lower Nozzle"
 msgstr "Sänk munstycket"
-
-msgid "Macro shortcut on sidebar"
-msgstr "Makro genväg på sidofältet"
 
 msgid "Macros"
 msgstr "Makron"
@@ -398,9 +429,6 @@ msgstr ""
 msgid "Max Velocity"
 msgstr ""
 
-msgid "Maximum"
-msgstr ""
-
 msgid "Measure Both"
 msgstr ""
 
@@ -410,13 +438,16 @@ msgstr ""
 msgid "Measure Y"
 msgstr ""
 
-msgid "Medium"
-msgstr "Medium"
-
 msgid "Menu"
 msgstr "Meny"
 
+msgid "Mesh"
+msgstr ""
+
 msgid "Mesh calibrate"
+msgstr ""
+
+msgid "Min"
 msgstr ""
 
 msgid "Modified"
@@ -446,6 +477,9 @@ msgstr ""
 msgid "New"
 msgstr ""
 
+msgid "New update available"
+msgstr ""
+
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
 "conf"
@@ -454,17 +488,20 @@ msgstr ""
 msgid "Nothing selected"
 msgstr "Inget valt"
 
-#, python-format
-msgid "Outdated by %d"
+msgid "Nozzle Change"
+msgstr ""
+
+msgid "Nozzle:"
+msgstr ""
+
+msgid "Off"
+msgstr "Avstängd"
+
+msgid "On"
 msgstr ""
 
 msgid "PSK for"
 msgstr "PSK för"
-
-msgid "Package will be updated"
-msgid_plural "Packages will be updated"
-msgstr[0] "Paketet kommer att uppdateras"
-msgstr[1] "Paketen kommer att uppdateras"
 
 msgid "Part Fan"
 msgstr ""
@@ -505,13 +542,16 @@ msgstr "Utskriftskontroll"
 msgid "Print Time"
 msgstr ""
 
-msgid "Printer"
+msgid "Printer Name"
 msgstr ""
 
-msgid "Printer Connections"
+msgid "Printer Name:"
 msgstr ""
 
 msgid "Printer Select"
+msgstr ""
+
+msgid "Printhead:"
 msgstr ""
 
 msgid "Printing"
@@ -532,26 +572,20 @@ msgstr ""
 msgid "Raise Nozzle"
 msgstr ""
 
-msgid "Recover"
-msgstr ""
-
-msgid "Recover Hard"
-msgstr ""
-
-msgid "Recover Soft"
-msgstr ""
-
 msgid "Reference"
 msgstr "Referens"
 
 msgid "Refresh"
 msgstr ""
 
+msgid "Release Emerency Stop to continue"
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr ""
 
-msgid "Restart"
-msgstr "Starta om"
+msgid "Reprint"
+msgstr ""
 
 msgid "Resume"
 msgstr "Återuppta"
@@ -593,9 +627,6 @@ msgstr ""
 msgid "Saved offset: %s"
 msgstr ""
 
-msgid "Screen DPMS"
-msgstr ""
-
 msgid "Screen Power Off Time"
 msgstr "Avstängningstid för skärmen"
 
@@ -607,6 +638,9 @@ msgstr "Välj"
 
 msgid "Send"
 msgstr "Skicka"
+
+msgid "Service"
+msgstr ""
 
 msgid "Set Temp"
 msgstr ""
@@ -620,9 +654,6 @@ msgstr "Visa"
 msgid "Show Heater Power"
 msgstr ""
 
-msgid "Shutdown"
-msgstr ""
-
 msgid "Size"
 msgstr "Storlek"
 
@@ -631,9 +662,6 @@ msgstr ""
 
 msgid "Slicer:"
 msgstr ""
-
-msgid "Small"
-msgstr "Liten"
 
 msgid "Speed (mm/s)"
 msgstr "Hastighet (mm/s)"
@@ -659,17 +687,11 @@ msgstr ""
 msgid "Starting recovery for"
 msgstr ""
 
-msgid "Starting update for"
-msgstr ""
-
 msgid "System"
 msgstr "System"
 
-msgid "System Restart"
-msgstr "System Omstart"
-
-msgid "System Shutdown"
-msgstr "System Avstängning"
+msgid "System is up to date"
+msgstr ""
 
 msgid "Temp (°C)"
 msgstr "Temperatur (°C)"
@@ -677,7 +699,16 @@ msgstr "Temperatur (°C)"
 msgid "Temperature"
 msgstr "Temperatur"
 
+msgid "Time Zone"
+msgstr ""
+
 msgid "Total:"
+msgstr ""
+
+msgid "Tuning"
+msgstr ""
+
+msgid "USB update ready"
 msgstr ""
 
 msgid "Unknown Heater"
@@ -689,23 +720,38 @@ msgstr ""
 msgid "Unload"
 msgstr ""
 
+msgid "Unload Filament"
+msgstr ""
+
+msgid "Unpacking"
+msgstr ""
+
 msgid "Unretract Extra Length"
 msgstr ""
 
 msgid "Unretract Speed"
 msgstr ""
 
-msgid "Up To Date"
-msgstr "Aktuellt"
-
 msgid "Update"
 msgstr "Uppdatera"
+
+msgid "Update almost done"
+msgstr ""
+
+msgid "Update found on USB"
+msgstr ""
+
+msgid "Update ready"
+msgstr ""
 
 msgid "Updating"
 msgstr "Uppdaterar"
 
 msgid "Uploaded"
 msgstr "Uppladdad"
+
+msgid "View Mode"
+msgstr ""
 
 msgid "XY Move Speed (mm/s)"
 msgstr "XY rörelsehastighet (mm/s)"
@@ -727,11 +773,6 @@ msgstr ""
 
 msgid "Z offset:"
 msgstr ""
-
-msgid "commit"
-msgid_plural "commits"
-msgstr[0] ""
-msgstr[1] ""
 
 msgid "dBm"
 msgstr "dBm"
@@ -757,6 +798,67 @@ msgstr "mm/s²"
 
 msgid "mm³/s"
 msgstr ""
+
+#, python-format
+#~ msgid "%s will be updated to version"
+#~ msgstr "%s uppdateras till version"
+
+#~ msgid "24 Hour Time"
+#~ msgstr "24 timmars tid"
+
+#~ msgid "Are you sure you wish to reboot the system?"
+#~ msgstr "Är du säker på att du vill starta om systemet?"
+
+#~ msgid "Are you sure you wish to shutdown the system?"
+#~ msgstr "Är du säker på att du vill stänga av systemet?"
+
+#~ msgid "Confirm Emergency Stop"
+#~ msgstr "Bekräfta nödstopp"
+
+#, python-format
+#~ msgid "Do you want to recover %s?"
+#~ msgstr "Vill du återställa %s?"
+
+#~ msgid "Font Size"
+#~ msgstr "Textstorlek"
+
+#~ msgid "Full Update"
+#~ msgstr "Fullständig Uppdatering"
+
+#~ msgid "Hide sensors in Temp."
+#~ msgstr "Dölj sensorer i Temp."
+
+#~ msgid "Invalid"
+#~ msgstr "Ogiltig"
+
+#~ msgid "Klipper Restart"
+#~ msgstr "Klipper Omstart"
+
+#~ msgid "Large"
+#~ msgstr "Stor"
+
+#~ msgid "Macro shortcut on sidebar"
+#~ msgstr "Makro genväg på sidofältet"
+
+#~ msgid "Medium"
+#~ msgstr "Medium"
+
+#~ msgid "Package will be updated"
+#~ msgid_plural "Packages will be updated"
+#~ msgstr[0] "Paketet kommer att uppdateras"
+#~ msgstr[1] "Paketen kommer att uppdateras"
+
+#~ msgid "Restart"
+#~ msgstr "Starta om"
+
+#~ msgid "Small"
+#~ msgstr "Liten"
+
+#~ msgid "System Shutdown"
+#~ msgstr "System Avstängning"
+
+#~ msgid "Up To Date"
+#~ msgstr "Aktuellt"
 
 #~ msgid "Actions"
 #~ msgstr "Åtgärder"
@@ -806,9 +908,6 @@ msgstr ""
 
 #~ msgid "Delete"
 #~ msgstr "Radera"
-
-#~ msgid "Off"
-#~ msgstr "Avstängd"
 
 #~ msgid "Sort by: "
 #~ msgstr "Sortera efter: "

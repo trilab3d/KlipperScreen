@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Klipperscreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-02 16:32-0300\n"
+"POT-Creation-Date: 2024-03-12 13:43+0100\n"
 "PO-Revision-Date: 2022-11-30 18:11-0300\n"
 "Last-Translator: Tal Rahav <talrhv1@gmail.com>\n"
 "Language-Team: \n"
@@ -20,21 +20,23 @@ msgstr ""
 "X-Generator: Poedit 3.2.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#, python-format
-msgid "%s will be updated to version"
-msgstr "%s יעודכן לגרסה"
-
 msgid "(default)"
 msgstr "(ברירת מחדל)"
 
-msgid "24 Hour Time"
-msgstr "זמן 24 שעות"
+msgid "+5°C"
+msgstr ""
+
+msgid "-5°C"
+msgstr ""
 
 msgid "A FIRMWARE_RESTART may fix the issue."
 msgstr "FIRMWARE_RESTART עשוי לפתור את הבעיה."
 
 msgid "ADXL Not Configured"
 msgstr "ADXL אינו מוגדר"
+
+msgid "AP"
+msgstr ""
 
 msgid "Abort"
 msgstr "בטל"
@@ -45,8 +47,14 @@ msgstr "האצה"
 msgid "Accept"
 msgstr "אשר"
 
+msgid "Ad-hoc"
+msgstr ""
+
 msgid "Add profile"
 msgstr "הוסף פרופיל"
+
+msgid "Advanced"
+msgstr ""
 
 msgid "Apply"
 msgstr "החל"
@@ -71,23 +79,23 @@ msgstr "האם אתה בטוח שברצונך לבטל את ההדפסה?"
 msgid "Are you sure you wish to disable motors?"
 msgstr "האם אתה בטוח שברצונך להשבית מנועים?"
 
-msgid "Are you sure you wish to reboot the system?"
-msgstr "האם אתה בטוח שברצונך לאתחל את המערכת?"
-
-msgid "Are you sure you wish to shutdown the system?"
-msgstr "האם אתה בטוח שברצונך לכבות את המערכת?"
-
 msgid "Auto"
 msgstr "אוטומטי"
 
 msgid "Auto-calibrate"
 msgstr "כיול אוטומטי"
 
-msgid "Auto-close notifications"
-msgstr "סגירת התראות אוטומטית"
-
 msgid "Auto-scroll"
 msgstr "גלילה אוטומטית"
+
+msgid "Basic"
+msgstr ""
+
+msgid "Bed +"
+msgstr ""
+
+msgid "Bed -"
+msgstr ""
 
 msgid "Bed Level"
 msgstr "פילוס מיטה"
@@ -128,26 +136,32 @@ msgstr "מבטל"
 msgid "Cannot connect to Moonraker"
 msgstr "לא ניתן להתחבר ל-Moonraker"
 
+msgid "Chamber +"
+msgstr ""
+
+msgid "Chamber -"
+msgstr ""
+
+msgid "Change Filament"
+msgstr ""
+
 msgid "Channel"
 msgstr "ערוץ"
 
 msgid "Check ADXL Wiring"
 msgstr "בדוק את החיווט של ה ADXL"
 
-msgid "Checking for updates, please wait..."
-msgstr "בודק עדכונים, אנא המתן"
-
 msgid "Clear"
 msgstr "נקה"
+
+msgid "Client"
+msgstr ""
 
 msgid "Close"
 msgstr "סגור"
 
 msgid "Complete"
 msgstr "הסתיים"
-
-msgid "Confirm Emergency Stop"
-msgstr "אשר עצירת חירום"
 
 msgid "Connected"
 msgstr "מחובר"
@@ -180,15 +194,35 @@ msgstr "בטל את הבחירה"
 msgid "Disable Motors"
 msgstr "השבת מנועים"
 
+msgid "Discard"
+msgstr ""
+
 msgid "Distance (mm)"
 msgstr "מרחק (מ\"מ)"
 
-#, python-format
-msgid "Do you want to recover %s?"
-msgstr "האם ברצונך לשחזר %s?"
+msgid "Door Opened"
+msgstr ""
+
+msgid "Door opened!"
+msgstr ""
+
+msgid "Door sensor"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Download failed"
+msgstr ""
+
+msgid "Downloading"
+msgstr ""
 
 msgid "Elapsed:"
 msgstr "זמן שעבר:"
+
+msgid "Emergency Stop Triggered!"
+msgstr ""
 
 msgid "Error"
 msgstr "שגיאה"
@@ -199,7 +233,7 @@ msgstr "שיטת זמן משוערת"
 msgid "Exclude Object"
 msgstr "ביטול אובייקט"
 
-msgid "Extra Large"
+msgid "Export Logs to USB"
 msgstr ""
 
 msgid "Extrude"
@@ -217,8 +251,14 @@ msgstr "נכשל, תחילה התאם את המיקום"
 msgid "Fan"
 msgstr "מאוורר"
 
+msgid "Filament Runout"
+msgstr ""
+
 msgid "Filament Used"
 msgstr "חומר ששומש"
+
+msgid "Filament sensor"
+msgstr ""
 
 msgid "Filament total:"
 msgstr "חומר כולל"
@@ -253,12 +293,6 @@ msgstr "זרם"
 msgid "Flowrate:"
 msgstr "קצב זרימה"
 
-msgid "Font Size"
-msgstr "גודל טקסט"
-
-msgid "Full Update"
-msgstr "עדכון מלא"
-
 msgid "Fullscreen"
 msgstr ""
 
@@ -273,9 +307,6 @@ msgstr "מוסתר"
 
 msgid "Hide"
 msgstr "הסתר"
-
-msgid "Hide sensors in Temp."
-msgstr "הסתר חיישנים בטמפ'."
 
 msgid "Hide temp."
 msgstr "הסתר טמפרטורה"
@@ -298,11 +329,14 @@ msgstr "איפוס Y"
 msgid "Home Z"
 msgstr "איפוס Z"
 
-msgid "Host"
-msgstr "שרת"
-
 msgid "Hostname"
 msgstr "שם שרת"
+
+msgid "Hotend +"
+msgstr ""
+
+msgid "Hotend -"
+msgstr ""
 
 msgid "Icon Theme"
 msgstr "ערכת נושא"
@@ -316,11 +350,11 @@ msgstr ""
 msgid "Input Shaper"
 msgstr "מעצב גימור"
 
+msgid "Install"
+msgstr ""
+
 msgid "Interface"
 msgstr "ממשק"
-
-msgid "Invalid"
-msgstr "לא חוקי"
 
 msgid "Invalid password"
 msgstr ""
@@ -336,9 +370,6 @@ msgstr "הפוך את Z"
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr ""
-
-msgid "Klipper Restart"
-msgstr "Klipper יאתחל מחדש"
 
 msgid "Klipper has disconnected"
 msgstr "קליפר התנתק"
@@ -361,14 +392,14 @@ msgstr "KlipperScreen יאתחל מחדש"
 msgid "Language"
 msgstr "שפה"
 
-msgid "Large"
-msgstr "גדול"
-
 msgid "Layer:"
 msgstr "שכבה"
 
 msgid "Left:"
 msgstr "זמן שנותר:"
+
+msgid "Light"
+msgstr ""
 
 msgid "Limits"
 msgstr "גבולות"
@@ -376,11 +407,11 @@ msgstr "גבולות"
 msgid "Load"
 msgstr "טעינה"
 
+msgid "Load Filament"
+msgstr ""
+
 msgid "Lower Nozzle"
 msgstr "הנמך דיזה"
-
-msgid "Macro shortcut on sidebar"
-msgstr "קיצור מקרו בסרגל הצד"
 
 msgid "Macros"
 msgstr "מקרואים"
@@ -400,9 +431,6 @@ msgstr "האצה מרבית להאטה"
 msgid "Max Velocity"
 msgstr "מהירות מרבית"
 
-msgid "Maximum"
-msgstr ""
-
 msgid "Measure Both"
 msgstr "מדוד את שניהם"
 
@@ -412,13 +440,16 @@ msgstr "מדוד X"
 msgid "Measure Y"
 msgstr "מדוד Y"
 
-msgid "Medium"
-msgstr "בינוני"
-
 msgid "Menu"
 msgstr "תפריט"
 
+msgid "Mesh"
+msgstr ""
+
 msgid "Mesh calibrate"
+msgstr ""
+
+msgid "Min"
 msgstr ""
 
 msgid "Modified"
@@ -448,6 +479,9 @@ msgstr ""
 msgid "New"
 msgstr "חדש"
 
+msgid "New update available"
+msgstr ""
+
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
 "conf"
@@ -456,19 +490,20 @@ msgstr "איתור אוטומטי אינו נתמך, זה צריך להיות מ
 msgid "Nothing selected"
 msgstr "שום דבר לא נבחר"
 
-#, python-format
-msgid "Outdated by %d"
-msgstr "מיושן על ידי %d"
+msgid "Nozzle Change"
+msgstr ""
+
+msgid "Nozzle:"
+msgstr ""
+
+msgid "Off"
+msgstr "כבוי"
+
+msgid "On"
+msgstr ""
 
 msgid "PSK for"
 msgstr "PSK עבור"
-
-msgid "Package will be updated"
-msgid_plural "Packages will be updated"
-msgstr[0] "חבילה אחת תעודכן"
-msgstr[1] "חבילות יעודכנו"
-msgstr[2] "חבילות יעודכנו"
-msgstr[3] "חבילות יעודכנו"
 
 msgid "Part Fan"
 msgstr "מאוורר חומר"
@@ -509,13 +544,16 @@ msgstr "שליטה בהדפסה"
 msgid "Print Time"
 msgstr "זמן הדפסה"
 
-msgid "Printer"
-msgstr "מדפסת"
+msgid "Printer Name"
+msgstr ""
 
-msgid "Printer Connections"
-msgstr "חיבורי מדפסת"
+msgid "Printer Name:"
+msgstr ""
 
 msgid "Printer Select"
+msgstr ""
+
+msgid "Printhead:"
 msgstr ""
 
 msgid "Printing"
@@ -536,26 +574,20 @@ msgstr "יישור הגנטרי הריבועי"
 msgid "Raise Nozzle"
 msgstr "הגבה דיזה"
 
-msgid "Recover"
-msgstr "שחזור"
-
-msgid "Recover Hard"
-msgstr "שחזור מלא"
-
-msgid "Recover Soft"
-msgstr "שחזור עדין"
-
 msgid "Reference"
 msgstr "התייחסות"
 
 msgid "Refresh"
 msgstr "רענון"
 
+msgid "Release Emerency Stop to continue"
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr ""
 
-msgid "Restart"
-msgstr "אתחל"
+msgid "Reprint"
+msgstr ""
 
 msgid "Resume"
 msgstr "המשך"
@@ -597,9 +629,6 @@ msgstr "נשמר"
 msgid "Saved offset: %s"
 msgstr "שמור אופ-סט %s"
 
-msgid "Screen DPMS"
-msgstr "DPMS מסך"
-
 msgid "Screen Power Off Time"
 msgstr "זמן כיבוי מסך"
 
@@ -611,6 +640,9 @@ msgstr "בחר"
 
 msgid "Send"
 msgstr "שליחה"
+
+msgid "Service"
+msgstr ""
 
 msgid "Set Temp"
 msgstr "הגדר טמפ'"
@@ -624,9 +656,6 @@ msgstr "הצג"
 msgid "Show Heater Power"
 msgstr "הצג זרם מיטה"
 
-msgid "Shutdown"
-msgstr "כיבוי"
-
 msgid "Size"
 msgstr "גודל"
 
@@ -635,9 +664,6 @@ msgstr "סלייסר"
 
 msgid "Slicer:"
 msgstr ""
-
-msgid "Small"
-msgstr "קטן"
 
 msgid "Speed (mm/s)"
 msgstr "מהירות (מ\"מ/שניות)"
@@ -663,17 +689,11 @@ msgstr "מתחיל איגוד WiFi"
 msgid "Starting recovery for"
 msgstr "החל התאוששות עבור"
 
-msgid "Starting update for"
-msgstr "מתחיל עדכון עבור"
-
 msgid "System"
 msgstr "מערכת"
 
-msgid "System Restart"
-msgstr "אתחול מערכת"
-
-msgid "System Shutdown"
-msgstr "כיבוי מערכת"
+msgid "System is up to date"
+msgstr ""
 
 msgid "Temp (°C)"
 msgstr "טמפ' (°C)"
@@ -681,8 +701,17 @@ msgstr "טמפ' (°C)"
 msgid "Temperature"
 msgstr "טמפרטורה"
 
+msgid "Time Zone"
+msgstr ""
+
 msgid "Total:"
 msgstr "סך הכל:"
+
+msgid "Tuning"
+msgstr ""
+
+msgid "USB update ready"
+msgstr ""
 
 msgid "Unknown Heater"
 msgstr "מחמם לא ידוע"
@@ -693,23 +722,38 @@ msgstr "מיקום בורג לא ידוע"
 msgid "Unload"
 msgstr "העלה"
 
+msgid "Unload Filament"
+msgstr ""
+
+msgid "Unpacking"
+msgstr ""
+
 msgid "Unretract Extra Length"
 msgstr ""
 
 msgid "Unretract Speed"
 msgstr ""
 
-msgid "Up To Date"
-msgstr "עדכני"
-
 msgid "Update"
 msgstr "עדכון"
+
+msgid "Update almost done"
+msgstr ""
+
+msgid "Update found on USB"
+msgstr ""
+
+msgid "Update ready"
+msgstr ""
 
 msgid "Updating"
 msgstr "מעדכן"
 
 msgid "Uploaded"
 msgstr "הועלה"
+
+msgid "View Mode"
+msgstr ""
 
 msgid "XY Move Speed (mm/s)"
 msgstr "מהירות תנועה XY (מ\"מ/שנייה)"
@@ -731,13 +775,6 @@ msgstr "הטיה Z"
 
 msgid "Z offset:"
 msgstr "Z אוף-סט"
-
-msgid "commit"
-msgid_plural "commits"
-msgstr[0] "שינוי"
-msgstr[1] "שינויים"
-msgstr[2] "שינויים"
-msgstr[3] "שינויים"
 
 msgid "dBm"
 msgstr "dBm"
@@ -767,6 +804,110 @@ msgstr "mm/s²"
 
 msgid "mm³/s"
 msgstr ""
+
+#, python-format
+#~ msgid "%s will be updated to version"
+#~ msgstr "%s יעודכן לגרסה"
+
+#~ msgid "24 Hour Time"
+#~ msgstr "זמן 24 שעות"
+
+#~ msgid "Are you sure you wish to reboot the system?"
+#~ msgstr "האם אתה בטוח שברצונך לאתחל את המערכת?"
+
+#~ msgid "Are you sure you wish to shutdown the system?"
+#~ msgstr "האם אתה בטוח שברצונך לכבות את המערכת?"
+
+#~ msgid "Auto-close notifications"
+#~ msgstr "סגירת התראות אוטומטית"
+
+#~ msgid "Checking for updates, please wait..."
+#~ msgstr "בודק עדכונים, אנא המתן"
+
+#~ msgid "Confirm Emergency Stop"
+#~ msgstr "אשר עצירת חירום"
+
+#, python-format
+#~ msgid "Do you want to recover %s?"
+#~ msgstr "האם ברצונך לשחזר %s?"
+
+#~ msgid "Font Size"
+#~ msgstr "גודל טקסט"
+
+#~ msgid "Full Update"
+#~ msgstr "עדכון מלא"
+
+#~ msgid "Hide sensors in Temp."
+#~ msgstr "הסתר חיישנים בטמפ'."
+
+#~ msgid "Host"
+#~ msgstr "שרת"
+
+#~ msgid "Invalid"
+#~ msgstr "לא חוקי"
+
+#~ msgid "Klipper Restart"
+#~ msgstr "Klipper יאתחל מחדש"
+
+#~ msgid "Large"
+#~ msgstr "גדול"
+
+#~ msgid "Macro shortcut on sidebar"
+#~ msgstr "קיצור מקרו בסרגל הצד"
+
+#~ msgid "Medium"
+#~ msgstr "בינוני"
+
+#, python-format
+#~ msgid "Outdated by %d"
+#~ msgstr "מיושן על ידי %d"
+
+#~ msgid "Package will be updated"
+#~ msgid_plural "Packages will be updated"
+#~ msgstr[0] "חבילה אחת תעודכן"
+#~ msgstr[1] "חבילות יעודכנו"
+#~ msgstr[2] "חבילות יעודכנו"
+#~ msgstr[3] "חבילות יעודכנו"
+
+#~ msgid "Printer Connections"
+#~ msgstr "חיבורי מדפסת"
+
+#~ msgid "Recover"
+#~ msgstr "שחזור"
+
+#~ msgid "Recover Hard"
+#~ msgstr "שחזור מלא"
+
+#~ msgid "Recover Soft"
+#~ msgstr "שחזור עדין"
+
+#~ msgid "Restart"
+#~ msgstr "אתחל"
+
+#~ msgid "Screen DPMS"
+#~ msgstr "DPMS מסך"
+
+#~ msgid "Shutdown"
+#~ msgstr "כיבוי"
+
+#~ msgid "Small"
+#~ msgstr "קטן"
+
+#~ msgid "Starting update for"
+#~ msgstr "מתחיל עדכון עבור"
+
+#~ msgid "System Shutdown"
+#~ msgstr "כיבוי מערכת"
+
+#~ msgid "Up To Date"
+#~ msgstr "עדכני"
+
+#~ msgid "commit"
+#~ msgid_plural "commits"
+#~ msgstr[0] "שינוי"
+#~ msgstr[1] "שינויים"
+#~ msgstr[2] "שינויים"
+#~ msgstr[3] "שינויים"
 
 #~ msgid "Actions"
 #~ msgstr "פעולות"
@@ -832,15 +973,6 @@ msgstr ""
 
 #~ msgid "Delete"
 #~ msgstr "מחק"
-
-#~ msgid "Off"
-#~ msgstr "כבוי"
-
-#~ msgid "View Mesh"
-#~ msgstr "צפה ברשת"
-
-#~ msgid "Machine"
-#~ msgstr "מכונה"
 
 #~ msgid "Manual Calibration"
 #~ msgstr "כיול ידני"
@@ -947,9 +1079,6 @@ msgstr ""
 #~ msgid "?"
 #~ msgstr "?"
 
-#~ msgid "Cancel Change"
-#~ msgstr "בטל שינוי"
-
 #~ msgid "Control"
 #~ msgstr "שליטה"
 
@@ -976,9 +1105,6 @@ msgstr ""
 
 #~ msgid "Time Elapsed"
 #~ msgstr "זמן שעבר"
-
-#~ msgid "Time Left"
-#~ msgstr "זמן שנשאר"
 
 #~ msgid "Tool 1"
 #~ msgstr "כלי 1"

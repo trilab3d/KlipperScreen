@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-02 16:32-0300\n"
+"POT-Creation-Date: 2024-03-12 13:43+0100\n"
 "PO-Revision-Date: 2023-05-07 18:50+0200\n"
 "Last-Translator: Thijs Triemstra <info@collab.nl>\n"
 "Language-Team: \n"
@@ -18,21 +18,23 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.2.2\n"
 
-#, python-format
-msgid "%s will be updated to version"
-msgstr "%s zal worden ge-update naar versie"
-
 msgid "(default)"
 msgstr "(standaard)"
 
-msgid "24 Hour Time"
-msgstr "24 Uurs Tijd"
+msgid "+5°C"
+msgstr ""
+
+msgid "-5°C"
+msgstr ""
 
 msgid "A FIRMWARE_RESTART may fix the issue."
 msgstr "Een FIRMWARE_RESTART kan het probleem oplossen."
 
 msgid "ADXL Not Configured"
 msgstr "ADXL Niet Geconfigureerd"
+
+msgid "AP"
+msgstr ""
 
 msgid "Abort"
 msgstr "Annuleer"
@@ -43,8 +45,14 @@ msgstr "Acceleratie:"
 msgid "Accept"
 msgstr "Accepteer"
 
+msgid "Ad-hoc"
+msgstr ""
+
 msgid "Add profile"
 msgstr "Profiel toevoegen"
+
+msgid "Advanced"
+msgstr ""
 
 msgid "Apply"
 msgstr "Toepassen"
@@ -69,23 +77,23 @@ msgstr "Weet je zeker dat je deze print wilt annuleren?"
 msgid "Are you sure you wish to disable motors?"
 msgstr "Weet je zeker dat je de motors wilt uitschakelen?"
 
-msgid "Are you sure you wish to reboot the system?"
-msgstr "Weet je zeker dat je het systeem wilt herstarten?"
-
-msgid "Are you sure you wish to shutdown the system?"
-msgstr "Weet je zeker dat je het systeem wilt afsluiten?"
-
 msgid "Auto"
 msgstr "Auto"
 
 msgid "Auto-calibrate"
 msgstr "Auto-kalibreren"
 
-msgid "Auto-close notifications"
-msgstr "Auto-sluit notificaties"
-
 msgid "Auto-scroll"
 msgstr "Auto-scroll"
+
+msgid "Basic"
+msgstr ""
+
+msgid "Bed +"
+msgstr ""
+
+msgid "Bed -"
+msgstr ""
 
 msgid "Bed Level"
 msgstr "Bed Level"
@@ -126,26 +134,32 @@ msgstr "Annuleren"
 msgid "Cannot connect to Moonraker"
 msgstr "Kan geen verbinding met Moonraker maken"
 
+msgid "Chamber +"
+msgstr ""
+
+msgid "Chamber -"
+msgstr ""
+
+msgid "Change Filament"
+msgstr ""
+
 msgid "Channel"
 msgstr "Kanaal"
 
 msgid "Check ADXL Wiring"
 msgstr "Controleer AXDL Bedrading"
 
-msgid "Checking for updates, please wait..."
-msgstr "Bezig met controleren van updates, moment geduld.."
-
 msgid "Clear"
 msgstr "Leegmaken"
+
+msgid "Client"
+msgstr ""
 
 msgid "Close"
 msgstr "Sluiten"
 
 msgid "Complete"
 msgstr "Voltooid"
-
-msgid "Confirm Emergency Stop"
-msgstr "Bevestig Nood Stop"
 
 msgid "Connected"
 msgstr "Verbonden"
@@ -178,15 +192,35 @@ msgstr "Deselecteer"
 msgid "Disable Motors"
 msgstr "Motors Uitschakelen"
 
+msgid "Discard"
+msgstr ""
+
 msgid "Distance (mm)"
 msgstr "Afstand (mm)"
 
-#, python-format
-msgid "Do you want to recover %s?"
-msgstr "Wil je %s herstellen?"
+msgid "Door Opened"
+msgstr ""
+
+msgid "Door opened!"
+msgstr ""
+
+msgid "Door sensor"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Download failed"
+msgstr ""
+
+msgid "Downloading"
+msgstr ""
 
 msgid "Elapsed:"
 msgstr "Verstreken:"
+
+msgid "Emergency Stop Triggered!"
+msgstr ""
 
 msgid "Error"
 msgstr "Error"
@@ -197,8 +231,8 @@ msgstr "Schatting Tijd Methode"
 msgid "Exclude Object"
 msgstr "Uitsluiten Object"
 
-msgid "Extra Large"
-msgstr "Extra Groot"
+msgid "Export Logs to USB"
+msgstr ""
 
 msgid "Extrude"
 msgstr "Extrude"
@@ -215,8 +249,14 @@ msgstr "Mislukt, wijzig positie eerst"
 msgid "Fan"
 msgstr "Ventilator"
 
+msgid "Filament Runout"
+msgstr ""
+
 msgid "Filament Used"
 msgstr "Filament Gebruikt"
+
+msgid "Filament sensor"
+msgstr ""
 
 msgid "Filament total:"
 msgstr "Filament totaal:"
@@ -251,12 +291,6 @@ msgstr "Flow:"
 msgid "Flowrate:"
 msgstr "Flowrate:"
 
-msgid "Font Size"
-msgstr "Lettertype Grootte"
-
-msgid "Full Update"
-msgstr "Volledige Update"
-
 msgid "Fullscreen"
 msgstr "Volledig Scherm"
 
@@ -271,9 +305,6 @@ msgstr "Verborgen"
 
 msgid "Hide"
 msgstr "Verberg"
-
-msgid "Hide sensors in Temp."
-msgstr "Verberg sensoren in Temp."
 
 msgid "Hide temp."
 msgstr "Verberg temp."
@@ -296,11 +327,14 @@ msgstr "Home Y"
 msgid "Home Z"
 msgstr "Home Z"
 
-msgid "Host"
-msgstr "Host"
-
 msgid "Hostname"
 msgstr "Hostnaam"
+
+msgid "Hotend +"
+msgstr ""
+
+msgid "Hotend -"
+msgstr ""
 
 msgid "Icon Theme"
 msgstr "Icoon Thema"
@@ -314,11 +348,11 @@ msgstr ""
 msgid "Input Shaper"
 msgstr "Input Shaper"
 
+msgid "Install"
+msgstr ""
+
 msgid "Interface"
 msgstr "Interface"
-
-msgid "Invalid"
-msgstr "Ongeldig"
 
 msgid "Invalid password"
 msgstr "Ongeldig wachtwoord"
@@ -334,9 +368,6 @@ msgstr "Invert Z"
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr ""
-
-msgid "Klipper Restart"
-msgstr "Klipper Herstarten"
 
 msgid "Klipper has disconnected"
 msgstr "Klipper verbinding verbroken"
@@ -359,14 +390,14 @@ msgstr "KlipperScreen zal herstarten"
 msgid "Language"
 msgstr "Taal"
 
-msgid "Large"
-msgstr "Groot"
-
 msgid "Layer:"
 msgstr "Laag:"
 
 msgid "Left:"
 msgstr "Links:"
+
+msgid "Light"
+msgstr ""
 
 msgid "Limits"
 msgstr "Limieten"
@@ -374,11 +405,11 @@ msgstr "Limieten"
 msgid "Load"
 msgstr "Laad"
 
+msgid "Load Filament"
+msgstr ""
+
 msgid "Lower Nozzle"
 msgstr "Onderste Nozzle"
-
-msgid "Macro shortcut on sidebar"
-msgstr "Macro snelkoppeling in sidebar"
 
 msgid "Macros"
 msgstr "Macros"
@@ -398,9 +429,6 @@ msgstr "Max Acceleratie naar De-acceleratie"
 msgid "Max Velocity"
 msgstr "Max Velocity"
 
-msgid "Maximum"
-msgstr "Maximum"
-
 msgid "Measure Both"
 msgstr "Meet Beide"
 
@@ -410,14 +438,17 @@ msgstr "Meet X"
 msgid "Measure Y"
 msgstr "Meet Y"
 
-msgid "Medium"
-msgstr "Medium"
-
 msgid "Menu"
 msgstr "Menu"
 
+msgid "Mesh"
+msgstr ""
+
 msgid "Mesh calibrate"
 msgstr "Mesh kalibreren"
+
+msgid "Min"
+msgstr ""
 
 msgid "Modified"
 msgstr "Aangepast"
@@ -446,6 +477,9 @@ msgstr "Nooit"
 msgid "New"
 msgstr "Nieuw"
 
+msgid "New update available"
+msgstr ""
+
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
 "conf"
@@ -456,17 +490,20 @@ msgstr ""
 msgid "Nothing selected"
 msgstr "Niets geselecteerd"
 
-#, python-format
-msgid "Outdated by %d"
-msgstr "Verouderd sinds %d"
+msgid "Nozzle Change"
+msgstr ""
+
+msgid "Nozzle:"
+msgstr ""
+
+msgid "Off"
+msgstr ""
+
+msgid "On"
+msgstr ""
 
 msgid "PSK for"
 msgstr "PSK voor"
-
-msgid "Package will be updated"
-msgid_plural "Packages will be updated"
-msgstr[0] "Pakket word ge-update"
-msgstr[1] "Pakketten worden ge-update"
 
 msgid "Part Fan"
 msgstr "Part Ventilator"
@@ -507,14 +544,17 @@ msgstr "Print Control"
 msgid "Print Time"
 msgstr "Print Tijd"
 
-msgid "Printer"
-msgstr "Printer"
+msgid "Printer Name"
+msgstr ""
 
-msgid "Printer Connections"
-msgstr "Printer Verbindingen"
+msgid "Printer Name:"
+msgstr ""
 
 msgid "Printer Select"
 msgstr "Printer Selecteren"
+
+msgid "Printhead:"
+msgstr ""
 
 msgid "Printing"
 msgstr "Bezig met printen"
@@ -534,26 +574,20 @@ msgstr "Quad Gantry Level"
 msgid "Raise Nozzle"
 msgstr "Nozzle omhoog"
 
-msgid "Recover"
-msgstr "Herstellen"
-
-msgid "Recover Hard"
-msgstr "Hard Herstel"
-
-msgid "Recover Soft"
-msgstr "Soft Herstel"
-
 msgid "Reference"
 msgstr "Referentie"
 
 msgid "Refresh"
 msgstr "Refresh"
 
+msgid "Release Emerency Stop to continue"
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr "Hernoem/beweeg:"
 
-msgid "Restart"
-msgstr "Herstarten"
+msgid "Reprint"
+msgstr ""
 
 msgid "Resume"
 msgstr "Hervatten"
@@ -595,9 +629,6 @@ msgstr "Opgeslagen"
 msgid "Saved offset: %s"
 msgstr "Offset opgeslagen: %s"
 
-msgid "Screen DPMS"
-msgstr "Scherm DPMS"
-
 msgid "Screen Power Off Time"
 msgstr "Scherm Uitschakelen Tijd"
 
@@ -609,6 +640,9 @@ msgstr "Selecteer"
 
 msgid "Send"
 msgstr "Verstuur"
+
+msgid "Service"
+msgstr ""
 
 msgid "Set Temp"
 msgstr "Verander Temp"
@@ -622,9 +656,6 @@ msgstr "Toon"
 msgid "Show Heater Power"
 msgstr "Toon Heater Stroom"
 
-msgid "Shutdown"
-msgstr "Afsluiten"
-
 msgid "Size"
 msgstr "Afmetingen"
 
@@ -633,9 +664,6 @@ msgstr "Slicer"
 
 msgid "Slicer:"
 msgstr "Slicer:"
-
-msgid "Small"
-msgstr "Klein"
 
 msgid "Speed (mm/s)"
 msgstr "Snelheid (mm/s)"
@@ -661,17 +689,11 @@ msgstr "WiFi Association starten"
 msgid "Starting recovery for"
 msgstr "Herstel starten voor"
 
-msgid "Starting update for"
-msgstr "Update starten voor"
-
 msgid "System"
 msgstr "Systeem"
 
-msgid "System Restart"
-msgstr "Systeem Herstarten"
-
-msgid "System Shutdown"
-msgstr "Systeem Afsluiten"
+msgid "System is up to date"
+msgstr ""
 
 msgid "Temp (°C)"
 msgstr "Temp (°C)"
@@ -679,8 +701,17 @@ msgstr "Temp (°C)"
 msgid "Temperature"
 msgstr "Temperatuur"
 
+msgid "Time Zone"
+msgstr ""
+
 msgid "Total:"
 msgstr "Totaal:"
+
+msgid "Tuning"
+msgstr ""
+
+msgid "USB update ready"
+msgstr ""
 
 msgid "Unknown Heater"
 msgstr "Onbekende Heater"
@@ -691,23 +722,38 @@ msgstr "Onbekende schroef positie"
 msgid "Unload"
 msgstr "Uitladen"
 
+msgid "Unload Filament"
+msgstr ""
+
+msgid "Unpacking"
+msgstr ""
+
 msgid "Unretract Extra Length"
 msgstr "Unretract Extra Lengte"
 
 msgid "Unretract Speed"
 msgstr "Unretract Snelheid"
 
-msgid "Up To Date"
-msgstr "Up To Date"
-
 msgid "Update"
 msgstr "Update"
+
+msgid "Update almost done"
+msgstr ""
+
+msgid "Update found on USB"
+msgstr ""
+
+msgid "Update ready"
+msgstr ""
 
 msgid "Updating"
 msgstr "Bezig met updaten"
 
 msgid "Uploaded"
 msgstr "Geupload"
+
+msgid "View Mode"
+msgstr ""
 
 msgid "XY Move Speed (mm/s)"
 msgstr "XY Move Snelheid (mm/s)"
@@ -729,11 +775,6 @@ msgstr "Z Tilt"
 
 msgid "Z offset:"
 msgstr "Z offset:"
-
-msgid "commit"
-msgid_plural "commits"
-msgstr[0] "commit"
-msgstr[1] "commits"
 
 msgid "dBm"
 msgstr "dBm"
@@ -759,6 +800,112 @@ msgstr "mm/s²"
 
 msgid "mm³/s"
 msgstr "mm³/s"
+
+#, python-format
+#~ msgid "%s will be updated to version"
+#~ msgstr "%s zal worden ge-update naar versie"
+
+#~ msgid "24 Hour Time"
+#~ msgstr "24 Uurs Tijd"
+
+#~ msgid "Are you sure you wish to reboot the system?"
+#~ msgstr "Weet je zeker dat je het systeem wilt herstarten?"
+
+#~ msgid "Are you sure you wish to shutdown the system?"
+#~ msgstr "Weet je zeker dat je het systeem wilt afsluiten?"
+
+#~ msgid "Auto-close notifications"
+#~ msgstr "Auto-sluit notificaties"
+
+#~ msgid "Checking for updates, please wait..."
+#~ msgstr "Bezig met controleren van updates, moment geduld.."
+
+#~ msgid "Confirm Emergency Stop"
+#~ msgstr "Bevestig Nood Stop"
+
+#, python-format
+#~ msgid "Do you want to recover %s?"
+#~ msgstr "Wil je %s herstellen?"
+
+#~ msgid "Extra Large"
+#~ msgstr "Extra Groot"
+
+#~ msgid "Font Size"
+#~ msgstr "Lettertype Grootte"
+
+#~ msgid "Full Update"
+#~ msgstr "Volledige Update"
+
+#~ msgid "Hide sensors in Temp."
+#~ msgstr "Verberg sensoren in Temp."
+
+#~ msgid "Host"
+#~ msgstr "Host"
+
+#~ msgid "Invalid"
+#~ msgstr "Ongeldig"
+
+#~ msgid "Klipper Restart"
+#~ msgstr "Klipper Herstarten"
+
+#~ msgid "Large"
+#~ msgstr "Groot"
+
+#~ msgid "Macro shortcut on sidebar"
+#~ msgstr "Macro snelkoppeling in sidebar"
+
+#~ msgid "Maximum"
+#~ msgstr "Maximum"
+
+#~ msgid "Medium"
+#~ msgstr "Medium"
+
+#, python-format
+#~ msgid "Outdated by %d"
+#~ msgstr "Verouderd sinds %d"
+
+#~ msgid "Package will be updated"
+#~ msgid_plural "Packages will be updated"
+#~ msgstr[0] "Pakket word ge-update"
+#~ msgstr[1] "Pakketten worden ge-update"
+
+#~ msgid "Printer Connections"
+#~ msgstr "Printer Verbindingen"
+
+#~ msgid "Recover"
+#~ msgstr "Herstellen"
+
+#~ msgid "Recover Hard"
+#~ msgstr "Hard Herstel"
+
+#~ msgid "Recover Soft"
+#~ msgstr "Soft Herstel"
+
+#~ msgid "Restart"
+#~ msgstr "Herstarten"
+
+#~ msgid "Screen DPMS"
+#~ msgstr "Scherm DPMS"
+
+#~ msgid "Shutdown"
+#~ msgstr "Afsluiten"
+
+#~ msgid "Small"
+#~ msgstr "Klein"
+
+#~ msgid "Starting update for"
+#~ msgstr "Update starten voor"
+
+#~ msgid "System Shutdown"
+#~ msgstr "Systeem Afsluiten"
+
+#~ msgid "Up To Date"
+#~ msgstr "Up To Date"
+
+#~ msgid "commit"
+#~ msgid_plural "commits"
+#~ msgstr[0] "commit"
+#~ msgstr[1] "commits"
 
 #~ msgid "Actions"
 #~ msgstr "Acties"

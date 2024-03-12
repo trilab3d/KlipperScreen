@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-02 16:32-0300\n"
+"POT-Creation-Date: 2024-03-12 13:43+0100\n"
 "PO-Revision-Date: 2022-12-10 14:52+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,21 +18,23 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.2\n"
 
-#, python-format
-msgid "%s will be updated to version"
-msgstr "%s sürüme güncellenecektir"
-
 msgid "(default)"
 msgstr "(varsayılan)"
 
-msgid "24 Hour Time"
-msgstr "24 Saat Zaman"
+msgid "+5°C"
+msgstr ""
+
+msgid "-5°C"
+msgstr ""
 
 msgid "A FIRMWARE_RESTART may fix the issue."
 msgstr "Bir FIRMWARE_RESTART sorunu çözebilir."
 
 msgid "ADXL Not Configured"
 msgstr "ADXL Yapılandırılmadı"
+
+msgid "AP"
+msgstr ""
 
 msgid "Abort"
 msgstr "İptal et"
@@ -43,8 +45,14 @@ msgstr "Hızlanma:"
 msgid "Accept"
 msgstr "Kabul et"
 
+msgid "Ad-hoc"
+msgstr ""
+
 msgid "Add profile"
 msgstr "Profil ekle"
+
+msgid "Advanced"
+msgstr ""
 
 msgid "Apply"
 msgstr "Uygula"
@@ -69,23 +77,23 @@ msgstr "Bu baskıyı iptal etmek istediğinizden emin misiniz?"
 msgid "Are you sure you wish to disable motors?"
 msgstr "Motorları devre dışı bırakmak istediğinizden emin misiniz?"
 
-msgid "Are you sure you wish to reboot the system?"
-msgstr "Sistemi yeniden başlatmak istediğinizden emin misiniz?"
-
-msgid "Are you sure you wish to shutdown the system?"
-msgstr "Sistemi kapatmak istediğinizden emin misiniz?"
-
 msgid "Auto"
 msgstr "Otomatik"
 
 msgid "Auto-calibrate"
 msgstr "Otomatik-Kalibrasyon"
 
-msgid "Auto-close notifications"
-msgstr "Bildirimleri otomatik kapat"
-
 msgid "Auto-scroll"
 msgstr "Otomatik kaydırma"
+
+msgid "Basic"
+msgstr ""
+
+msgid "Bed +"
+msgstr ""
+
+msgid "Bed -"
+msgstr ""
 
 msgid "Bed Level"
 msgstr "Tabla Ayarı"
@@ -126,26 +134,32 @@ msgstr "İptal ediliyor"
 msgid "Cannot connect to Moonraker"
 msgstr "Moonraker'a bağlanılamıyor"
 
+msgid "Chamber +"
+msgstr ""
+
+msgid "Chamber -"
+msgstr ""
+
+msgid "Change Filament"
+msgstr ""
+
 msgid "Channel"
 msgstr "Kanal"
 
 msgid "Check ADXL Wiring"
 msgstr "ADXL Bağlantılarını Kontrol Et"
 
-msgid "Checking for updates, please wait..."
-msgstr "Güncellemeler kontrol ediliyor, lütfen bekleyin..."
-
 msgid "Clear"
 msgstr "Temizle"
+
+msgid "Client"
+msgstr ""
 
 msgid "Close"
 msgstr "Kapat"
 
 msgid "Complete"
 msgstr "Tamamlandı"
-
-msgid "Confirm Emergency Stop"
-msgstr "Acil Durdurmayı Onaylayın"
 
 msgid "Connected"
 msgstr "Bağlandı"
@@ -178,15 +192,35 @@ msgstr "Seçimi kaldır"
 msgid "Disable Motors"
 msgstr "Motorları Devre Dışı Bırak"
 
+msgid "Discard"
+msgstr ""
+
 msgid "Distance (mm)"
 msgstr "Uzaklık (mm)"
 
-#, python-format
-msgid "Do you want to recover %s?"
-msgstr "%s Kurtarmak istiyor musunuz?"
+msgid "Door Opened"
+msgstr ""
+
+msgid "Door opened!"
+msgstr ""
+
+msgid "Door sensor"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Download failed"
+msgstr ""
+
+msgid "Downloading"
+msgstr ""
 
 msgid "Elapsed:"
 msgstr "Geçen:"
+
+msgid "Emergency Stop Triggered!"
+msgstr ""
 
 msgid "Error"
 msgstr "Hata"
@@ -197,8 +231,8 @@ msgstr "Tahmini Zaman Metodu"
 msgid "Exclude Object"
 msgstr "Nesneyi Hariç Tut"
 
-msgid "Extra Large"
-msgstr "Çok Büyük"
+msgid "Export Logs to USB"
+msgstr ""
 
 msgid "Extrude"
 msgstr "Ekstrüzyon"
@@ -215,8 +249,14 @@ msgstr "Başarısız, önce konumu ayarlayın"
 msgid "Fan"
 msgstr "Fan"
 
+msgid "Filament Runout"
+msgstr ""
+
 msgid "Filament Used"
 msgstr "Kullanılan Filament"
+
+msgid "Filament sensor"
+msgstr ""
 
 msgid "Filament total:"
 msgstr "Toplam Filament:"
@@ -251,12 +291,6 @@ msgstr "Akış:"
 msgid "Flowrate:"
 msgstr "Akış oranı:"
 
-msgid "Font Size"
-msgstr "Yazı boyutu"
-
-msgid "Full Update"
-msgstr "Tam Güncelleme"
-
 msgid "Fullscreen"
 msgstr ""
 
@@ -271,9 +305,6 @@ msgstr "Gizli"
 
 msgid "Hide"
 msgstr "Gizle"
-
-msgid "Hide sensors in Temp."
-msgstr "Sıcaklıktaki sensörleri gizleyin."
 
 msgid "Hide temp."
 msgstr "Sıcaklığı gizle."
@@ -296,11 +327,14 @@ msgstr "Y Sıfırla"
 msgid "Home Z"
 msgstr "Z  Sıfırla"
 
-msgid "Host"
-msgstr "Sunucu"
-
 msgid "Hostname"
 msgstr "Ana bilgisayar adı"
+
+msgid "Hotend +"
+msgstr ""
+
+msgid "Hotend -"
+msgstr ""
 
 msgid "Icon Theme"
 msgstr "Simge Teması"
@@ -314,11 +348,11 @@ msgstr ""
 msgid "Input Shaper"
 msgstr "İvme Düzenleyicisi"
 
+msgid "Install"
+msgstr ""
+
 msgid "Interface"
 msgstr "Arayüz"
-
-msgid "Invalid"
-msgstr "Geçersiz"
 
 msgid "Invalid password"
 msgstr "Geçersiz şifre"
@@ -334,9 +368,6 @@ msgstr "Z Ters çevir"
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr ""
-
-msgid "Klipper Restart"
-msgstr "Klipper Yeniden başlat"
 
 msgid "Klipper has disconnected"
 msgstr "Klipper bağlantısı kesildi"
@@ -359,14 +390,14 @@ msgstr "KlipperScreen yeniden başlayacak"
 msgid "Language"
 msgstr "Dil"
 
-msgid "Large"
-msgstr "Büyük"
-
 msgid "Layer:"
 msgstr "Katman:"
 
 msgid "Left:"
 msgstr "Kalan:"
+
+msgid "Light"
+msgstr ""
 
 msgid "Limits"
 msgstr "Limitler"
@@ -374,11 +405,11 @@ msgstr "Limitler"
 msgid "Load"
 msgstr "Yükle"
 
+msgid "Load Filament"
+msgstr ""
+
 msgid "Lower Nozzle"
 msgstr "Nozzle düşür"
-
-msgid "Macro shortcut on sidebar"
-msgstr "Kenar çubuğunda makro kısayolu"
 
 msgid "Macros"
 msgstr "Makrolar"
@@ -398,9 +429,6 @@ msgstr "Maksimum Hızlanma ve Yavaşlama"
 msgid "Max Velocity"
 msgstr "Maksimum Hız"
 
-msgid "Maximum"
-msgstr "Maksimum"
-
 msgid "Measure Both"
 msgstr "İkisini de ölçüle"
 
@@ -410,14 +438,17 @@ msgstr "X Ölçüle"
 msgid "Measure Y"
 msgstr "Y Ölçüle"
 
-msgid "Medium"
-msgstr "Orta"
-
 msgid "Menu"
 msgstr "Menü"
 
+msgid "Mesh"
+msgstr ""
+
 msgid "Mesh calibrate"
 msgstr "Mesh Kalibre et"
+
+msgid "Min"
+msgstr ""
 
 msgid "Modified"
 msgstr "Değiştirilmiş"
@@ -446,6 +477,9 @@ msgstr "Asla"
 msgid "New"
 msgstr "Yeni"
 
+msgid "New update available"
+msgstr ""
+
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
 "conf"
@@ -456,17 +490,20 @@ msgstr ""
 msgid "Nothing selected"
 msgstr "Hiçbir şey seçilmedi"
 
-#, python-format
-msgid "Outdated by %d"
-msgstr "Güncelliğini yitiren %d"
+msgid "Nozzle Change"
+msgstr ""
+
+msgid "Nozzle:"
+msgstr ""
+
+msgid "Off"
+msgstr "Kapa"
+
+msgid "On"
+msgstr ""
 
 msgid "PSK for"
 msgstr "PSK için"
-
-msgid "Package will be updated"
-msgid_plural "Packages will be updated"
-msgstr[0] "Paket yükseltilecek"
-msgstr[1] "Paketler yükseltilecek"
 
 msgid "Part Fan"
 msgstr "Parça Fan"
@@ -507,14 +544,17 @@ msgstr "Yazdırma Kontrolü"
 msgid "Print Time"
 msgstr "Yazdırma Süresi"
 
-msgid "Printer"
-msgstr "Yazıcı"
+msgid "Printer Name"
+msgstr ""
 
-msgid "Printer Connections"
-msgstr "Yazıcı Bağlantıları"
+msgid "Printer Name:"
+msgstr ""
 
 msgid "Printer Select"
 msgstr "Yazıcı Seçimi"
+
+msgid "Printhead:"
+msgstr ""
 
 msgid "Printing"
 msgstr "Yazdırılıyor"
@@ -534,26 +574,20 @@ msgstr "Dörtlü Köprü Seviyesi"
 msgid "Raise Nozzle"
 msgstr "Nozzle yükselt"
 
-msgid "Recover"
-msgstr "Kurtar"
-
-msgid "Recover Hard"
-msgstr "Zorla Kurtar"
-
-msgid "Recover Soft"
-msgstr "Yumuşak Kurtar"
-
 msgid "Reference"
 msgstr "Referans"
 
 msgid "Refresh"
 msgstr "Yenile"
 
+msgid "Release Emerency Stop to continue"
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr ""
 
-msgid "Restart"
-msgstr "Yeniden Başlat"
+msgid "Reprint"
+msgstr ""
 
 msgid "Resume"
 msgstr "Devam Et"
@@ -595,9 +629,6 @@ msgstr "Kaydedildi"
 msgid "Saved offset: %s"
 msgstr "Kaydedilen ofset: %s"
 
-msgid "Screen DPMS"
-msgstr "Ekran DPMS"
-
 msgid "Screen Power Off Time"
 msgstr "Ekran kapatma zamanı"
 
@@ -609,6 +640,9 @@ msgstr "Seç"
 
 msgid "Send"
 msgstr "Gönder"
+
+msgid "Service"
+msgstr ""
 
 msgid "Set Temp"
 msgstr "Sıcaklık Ayarla"
@@ -622,9 +656,6 @@ msgstr "Göster"
 msgid "Show Heater Power"
 msgstr "Isıtıcı Gücünü Göster"
 
-msgid "Shutdown"
-msgstr "Kapat"
-
 msgid "Size"
 msgstr "Boyut"
 
@@ -633,9 +664,6 @@ msgstr "Dilimleme"
 
 msgid "Slicer:"
 msgstr "Dilimleyici:"
-
-msgid "Small"
-msgstr "Küçük"
 
 msgid "Speed (mm/s)"
 msgstr "Hız  (mm/s)"
@@ -661,17 +689,11 @@ msgstr "WiFi Bağlantısı başlatılıyor"
 msgid "Starting recovery for"
 msgstr "Kurtarma başlatılıyor"
 
-msgid "Starting update for"
-msgstr "Güncelleme başlatılıyor"
-
 msgid "System"
 msgstr "Sistem"
 
-msgid "System Restart"
-msgstr "Sistem Yeniden Başlat"
-
-msgid "System Shutdown"
-msgstr "Sistem Kapat"
+msgid "System is up to date"
+msgstr ""
 
 msgid "Temp (°C)"
 msgstr "Sıcaklık (°C)"
@@ -679,8 +701,17 @@ msgstr "Sıcaklık (°C)"
 msgid "Temperature"
 msgstr "Sıcaklık"
 
+msgid "Time Zone"
+msgstr ""
+
 msgid "Total:"
 msgstr "Toplam:"
+
+msgid "Tuning"
+msgstr ""
+
+msgid "USB update ready"
+msgstr ""
 
 msgid "Unknown Heater"
 msgstr "Bilinmeyen Isıtıcı"
@@ -691,23 +722,38 @@ msgstr "Bilinmeyen vida konumu"
 msgid "Unload"
 msgstr "Boşalt"
 
+msgid "Unload Filament"
+msgstr ""
+
+msgid "Unpacking"
+msgstr ""
+
 msgid "Unretract Extra Length"
 msgstr "İleri İtme Ekstra Uzunluk"
 
 msgid "Unretract Speed"
 msgstr "İleri itme Hızı"
 
-msgid "Up To Date"
-msgstr "Güncel"
-
 msgid "Update"
 msgstr "Güncelle"
+
+msgid "Update almost done"
+msgstr ""
+
+msgid "Update found on USB"
+msgstr ""
+
+msgid "Update ready"
+msgstr ""
 
 msgid "Updating"
 msgstr "Yükleniyor"
 
 msgid "Uploaded"
 msgstr "Yüklendi"
+
+msgid "View Mode"
+msgstr ""
 
 msgid "XY Move Speed (mm/s)"
 msgstr "XY Hareket hızı (mm/s)"
@@ -729,11 +775,6 @@ msgstr "Z Eğim"
 
 msgid "Z offset:"
 msgstr "Z ofset:"
-
-msgid "commit"
-msgid_plural "commits"
-msgstr[0] "commit"
-msgstr[1] "commits"
 
 msgid "dBm"
 msgstr "dBm"
@@ -759,6 +800,112 @@ msgstr "mm/s²"
 
 msgid "mm³/s"
 msgstr "mm³/s"
+
+#, python-format
+#~ msgid "%s will be updated to version"
+#~ msgstr "%s sürüme güncellenecektir"
+
+#~ msgid "24 Hour Time"
+#~ msgstr "24 Saat Zaman"
+
+#~ msgid "Are you sure you wish to reboot the system?"
+#~ msgstr "Sistemi yeniden başlatmak istediğinizden emin misiniz?"
+
+#~ msgid "Are you sure you wish to shutdown the system?"
+#~ msgstr "Sistemi kapatmak istediğinizden emin misiniz?"
+
+#~ msgid "Auto-close notifications"
+#~ msgstr "Bildirimleri otomatik kapat"
+
+#~ msgid "Checking for updates, please wait..."
+#~ msgstr "Güncellemeler kontrol ediliyor, lütfen bekleyin..."
+
+#~ msgid "Confirm Emergency Stop"
+#~ msgstr "Acil Durdurmayı Onaylayın"
+
+#, python-format
+#~ msgid "Do you want to recover %s?"
+#~ msgstr "%s Kurtarmak istiyor musunuz?"
+
+#~ msgid "Extra Large"
+#~ msgstr "Çok Büyük"
+
+#~ msgid "Font Size"
+#~ msgstr "Yazı boyutu"
+
+#~ msgid "Full Update"
+#~ msgstr "Tam Güncelleme"
+
+#~ msgid "Hide sensors in Temp."
+#~ msgstr "Sıcaklıktaki sensörleri gizleyin."
+
+#~ msgid "Host"
+#~ msgstr "Sunucu"
+
+#~ msgid "Invalid"
+#~ msgstr "Geçersiz"
+
+#~ msgid "Klipper Restart"
+#~ msgstr "Klipper Yeniden başlat"
+
+#~ msgid "Large"
+#~ msgstr "Büyük"
+
+#~ msgid "Macro shortcut on sidebar"
+#~ msgstr "Kenar çubuğunda makro kısayolu"
+
+#~ msgid "Maximum"
+#~ msgstr "Maksimum"
+
+#~ msgid "Medium"
+#~ msgstr "Orta"
+
+#, python-format
+#~ msgid "Outdated by %d"
+#~ msgstr "Güncelliğini yitiren %d"
+
+#~ msgid "Package will be updated"
+#~ msgid_plural "Packages will be updated"
+#~ msgstr[0] "Paket yükseltilecek"
+#~ msgstr[1] "Paketler yükseltilecek"
+
+#~ msgid "Printer Connections"
+#~ msgstr "Yazıcı Bağlantıları"
+
+#~ msgid "Recover"
+#~ msgstr "Kurtar"
+
+#~ msgid "Recover Hard"
+#~ msgstr "Zorla Kurtar"
+
+#~ msgid "Recover Soft"
+#~ msgstr "Yumuşak Kurtar"
+
+#~ msgid "Restart"
+#~ msgstr "Yeniden Başlat"
+
+#~ msgid "Screen DPMS"
+#~ msgstr "Ekran DPMS"
+
+#~ msgid "Shutdown"
+#~ msgstr "Kapat"
+
+#~ msgid "Small"
+#~ msgstr "Küçük"
+
+#~ msgid "Starting update for"
+#~ msgstr "Güncelleme başlatılıyor"
+
+#~ msgid "System Shutdown"
+#~ msgstr "Sistem Kapat"
+
+#~ msgid "Up To Date"
+#~ msgstr "Güncel"
+
+#~ msgid "commit"
+#~ msgid_plural "commits"
+#~ msgstr[0] "commit"
+#~ msgstr[1] "commits"
 
 #~ msgid "Actions"
 #~ msgstr "Eylemler"
@@ -824,15 +971,6 @@ msgstr "mm³/s"
 
 #~ msgid "Delete"
 #~ msgstr "Sil"
-
-#~ msgid "Off"
-#~ msgstr "Kapa"
-
-#~ msgid "View Mesh"
-#~ msgstr "Örgüyü Görüntüle"
-
-#~ msgid "Machine"
-#~ msgstr "Makine"
 
 #~ msgid "Sort by: "
 #~ msgstr "Sırala: "

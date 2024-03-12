@@ -302,13 +302,11 @@ class BasePanel(ScreenPanel):
     def remove(self, widget):
         self.content.remove(widget)
 
-    def show_back(self, show=True):
-        if show:
-            self.control['back'].set_sensitive(True)
-            self.control['home'].set_sensitive(True)
-            return
-        self.control['back'].set_sensitive(False)
-        self.control['home'].set_sensitive(False)
+    def show_back(self, show=True, show_home=None):
+        if show_home is None:
+            show_home = show
+        self.control['back'].set_sensitive(show)
+        self.control['home'].set_sensitive(show_home)
 
     def show_printer_select(self, show=True):
         if show and self.buttons_showing['printer_select'] is False:

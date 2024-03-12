@@ -176,6 +176,7 @@ class SelectNozzleDiameter(BaseWizardStep):
         self.nozzle_type = nozzle_type
         self.nozzle_types = self._screen._config.get_nozzle_types()
         self.nozzle_diameters = self.nozzle_types[nozzle_type]['diameters']
+        self.can_back = True
 
     def activate(self, wizard):
         super().activate(wizard)
@@ -201,17 +202,13 @@ class SelectNozzleDiameter(BaseWizardStep):
         scroll.add(preheat_grid)
         self.content.add(scroll)
 
-        back_button = self._screen.gtk.Button(label=_("Select Different Type") + f" ({self.nozzle_type})", style=f"color1")
-        back_button.set_vexpand(False)
-        back_button.connect("clicked", self.back_pressed)
-        self.content.add(back_button)
-
     def option_selected(self, widget, option):
         print(f"{option} {self.nozzle_type}")
         self.wizard_manager.set_step(ScrewNozzleIn(self._screen, self.nozzle_type, option))
 
-    def back_pressed(self, widget):
+    def on_back(self):
         self.wizard_manager.set_step(SelectNozzleType(self._screen))
+        return True
 
 
 class ScrewNozzleIn(BaseWizardStep):
@@ -219,6 +216,7 @@ class ScrewNozzleIn(BaseWizardStep):
         super().__init__(screen)
         self.nozzle_type = nozzle_type
         self.nozzle_diameter = nozzle_diameter
+        self.can_back = True
 
     def activate(self, wizard):
         super().activate(wizard)
@@ -245,16 +243,13 @@ class ScrewNozzleIn(BaseWizardStep):
         continue_button.set_vexpand(False)
         continue_button.connect("clicked", self.continue_pressed)
         self.content.add(continue_button)
-        back_button = self._screen.gtk.Button(label=_("Select Different Nozzle"), style=f"color1")
-        back_button.set_vexpand(False)
-        back_button.connect("clicked", self.back_pressed)
-        self.content.add(back_button)
 
     def continue_pressed(self, widget):
         self._screen._ws.klippy.gcode_script(f"SAVE_VARIABLE VARIABLE=nozzle VALUE='\"{self.nozzle_diameter} {self.nozzle_type}\"'")
         self._screen._menu_go_back()
 
-    def back_pressed(self, widget):
+    def on_back(self):
         self.wizard_manager.set_step(SelectNozzleDiameter(self._screen,self.nozzle_type))
+        return True
 
 

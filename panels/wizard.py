@@ -60,3 +60,6 @@ class WizardPanel(ScreenPanel):
         self.content.add(self.name_label)
         self.content.add(self.current_step.content)
         self.content.show_all()
+
+    def back(self):
+        return self.current_step.on_back()

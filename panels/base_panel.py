@@ -132,8 +132,6 @@ class BasePanel(ScreenPanel):
         self.update_time()
 
     def set_background(self, printhead):
-        print(f"======================================SET BACKGROUND=============================")
-        print(f"printhead: {printhead}")
         icon = "styles/prusa/images/extruder-unknown.png"
         if printhead is None:
             icon = "styles/prusa/images/extruder-none.png"
@@ -157,8 +155,6 @@ class BasePanel(ScreenPanel):
             self._screen.show_all()
 
     def show_background(self, value=True):
-        print(f"======================================SHOW BACKGROUND=============================")
-        print(f"value: {value}")
         self.background_visible = value
         for child in self.background_image_box.get_children():
             self.background_image_box.remove(child)

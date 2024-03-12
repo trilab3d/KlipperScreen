@@ -100,7 +100,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         name_entry.set_visibility(True)
         entries.append(name_entry)
         name_grid.attach(name_label, 0, 0, 2, 1)
-        name_grid.attach(name_entry, 2, 0, 3, 1)
+        name_grid.attach(name_entry, 2, 0, 2, 1)
         self.page_general.add(name_grid)
 
         autoconnect_grid = self._gtk.HomogeneousGrid()
@@ -112,10 +112,10 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         autoconnect_switch.set_hexpand(False)
         autoconnect_switch.connect("notify::active", self.change_autoconnect)
         autoconnect_grid.attach(autoconnect_label, 0, 0, 2, 1)
-        autoconnect_grid.attach(autoconnect_switch, 2, 0, 2, 1)
+        autoconnect_grid.attach(autoconnect_switch, 2, 0, 1, 1)
         blank_box = Gtk.Box()
         blank_box.set_hexpand(False)
-        autoconnect_grid.attach(blank_box, 4, 0, 1, 1)
+        autoconnect_grid.attach(blank_box, 3, 0, 1, 1)
         self.page_general.add(autoconnect_grid)
 
         cloned_mac_grid = self._gtk.HomogeneousGrid()
@@ -133,7 +133,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         cloned_mac_entry.set_visibility(True)
         entries.append(cloned_mac_entry)
         cloned_mac_grid.attach(cloned_mac_label, 0, 0, 2, 1)
-        cloned_mac_grid.attach(cloned_mac_entry, 2, 0, 3, 1)
+        cloned_mac_grid.attach(cloned_mac_entry, 2, 0, 2, 1)
         self.page_general.add(cloned_mac_grid)
 
         # ---- PAGE IPv4 ----
@@ -155,7 +155,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         ipv4_method_dropdown.connect("changed", self.ipv4_method_change, ipv4_method_box)
         ipv4_method_dropdown.set_entry_text_column(0)
         ipv4_method_grid.attach(ipv4_method_label, 0, 0, 2, 1)
-        ipv4_method_grid.attach(ipv4_method_dropdown, 2, 0, 3, 1)
+        ipv4_method_grid.attach(ipv4_method_dropdown, 2, 0, 2, 1)
         self.page_ipv4.add(ipv4_method_grid)
         self.build_ipv4_method_box(ipv4_method_current, ipv4_method_box)
         self.page_ipv4.add(ipv4_method_box)
@@ -179,7 +179,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         ipv6_method_dropdown.connect("changed", self.ipv6_method_change, ipv6_method_box)
         ipv6_method_dropdown.set_entry_text_column(0)
         ipv6_method_grid.attach(ipv6_method_label, 0, 0, 2, 1)
-        ipv6_method_grid.attach(ipv6_method_dropdown, 2, 0, 3, 1)
+        ipv6_method_grid.attach(ipv6_method_dropdown, 2, 0, 2, 1)
         self.page_ipv6.add(ipv6_method_grid)
         self.build_ipv6_method_box(ipv6_method_current, ipv6_method_box)
         self.page_ipv6.add(ipv6_method_box)
@@ -201,7 +201,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
             wireless_mode_dropdown.connect("changed", self.wireless_mode_change)
             wireless_mode_dropdown.set_entry_text_column(0)
             wireless_mode_grid.attach(wireless_mode_label, 0, 0, 2, 1)
-            wireless_mode_grid.attach(wireless_mode_dropdown, 2, 0, 3, 1)
+            wireless_mode_grid.attach(wireless_mode_dropdown, 2, 0, 2, 1)
             self.page_wireless.add(wireless_mode_grid)
 
             ssid_grid = self._gtk.HomogeneousGrid()
@@ -213,7 +213,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
             #ssid_entry.connect("changed", self.change_ssid)
             entries.append(ssid_entry)
             ssid_grid.attach(ssid_label, 0, 0, 2, 1)
-            ssid_grid.attach(ssid_entry, 2, 0, 3, 1)
+            ssid_grid.attach(ssid_entry, 2, 0, 2, 1)
             self.page_wireless.add(ssid_grid)
 
             wireless_security_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -234,7 +234,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
             wireless_security_dropdown.connect("changed", self.wireless_security_change, wireless_security_box)
             wireless_security_dropdown.set_entry_text_column(0)
             wireless_security_grid.attach(wireless_security_label, 0, 0, 2, 1)
-            wireless_security_grid.attach(wireless_security_dropdown, 2, 0, 3, 1)
+            wireless_security_grid.attach(wireless_security_dropdown, 2, 0, 2, 1)
             self.page_wireless.add(wireless_security_grid)
             self.build_wireless_security_box(wireless_security_current, wireless_security_box)
             self.page_wireless.add(wireless_security_box)
@@ -260,7 +260,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
             dns_entry.set_hexpand(True)
             dns_entry.set_vexpand(False)
             dns_grid.attach(dns_label, 0, 0, 2, 1)
-            dns_grid.attach(dns_entry, 2, 0, 3, 1)
+            dns_grid.attach(dns_entry, 2, 0, 2, 1)
             box.add(dns_grid)
             if show:
                 self._screen.show_all()
@@ -278,7 +278,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
             ip_entry.set_hexpand(True)
             ip_entry.set_vexpand(False)
             ip_grid.attach(ip_label, 0, 0, 2, 1)
-            ip_grid.attach(ip_entry, 2, 0, 3, 1)
+            ip_grid.attach(ip_entry, 2, 0, 2, 1)
             box.add(ip_grid)
 
             gateway_grid = self._gtk.HomogeneousGrid()
@@ -293,7 +293,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
             gateway_entry.set_hexpand(True)
             gateway_entry.set_vexpand(False)
             gateway_grid.attach(gateway_label, 0, 0, 2, 1)
-            gateway_grid.attach(gateway_entry, 2, 0, 3, 1)
+            gateway_grid.attach(gateway_entry, 2, 0, 2, 1)
             box.add(gateway_grid)
 
         for ch in box.get_children():
@@ -328,7 +328,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
             dns_entry.set_hexpand(True)
             dns_entry.set_vexpand(False)
             dns_grid.attach(dns_label, 0, 0, 2, 1)
-            dns_grid.attach(dns_entry, 2, 0, 3, 1)
+            dns_grid.attach(dns_entry, 2, 0, 2, 1)
             box.add(dns_grid)
 
         def build_ip():
@@ -344,7 +344,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
             ip_entry.set_hexpand(True)
             ip_entry.set_vexpand(False)
             ip_grid.attach(ip_label, 0, 0, 2, 1)
-            ip_grid.attach(ip_entry, 2, 0, 3, 1)
+            ip_grid.attach(ip_entry, 2, 0, 2, 1)
             box.add(ip_grid)
 
             gateway_grid = self._gtk.HomogeneousGrid()
@@ -359,7 +359,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
             gateway_entry.set_hexpand(True)
             gateway_entry.set_vexpand(False)
             gateway_grid.attach(gateway_label, 0, 0, 2, 1)
-            gateway_grid.attach(gateway_entry, 2, 0, 3, 1)
+            gateway_grid.attach(gateway_entry, 2, 0, 2, 1)
             box.add(gateway_grid)
 
         for ch in box.get_children():
@@ -410,7 +410,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
             wpa_pass_entry.set_vexpand(False)
             wpa_pass_entry.set_visibility(False)
             wpa_pass_grid.attach(wpa_pass_label, 0, 0, 2, 1)
-            wpa_pass_grid.attach(wpa_pass_entry, 2, 0, 3, 1)
+            wpa_pass_grid.attach(wpa_pass_entry, 2, 0, 2, 1)
             box.add(wpa_pass_grid)
         elif security == "sae":  # SAE
             wip = Gtk.Label(label="--- NOT IMPLEMENTED YET ---")

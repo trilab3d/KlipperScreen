@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KlipperScreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-12 13:43+0100\n"
+"POT-Creation-Date: 2024-03-18 13:56+0100\n"
 "PO-Revision-Date: 2022-11-30 18:11-0300\n"
 "Last-Translator: O. Robardet\n"
 "Language-Team: \n"
@@ -149,6 +149,9 @@ msgstr "Canal"
 msgid "Check ADXL Wiring"
 msgstr "Vérifier le câblage ADXL"
 
+msgid "Clean extruded material and close the door."
+msgstr ""
+
 msgid "Clear"
 msgstr "Effacer"
 
@@ -160,6 +163,9 @@ msgstr "Fermer"
 
 msgid "Complete"
 msgstr "Impression terminée"
+
+msgid "Confirm"
+msgstr ""
 
 msgid "Connected"
 msgstr "Connecté"
@@ -176,6 +182,12 @@ msgstr "Continuer"
 
 msgid "Cooldown"
 msgstr "Refroidir"
+
+msgid "Cooldown and Close"
+msgstr ""
+
+msgid "Cooldown and continue"
+msgstr ""
 
 msgid "Date"
 msgstr "Date"
@@ -249,17 +261,38 @@ msgstr "Échec, ajustez d'abord la position"
 msgid "Fan"
 msgstr "Ventilation"
 
+msgid "Feed the filament fully into the extruder until it stops at the gears."
+msgstr ""
+
 msgid "Filament Runout"
 msgstr ""
 
 msgid "Filament Used"
 msgstr "Filament utilisé"
 
+msgid "Filament can't be pulled out, try again"
+msgstr ""
+
+msgid "Filament is purging..."
+msgstr ""
+
+msgid "Filament is unloading..."
+msgstr ""
+
 msgid "Filament sensor"
 msgstr ""
 
 msgid "Filament total:"
 msgstr "Total filament:"
+
+msgid "Filament unloaded"
+msgstr ""
+
+msgid "Filament unloaded successfully"
+msgstr ""
+
+msgid "Filament unloaded, continue"
+msgstr ""
 
 msgid "Filament used:"
 msgstr "Filament utilisé:"
@@ -297,6 +330,9 @@ msgstr ""
 msgid "Go Back"
 msgstr "Retour"
 
+msgid "Go back"
+msgstr ""
+
 msgid "Height:"
 msgstr "Hauteur:"
 
@@ -327,6 +363,9 @@ msgstr "Origine Y"
 msgid "Home Z"
 msgstr "Origine Z"
 
+msgid "Home and Close"
+msgstr ""
+
 msgid "Hostname"
 msgstr "Nom d’hôte"
 
@@ -339,6 +378,11 @@ msgstr ""
 msgid "Icon Theme"
 msgstr "Thème"
 
+msgid ""
+"If you can't reach filament end, disconnect magnetic bowden coupler. Don't "
+"forget to put it back before next filament load."
+msgstr ""
+
 msgid "Initializing printer..."
 msgstr "Démarrage de l'imprimante..."
 
@@ -347,6 +391,9 @@ msgstr ""
 
 msgid "Input Shaper"
 msgstr "Input Shaper"
+
+msgid "Insert filament and press continue."
+msgstr ""
 
 msgid "Install"
 msgstr ""
@@ -365,6 +412,12 @@ msgstr "Inverser l'axe Y"
 
 msgid "Invert Z"
 msgstr "Inverser l'axe Z"
+
+msgid "Is color clean?"
+msgstr ""
+
+msgid "Is the loaded material "
+msgstr ""
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr ""
@@ -408,6 +461,9 @@ msgstr "Charger"
 msgid "Load Filament"
 msgstr ""
 
+msgid "Load new material"
+msgstr ""
+
 msgid "Lower Nozzle"
 msgstr "Rapprocher la buse"
 
@@ -416,6 +472,9 @@ msgstr "Macros"
 
 msgid "Main Menu"
 msgstr "Menu principal"
+
+msgid "Make sure print volume is empty."
+msgstr ""
 
 msgid "Max"
 msgstr "Max"
@@ -480,6 +539,12 @@ msgstr "Nouveau"
 msgid "New update available"
 msgstr ""
 
+msgid "No, purge More"
+msgstr ""
+
+msgid "No, select a different material"
+msgstr ""
+
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
 "conf"
@@ -490,7 +555,19 @@ msgstr ""
 msgid "Nothing selected"
 msgstr "Rien de sélectionné"
 
+msgid "Nozzle"
+msgstr ""
+
 msgid "Nozzle Change"
+msgstr ""
+
+msgid "Nozzle has to be cooled down before changing procedure."
+msgstr ""
+
+msgid "Nozzle is Hot!"
+msgstr ""
+
+msgid "Nozzle is still dangerously hot. Continue at your own risk!"
 msgstr ""
 
 msgid "Nozzle:"
@@ -513,6 +590,12 @@ msgstr "Mot de passe enregistré"
 
 msgid "Pause"
 msgstr "Pause"
+
+msgid "Pause print"
+msgstr ""
+
+msgid "Pause print and continue"
+msgstr ""
 
 msgid "Paused"
 msgstr "En pause"
@@ -544,6 +627,9 @@ msgstr "Contrôle de l'impression"
 msgid "Print Time"
 msgstr "Durée d'impression"
 
+msgid "Print must be paused to change filament. Do you want to continue?"
+msgstr ""
+
 msgid "Printer Name"
 msgstr ""
 
@@ -552,6 +638,12 @@ msgstr ""
 
 msgid "Printer Select"
 msgstr "Sélection d'une imprimante"
+
+msgid "Printhead has been moved to service position."
+msgstr ""
+
+msgid "Printhead is moving..."
+msgstr ""
 
 msgid "Printhead:"
 msgstr ""
@@ -566,6 +658,14 @@ msgid "Profile Name:"
 msgstr "Nom du profil:"
 
 msgid "Provide KlipperScreen.log when asking for help.\n"
+msgstr ""
+
+msgid ""
+"Pull the end of the filament out of the printer and secure it against "
+"tangling."
+msgstr ""
+
+msgid "Purge More"
 msgstr ""
 
 msgid "Quad Gantry Level"
@@ -583,6 +683,9 @@ msgstr "Rafraîchir"
 msgid "Release Emerency Stop to continue"
 msgstr ""
 
+msgid "Remove Remaining Filament."
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr ""
 
@@ -591,6 +694,9 @@ msgstr ""
 
 msgid "Resume"
 msgstr "Reprendre"
+
+msgid "Resume Print"
+msgstr ""
 
 msgid "Retract"
 msgstr "Rétracter"
@@ -619,6 +725,9 @@ msgstr "Enregistrer la configuration"
 msgid "Save Z"
 msgstr "Enregistrer Z"
 
+msgid "Save and Close"
+msgstr ""
+
 msgid "Save configuration?"
 msgstr "Enregistrer la configuration ?"
 
@@ -632,16 +741,28 @@ msgstr "Décalage enregistré: %s"
 msgid "Screen Power Off Time"
 msgstr "Délai d'extinction de l'écran"
 
+msgid "Screw The Nozzle In"
+msgstr ""
+
 msgid "Screws Adjust"
 msgstr "Ajuster les vis"
 
 msgid "Select"
 msgstr "Sélectionner"
 
+msgid "Select Nozzle Diameter"
+msgstr ""
+
+msgid "Select Nozzle Type"
+msgstr ""
+
 msgid "Send"
 msgstr "Envoyer"
 
 msgid "Service"
+msgstr ""
+
+msgid "Service Position"
 msgstr ""
 
 msgid "Set Temp"
@@ -658,6 +779,9 @@ msgstr "Afficher la puissance de chauffe"
 
 msgid "Size"
 msgstr "Taille"
+
+msgid "Skip"
+msgstr ""
 
 msgid "Slicer"
 msgstr "Slicer"
@@ -701,6 +825,12 @@ msgstr "Temp (°C)"
 msgid "Temperature"
 msgstr "Température"
 
+msgid "Then click Resume print"
+msgstr ""
+
+msgid "Then click Resume print or Close."
+msgstr ""
+
 msgid "Time Zone"
 msgstr ""
 
@@ -722,9 +852,6 @@ msgstr "Position de vis inconnue"
 msgid "Unload"
 msgstr "Décharger"
 
-msgid "Unload Filament"
-msgstr ""
-
 msgid "Unpacking"
 msgstr ""
 
@@ -733,6 +860,9 @@ msgstr "Longueur supplémentaire non rétractée"
 
 msgid "Unretract Speed"
 msgstr "Vitesse non rétractée"
+
+msgid "Unscrew Nozzle"
+msgstr ""
 
 msgid "Update"
 msgstr "Mettre à jour"
@@ -755,11 +885,32 @@ msgstr "Envoyé"
 msgid "View Mode"
 msgstr ""
 
+msgid "Wait for nozzle cooldown"
+msgstr ""
+
+msgid "Wait for temperature..."
+msgstr ""
+
+msgid "Which material would you like to load?"
+msgstr ""
+
+msgid "Which material would you like to unload?"
+msgstr ""
+
+msgid "Would you like to load "
+msgstr ""
+
 msgid "XY Move Speed (mm/s)"
 msgstr "Vitesse de déplacement XY (mm/s)"
 
 msgid "XY Speed (mm/s)"
 msgstr "Vitesse XY (mm/s)"
+
+msgid "Yes"
+msgstr ""
+
+msgid "Yes, continue"
+msgstr ""
 
 msgid "Z Calibrate"
 msgstr "Calibration Z"
@@ -910,9 +1061,6 @@ msgstr "mm³/s"
 #~ msgid "Actions"
 #~ msgstr "Actions"
 
-#~ msgid "Configuration"
-#~ msgstr "Configuration"
-
 #~ msgid "Homing"
 #~ msgstr "Origine"
 
@@ -993,9 +1141,6 @@ msgstr "mm³/s"
 
 #~ msgid "Displayed Macros"
 #~ msgstr "Macros affichées"
-
-#~ msgid "Z Position"
-#~ msgstr "Position Z"
 
 #~ msgid "IPv4"
 #~ msgstr "IPv4"

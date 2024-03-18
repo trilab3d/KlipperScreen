@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KlipperScreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-12 13:43+0100\n"
+"POT-Creation-Date: 2024-03-18 13:56+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: AntoszHUN\n"
 "Language-Team: \n"
@@ -144,6 +144,9 @@ msgstr "Csatorna"
 msgid "Check ADXL Wiring"
 msgstr "Ellenőrizd az ADXL kábelezést"
 
+msgid "Clean extruded material and close the door."
+msgstr ""
+
 msgid "Clear"
 msgstr "Tiszta"
 
@@ -155,6 +158,9 @@ msgstr "Bezárás"
 
 msgid "Complete"
 msgstr "Befejezve"
+
+msgid "Confirm"
+msgstr ""
 
 msgid "Connected"
 msgstr "Csatlakoztatva"
@@ -171,6 +177,12 @@ msgstr "Folytat"
 
 msgid "Cooldown"
 msgstr "Lehűtés"
+
+msgid "Cooldown and Close"
+msgstr ""
+
+msgid "Cooldown and continue"
+msgstr ""
 
 msgid "Date"
 msgstr "Dátum"
@@ -244,17 +256,38 @@ msgstr "Sikertelen! Előbb állítsd be a pozíciót"
 msgid "Fan"
 msgstr "Hűtés"
 
+msgid "Feed the filament fully into the extruder until it stops at the gears."
+msgstr ""
+
 msgid "Filament Runout"
 msgstr ""
 
 msgid "Filament Used"
 msgstr "Használt nyomtatószál"
 
+msgid "Filament can't be pulled out, try again"
+msgstr ""
+
+msgid "Filament is purging..."
+msgstr ""
+
+msgid "Filament is unloading..."
+msgstr ""
+
 msgid "Filament sensor"
 msgstr ""
 
 msgid "Filament total:"
 msgstr "Összes nyomtatószál:"
+
+msgid "Filament unloaded"
+msgstr ""
+
+msgid "Filament unloaded successfully"
+msgstr ""
+
+msgid "Filament unloaded, continue"
+msgstr ""
 
 msgid "Filament used:"
 msgstr "Használt nyomtatószál:"
@@ -292,6 +325,9 @@ msgstr ""
 msgid "Go Back"
 msgstr "Visszalépés"
 
+msgid "Go back"
+msgstr ""
+
 msgid "Height:"
 msgstr "Magasság:"
 
@@ -322,6 +358,9 @@ msgstr "Y kezdőpont"
 msgid "Home Z"
 msgstr "Z kezdőpont"
 
+msgid "Home and Close"
+msgstr ""
+
 msgid "Hostname"
 msgstr "Gazdanév"
 
@@ -334,6 +373,11 @@ msgstr ""
 msgid "Icon Theme"
 msgstr "Ikon téma"
 
+msgid ""
+"If you can't reach filament end, disconnect magnetic bowden coupler. Don't "
+"forget to put it back before next filament load."
+msgstr ""
+
 msgid "Initializing printer..."
 msgstr "Nyomtató inicializálása..."
 
@@ -342,6 +386,9 @@ msgstr ""
 
 msgid "Input Shaper"
 msgstr "Bemeneti alakító"
+
+msgid "Insert filament and press continue."
+msgstr ""
 
 msgid "Install"
 msgstr ""
@@ -360,6 +407,12 @@ msgstr "Fordított Y"
 
 msgid "Invert Z"
 msgstr "Fordított Z"
+
+msgid "Is color clean?"
+msgstr ""
+
+msgid "Is the loaded material "
+msgstr ""
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr ""
@@ -403,6 +456,9 @@ msgstr "Betöltés"
 msgid "Load Filament"
 msgstr ""
 
+msgid "Load new material"
+msgstr ""
+
 msgid "Lower Nozzle"
 msgstr "Fúvóka le"
 
@@ -411,6 +467,9 @@ msgstr "Makrók"
 
 msgid "Main Menu"
 msgstr "Főmenü"
+
+msgid "Make sure print volume is empty."
+msgstr ""
 
 msgid "Max"
 msgstr "Max"
@@ -475,6 +534,12 @@ msgstr "Új"
 msgid "New update available"
 msgstr ""
 
+msgid "No, purge More"
+msgstr ""
+
+msgid "No, select a different material"
+msgstr ""
+
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
 "conf"
@@ -485,7 +550,19 @@ msgstr ""
 msgid "Nothing selected"
 msgstr "Nincs kiválasztva"
 
+msgid "Nozzle"
+msgstr ""
+
 msgid "Nozzle Change"
+msgstr ""
+
+msgid "Nozzle has to be cooled down before changing procedure."
+msgstr ""
+
+msgid "Nozzle is Hot!"
+msgstr ""
+
+msgid "Nozzle is still dangerously hot. Continue at your own risk!"
 msgstr ""
 
 msgid "Nozzle:"
@@ -508,6 +585,12 @@ msgstr "Jelszó mentve"
 
 msgid "Pause"
 msgstr "Szünet"
+
+msgid "Pause print"
+msgstr ""
+
+msgid "Pause print and continue"
+msgstr ""
 
 msgid "Paused"
 msgstr "Szüneteltetve"
@@ -539,6 +622,9 @@ msgstr "Nyomtatásvezérlés"
 msgid "Print Time"
 msgstr "Nyomtatási idő"
 
+msgid "Print must be paused to change filament. Do you want to continue?"
+msgstr ""
+
 msgid "Printer Name"
 msgstr ""
 
@@ -547,6 +633,12 @@ msgstr ""
 
 msgid "Printer Select"
 msgstr "Nyomtató kiválasztása"
+
+msgid "Printhead has been moved to service position."
+msgstr ""
+
+msgid "Printhead is moving..."
+msgstr ""
 
 msgid "Printhead:"
 msgstr ""
@@ -563,6 +655,14 @@ msgstr "Profil név:"
 msgid "Provide KlipperScreen.log when asking for help.\n"
 msgstr "Add meg a KlipperScreen.log-ot, amikor segítséget kérsz.\n"
 
+msgid ""
+"Pull the end of the filament out of the printer and secure it against "
+"tangling."
+msgstr ""
+
+msgid "Purge More"
+msgstr ""
+
 msgid "Quad Gantry Level"
 msgstr "Négy állású szint"
 
@@ -578,6 +678,9 @@ msgstr "Frissítés"
 msgid "Release Emerency Stop to continue"
 msgstr ""
 
+msgid "Remove Remaining Filament."
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr ""
 
@@ -586,6 +689,9 @@ msgstr ""
 
 msgid "Resume"
 msgstr "Folytat"
+
+msgid "Resume Print"
+msgstr ""
 
 msgid "Retract"
 msgstr "Visszahúz"
@@ -614,6 +720,9 @@ msgstr "Konfiguráció mentése"
 msgid "Save Z"
 msgstr "Z mentése"
 
+msgid "Save and Close"
+msgstr ""
+
 msgid "Save configuration?"
 msgstr "Mented a konfigurációt?"
 
@@ -627,16 +736,28 @@ msgstr "Eltolás mentve: %s"
 msgid "Screen Power Off Time"
 msgstr "Kijelző kikapcsolási ideje"
 
+msgid "Screw The Nozzle In"
+msgstr ""
+
 msgid "Screws Adjust"
 msgstr "Csavarok beállítása"
 
 msgid "Select"
 msgstr "Kijelölés"
 
+msgid "Select Nozzle Diameter"
+msgstr ""
+
+msgid "Select Nozzle Type"
+msgstr ""
+
 msgid "Send"
 msgstr "Küldés"
 
 msgid "Service"
+msgstr ""
+
+msgid "Service Position"
 msgstr ""
 
 msgid "Set Temp"
@@ -653,6 +774,9 @@ msgstr "A fűtésteljesítmény megjelenítése"
 
 msgid "Size"
 msgstr "Méret"
+
+msgid "Skip"
+msgstr ""
 
 msgid "Slicer"
 msgstr "Szeletelő"
@@ -696,6 +820,12 @@ msgstr "Hőmérséklet (°C)"
 msgid "Temperature"
 msgstr "Hőfok"
 
+msgid "Then click Resume print"
+msgstr ""
+
+msgid "Then click Resume print or Close."
+msgstr ""
+
 msgid "Time Zone"
 msgstr ""
 
@@ -717,9 +847,6 @@ msgstr "Ismeretlen csavarhelyzet"
 msgid "Unload"
 msgstr "Kiadás"
 
-msgid "Unload Filament"
-msgstr ""
-
 msgid "Unpacking"
 msgstr ""
 
@@ -728,6 +855,9 @@ msgstr "Extra hossz visszahúzása"
 
 msgid "Unretract Speed"
 msgstr "Visszahúzási sebesség"
+
+msgid "Unscrew Nozzle"
+msgstr ""
 
 msgid "Update"
 msgstr "Frissít"
@@ -750,11 +880,32 @@ msgstr "Feltöltve"
 msgid "View Mode"
 msgstr ""
 
+msgid "Wait for nozzle cooldown"
+msgstr ""
+
+msgid "Wait for temperature..."
+msgstr ""
+
+msgid "Which material would you like to load?"
+msgstr ""
+
+msgid "Which material would you like to unload?"
+msgstr ""
+
+msgid "Would you like to load "
+msgstr ""
+
 msgid "XY Move Speed (mm/s)"
 msgstr "XY Mozgási seb. (mm/s)"
 
 msgid "XY Speed (mm/s)"
 msgstr "XY Sebesség (mm/s)"
+
+msgid "Yes"
+msgstr ""
+
+msgid "Yes, continue"
+msgstr ""
 
 msgid "Z Calibrate"
 msgstr "Z Kalibrálás"
@@ -904,9 +1055,6 @@ msgstr "mm³/s"
 
 #~ msgid "Actions"
 #~ msgstr "Műveletek"
-
-#~ msgid "Configuration"
-#~ msgstr "Konfiguráció"
 
 #~ msgid "Homing"
 #~ msgstr "Kezdőpont"

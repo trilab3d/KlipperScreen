@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-12 13:43+0100\n"
+"POT-Creation-Date: 2024-03-18 13:56+0100\n"
 "PO-Revision-Date: 2022-12-10 14:52+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -149,6 +149,9 @@ msgstr "Kanal"
 msgid "Check ADXL Wiring"
 msgstr "ADXL Bağlantılarını Kontrol Et"
 
+msgid "Clean extruded material and close the door."
+msgstr ""
+
 msgid "Clear"
 msgstr "Temizle"
 
@@ -160,6 +163,9 @@ msgstr "Kapat"
 
 msgid "Complete"
 msgstr "Tamamlandı"
+
+msgid "Confirm"
+msgstr ""
 
 msgid "Connected"
 msgstr "Bağlandı"
@@ -176,6 +182,12 @@ msgstr "Devam et"
 
 msgid "Cooldown"
 msgstr "Soğutma"
+
+msgid "Cooldown and Close"
+msgstr ""
+
+msgid "Cooldown and continue"
+msgstr ""
 
 msgid "Date"
 msgstr "Tarih"
@@ -249,17 +261,38 @@ msgstr "Başarısız, önce konumu ayarlayın"
 msgid "Fan"
 msgstr "Fan"
 
+msgid "Feed the filament fully into the extruder until it stops at the gears."
+msgstr ""
+
 msgid "Filament Runout"
 msgstr ""
 
 msgid "Filament Used"
 msgstr "Kullanılan Filament"
 
+msgid "Filament can't be pulled out, try again"
+msgstr ""
+
+msgid "Filament is purging..."
+msgstr ""
+
+msgid "Filament is unloading..."
+msgstr ""
+
 msgid "Filament sensor"
 msgstr ""
 
 msgid "Filament total:"
 msgstr "Toplam Filament:"
+
+msgid "Filament unloaded"
+msgstr ""
+
+msgid "Filament unloaded successfully"
+msgstr ""
+
+msgid "Filament unloaded, continue"
+msgstr ""
 
 msgid "Filament used:"
 msgstr "Kullanılan Filament:"
@@ -297,6 +330,9 @@ msgstr ""
 msgid "Go Back"
 msgstr "Geri git"
 
+msgid "Go back"
+msgstr ""
+
 msgid "Height:"
 msgstr "Yükseklik:"
 
@@ -327,6 +363,9 @@ msgstr "Y Sıfırla"
 msgid "Home Z"
 msgstr "Z  Sıfırla"
 
+msgid "Home and Close"
+msgstr ""
+
 msgid "Hostname"
 msgstr "Ana bilgisayar adı"
 
@@ -339,6 +378,11 @@ msgstr ""
 msgid "Icon Theme"
 msgstr "Simge Teması"
 
+msgid ""
+"If you can't reach filament end, disconnect magnetic bowden coupler. Don't "
+"forget to put it back before next filament load."
+msgstr ""
+
 msgid "Initializing printer..."
 msgstr "Yazıcı başlatılıyor..."
 
@@ -347,6 +391,9 @@ msgstr ""
 
 msgid "Input Shaper"
 msgstr "İvme Düzenleyicisi"
+
+msgid "Insert filament and press continue."
+msgstr ""
 
 msgid "Install"
 msgstr ""
@@ -365,6 +412,12 @@ msgstr "Y Ters çevir"
 
 msgid "Invert Z"
 msgstr "Z Ters çevir"
+
+msgid "Is color clean?"
+msgstr ""
+
+msgid "Is the loaded material "
+msgstr ""
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr ""
@@ -408,6 +461,9 @@ msgstr "Yükle"
 msgid "Load Filament"
 msgstr ""
 
+msgid "Load new material"
+msgstr ""
+
 msgid "Lower Nozzle"
 msgstr "Nozzle düşür"
 
@@ -416,6 +472,9 @@ msgstr "Makrolar"
 
 msgid "Main Menu"
 msgstr "Ana Menü"
+
+msgid "Make sure print volume is empty."
+msgstr ""
 
 msgid "Max"
 msgstr "Maks"
@@ -480,6 +539,12 @@ msgstr "Yeni"
 msgid "New update available"
 msgstr ""
 
+msgid "No, purge More"
+msgstr ""
+
+msgid "No, select a different material"
+msgstr ""
+
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
 "conf"
@@ -490,7 +555,19 @@ msgstr ""
 msgid "Nothing selected"
 msgstr "Hiçbir şey seçilmedi"
 
+msgid "Nozzle"
+msgstr ""
+
 msgid "Nozzle Change"
+msgstr ""
+
+msgid "Nozzle has to be cooled down before changing procedure."
+msgstr ""
+
+msgid "Nozzle is Hot!"
+msgstr ""
+
+msgid "Nozzle is still dangerously hot. Continue at your own risk!"
 msgstr ""
 
 msgid "Nozzle:"
@@ -513,6 +590,12 @@ msgstr "Şifre kaydedildi"
 
 msgid "Pause"
 msgstr "Duraklat"
+
+msgid "Pause print"
+msgstr ""
+
+msgid "Pause print and continue"
+msgstr ""
 
 msgid "Paused"
 msgstr "Duraklatıldı"
@@ -544,6 +627,9 @@ msgstr "Yazdırma Kontrolü"
 msgid "Print Time"
 msgstr "Yazdırma Süresi"
 
+msgid "Print must be paused to change filament. Do you want to continue?"
+msgstr ""
+
 msgid "Printer Name"
 msgstr ""
 
@@ -552,6 +638,12 @@ msgstr ""
 
 msgid "Printer Select"
 msgstr "Yazıcı Seçimi"
+
+msgid "Printhead has been moved to service position."
+msgstr ""
+
+msgid "Printhead is moving..."
+msgstr ""
 
 msgid "Printhead:"
 msgstr ""
@@ -568,6 +660,14 @@ msgstr "Profil ismi:"
 msgid "Provide KlipperScreen.log when asking for help.\n"
 msgstr "Yardım isterken KlipperScreen.log dosyasını sağlayın.\n"
 
+msgid ""
+"Pull the end of the filament out of the printer and secure it against "
+"tangling."
+msgstr ""
+
+msgid "Purge More"
+msgstr ""
+
 msgid "Quad Gantry Level"
 msgstr "Dörtlü Köprü Seviyesi"
 
@@ -583,6 +683,9 @@ msgstr "Yenile"
 msgid "Release Emerency Stop to continue"
 msgstr ""
 
+msgid "Remove Remaining Filament."
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr ""
 
@@ -591,6 +694,9 @@ msgstr ""
 
 msgid "Resume"
 msgstr "Devam Et"
+
+msgid "Resume Print"
+msgstr ""
 
 msgid "Retract"
 msgstr "Geri çek"
@@ -619,6 +725,9 @@ msgstr "Yapılandırma Kayıt"
 msgid "Save Z"
 msgstr "Z Kaydet"
 
+msgid "Save and Close"
+msgstr ""
+
 msgid "Save configuration?"
 msgstr "Yapılandırmayı kaydet?"
 
@@ -632,16 +741,28 @@ msgstr "Kaydedilen ofset: %s"
 msgid "Screen Power Off Time"
 msgstr "Ekran kapatma zamanı"
 
+msgid "Screw The Nozzle In"
+msgstr ""
+
 msgid "Screws Adjust"
 msgstr "Vida Ayarı"
 
 msgid "Select"
 msgstr "Seç"
 
+msgid "Select Nozzle Diameter"
+msgstr ""
+
+msgid "Select Nozzle Type"
+msgstr ""
+
 msgid "Send"
 msgstr "Gönder"
 
 msgid "Service"
+msgstr ""
+
+msgid "Service Position"
 msgstr ""
 
 msgid "Set Temp"
@@ -658,6 +779,9 @@ msgstr "Isıtıcı Gücünü Göster"
 
 msgid "Size"
 msgstr "Boyut"
+
+msgid "Skip"
+msgstr ""
 
 msgid "Slicer"
 msgstr "Dilimleme"
@@ -701,6 +825,12 @@ msgstr "Sıcaklık (°C)"
 msgid "Temperature"
 msgstr "Sıcaklık"
 
+msgid "Then click Resume print"
+msgstr ""
+
+msgid "Then click Resume print or Close."
+msgstr ""
+
 msgid "Time Zone"
 msgstr ""
 
@@ -722,9 +852,6 @@ msgstr "Bilinmeyen vida konumu"
 msgid "Unload"
 msgstr "Boşalt"
 
-msgid "Unload Filament"
-msgstr ""
-
 msgid "Unpacking"
 msgstr ""
 
@@ -733,6 +860,9 @@ msgstr "İleri İtme Ekstra Uzunluk"
 
 msgid "Unretract Speed"
 msgstr "İleri itme Hızı"
+
+msgid "Unscrew Nozzle"
+msgstr ""
 
 msgid "Update"
 msgstr "Güncelle"
@@ -755,11 +885,32 @@ msgstr "Yüklendi"
 msgid "View Mode"
 msgstr ""
 
+msgid "Wait for nozzle cooldown"
+msgstr ""
+
+msgid "Wait for temperature..."
+msgstr ""
+
+msgid "Which material would you like to load?"
+msgstr ""
+
+msgid "Which material would you like to unload?"
+msgstr ""
+
+msgid "Would you like to load "
+msgstr ""
+
 msgid "XY Move Speed (mm/s)"
 msgstr "XY Hareket hızı (mm/s)"
 
 msgid "XY Speed (mm/s)"
 msgstr "XY Hızı (mm/s)"
+
+msgid "Yes"
+msgstr ""
+
+msgid "Yes, continue"
+msgstr ""
 
 msgid "Z Calibrate"
 msgstr "Z Kalibrasyonu"
@@ -910,9 +1061,6 @@ msgstr "mm³/s"
 #~ msgid "Actions"
 #~ msgstr "Eylemler"
 
-#~ msgid "Configuration"
-#~ msgstr "Yapılandırma"
-
 #~ msgid "Homing"
 #~ msgstr "Eksen Sıfırlama"
 
@@ -993,6 +1141,3 @@ msgstr "mm³/s"
 
 #~ msgid "Displayed Macros"
 #~ msgstr "Görüntülenen Makrolar"
-
-#~ msgid "Z Position"
-#~ msgstr "Z Pozisyonu"

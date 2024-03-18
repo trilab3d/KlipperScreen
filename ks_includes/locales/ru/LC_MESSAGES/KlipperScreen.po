@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KlipperScreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-12 13:43+0100\n"
+"POT-Creation-Date: 2024-03-18 13:56+0100\n"
 "PO-Revision-Date: 2022-11-30 18:15-0300\n"
 "Last-Translator: Jakob Kais <schpuntik@freenet.de>\n"
 "Language-Team: \n"
@@ -150,6 +150,9 @@ msgstr "Канал"
 msgid "Check ADXL Wiring"
 msgstr "Проверьте проводку ADXL"
 
+msgid "Clean extruded material and close the door."
+msgstr ""
+
 msgid "Clear"
 msgstr "Очистить"
 
@@ -161,6 +164,9 @@ msgstr "Закрыть"
 
 msgid "Complete"
 msgstr "Готово"
+
+msgid "Confirm"
+msgstr ""
 
 msgid "Connected"
 msgstr "Соединенный"
@@ -177,6 +183,12 @@ msgstr "Продолжить"
 
 msgid "Cooldown"
 msgstr "Остудить"
+
+msgid "Cooldown and Close"
+msgstr ""
+
+msgid "Cooldown and continue"
+msgstr ""
 
 msgid "Date"
 msgstr "Дата"
@@ -250,17 +262,38 @@ msgstr "Ошибка. Сначала измените положение"
 msgid "Fan"
 msgstr "Обдув"
 
+msgid "Feed the filament fully into the extruder until it stops at the gears."
+msgstr ""
+
 msgid "Filament Runout"
 msgstr ""
 
 msgid "Filament Used"
 msgstr "Использование филамента"
 
+msgid "Filament can't be pulled out, try again"
+msgstr ""
+
+msgid "Filament is purging..."
+msgstr ""
+
+msgid "Filament is unloading..."
+msgstr ""
+
 msgid "Filament sensor"
 msgstr ""
 
 msgid "Filament total:"
 msgstr "Итого филамента:"
+
+msgid "Filament unloaded"
+msgstr ""
+
+msgid "Filament unloaded successfully"
+msgstr ""
+
+msgid "Filament unloaded, continue"
+msgstr ""
 
 msgid "Filament used:"
 msgstr "Использование филамента:"
@@ -298,6 +331,9 @@ msgstr ""
 msgid "Go Back"
 msgstr "Назад"
 
+msgid "Go back"
+msgstr ""
+
 msgid "Height:"
 msgstr "Высота:"
 
@@ -328,6 +364,9 @@ msgstr "Парковать Y"
 msgid "Home Z"
 msgstr "Парковать Z"
 
+msgid "Home and Close"
+msgstr ""
+
 msgid "Hostname"
 msgstr "Имя хоста"
 
@@ -340,6 +379,11 @@ msgstr ""
 msgid "Icon Theme"
 msgstr "Темы"
 
+msgid ""
+"If you can't reach filament end, disconnect magnetic bowden coupler. Don't "
+"forget to put it back before next filament load."
+msgstr ""
+
 msgid "Initializing printer..."
 msgstr "Принтер стартует..."
 
@@ -348,6 +392,9 @@ msgstr ""
 
 msgid "Input Shaper"
 msgstr "Входной шейпер"
+
+msgid "Insert filament and press continue."
+msgstr ""
 
 msgid "Install"
 msgstr ""
@@ -366,6 +413,12 @@ msgstr "Инверсия Y"
 
 msgid "Invert Z"
 msgstr "Инверсия Z"
+
+msgid "Is color clean?"
+msgstr ""
+
+msgid "Is the loaded material "
+msgstr ""
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr ""
@@ -409,6 +462,9 @@ msgstr "Загрузить"
 msgid "Load Filament"
 msgstr ""
 
+msgid "Load new material"
+msgstr ""
+
 msgid "Lower Nozzle"
 msgstr "Опустить сопло"
 
@@ -417,6 +473,9 @@ msgstr "Макросы"
 
 msgid "Main Menu"
 msgstr "Главное меню"
+
+msgid "Make sure print volume is empty."
+msgstr ""
 
 msgid "Max"
 msgstr "Максимум"
@@ -481,6 +540,12 @@ msgstr "Новый"
 msgid "New update available"
 msgstr ""
 
+msgid "No, purge More"
+msgstr ""
+
+msgid "No, select a different material"
+msgstr ""
+
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
 "conf"
@@ -491,7 +556,19 @@ msgstr ""
 msgid "Nothing selected"
 msgstr "Ничего не выбрано"
 
+msgid "Nozzle"
+msgstr ""
+
 msgid "Nozzle Change"
+msgstr ""
+
+msgid "Nozzle has to be cooled down before changing procedure."
+msgstr ""
+
+msgid "Nozzle is Hot!"
+msgstr ""
+
+msgid "Nozzle is still dangerously hot. Continue at your own risk!"
 msgstr ""
 
 msgid "Nozzle:"
@@ -514,6 +591,12 @@ msgstr "Пароль сохранен"
 
 msgid "Pause"
 msgstr "Пауза"
+
+msgid "Pause print"
+msgstr ""
+
+msgid "Pause print and continue"
+msgstr ""
 
 msgid "Paused"
 msgstr "Приостановлено"
@@ -545,6 +628,9 @@ msgstr "Управление печатью"
 msgid "Print Time"
 msgstr "Время печати"
 
+msgid "Print must be paused to change filament. Do you want to continue?"
+msgstr ""
+
 msgid "Printer Name"
 msgstr ""
 
@@ -553,6 +639,12 @@ msgstr ""
 
 msgid "Printer Select"
 msgstr "Выбор принтера"
+
+msgid "Printhead has been moved to service position."
+msgstr ""
+
+msgid "Printhead is moving..."
+msgstr ""
 
 msgid "Printhead:"
 msgstr ""
@@ -567,6 +659,14 @@ msgid "Profile Name:"
 msgstr "Имя профиля:"
 
 msgid "Provide KlipperScreen.log when asking for help.\n"
+msgstr ""
+
+msgid ""
+"Pull the end of the filament out of the printer and secure it against "
+"tangling."
+msgstr ""
+
+msgid "Purge More"
 msgstr ""
 
 msgid "Quad Gantry Level"
@@ -584,6 +684,9 @@ msgstr "Обновить"
 msgid "Release Emerency Stop to continue"
 msgstr ""
 
+msgid "Remove Remaining Filament."
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr ""
 
@@ -592,6 +695,9 @@ msgstr ""
 
 msgid "Resume"
 msgstr "Продолжить"
+
+msgid "Resume Print"
+msgstr ""
 
 msgid "Retract"
 msgstr "Втянуть"
@@ -620,6 +726,9 @@ msgstr "Сохр. Конфиг"
 msgid "Save Z"
 msgstr "Сохранить Z"
 
+msgid "Save and Close"
+msgstr ""
+
 msgid "Save configuration?"
 msgstr "Сохранить конфигурацию?"
 
@@ -633,16 +742,28 @@ msgstr "Сохраненный офсет: %s"
 msgid "Screen Power Off Time"
 msgstr "Время выключения экрана"
 
+msgid "Screw The Nozzle In"
+msgstr ""
+
 msgid "Screws Adjust"
 msgstr "Настроить винты"
 
 msgid "Select"
 msgstr "Выбирать"
 
+msgid "Select Nozzle Diameter"
+msgstr ""
+
+msgid "Select Nozzle Type"
+msgstr ""
+
 msgid "Send"
 msgstr "Отправить"
 
 msgid "Service"
+msgstr ""
+
+msgid "Service Position"
 msgstr ""
 
 msgid "Set Temp"
@@ -659,6 +780,9 @@ msgstr "Показать мощность нагрева"
 
 msgid "Size"
 msgstr "Размер"
+
+msgid "Skip"
+msgstr ""
 
 msgid "Slicer"
 msgstr "Слайсер"
@@ -702,6 +826,12 @@ msgstr "Темп  (°С)"
 msgid "Temperature"
 msgstr "Tемпература"
 
+msgid "Then click Resume print"
+msgstr ""
+
+msgid "Then click Resume print or Close."
+msgstr ""
+
 msgid "Time Zone"
 msgstr ""
 
@@ -723,9 +853,6 @@ msgstr "Неизвестное положение винта"
 msgid "Unload"
 msgstr "Загружено"
 
-msgid "Unload Filament"
-msgstr ""
-
 msgid "Unpacking"
 msgstr ""
 
@@ -734,6 +861,9 @@ msgstr "Дополнительная длина подачи перед возо
 
 msgid "Unretract Speed"
 msgstr "Скорость дополнительная подачи"
+
+msgid "Unscrew Nozzle"
+msgstr ""
 
 msgid "Update"
 msgstr "Обновить"
@@ -756,11 +886,32 @@ msgstr "Загружено"
 msgid "View Mode"
 msgstr ""
 
+msgid "Wait for nozzle cooldown"
+msgstr ""
+
+msgid "Wait for temperature..."
+msgstr ""
+
+msgid "Which material would you like to load?"
+msgstr ""
+
+msgid "Which material would you like to unload?"
+msgstr ""
+
+msgid "Would you like to load "
+msgstr ""
+
 msgid "XY Move Speed (mm/s)"
 msgstr "Скорость перемещения по осям XY (мм/с)"
 
 msgid "XY Speed (mm/s)"
 msgstr "Скорость по осям XY (мм/с)"
+
+msgid "Yes"
+msgstr ""
+
+msgid "Yes, continue"
+msgstr ""
 
 msgid "Z Calibrate"
 msgstr "Калибр. Z"
@@ -915,9 +1066,6 @@ msgstr "мм/с³"
 #~ msgid "Actions"
 #~ msgstr "Действия"
 
-#~ msgid "Configuration"
-#~ msgstr "Параметр"
-
 #~ msgid "Homing"
 #~ msgstr "Парковка"
 
@@ -998,9 +1146,6 @@ msgstr "мм/с³"
 
 #~ msgid "Displayed Macros"
 #~ msgstr "Показать  макросы"
-
-#~ msgid "Z Position"
-#~ msgstr "Позиция Z"
 
 #~ msgid "IPv4"
 #~ msgstr "IPv4"

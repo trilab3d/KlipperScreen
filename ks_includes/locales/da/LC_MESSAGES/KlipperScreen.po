@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KlipperScreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-12 13:43+0100\n"
+"POT-Creation-Date: 2024-03-18 13:56+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SRBJ\n"
 "Language-Team: \n"
@@ -144,6 +144,9 @@ msgstr "Kanal"
 msgid "Check ADXL Wiring"
 msgstr ""
 
+msgid "Clean extruded material and close the door."
+msgstr ""
+
 msgid "Clear"
 msgstr ""
 
@@ -155,6 +158,9 @@ msgstr "Luk"
 
 msgid "Complete"
 msgstr "Færdig"
+
+msgid "Confirm"
+msgstr ""
 
 msgid "Connected"
 msgstr "Forbundet"
@@ -171,6 +177,12 @@ msgstr "Fortsæt"
 
 msgid "Cooldown"
 msgstr "Afkøling"
+
+msgid "Cooldown and Close"
+msgstr ""
+
+msgid "Cooldown and continue"
+msgstr ""
 
 msgid "Date"
 msgstr "Dato"
@@ -244,17 +256,38 @@ msgstr "Mislykkedes, juster først positionen"
 msgid "Fan"
 msgstr "Blæser"
 
+msgid "Feed the filament fully into the extruder until it stops at the gears."
+msgstr ""
+
 msgid "Filament Runout"
 msgstr ""
 
 msgid "Filament Used"
 msgstr "Filament forbrug"
 
+msgid "Filament can't be pulled out, try again"
+msgstr ""
+
+msgid "Filament is purging..."
+msgstr ""
+
+msgid "Filament is unloading..."
+msgstr ""
+
 msgid "Filament sensor"
 msgstr ""
 
 msgid "Filament total:"
 msgstr "Filament i alt:"
+
+msgid "Filament unloaded"
+msgstr ""
+
+msgid "Filament unloaded successfully"
+msgstr ""
+
+msgid "Filament unloaded, continue"
+msgstr ""
 
 msgid "Filament used:"
 msgstr "Filament brugt:"
@@ -292,6 +325,9 @@ msgstr ""
 msgid "Go Back"
 msgstr "Gå tilbage"
 
+msgid "Go back"
+msgstr ""
+
 msgid "Height:"
 msgstr ""
 
@@ -322,6 +358,9 @@ msgstr "Home Y"
 msgid "Home Z"
 msgstr "Home Z"
 
+msgid "Home and Close"
+msgstr ""
+
 msgid "Hostname"
 msgstr "Værtsnavn"
 
@@ -334,6 +373,11 @@ msgstr ""
 msgid "Icon Theme"
 msgstr "Ikon-tema"
 
+msgid ""
+"If you can't reach filament end, disconnect magnetic bowden coupler. Don't "
+"forget to put it back before next filament load."
+msgstr ""
+
 msgid "Initializing printer..."
 msgstr "Initialiserer printer..."
 
@@ -341,6 +385,9 @@ msgid "Initiate a PID calibration for:"
 msgstr ""
 
 msgid "Input Shaper"
+msgstr ""
+
+msgid "Insert filament and press continue."
 msgstr ""
 
 msgid "Install"
@@ -360,6 +407,12 @@ msgstr "Invertér Y"
 
 msgid "Invert Z"
 msgstr "Invertér Z"
+
+msgid "Is color clean?"
+msgstr ""
+
+msgid "Is the loaded material "
+msgstr ""
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr ""
@@ -403,6 +456,9 @@ msgstr "Indlæs"
 msgid "Load Filament"
 msgstr ""
 
+msgid "Load new material"
+msgstr ""
+
 msgid "Lower Nozzle"
 msgstr "Sænk Nozzle"
 
@@ -411,6 +467,9 @@ msgstr "Makroer"
 
 msgid "Main Menu"
 msgstr "Hovedmenu"
+
+msgid "Make sure print volume is empty."
+msgstr ""
 
 msgid "Max"
 msgstr ""
@@ -475,6 +534,12 @@ msgstr "Ny"
 msgid "New update available"
 msgstr ""
 
+msgid "No, purge More"
+msgstr ""
+
+msgid "No, select a different material"
+msgstr ""
+
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
 "conf"
@@ -483,7 +548,19 @@ msgstr ""
 msgid "Nothing selected"
 msgstr "Intet valgt"
 
+msgid "Nozzle"
+msgstr ""
+
 msgid "Nozzle Change"
+msgstr ""
+
+msgid "Nozzle has to be cooled down before changing procedure."
+msgstr ""
+
+msgid "Nozzle is Hot!"
+msgstr ""
+
+msgid "Nozzle is still dangerously hot. Continue at your own risk!"
 msgstr ""
 
 msgid "Nozzle:"
@@ -506,6 +583,12 @@ msgstr "Adgangskode gemt"
 
 msgid "Pause"
 msgstr "Pause"
+
+msgid "Pause print"
+msgstr ""
+
+msgid "Pause print and continue"
+msgstr ""
 
 msgid "Paused"
 msgstr "På pause"
@@ -537,6 +620,9 @@ msgstr "Print styring"
 msgid "Print Time"
 msgstr "Printtid"
 
+msgid "Print must be paused to change filament. Do you want to continue?"
+msgstr ""
+
 msgid "Printer Name"
 msgstr ""
 
@@ -544,6 +630,12 @@ msgid "Printer Name:"
 msgstr ""
 
 msgid "Printer Select"
+msgstr ""
+
+msgid "Printhead has been moved to service position."
+msgstr ""
+
+msgid "Printhead is moving..."
 msgstr ""
 
 msgid "Printhead:"
@@ -561,6 +653,14 @@ msgstr "Profilnavn:"
 msgid "Provide KlipperScreen.log when asking for help.\n"
 msgstr ""
 
+msgid ""
+"Pull the end of the filament out of the printer and secure it against "
+"tangling."
+msgstr ""
+
+msgid "Purge More"
+msgstr ""
+
 msgid "Quad Gantry Level"
 msgstr "Justering af 4-søjlers konstruktion"
 
@@ -576,6 +676,9 @@ msgstr ""
 msgid "Release Emerency Stop to continue"
 msgstr ""
 
+msgid "Remove Remaining Filament."
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr ""
 
@@ -584,6 +687,9 @@ msgstr ""
 
 msgid "Resume"
 msgstr "Genoptag"
+
+msgid "Resume Print"
+msgstr ""
 
 msgid "Retract"
 msgstr "Retract"
@@ -612,6 +718,9 @@ msgstr "Gem Konfiguration"
 msgid "Save Z"
 msgstr "Gem Z"
 
+msgid "Save and Close"
+msgstr ""
+
 msgid "Save configuration?"
 msgstr "Gem Konfiguration?"
 
@@ -625,16 +734,28 @@ msgstr ""
 msgid "Screen Power Off Time"
 msgstr "Skærm timeout"
 
+msgid "Screw The Nozzle In"
+msgstr ""
+
 msgid "Screws Adjust"
 msgstr "Skruejustering"
 
 msgid "Select"
 msgstr "Vælg"
 
+msgid "Select Nozzle Diameter"
+msgstr ""
+
+msgid "Select Nozzle Type"
+msgstr ""
+
 msgid "Send"
 msgstr "Sende"
 
 msgid "Service"
+msgstr ""
+
+msgid "Service Position"
 msgstr ""
 
 msgid "Set Temp"
@@ -651,6 +772,9 @@ msgstr ""
 
 msgid "Size"
 msgstr "Størrelse"
+
+msgid "Skip"
+msgstr ""
 
 msgid "Slicer"
 msgstr "Slicer"
@@ -694,6 +818,12 @@ msgstr "Temp (°C)"
 msgid "Temperature"
 msgstr "Temperatur"
 
+msgid "Then click Resume print"
+msgstr ""
+
+msgid "Then click Resume print or Close."
+msgstr ""
+
 msgid "Time Zone"
 msgstr ""
 
@@ -715,9 +845,6 @@ msgstr ""
 msgid "Unload"
 msgstr "Tilbagetræk"
 
-msgid "Unload Filament"
-msgstr ""
-
 msgid "Unpacking"
 msgstr ""
 
@@ -725,6 +852,9 @@ msgid "Unretract Extra Length"
 msgstr ""
 
 msgid "Unretract Speed"
+msgstr ""
+
+msgid "Unscrew Nozzle"
 msgstr ""
 
 msgid "Update"
@@ -748,11 +878,32 @@ msgstr "Uploadet"
 msgid "View Mode"
 msgstr ""
 
+msgid "Wait for nozzle cooldown"
+msgstr ""
+
+msgid "Wait for temperature..."
+msgstr ""
+
+msgid "Which material would you like to load?"
+msgstr ""
+
+msgid "Which material would you like to unload?"
+msgstr ""
+
+msgid "Would you like to load "
+msgstr ""
+
 msgid "XY Move Speed (mm/s)"
 msgstr "XY Flyt hastighed (mm/s)"
 
 msgid "XY Speed (mm/s)"
 msgstr "XY Hastighed (mm/s)"
+
+msgid "Yes"
+msgstr ""
+
+msgid "Yes, continue"
+msgstr ""
 
 msgid "Z Calibrate"
 msgstr "Kalibrér Z"
@@ -885,9 +1036,6 @@ msgstr ""
 #~ msgid "Actions"
 #~ msgstr "Muligheder"
 
-#~ msgid "Configuration"
-#~ msgstr "Konfiguration"
-
 #~ msgid "Homing"
 #~ msgstr "Homing"
 
@@ -968,9 +1116,6 @@ msgstr ""
 
 #~ msgid "Displayed Macros"
 #~ msgstr "Viste makroer"
-
-#~ msgid "Z Position"
-#~ msgstr "Z-position"
 
 #~ msgid "IPv4"
 #~ msgstr "IPv4"

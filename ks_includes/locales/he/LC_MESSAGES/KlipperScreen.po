@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Klipperscreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-12 13:43+0100\n"
+"POT-Creation-Date: 2024-03-18 13:56+0100\n"
 "PO-Revision-Date: 2022-11-30 18:11-0300\n"
 "Last-Translator: Tal Rahav <talrhv1@gmail.com>\n"
 "Language-Team: \n"
@@ -151,6 +151,9 @@ msgstr "ערוץ"
 msgid "Check ADXL Wiring"
 msgstr "בדוק את החיווט של ה ADXL"
 
+msgid "Clean extruded material and close the door."
+msgstr ""
+
 msgid "Clear"
 msgstr "נקה"
 
@@ -162,6 +165,9 @@ msgstr "סגור"
 
 msgid "Complete"
 msgstr "הסתיים"
+
+msgid "Confirm"
+msgstr ""
 
 msgid "Connected"
 msgstr "מחובר"
@@ -178,6 +184,12 @@ msgstr "המשך"
 
 msgid "Cooldown"
 msgstr "הפעל קירור"
+
+msgid "Cooldown and Close"
+msgstr ""
+
+msgid "Cooldown and continue"
+msgstr ""
 
 msgid "Date"
 msgstr "תאריך"
@@ -251,17 +263,38 @@ msgstr "נכשל, תחילה התאם את המיקום"
 msgid "Fan"
 msgstr "מאוורר"
 
+msgid "Feed the filament fully into the extruder until it stops at the gears."
+msgstr ""
+
 msgid "Filament Runout"
 msgstr ""
 
 msgid "Filament Used"
 msgstr "חומר ששומש"
 
+msgid "Filament can't be pulled out, try again"
+msgstr ""
+
+msgid "Filament is purging..."
+msgstr ""
+
+msgid "Filament is unloading..."
+msgstr ""
+
 msgid "Filament sensor"
 msgstr ""
 
 msgid "Filament total:"
 msgstr "חומר כולל"
+
+msgid "Filament unloaded"
+msgstr ""
+
+msgid "Filament unloaded successfully"
+msgstr ""
+
+msgid "Filament unloaded, continue"
+msgstr ""
 
 msgid "Filament used:"
 msgstr "חומר ששומש:"
@@ -299,6 +332,9 @@ msgstr ""
 msgid "Go Back"
 msgstr "חזרה"
 
+msgid "Go back"
+msgstr ""
+
 msgid "Height:"
 msgstr "גובה"
 
@@ -329,6 +365,9 @@ msgstr "איפוס Y"
 msgid "Home Z"
 msgstr "איפוס Z"
 
+msgid "Home and Close"
+msgstr ""
+
 msgid "Hostname"
 msgstr "שם שרת"
 
@@ -341,6 +380,11 @@ msgstr ""
 msgid "Icon Theme"
 msgstr "ערכת נושא"
 
+msgid ""
+"If you can't reach filament end, disconnect magnetic bowden coupler. Don't "
+"forget to put it back before next filament load."
+msgstr ""
+
 msgid "Initializing printer..."
 msgstr "מאתחל מדפסת..."
 
@@ -349,6 +393,9 @@ msgstr ""
 
 msgid "Input Shaper"
 msgstr "מעצב גימור"
+
+msgid "Insert filament and press continue."
+msgstr ""
 
 msgid "Install"
 msgstr ""
@@ -367,6 +414,12 @@ msgstr "הפוך את Y"
 
 msgid "Invert Z"
 msgstr "הפוך את Z"
+
+msgid "Is color clean?"
+msgstr ""
+
+msgid "Is the loaded material "
+msgstr ""
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr ""
@@ -410,6 +463,9 @@ msgstr "טעינה"
 msgid "Load Filament"
 msgstr ""
 
+msgid "Load new material"
+msgstr ""
+
 msgid "Lower Nozzle"
 msgstr "הנמך דיזה"
 
@@ -418,6 +474,9 @@ msgstr "מקרואים"
 
 msgid "Main Menu"
 msgstr "תפריט ראשי"
+
+msgid "Make sure print volume is empty."
+msgstr ""
 
 msgid "Max"
 msgstr "מקסימום"
@@ -482,6 +541,12 @@ msgstr "חדש"
 msgid "New update available"
 msgstr ""
 
+msgid "No, purge More"
+msgstr ""
+
+msgid "No, select a different material"
+msgstr ""
+
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
 "conf"
@@ -490,7 +555,19 @@ msgstr "איתור אוטומטי אינו נתמך, זה צריך להיות מ
 msgid "Nothing selected"
 msgstr "שום דבר לא נבחר"
 
+msgid "Nozzle"
+msgstr ""
+
 msgid "Nozzle Change"
+msgstr ""
+
+msgid "Nozzle has to be cooled down before changing procedure."
+msgstr ""
+
+msgid "Nozzle is Hot!"
+msgstr ""
+
+msgid "Nozzle is still dangerously hot. Continue at your own risk!"
 msgstr ""
 
 msgid "Nozzle:"
@@ -513,6 +590,12 @@ msgstr "הסיסמה נשמרה"
 
 msgid "Pause"
 msgstr "השהיה"
+
+msgid "Pause print"
+msgstr ""
+
+msgid "Pause print and continue"
+msgstr ""
 
 msgid "Paused"
 msgstr "מושהה"
@@ -544,6 +627,9 @@ msgstr "שליטה בהדפסה"
 msgid "Print Time"
 msgstr "זמן הדפסה"
 
+msgid "Print must be paused to change filament. Do you want to continue?"
+msgstr ""
+
 msgid "Printer Name"
 msgstr ""
 
@@ -551,6 +637,12 @@ msgid "Printer Name:"
 msgstr ""
 
 msgid "Printer Select"
+msgstr ""
+
+msgid "Printhead has been moved to service position."
+msgstr ""
+
+msgid "Printhead is moving..."
 msgstr ""
 
 msgid "Printhead:"
@@ -568,6 +660,14 @@ msgstr "שם פרופיל:"
 msgid "Provide KlipperScreen.log when asking for help.\n"
 msgstr ""
 
+msgid ""
+"Pull the end of the filament out of the printer and secure it against "
+"tangling."
+msgstr ""
+
+msgid "Purge More"
+msgstr ""
+
 msgid "Quad Gantry Level"
 msgstr "יישור הגנטרי הריבועי"
 
@@ -583,6 +683,9 @@ msgstr "רענון"
 msgid "Release Emerency Stop to continue"
 msgstr ""
 
+msgid "Remove Remaining Filament."
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr ""
 
@@ -591,6 +694,9 @@ msgstr ""
 
 msgid "Resume"
 msgstr "המשך"
+
+msgid "Resume Print"
+msgstr ""
 
 msgid "Retract"
 msgstr "שיחול לאחור"
@@ -619,6 +725,9 @@ msgstr "שמור קונפיג"
 msgid "Save Z"
 msgstr "שמור Z"
 
+msgid "Save and Close"
+msgstr ""
+
 msgid "Save configuration?"
 msgstr "שמור קונפיגרציה?"
 
@@ -632,16 +741,28 @@ msgstr "שמור אופ-סט %s"
 msgid "Screen Power Off Time"
 msgstr "זמן כיבוי מסך"
 
+msgid "Screw The Nozzle In"
+msgstr ""
+
 msgid "Screws Adjust"
 msgstr "סידור ברגים"
 
 msgid "Select"
 msgstr "בחר"
 
+msgid "Select Nozzle Diameter"
+msgstr ""
+
+msgid "Select Nozzle Type"
+msgstr ""
+
 msgid "Send"
 msgstr "שליחה"
 
 msgid "Service"
+msgstr ""
+
+msgid "Service Position"
 msgstr ""
 
 msgid "Set Temp"
@@ -658,6 +779,9 @@ msgstr "הצג זרם מיטה"
 
 msgid "Size"
 msgstr "גודל"
+
+msgid "Skip"
+msgstr ""
 
 msgid "Slicer"
 msgstr "סלייסר"
@@ -701,6 +825,12 @@ msgstr "טמפ' (°C)"
 msgid "Temperature"
 msgstr "טמפרטורה"
 
+msgid "Then click Resume print"
+msgstr ""
+
+msgid "Then click Resume print or Close."
+msgstr ""
+
 msgid "Time Zone"
 msgstr ""
 
@@ -722,9 +852,6 @@ msgstr "מיקום בורג לא ידוע"
 msgid "Unload"
 msgstr "העלה"
 
-msgid "Unload Filament"
-msgstr ""
-
 msgid "Unpacking"
 msgstr ""
 
@@ -732,6 +859,9 @@ msgid "Unretract Extra Length"
 msgstr ""
 
 msgid "Unretract Speed"
+msgstr ""
+
+msgid "Unscrew Nozzle"
 msgstr ""
 
 msgid "Update"
@@ -755,11 +885,32 @@ msgstr "הועלה"
 msgid "View Mode"
 msgstr ""
 
+msgid "Wait for nozzle cooldown"
+msgstr ""
+
+msgid "Wait for temperature..."
+msgstr ""
+
+msgid "Which material would you like to load?"
+msgstr ""
+
+msgid "Which material would you like to unload?"
+msgstr ""
+
+msgid "Would you like to load "
+msgstr ""
+
 msgid "XY Move Speed (mm/s)"
 msgstr "מהירות תנועה XY (מ\"מ/שנייה)"
 
 msgid "XY Speed (mm/s)"
 msgstr "מהירות XY (mm/s)"
+
+msgid "Yes"
+msgstr ""
+
+msgid "Yes, continue"
+msgstr ""
 
 msgid "Z Calibrate"
 msgstr "כיול Z"
@@ -912,9 +1063,6 @@ msgstr ""
 #~ msgid "Actions"
 #~ msgstr "פעולות"
 
-#~ msgid "Configuration"
-#~ msgstr "קונפיגורציה"
-
 #~ msgid "Homing"
 #~ msgstr "איפוס צירים"
 
@@ -1001,9 +1149,6 @@ msgstr ""
 
 #~ msgid "Displayed Macros"
 #~ msgstr "מוצגים מאקרו"
-
-#~ msgid "Z Position"
-#~ msgstr "מיקום Z"
 
 #~ msgid "IPv4"
 #~ msgstr "IPv4"

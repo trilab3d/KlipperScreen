@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KlipperScreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-12 13:43+0100\n"
+"POT-Creation-Date: 2024-03-18 13:56+0100\n"
 "PO-Revision-Date: 2023-07-07 16:44+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -149,6 +149,9 @@ msgstr "群組"
 msgid "Check ADXL Wiring"
 msgstr "檢查ADXL的接線"
 
+msgid "Clean extruded material and close the door."
+msgstr ""
+
 msgid "Clear"
 msgstr "清除"
 
@@ -160,6 +163,9 @@ msgstr "關閉"
 
 msgid "Complete"
 msgstr "完成"
+
+msgid "Confirm"
+msgstr ""
 
 msgid "Connected"
 msgstr "已連線"
@@ -176,6 +182,12 @@ msgstr "繼續"
 
 msgid "Cooldown"
 msgstr "冷卻"
+
+msgid "Cooldown and Close"
+msgstr ""
+
+msgid "Cooldown and continue"
+msgstr ""
 
 msgid "Date"
 msgstr "日期"
@@ -249,17 +261,38 @@ msgstr "失敗，請先調整位置"
 msgid "Fan"
 msgstr "風扇"
 
+msgid "Feed the filament fully into the extruder until it stops at the gears."
+msgstr ""
+
 msgid "Filament Runout"
 msgstr ""
 
 msgid "Filament Used"
 msgstr "已消耗耗材"
 
+msgid "Filament can't be pulled out, try again"
+msgstr ""
+
+msgid "Filament is purging..."
+msgstr ""
+
+msgid "Filament is unloading..."
+msgstr ""
+
 msgid "Filament sensor"
 msgstr ""
 
 msgid "Filament total:"
 msgstr "使用耗材總數："
+
+msgid "Filament unloaded"
+msgstr ""
+
+msgid "Filament unloaded successfully"
+msgstr ""
+
+msgid "Filament unloaded, continue"
+msgstr ""
 
 msgid "Filament used:"
 msgstr "使用耗材："
@@ -297,6 +330,9 @@ msgstr "全螢幕"
 msgid "Go Back"
 msgstr "返回"
 
+msgid "Go back"
+msgstr ""
+
 msgid "Height:"
 msgstr "高度："
 
@@ -327,6 +363,9 @@ msgstr "Y軸歸零"
 msgid "Home Z"
 msgstr "Z軸歸零"
 
+msgid "Home and Close"
+msgstr ""
+
 msgid "Hostname"
 msgstr "主機名"
 
@@ -339,6 +378,11 @@ msgstr ""
 msgid "Icon Theme"
 msgstr "主題"
 
+msgid ""
+"If you can't reach filament end, disconnect magnetic bowden coupler. Don't "
+"forget to put it back before next filament load."
+msgstr ""
+
 msgid "Initializing printer..."
 msgstr "正在初始化列印機..."
 
@@ -347,6 +391,9 @@ msgstr "啟動PID校準："
 
 msgid "Input Shaper"
 msgstr "共振補償"
+
+msgid "Insert filament and press continue."
+msgstr ""
 
 msgid "Install"
 msgstr ""
@@ -365,6 +412,12 @@ msgstr "反轉Y軸"
 
 msgid "Invert Z"
 msgstr "反轉Z軸"
+
+msgid "Is color clean?"
+msgstr ""
+
+msgid "Is the loaded material "
+msgstr ""
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr "這可能需要5分鐘以上的時間，這取決於加熱器的功率。"
@@ -408,6 +461,9 @@ msgstr "載入耗材"
 msgid "Load Filament"
 msgstr ""
 
+msgid "Load new material"
+msgstr ""
+
 msgid "Lower Nozzle"
 msgstr "降低噴嘴"
 
@@ -416,6 +472,9 @@ msgstr "巨集"
 
 msgid "Main Menu"
 msgstr "主選單"
+
+msgid "Make sure print volume is empty."
+msgstr ""
 
 msgid "Max"
 msgstr "最大"
@@ -480,6 +539,12 @@ msgstr "新的值"
 msgid "New update available"
 msgstr ""
 
+msgid "No, purge More"
+msgstr ""
+
+msgid "No, select a different material"
+msgstr ""
+
 msgid ""
 "Not supported for auto-detection, it needs to be configured in klipperscreen."
 "conf"
@@ -488,7 +553,19 @@ msgstr "不支援自動檢測，需要在klpperscreen.conf中進行設定"
 msgid "Nothing selected"
 msgstr "未選擇任何內容"
 
+msgid "Nozzle"
+msgstr ""
+
 msgid "Nozzle Change"
+msgstr ""
+
+msgid "Nozzle has to be cooled down before changing procedure."
+msgstr ""
+
+msgid "Nozzle is Hot!"
+msgstr ""
+
+msgid "Nozzle is still dangerously hot. Continue at your own risk!"
 msgstr ""
 
 msgid "Nozzle:"
@@ -511,6 +588,12 @@ msgstr "密碼已儲存"
 
 msgid "Pause"
 msgstr "暫停"
+
+msgid "Pause print"
+msgstr ""
+
+msgid "Pause print and continue"
+msgstr ""
 
 msgid "Paused"
 msgstr "已暫停"
@@ -542,6 +625,9 @@ msgstr "列印控制"
 msgid "Print Time"
 msgstr "列印時間"
 
+msgid "Print must be paused to change filament. Do you want to continue?"
+msgstr ""
+
 msgid "Printer Name"
 msgstr ""
 
@@ -550,6 +636,12 @@ msgstr ""
 
 msgid "Printer Select"
 msgstr "列印機選擇"
+
+msgid "Printhead has been moved to service position."
+msgstr ""
+
+msgid "Printhead is moving..."
+msgstr ""
 
 msgid "Printhead:"
 msgstr ""
@@ -566,6 +658,14 @@ msgstr "設定檔名稱："
 msgid "Provide KlipperScreen.log when asking for help.\n"
 msgstr "在尋求幫助時，請提供KlipperScreen.log檔案。\n"
 
+msgid ""
+"Pull the end of the filament out of the printer and secure it against "
+"tangling."
+msgstr ""
+
+msgid "Purge More"
+msgstr ""
+
 msgid "Quad Gantry Level"
 msgstr "龍門架調平"
 
@@ -581,6 +681,9 @@ msgstr "重新整理"
 msgid "Release Emerency Stop to continue"
 msgstr ""
 
+msgid "Remove Remaining Filament."
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr "重新命名/移動："
 
@@ -589,6 +692,9 @@ msgstr ""
 
 msgid "Resume"
 msgstr "繼續"
+
+msgid "Resume Print"
+msgstr ""
 
 msgid "Retract"
 msgstr "抽回"
@@ -617,6 +723,9 @@ msgstr "儲存設定"
 msgid "Save Z"
 msgstr "儲存Z軸"
 
+msgid "Save and Close"
+msgstr ""
+
 msgid "Save configuration?"
 msgstr "是否儲存設定？"
 
@@ -630,16 +739,28 @@ msgstr "儲存偏移：%s"
 msgid "Screen Power Off Time"
 msgstr "關閉螢幕時間"
 
+msgid "Screw The Nozzle In"
+msgstr ""
+
 msgid "Screws Adjust"
 msgstr "螺絲調整"
 
 msgid "Select"
 msgstr "選擇"
 
+msgid "Select Nozzle Diameter"
+msgstr ""
+
+msgid "Select Nozzle Type"
+msgstr ""
+
 msgid "Send"
 msgstr "發送"
 
 msgid "Service"
+msgstr ""
+
+msgid "Service Position"
 msgstr ""
 
 msgid "Set Temp"
@@ -656,6 +777,9 @@ msgstr "顯示加熱器功率"
 
 msgid "Size"
 msgstr "大小"
+
+msgid "Skip"
+msgstr ""
 
 msgid "Slicer"
 msgstr "切片軟體"
@@ -699,6 +823,12 @@ msgstr "溫度 (°C)"
 msgid "Temperature"
 msgstr "溫度"
 
+msgid "Then click Resume print"
+msgstr ""
+
+msgid "Then click Resume print or Close."
+msgstr ""
+
 msgid "Time Zone"
 msgstr ""
 
@@ -720,9 +850,6 @@ msgstr "未知螺絲位置"
 msgid "Unload"
 msgstr "解除安裝"
 
-msgid "Unload Filament"
-msgstr ""
-
 msgid "Unpacking"
 msgstr ""
 
@@ -731,6 +858,9 @@ msgstr "回料長度"
 
 msgid "Unretract Speed"
 msgstr "回料速度"
+
+msgid "Unscrew Nozzle"
+msgstr ""
 
 msgid "Update"
 msgstr "更新"
@@ -753,11 +883,32 @@ msgstr "上傳於"
 msgid "View Mode"
 msgstr ""
 
+msgid "Wait for nozzle cooldown"
+msgstr ""
+
+msgid "Wait for temperature..."
+msgstr ""
+
+msgid "Which material would you like to load?"
+msgstr ""
+
+msgid "Which material would you like to unload?"
+msgstr ""
+
+msgid "Would you like to load "
+msgstr ""
+
 msgid "XY Move Speed (mm/s)"
 msgstr "XY軸移動速度(mm/s)"
 
 msgid "XY Speed (mm/s)"
 msgstr "XY軸速度(mm/s)"
+
+msgid "Yes"
+msgstr ""
+
+msgid "Yes, continue"
+msgstr ""
 
 msgid "Z Calibrate"
 msgstr "Z軸校準"
@@ -904,9 +1055,6 @@ msgstr "mm³/s"
 #~ msgid "Actions"
 #~ msgstr "控制"
 
-#~ msgid "Configuration"
-#~ msgstr "设置"
-
 #~ msgid "Homing"
 #~ msgstr "归零"
 
@@ -969,9 +1117,6 @@ msgstr "mm³/s"
 
 #~ msgid "Displayed Macros"
 #~ msgstr "宏命令显示开关"
-
-#~ msgid "Z Position"
-#~ msgstr "Z 位置"
 
 #~ msgid "IPv4"
 #~ msgstr "IPv4 地址"

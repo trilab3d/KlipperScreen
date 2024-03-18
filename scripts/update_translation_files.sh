@@ -6,6 +6,7 @@ xgettext --keyword=_ --keyword=ngettext:1,2 --language=Python --no-location --so
     *.py \
     ks_includes/*.py \
     panels/*.py \
+    WizardSteps/*.py \
     ks_includes/defaults.conf
 # Update po
 for FILE in ks_includes/locales/*; do

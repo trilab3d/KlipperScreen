@@ -39,6 +39,7 @@ class MoveToServicePosition(BaseWizardStep):
         super().__init__(screen)
         self.first_purge = first_purge
         self.waiting_for_start = 5
+        self.next_step = DoneDialog
 
     def activate(self, wizard):
         super().activate(wizard)
@@ -60,7 +61,7 @@ class MoveToServicePosition(BaseWizardStep):
         if it["state"] not in ["Ready", "Idle"]:
             self.waiting_for_start = 0
         if self.waiting_for_start <= 0 and it["state"] in ["Ready", "Idle"]:
-            self.wizard_manager.set_step(DoneDialog(self._screen))
+            self.wizard_manager.set_step(self.next_step(self._screen))
 
 
 class DoneDialog(BaseWizardStep):

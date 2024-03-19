@@ -6,7 +6,7 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk, GLib, Pango
 
 from WizardSteps.baseWizardStep import BaseWizardStep
-from WizardSteps import loadWizardSteps, unloadWizardSteps
+from WizardSteps import loadWizardSteps, unloadWizardSteps, servicePositionSteps
 
 class CooldownPrompt(BaseWizardStep):
     def __init__(self, screen):
@@ -17,15 +17,14 @@ class CooldownPrompt(BaseWizardStep):
 
         extruder = self._screen.printer.data['extruder']
         if extruder["temperature"] < 60 and extruder["target"] == 0:
-            self.wizard_manager.set_step(UnscrewNozzle(self._screen))
+            self.wizard_manager.set_step(ServicePositionDialog(self._screen))
             return
         if extruder["target"] == 0:
             self.wizard_manager.set_step(Cooling(self._screen))
             return
 
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("warning", self._screen.gtk.content_width * .9,
-                                     self._screen.gtk.content_height * .5)
+        img = self._screen.gtk.Image("warning", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
         confirm_label = self._screen.gtk.Label("")
         confirm_label.set_margin_top(20)
@@ -69,8 +68,7 @@ class Cooling(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("cooling", self._screen.gtk.content_width * .9,
-                                     self._screen.gtk.content_height * .5)
+        img = self._screen.gtk.Image("cooling", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)
@@ -81,6 +79,10 @@ class Cooling(BaseWizardStep):
         self.actual_temperature = self._screen.gtk.Label(f"Temperature: {int(extruder['temperature'])} °C")
         self.actual_temperature.set_hexpand(True)
         self.content.add(self.actual_temperature)
+        cancel_button = self._screen.gtk.Button(label=_("Skip"), style=f"color1")
+        cancel_button.set_vexpand(False)
+        cancel_button.connect("clicked", self.skip_pressed)
+        self.content.add(cancel_button)
         cancel_button = self._screen.gtk.Button(label=_("Cancel"), style=f"color1")
         cancel_button.set_vexpand(False)
         cancel_button.connect("clicked", self.cancel_pressed)
@@ -91,10 +93,90 @@ class Cooling(BaseWizardStep):
         self.actual_temperature.set_label(f"{int(extruder['temperature'])} °C")
 
         if extruder['temperature'] < 60:
-            self.wizard_manager.set_step(UnscrewNozzle(self._screen))
+            self.wizard_manager.set_step(ServicePositionDialog(self._screen))
 
     def cancel_pressed(self, widget):
         self._screen._menu_go_back()
+
+    def skip_pressed(self, widget):
+        self.wizard_manager.set_step(ConfirmSkipCooling(self._screen))
+
+class ConfirmSkipCooling(BaseWizardStep):
+    def __init__(self, screen):
+        super().__init__(screen)
+
+    def activate(self, wizard):
+        super().activate(wizard)
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        img = self._screen.gtk.Image("warning", self._screen.gtk.content_width * .945, -1)
+        self.content.add(img)
+        heating_label = self._screen.gtk.Label("")
+        heating_label.set_margin_top(20)
+        heating_label.set_markup(
+            "<span size='large'>" + _("Nozzle is still dangerously hot. Continue at your own risk!") + "</span>")
+        self.content.add(heating_label)
+        extruder = self._screen.printer.data['extruder']
+        self.actual_temperature = self._screen.gtk.Label(f"Temperature: {int(extruder['temperature'])} °C")
+        self.actual_temperature.set_hexpand(True)
+        self.content.add(self.actual_temperature)
+        cancel_button = self._screen.gtk.Button(label=_("Cancel"), style=f"color1")
+        cancel_button.set_vexpand(False)
+        cancel_button.connect("clicked", self.cancel_pressed)
+        self.content.add(cancel_button)
+        cancel_button = self._screen.gtk.Button(label=_("Confirm"), style=f"color1")
+        cancel_button.set_vexpand(False)
+        cancel_button.connect("clicked", self.continue_pressed)
+        self.content.add(cancel_button)
+
+    def continue_pressed(self, widget):
+        self.wizard_manager.set_step(ServicePositionDialog(self._screen))
+
+    def cancel_pressed(self, widget):
+        self.wizard_manager.set_step(Cooling(self._screen))
+
+class ServicePositionDialog(BaseWizardStep):
+    def __init__(self, screen):
+        super().__init__(screen)
+
+    def activate(self, wizard):
+        super().activate(wizard)
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945, -1)
+        self.content.add(img)
+        heating_label = self._screen.gtk.Label("")
+        heating_label.set_margin_top(20)
+        heating_label.set_markup(
+            "<span size='large'>" + _("Check Print volume is empty") + "</span>")
+        self.content.add(heating_label)
+        comment = self._screen.gtk.Label("")
+        comment.set_margin_top(5)
+        comment.set_margin_left(10)
+        comment.set_margin_right(10)
+        comment.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        comment.set_line_wrap(True)
+        comment.set_markup("<span size='small'>" + _("Printhead will move to service position for comfortable access.") + "</span>")
+        self.content.add(comment)
+        continue_button = self._screen.gtk.Button(label=_("Print volume empty, continue"), style=f"color1")
+        continue_button.set_vexpand(False)
+        continue_button.connect("clicked", self.confirm_pressed)
+        self.content.add(continue_button)
+        cancel_button = self._screen.gtk.Button(label=_("I will change nozzle at current position"), style=f"color1")
+        cancel_button.set_vexpand(False)
+        cancel_button.connect("clicked", self.discard_pressed)
+        self.content.add(cancel_button)
+
+    def confirm_pressed(self, widget):
+        self.wizard_manager.set_step(MoveToServicePosition(self._screen))
+
+    def discard_pressed(self, widget):
+        self.wizard_manager.set_step(UnscrewNozzle(self._screen))
+
+
+class MoveToServicePosition(servicePositionSteps.MoveToServicePosition):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.next_step = UnscrewNozzle
+
 
 class UnscrewNozzle(BaseWizardStep):
     def __init__(self, screen):
@@ -103,8 +185,7 @@ class UnscrewNozzle(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("unscrew", self._screen.gtk.content_width * .9,
-                                     self._screen.gtk.content_height * .5)
+        img = self._screen.gtk.Image("unscrew", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)
@@ -142,8 +223,7 @@ class SelectNozzleType(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("revos", self._screen.gtk.content_width * .9,
-                                     self._screen.gtk.content_height * .5)
+        img = self._screen.gtk.Image("revos", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)
@@ -181,8 +261,7 @@ class SelectNozzleDiameter(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("revos", self._screen.gtk.content_width * .9,
-                                     self._screen.gtk.content_height * .5)
+        img = self._screen.gtk.Image("revos", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)
@@ -221,8 +300,7 @@ class ScrewNozzleIn(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("screw-in", self._screen.gtk.content_width * .9,
-                                     self._screen.gtk.content_height * .5)
+        img = self._screen.gtk.Image("screw-in", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)

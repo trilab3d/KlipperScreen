@@ -37,6 +37,12 @@ class SettingsPanel(ScreenPanel):
             "panel_title": "Hostname",
             "panel_type": "hostname"
         }})
+        options.insert(1, {"security": {
+            "name": _("Security"),
+            "type": "panel",
+            "panel_title": "Security",
+            "panel_type": "security"
+        }})
 
         self.nonlocal_options = {
             "enable_door_sensor": {"name": _("Door sensor"), "type": "binary",
@@ -45,8 +51,8 @@ class SettingsPanel(ScreenPanel):
                                    "value_getter": self._filament_sensor_getter, "callback": self._filament_sensor_callback},
         }
 
-        options.insert(1, {"enable_door_sensor": self.nonlocal_options["enable_door_sensor"]})
-        options.insert(2, {"enable_filament_sensor": self.nonlocal_options["enable_filament_sensor"]})
+        options.insert(2, {"enable_door_sensor": self.nonlocal_options["enable_door_sensor"]})
+        options.insert(3, {"enable_filament_sensor": self.nonlocal_options["enable_filament_sensor"]})
 
         for nlo in self.nonlocal_options:
             self.nonlocal_options[nlo]["section"] = "_nonlocal"

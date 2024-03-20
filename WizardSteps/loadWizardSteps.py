@@ -32,7 +32,12 @@ class SelectFilament(BaseWizardStep):
             if not h.endswith("panel"):
                 self.heaters.append(h)
 
-        self.next_step = WaitForTemperature
+        if ('config_constant printhead' in self._screen.printer.data and
+                self._screen.printer.data['config_constant printhead']['value'] == "revoht"):
+            self.next_step = SetFlapDialog
+        else:
+            self.next_step = WaitForTemperature
+
         self.label = _("Which material would you like to load?")
         self.label2 = _("Would you like to load ")
 
@@ -170,6 +175,38 @@ class SelectFilament(BaseWizardStep):
 
     def set_filament_unknown(self, widget):
         self.wizard_manager.set_step(self.__class__(self._screen, False))
+
+
+class SetFlapDialog(Cancelable, BaseWizardStep):
+    def __init__(self, screen, setting):
+        super().__init__(screen)
+        self.setting = setting
+        print(f"Self setting: {self.setting}")
+        self.flap_position = self.setting["flap_position"]
+        self.heaters = []
+        self.heaters.extend(iter(self._screen.printer.get_tools()))
+        for h in self._screen.printer.get_heaters():
+            if not h.endswith("panel"):
+                self.heaters.append(h)
+
+    def activate(self, wizard):
+        super().activate(wizard)
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        img = self._screen.gtk.Image(f"htflap{int(self.flap_position)}", self._screen.gtk.content_width * .945,-1)
+        self.content.add(img)
+        confirm_label = self._screen.gtk.Label("")
+        confirm_label.set_margin_top(20)
+        confirm_label.set_markup(
+            "<span size='large'>" + _("Set flap to position ") + f"{int(self.flap_position)}</span>")
+        self.content.add(confirm_label)
+        continue_button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
+        continue_button.set_vexpand(False)
+        continue_button.connect("clicked", self.continue_pressed)
+        self.content.add(continue_button)
+
+    def continue_pressed(self, wizard):
+        self.wizard_manager.set_step(WaitForTemperature(self._screen, self.setting))
+
 
 class WaitForTemperature(Cancelable, BaseWizardStep):
     def __init__(self, screen, setting):

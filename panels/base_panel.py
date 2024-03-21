@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 import contextlib
 import logging
-
 import gi
-
+import netifaces
 gi.require_version("Gtk", "3.0")
 from gi.repository import GLib, Gtk, Pango, GdkPixbuf
 from jinja2 import Environment
@@ -338,6 +337,18 @@ class BasePanel(ScreenPanel):
         self.titlelbl.set_markup(f"{hostname} {title}")
 
     def update_time(self):
+        offline = True
+        ifcs = netifaces.interfaces()
+        for ifc in ifcs:
+            if ifc == "lo":
+                continue
+            addrs = netifaces.ifaddresses(ifc)
+            if netifaces.AF_INET in addrs or netifaces.AF_INET6 in addrs:
+                offline = False
+                break
+        if offline:
+            self.control['time'].set_markup(f"<span foreground='#FF0000'>offline</span>")
+            return True
         now = datetime.now()
         confopt = self._config.get_main_config().getboolean("24htime", True)
         if now.minute != self.time_min or self.time_format != confopt:

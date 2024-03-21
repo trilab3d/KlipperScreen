@@ -60,8 +60,8 @@ class SelectFilament(loadWizardSteps.SelectFilament):
 
 
 class WaitForTemperature(loadWizardSteps.WaitForTemperature):
-    def __init__(self, screen):
-        super().__init__(screen)
+    def __init__(self, screen, setting):
+        super().__init__(screen, setting)
         self.next_step = WaitForFilamentInserted
 
 

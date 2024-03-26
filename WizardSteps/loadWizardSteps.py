@@ -459,14 +459,10 @@ class PurgingMoreDialog(BaseWizardStep):
         purge_button.set_vexpand(False)
         purge_button.connect("clicked", self.purge_filament_pressed)
         self.content.add(purge_button)
-        cooldown_button = self._screen.gtk.Button(label=_("Cooldown and Close"), style=f"color1")
+        cooldown_button = self._screen.gtk.Button(label=_("Close"), style=f"color1")
         cooldown_button.set_vexpand(False)
         cooldown_button.connect("clicked", self.cooldown_pressed)
         self.content.add(cooldown_button)
-        back_button = self._screen.gtk.Button(label=_("Close"), style=f"color1")
-        back_button.set_vexpand(False)
-        back_button.connect("clicked", self._screen._menu_go_back)
-        self.content.add(back_button)
 
     def cooldown_pressed(self, widget):
         for heater in self.heaters:

@@ -25,6 +25,18 @@ class SettingsPanel(ScreenPanel):
         #    "type": "menu",
         #    "menu": "lang"
         #}})
+        options.append({"security": {
+            "name": _("Security"),
+            "type": "panel",
+            "panel_title": "Security",
+            "panel_type": "security"
+        }})
+        options.append({"privacy": {
+            "name": _("Privacy"),
+            "type": "panel",
+            "panel_title": "Privacy",
+            "panel_type": "privacy"
+        }})
         options.append({"time_zone": {
             "name": _("Time Zone"),
             "type": "panel",
@@ -36,12 +48,6 @@ class SettingsPanel(ScreenPanel):
             "type": "panel",
             "panel_title": "Hostname",
             "panel_type": "hostname"
-        }})
-        options.insert(1, {"security": {
-            "name": _("Security"),
-            "type": "panel",
-            "panel_title": "Security",
-            "panel_type": "security"
         }})
 
         self.nonlocal_options = {

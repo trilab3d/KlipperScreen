@@ -7,6 +7,7 @@ from WizardSteps.baseWizardStep import BaseWizardStep
 class ConfirmNoPrintPressent(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
+        self.next_step = MoveToServicePosition
 
     def activate(self, wizard):
         super().activate(wizard)
@@ -31,7 +32,7 @@ class ConfirmNoPrintPressent(BaseWizardStep):
         self._screen._menu_go_back()
 
     def continue_pressed(self, widget):
-        self.wizard_manager.set_step(MoveToServicePosition(self._screen))
+        self.wizard_manager.set_step(self.next_step(self._screen))
 
 
 class MoveToServicePosition(BaseWizardStep):

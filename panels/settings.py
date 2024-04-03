@@ -43,6 +43,12 @@ class SettingsPanel(ScreenPanel):
             "panel_title": "Time Zone",
             "panel_type": "timezone"
         }})
+        options.append({"factory_reset": {
+            "name": _("Factory Reset"),
+            "type": "wizard",
+            "panel_title": "Factory Reset",
+            "wizard": "factoryResetSteps.ConfirmFactoryReset"
+        }})
         options.insert(0,{"hostname": {
             "name": _("Printer Name"),
             "type": "panel",
@@ -195,6 +201,12 @@ class SettingsPanel(ScreenPanel):
             open_menu.set_hexpand(False)
             open_menu.set_halign(Gtk.Align.END)
             dev.add(open_menu)
+        elif option['type'] == "wizard":
+            open_menu = self._gtk.Button("load", style="color3")
+            open_menu.connect("clicked", self.show_wizard, option['wizard'], option['panel_title'])
+            open_menu.set_hexpand(False)
+            open_menu.set_halign(Gtk.Align.END)
+            dev.add(open_menu)
         elif option['type'] == "lang":
             select = self._gtk.Button("load", style="color3")
             select.connect("clicked", self._screen.change_language, option['name'])
@@ -217,6 +229,9 @@ class SettingsPanel(ScreenPanel):
 
     def show_panel(self, widget, type, title):
         self._screen.show_panel(title, type, title, 1, False)
+
+    def show_wizard(self, widget, wizard, title):
+        self._screen.show_panel(title, "wizard", title, 1, False, wizard=wizard, wizard_name=title)
 
     def update_nonlocals(self):
         for nlo in self.nonlocal_options:

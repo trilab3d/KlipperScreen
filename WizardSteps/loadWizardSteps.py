@@ -36,7 +36,7 @@ class SelectFilament(BaseWizardStep):
                 self._screen.printer.data['config_constant printhead']['value'] == "revoht"):
             self.next_step = SetFlapDialog
         else:
-            self.next_step = WaitForTemperature
+            self.next_step = WaitForChamberCooldown
 
         self.label = _("Which material would you like to load?")
         self.label2 = _("Would you like to load ")
@@ -207,6 +207,79 @@ class SetFlapDialog(Cancelable, BaseWizardStep):
     def continue_pressed(self, wizard):
         self.wizard_manager.set_step(WaitForTemperature(self._screen, self.setting))
 
+class WaitForChamberCooldown(Cancelable, BaseWizardStep):
+    def __init__(self, screen, setting):
+        super().__init__(screen)
+        self.next_step = WaitForTemperature
+        self.settling_counter = self.settling_counter_max = 3
+        self.setting = setting
+
+
+    def activate(self, wizard):
+        super().activate(wizard)
+
+        if "chamber_max" not in self.setting or self.fetch_chamber()['temperature'] < self.setting["chamber_max"]:
+            self.go_to_next()
+            return
+
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        img = self._screen.gtk.Image("cooling", self._screen.gtk.content_width * .945,450)
+        self.content.add(img)
+        heating_label = self._screen.gtk.Label("")
+        heating_label.set_margin_top(20)
+        heating_label.set_markup(
+            "<span size='large'>" + _("Chamber too hot") + "</span>")
+        self.content.add(heating_label)
+        self.chamber_progressbar = Gtk.ProgressBar()
+        self.chamber_progressbar.set_show_text(False)
+        self.chamber_progressbar.set_hexpand(True)
+        self.content.add(self.chamber_progressbar)
+        self.actual_chamber = self._screen.gtk.Label("0 °C")
+        self.actual_chamber.set_hexpand(True)
+        self.actual_chamber.set_halign(Gtk.Align.START)
+        self.target_chamber = self._screen.gtk.Label("0 °C")
+        self.target_chamber.set_halign(Gtk.Align.END)
+        temperature_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, margin_start=20, margin_end=20)
+        temperature_box.set_hexpand(True)
+        temperature_box.add(self.actual_chamber)
+        temperature_box.add(self.target_chamber)
+        self.content.add(temperature_box)
+        cancel_button = self._screen.gtk.Button(label=_("Cancel"), style=f"color1")
+        cancel_button.set_vexpand(False)
+        cancel_button.connect("clicked", self.cancel_pressed)
+        self.content.add(cancel_button)
+
+    def update_loop(self):
+        chamber = self.fetch_chamber()
+
+        err = chamber["temperature"] - self.setting["chamber_max"]
+        fract = 1 - (err / (90-self.setting["chamber_max"]))
+        self.chamber_progressbar.set_fraction(fract)
+        self.actual_chamber.set_label(f"{chamber['temperature']:.1f} °C")
+        self.target_chamber.set_label(f"{self.setting['chamber_max']:.1f} °C")
+
+        if chamber['temperature'] < self.setting["chamber_max"]:
+            self.settling_counter -= 1
+            if self.settling_counter < 1:
+                self.go_to_next()
+        else:
+            self.settling_counter = self.settling_counter_max
+
+    def go_to_next(self):
+        self.wizard_manager.set_step(self.next_step(self._screen, self.setting))
+
+    def fetch_chamber(self):
+        if "heater_chamber" in self._screen.printer.data:
+            chamber = self._screen.printer.data['heater_chamber']
+        else:
+            chamber = {
+                "temperature": 0,
+                "target": 0
+            }
+        return chamber
+
+    def cancel_pressed(self, widget):
+        self._screen._menu_go_back()
 
 class WaitForTemperature(Cancelable, BaseWizardStep):
     def __init__(self, screen, setting):

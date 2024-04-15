@@ -484,6 +484,7 @@ class Purging(Cancelable, BaseWizardStep):
             self._screen._ws.klippy.gcode_script(f"SAVE_VARIABLE VARIABLE=filamentretracted VALUE=0")
             self._screen._ws.klippy.gcode_script(f"_FILAMENT_RETRACT")
             self._screen._ws.klippy.gcode_script(f"RESTORE_GCODE_STATE NAME=LOAD_FILAMENT")
+            self._screen._ws.klippy.gcode_script(f"SET_STEPPER_ENABLE STEPPER=extruder ENABLE=0")
         else:
             self._screen._ws.klippy.gcode_script(f"SAVE_GCODE_STATE NAME=LOAD_FILAMENT")
             self._screen._ws.klippy.gcode_script(f"M83")
@@ -491,6 +492,7 @@ class Purging(Cancelable, BaseWizardStep):
             self._screen._ws.klippy.gcode_script(f"G0 E50 F{int(300*speed_request)}")
             self._screen._ws.klippy.gcode_script(f"_FILAMENT_RETRACT")
             self._screen._ws.klippy.gcode_script(f"RESTORE_GCODE_STATE NAME=LOAD_FILAMENT")
+            self._screen._ws.klippy.gcode_script(f"SET_STEPPER_ENABLE STEPPER=extruder ENABLE=0")
 
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         img = self._screen.gtk.Image("purging", self._screen.gtk.content_width * .945, 450)

@@ -57,6 +57,7 @@ class Unloading(loadWizardSteps.Cancelable, BaseWizardStep):
             self._screen._ws.klippy.gcode_script(f"G4 P4000")
         self._screen._ws.klippy.gcode_script(f"G1 E-30.0 F900 C")
         self._screen._ws.klippy.gcode_script(f"RESTORE_GCODE_STATE NAME=LOAD_FILAMENT")
+        self._screen._ws.klippy.gcode_script(f"SET_STEPPER_ENABLE STEPPER=extruder ENABLE=0")
 
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         img = self._screen.gtk.Image("purging", self._screen.gtk.content_width * .945, 450)

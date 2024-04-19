@@ -114,6 +114,8 @@ class ConfirmSkipCooling(BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Nozzle is still dangerously hot. Continue at your own risk!") + "</span>")
+        heating_label.set_line_wrap(True)
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
         self.content.add(heating_label)
         extruder = self._screen.printer.data['extruder']
         self.actual_temperature = self._screen.gtk.Label(f"Temperature: {int(extruder['temperature'])} °C")

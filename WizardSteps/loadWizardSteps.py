@@ -6,8 +6,8 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk, GLib, Pango
 
 from WizardSteps.baseWizardStep import BaseWizardStep
+from WizardSteps.wizardCommons import *
 
-currently_loading = ""
 speed_request = 1
 
 
@@ -17,7 +17,7 @@ class Cancelable():
         self._screen._ws.klippy.gcode_script("_RESTORE_TEMPERATURE")
 
 
-class SelectFilament(BaseWizardStep):
+class SelectFilament(BaseWizardStep, TemperatureSetter):
     def __init__(self, screen, load_var = False):
         super().__init__(screen)
 
@@ -59,7 +59,7 @@ class SelectFilament(BaseWizardStep):
             self.content.add(label)
             grid = self._screen.gtk.HomogeneousGrid()
             yes = self._screen.gtk.Button(label=_("Yes"), style=f"color1")
-            yes.connect("clicked", self.set_temperature, save_variables["loaded_filament"])
+            yes.connect("clicked", self.set_filament_clicked, save_variables["loaded_filament"])
             yes.set_vexpand(False)
             grid.attach(yes, 0, 0, 1, 1)
             no = self._screen.gtk.Button(label=_("No, select a different material"), style=f"color1")
@@ -83,7 +83,7 @@ class SelectFilament(BaseWizardStep):
                         ("printheads" not in self.preheat_options[option] or
                          printhead in self.preheat_options[option]["printheads"])):
                     option_btn = self._screen.gtk.Button(label=option, style=f"color{(i % 4) + 1}")
-                    option_btn.connect("clicked", self.set_temperature, option)
+                    option_btn.connect("clicked", self.set_filament_clicked, option)
                     option_btn.set_vexpand(False)
                     preheat_grid.attach(option_btn, (i % 2), int(i / 2), 1, 1)
                     i += 1
@@ -91,98 +91,29 @@ class SelectFilament(BaseWizardStep):
             scroll.add(preheat_grid)
             self.content.add(scroll)
 
-    def set_temperature(self, widget, setting):
-        self._screen._ws.klippy.gcode_script("_SAVE_TEMPERATURE")
-        global currently_loading
-        currently_loading = setting
-        if len(self.heaters) == 0:
-            self._screen.show_popup_message(_("Nothing selected"))
-        else:
-            for heater in self.heaters:
-                logging.info(f"Looking for settings for heater {heater}")
-                target = None
-                max_temp = float(self._screen.printer.get_config_section(heater)['max_temp'])
-                target_actual = self._screen.printer.data[heater]["target"]
-                name = heater.split()[1] if len(heater.split()) > 1 else heater
-                with contextlib.suppress(KeyError):
-                    for i in self.preheat_options[setting]:
-                        if i == name:
-                            # Assign the specific target if available
-                            target = self.preheat_options[setting][name]
-                            logging.info(f"name match {name}")
-                        elif i == heater:
-                            target = self.preheat_options[setting][heater]
-                            logging.info(f"heater match {heater}")
-                if target is None and setting == "cooldown" and not heater.startswith('temperature_fan '):
-                    target = 0
-                if heater.startswith('extruder'):
-                    if setting == 'cooldown' or self.validate(heater, target, max_temp, target_actual,
-                                                              self.preheat_options[setting]["extruder_max"]
-                                                              if "extruder_max" in self.preheat_options[setting]
-                                                              else None):
-                        self._screen._ws.klippy.set_tool_temp(self._screen.printer.get_tool_number(heater), target)
-                elif heater.startswith('heater_bed'):
-                    if target is None:
-                        with contextlib.suppress(KeyError):
-                            target = self.preheat_options[setting]["bed"]
-                    if setting == 'cooldown' or self.validate(heater, target, max_temp, target_actual):
-                        self._screen._ws.klippy.set_bed_temp(target)
-                elif heater.startswith('heater_chamber'):
-                    if target is None:
-                        with contextlib.suppress(KeyError):
-                            target = self.preheat_options[setting]["chamber"]
-                    if setting == 'cooldown' or self.validate(heater, target, max_temp, target_actual):
-                        self._screen._ws.klippy.set_chamber_temp(target)
-                elif heater.startswith('heater_generic '):
-                    if target is None:
-                        with contextlib.suppress(KeyError):
-                            target = self.preheat_options[setting]["heater_generic"]
-                    if setting == 'cooldown' or self.validate(heater, target, max_temp, target_actual):
-                        self._screen._ws.klippy.set_heater_temp(name, target)
-                elif heater.startswith('temperature_fan '):
-                    if target is None:
-                        with contextlib.suppress(KeyError):
-                            target = self.preheat_options[setting]["temperature_fan"]
-                    if setting == 'cooldown' or self.validate(heater, target, max_temp, target_actual):
-                        self._screen._ws.klippy.set_temp_fan_temp(name, target)
+    def set_filament_clicked(self, widget, option):
+        self.wizard_manager.set_wizard_data("currently_loading", option)
+        max_load_temp = self.preheat_options[option]["extruder_max"] if "extruder_max" in self.preheat_options[option] else None
+        save_variables = self._screen.printer.data['save_variables']['variables']
+        self.set_temperature(option, self.heaters)
 
-            if setting == 'cooldown':
-                self._screen._ws.klippy.gcode_script(f"SET_FAN_SPEED FAN=intake_flap SPEED=1")
-            elif "flap" in self.preheat_options[setting]:
-                self._screen._ws.klippy.gcode_script(f"SET_FAN_SPEED FAN=intake_flap SPEED={self.preheat_options[setting]['flap']}")
-            global speed_request
-            if setting in self.preheat_options and "speed" in self.preheat_options[setting]:
-                speed_request = float(self.preheat_options[setting]["speed"])
-            else:
-                speed_request = 1
+        if ("last_filament" in save_variables and save_variables["last_filament"] in self.preheat_options and
+                self.preheat_options[save_variables["last_filament"]]["extruder"] > self.preheat_options[option]["extruder"]):
+            self.set_temperature(save_variables["last_filament"],self._screen.printer.get_tools())
+            self.wizard_manager.set_wizard_data("temperature_override_option", save_variables["last_filament"])
+            if self.preheat_options[save_variables["last_filament"]]["extruder"] >= max_load_temp:
+                max_load_temp = self.preheat_options[save_variables["last_filament"]]["extruder"] + 10
 
-        self.wizard_manager.set_step(self.next_step(self._screen,self.preheat_options[setting]))
-
-    def validate(self, heater, target=None, max_temp=None, target_actual=None, target_max=None):
-        if (target is not None and target_actual is not None and target <= target_actual and
-                (target_max is None or target_max > target_actual)):
-            logging.debug(f"Actual target {target_actual} is greater or equal than target {target}. Skipping.")
-            return False
-        if target is not None and max_temp is not None:
-            if 0 <= target <= max_temp:
-                self._screen.printer.set_dev_stat(heater, "target", target)
-                return True
-            elif target > max_temp:
-                self._screen.show_popup_message(_("Can't set above the maximum:") + f' {max_temp}')
-                return False
-        logging.debug(f"Invalid {heater} Target:{target}/{max_temp}")
-        return False
+        self.wizard_manager.set_wizard_data("max_load_temperature", max_load_temp)
+        self.wizard_manager.set_step(self.next_step(self._screen))
 
     def set_filament_unknown(self, widget):
         self.wizard_manager.set_step(self.__class__(self._screen, False))
 
 
 class SetFlapDialog(Cancelable, BaseWizardStep):
-    def __init__(self, screen, setting):
+    def __init__(self, screen):
         super().__init__(screen)
-        self.setting = setting
-        print(f"Self setting: {self.setting}")
-        self.flap_position = self.setting["flap_position"]
         self.heaters = []
         self.heaters.extend(iter(self._screen.printer.get_tools()))
         for h in self._screen.printer.get_heaters():
@@ -192,12 +123,14 @@ class SetFlapDialog(Cancelable, BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image(f"htflap{int(self.flap_position)}", self._screen.gtk.content_width * .945,-1)
+        setting = self._screen._config.get_preheat_options()[self.wizard_manager.get_wizard_data('currently_loading')]
+        flap_position = setting["flap_position"]
+        img = self._screen.gtk.Image(f"htflap{int(flap_position)}", self._screen.gtk.content_width * .945,-1)
         self.content.add(img)
         confirm_label = self._screen.gtk.Label("")
         confirm_label.set_margin_top(20)
         confirm_label.set_markup(
-            "<span size='large'>" + _("Set flap to position ") + f"{int(self.flap_position)}</span>")
+            "<span size='large'>" + _("Set flap to position ") + f"{int(flap_position)}</span>")
         self.content.add(confirm_label)
         continue_button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
         continue_button.set_vexpand(False)
@@ -205,18 +138,21 @@ class SetFlapDialog(Cancelable, BaseWizardStep):
         self.content.add(continue_button)
 
     def continue_pressed(self, wizard):
-        self.wizard_manager.set_step(WaitForTemperature(self._screen, self.setting))
+        self.wizard_manager.set_step(WaitForTemperature(self._screen))
 
 class WaitForChamberCooldown(Cancelable, BaseWizardStep):
-    def __init__(self, screen, setting):
+    def __init__(self, screen):
         super().__init__(screen)
         self.next_step = WaitForTemperature
         self.settling_counter = self.settling_counter_max = 3
-        self.setting = setting
 
 
     def activate(self, wizard):
         super().activate(wizard)
+
+        if not hasattr(self, 'setting'):
+            self.setting = self._screen._config.get_preheat_options()[
+                self.wizard_manager.get_wizard_data('currently_loading')]
 
         if "chamber_max" not in self.setting or self.fetch_chamber()['temperature'] < self.setting["chamber_max"]:
             self.go_to_next()
@@ -266,7 +202,7 @@ class WaitForChamberCooldown(Cancelable, BaseWizardStep):
             self.settling_counter = self.settling_counter_max
 
     def go_to_next(self):
-        self.wizard_manager.set_step(self.next_step(self._screen, self.setting))
+        self.wizard_manager.set_step(self.next_step(self._screen))
 
     def fetch_chamber(self):
         if "heater_chamber" in self._screen.printer.data:
@@ -282,14 +218,17 @@ class WaitForChamberCooldown(Cancelable, BaseWizardStep):
         self._screen._menu_go_back()
 
 class WaitForTemperature(Cancelable, BaseWizardStep):
-    def __init__(self, screen, setting):
+    def __init__(self, screen):
         super().__init__(screen)
         self.next_step = WaitForFilamentInserted
         self.settling_counter = self.settling_counter_max = 3
-        self.setting = setting
 
     def activate(self, wizard):
         super().activate(wizard)
+        self.max_load_temperature = wizard.get_wizard_data("max_load_temperature")
+        if not hasattr(self, 'setting'):
+            self.setting = self._screen._config.get_preheat_options()[
+                self.wizard_manager.get_wizard_data('currently_loading')]
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         img = self._screen.gtk.Image("heating", self._screen.gtk.content_width * .945,450)
         self.content.add(img)
@@ -326,8 +265,8 @@ class WaitForTemperature(Cancelable, BaseWizardStep):
         self.target_temperature.set_label(f"{extruder['target']:.1f} °C")
 
         if (abs(extruder['temperature'] - extruder['target']) < 3 or
-                ("extruder_max" in self.setting and self.setting["extruder_max"] > extruder['temperature'] and
-                 extruder['temperature'] > extruder['target'])):
+                (self.max_load_temperature is not None and self.max_load_temperature > extruder['temperature'] >
+                 extruder['target'])):
             self.settling_counter -= 1
             if self.settling_counter < 1:
                 self.go_to_next()
@@ -464,20 +403,23 @@ class WaitForFilamentInserted(Cancelable, BaseWizardStep):
         self.switch.set_sensitive(False)
 
 
-class Purging(Cancelable, BaseWizardStep):
+class Purging(Cancelable, BaseWizardStep, TemperatureSetter):
     def __init__(self, screen, first_purge=True):
         super().__init__(screen)
         self.first_purge = first_purge
         self.next_step = PurgingMoreDialog
         self.waiting_for_start = 5
+        self.preheat_options = self._screen._config.get_preheat_options()
 
     def activate(self, wizard):
         super().activate(wizard)
-        logging.info(f"Currently loading {currently_loading}")
+        logging.info(f"Currently loading {self.wizard_manager.get_wizard_data('currently_loading')}")
         if self.first_purge:
+            self.set_temperature(self.wizard_manager.get_wizard_data('currently_loading'),
+                                 self._screen.printer.get_tools())
             self._screen._ws.klippy.gcode_script(f"SAVE_GCODE_STATE NAME=LOAD_FILAMENT")
             self._screen._ws.klippy.gcode_script(
-                f"SAVE_VARIABLE VARIABLE=loaded_filament VALUE='\"{currently_loading}\"'")
+                f"SAVE_VARIABLE VARIABLE=loaded_filament VALUE='\"{self.wizard_manager.get_wizard_data('currently_loading')}\"'")
             self._screen._ws.klippy.gcode_script(f"M83")
             self._screen._ws.klippy.gcode_script(f"G0 E35 F{int(600*speed_request)}")
             self._screen._ws.klippy.gcode_script(f"G0 E50 F{int(300*speed_request)}")
@@ -511,11 +453,12 @@ class Purging(Cancelable, BaseWizardStep):
         if self.waiting_for_start <= 0 and it["state"] in ["Ready", "Idle"]:
             self.wizard_manager.set_step(self.next_step(self._screen))
 
-class PurgingMoreDialog(BaseWizardStep):
+class PurgingMoreDialog(BaseWizardStep, TemperatureSetter):
     def __init__(self, screen):
         super().__init__(screen)
         self.heaters = []
         self.heaters.extend(iter(self._screen.printer.get_tools()))
+        self.preheat_options = self._screen._config.get_preheat_options()
         for h in self._screen.printer.get_heaters():
             if not h.endswith("panel"):
                 self.heaters.append(h)
@@ -538,26 +481,22 @@ class PurgingMoreDialog(BaseWizardStep):
         cooldown_button.set_vexpand(False)
         cooldown_button.connect("clicked", self.cooldown_pressed)
         self.content.add(cooldown_button)
+        if self.wizard_manager.get_wizard_data("temperature_override_option"):
+            failed_button = self._screen.gtk.Button(label=_("Load Failed, Re-Heat"), style=f"color1")
+            failed_button.set_vexpand(False)
+            failed_button.connect("clicked", self.failed_pressed)
+            self.content.add(failed_button)
 
     def cooldown_pressed(self, widget):
-        for heater in self.heaters:
-            logging.info(f"Cooling Down heater {heater}")
-            name = heater.split()[1] if len(heater.split()) > 1 else heater
-            target = 0
-            if heater.startswith('extruder'):
-                self._screen._ws.klippy.set_tool_temp(self._screen.printer.get_tool_number(heater), target)
-            elif heater.startswith('heater_bed'):
-                self._screen._ws.klippy.set_bed_temp(target)
-            elif heater.startswith('heater_chamber'):
-                self._screen._ws.klippy.set_chamber_temp(target)
-            elif heater.startswith('heater_generic '):
-                self._screen._ws.klippy.set_heater_temp(name, target)
-            elif heater.startswith('temperature_fan '):
-                self._screen._ws.klippy.set_temp_fan_temp(name, target)
+        self.set_temperature("cooldown",self.heaters)
         self._screen._menu_go_back()
 
     def purge_filament_pressed(self, widget):
         self.wizard_manager.set_step(CheckReheatNeeded(self._screen))
+
+    def failed_pressed(self, widget):
+        self.set_temperature(self.wizard_manager.get_wizard_data("temperature_override_option"),self._screen.printer.get_tools())
+        self.wizard_manager.set_step(WaitForTemperature(self._screen))
 
 
 class CheckReheatNeeded(SelectFilament):
@@ -566,17 +505,18 @@ class CheckReheatNeeded(SelectFilament):
 
     def activate(self, wizard):
         super(SelectFilament,self).activate(wizard)
+        currently_loading = self.wizard_manager.get_wizard_data('currently_loading')
         if ("extruder" in self.preheat_options[currently_loading] and
                 self.preheat_options[currently_loading]["extruder"] > self._screen.printer.data['extruder']["target"]):
             self.next_step = WaitForTemperatureForPurge
-            self.set_temperature(None, currently_loading)
+            self.set_temperature(currently_loading, self.heaters)
         else:
             self.wizard_manager.set_step(Purging(self._screen, False))
 
 
 class WaitForTemperatureForPurge(WaitForTemperature):
-    def __init__(self, screen, setting):
-        super().__init__(screen, setting)
+    def __init__(self, screen):
+        super().__init__(screen)
         self.next_step = DoPurgeAfterReheat
 
 

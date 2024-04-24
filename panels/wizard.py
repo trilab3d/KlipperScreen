@@ -26,6 +26,8 @@ class WizardPanel(ScreenPanel):
         self.name_label.set_margin_bottom(10)
         self.set_heading(name)
 
+        self.data_store = {}
+
         self.first_step: BaseWizardStep = getattr(module,parts[1])(screen)
         self.current_step: BaseWizardStep = self.first_step
         self.current_step.activate(self)
@@ -36,12 +38,22 @@ class WizardPanel(ScreenPanel):
         logging.info(f"Current step: {self.current_step}")
         logging.info(f"First step: {self.first_step}")
         self.set_step(self.first_step)
+        self.data_store = {}
         self.do_schedule_refresh = True
         GLib.timeout_add_seconds(1, self._update_loop)
 
     def deactivate(self):
         self.do_schedule_refresh = False
         self.current_step.on_cancel()
+
+    def get_wizard_data(self, key):
+        if key in self.data_store:
+            return self.data_store[key]
+        else:
+            return None
+
+    def set_wizard_data(self, key, value):
+        self.data_store[key] = value
 
     def _update_loop(self):
         if self.do_schedule_refresh:

@@ -64,7 +64,7 @@ class TemperatureSetter:
     def validate(self, heater, target=None, max_temp=None):
         if target is not None and max_temp is not None:
             if 0 <= target <= max_temp:
-                self._printer.set_dev_stat(heater, "target", target)
+                self._screen.printer.set_dev_stat(heater, "target", target)
                 return True
             elif target > max_temp:
                 self._screen.show_popup_message(_("Can't set above the maximum:") + f' {max_temp}')

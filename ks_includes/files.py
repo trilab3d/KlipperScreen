@@ -13,6 +13,7 @@ class KlippyFiles:
         self.callbacks = []
         self.files = {}
         self.filelist = []
+        self.file_metadata_counters = {}
         self.gcodes_path = None
 
     def initialize(self):
@@ -64,7 +65,14 @@ class KlippyFiles:
                     self.run_callbacks(newfiles)
         elif method == "server.files.metadata":
             if "error" in result.keys():
-                logging.debug(f"Error in getting metadata for {params['filename']}. Retrying in 6 seconds")
+                logging.debug(f"Error in getting metadata for {params['filename']}. Retrying in 3 seconds. {result['error']}")
+                if params['filename'] not in self.file_metadata_counters:
+                    self.file_metadata_counters[params['filename']] = 0
+                if self.file_metadata_counters[params['filename']] < 10:
+                    self.file_metadata_counters[params['filename']] += 1
+                    GLib.timeout_add_seconds(3, self._screen._ws.klippy.get_file_metadata, params['filename'], self._callback)
+                else:
+                    logging.warning(f"No metadata found in time limit for file {params['filename']}")
                 return
 
             for x in result['result']:
@@ -162,6 +170,7 @@ class KlippyFiles:
     def request_metadata(self, filename):
         if filename not in self.filelist:
             return False
+        self.file_metadata_counters[filename] = 0
         self._screen._ws.klippy.get_file_metadata(filename, self._callback)
 
     def refresh_files(self):

@@ -7,7 +7,7 @@ from gi.repository import Gtk, Gdk, GLib, Pango
 
 from WizardSteps.baseWizardStep import BaseWizardStep
 from WizardSteps import loadWizardSteps, unloadWizardSteps
-
+from WizardSteps.wizardCommons import *
 
 class ConfirmPause(BaseWizardStep):
     def __init__(self, screen):
@@ -16,7 +16,7 @@ class ConfirmPause(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("pause-circle", self._screen.gtk.content_width * .9,
+        img = self._screen.gtk.Image("pause", self._screen.gtk.content_width * .9,
                                      self._screen.gtk.content_height * .5)
         self.content.add(img)
         confirm_label = self._screen.gtk.Label("")
@@ -47,16 +47,69 @@ class ConfirmPause(BaseWizardStep):
             self.wizard_manager.set_step(SelectFilament(self._screen))
 
     def _do_pause(self, widget):
-        pass
+        self._screen._ws.klippy.gcode_script(f"PAUSE X=-108 Y=-108 Z_MIN=50")
 
     def _go_back(self, widget):
-        pass
+        self._screen._menu_go_back()
 
 
-class SelectFilament(unloadWizardSteps.SelectFilament):
-    def __init__(self, screen, load_var = True):
-        super().__init__(screen, load_var)
+class SelectFilament(BaseWizardStep, TemperatureSetter):
+    def __init__(self, screen, load_var=True):
+        super().__init__(screen)
         self.next_step = WaitForTemperature
+        self.next_step_on_skip = Unloading
+        self.load_var = load_var
+
+        self.heaters = []
+        self.heaters.extend(iter(self._screen.printer.get_tools()))
+        self.preheat_options = self._screen._config.get_preheat_options()
+        self.max_head_temp = float(self._screen.printer.data['configfile']["config"]["extruder"]["max_temp"]) - 10
+
+    def activate(self, wizard):
+        super().activate(wizard)
+        save_variables = self._screen.printer.data['save_variables']['variables']
+        loaded_filament = save_variables['loaded_filament'] if 'loaded_filament' in save_variables else "NONE"
+        if self.load_var and loaded_filament in self.preheat_options:
+            self.wizard_manager.set_wizard_data("currently_unloading", loaded_filament)
+            self.set_temperature(loaded_filament, self.heaters)
+            self.wizard_manager.set_step(self.next_step(self._screen))
+            return
+
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        img = self._screen.gtk.Image("prusament", self._screen.gtk.content_width * .945, 450)
+        self.content.add(img)
+
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
+            "<span size='large'>" + _("What material is loaded?") + "</span>")
+        self.content.add(label)
+        preheat_grid = self._screen.gtk.HomogeneousGrid()
+        i = 0
+        printhead = self._screen.printer.data['config_constant printhead']['value'] \
+            if 'config_constant printhead_pretty' in self._screen.printer.data else ""
+        for option in self.preheat_options:
+            if ((option != "cooldown" and "extruder" in self.preheat_options[option]
+                 and self.preheat_options[option]["extruder"] <= self.max_head_temp) and
+                    ("printheads" not in self.preheat_options[option] or
+                     printhead in self.preheat_options[option]["printheads"])):
+                option_btn = self._screen.gtk.Button(label=option, style=f"color{(i % 4) + 1}")
+                option_btn.connect("clicked", self.set_filament_clicked, option)
+                option_btn.set_vexpand(False)
+                preheat_grid.attach(option_btn, (i % 2), int(i / 2), 1, 1)
+                i += 1
+        scroll = self._screen.gtk.ScrolledWindow()
+        scroll.add(preheat_grid)
+        self.content.add(scroll)
+
+    def set_filament_clicked(self, widget, option):
+        logging.info(f"unloadWizardSteps.SelectFilament.set_filament_clicked: option: {option}")
+        self.wizard_manager.set_wizard_data("currently_unloading", option)
+        self.set_temperature(option, self.heaters)
+        self.wizard_manager.set_step(self.next_step(self._screen))
+
+    def set_filament_unknown(self, widget):
+        self.wizard_manager.set_step(self.__class__(self._screen, False))
 
 
 class WaitForTemperature(unloadWizardSteps.WaitForTemperature):
@@ -97,10 +150,16 @@ class UnloadedDialog(BaseWizardStep):
         load_button.set_vexpand(False)
         load_button.connect("clicked", self.go_to_load)
         self.content.add(load_button)
+        retry_button = self._screen.gtk.Button(label=_("Filament can't be pulled out, try again"), style=f"color1")
+        retry_button.set_vexpand(False)
+        retry_button.connect("clicked", self.retry)
+        self.content.add(retry_button)
 
     def go_to_load(self, widget):
         self.wizard_manager.set_step(SelectFilamentLoad(self._screen))
 
+    def retry(self, widget):
+        self.wizard_manager.set_step(SelectFilament(self._screen, False))
 
 class SelectFilamentLoad(loadWizardSteps.SelectFilament):
     def __init__(self, screen, load_var = True):

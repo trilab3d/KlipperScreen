@@ -65,6 +65,7 @@ class WizardPanel(ScreenPanel):
             "<span size='xx-large'>" + name + "</span>")
 
     def set_step(self, step):
+        logging.info(f"Setting wizard step {step}")
         self.current_step = step
         self.current_step.activate(self)
         for ch in self.content.get_children():

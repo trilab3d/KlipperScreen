@@ -15,6 +15,7 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
     def __init__(self, screen, load_var=True):
         super().__init__(screen)
         self.next_step = WaitForTemperature
+        self.next_step_on_skip = Unloading
         self.label = _("Which material would you like to unload?")
         self.label2 = _("Is the loaded material ")
         self.load_var = load_var
@@ -31,7 +32,7 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
             loaded_filament = save_variables['loaded_filament'] if 'loaded_filament' in save_variables else "NONE"
             if loaded_filament in self.preheat_options:
                 self.wizard_manager.set_wizard_data('currently_unloading', loaded_filament)
-            wizard.set_step(Unloading(self._screen))
+            wizard.set_step(self.next_step_on_skip(self._screen))
             return
 
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
@@ -95,6 +96,7 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
 class WaitForTemperature(loadWizardSteps.WaitForTemperature):
     def __init__(self, screen):
         super().__init__(screen)
+        self.next_step = Unloading
 
     def activate(self, wizard):
         self.setting = self._screen._config.get_preheat_options()[
@@ -116,7 +118,7 @@ class WaitForTemperature(loadWizardSteps.WaitForTemperature):
             self.settling_counter = self.settling_counter_max
 
     def go_to_next(self):
-        self.wizard_manager.set_step(Unloading(self._screen))
+        self.wizard_manager.set_step(self.next_step(self._screen))
 
 
 class Unloading(loadWizardSteps.Cancelable, BaseWizardStep):

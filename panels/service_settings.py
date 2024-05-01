@@ -86,7 +86,10 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         serial_prefix = Gtk.Label(label="SN")
         serial_prefix.set_halign(Gtk.Align.END)
         serial_entry = Gtk.Entry()
-        serial_entry.set_text(self.settings["serial_number"])
+        sn = self.settings["serial_number"]
+        if sn.startswith("SN"):
+            sn = sn[2:]
+        serial_entry.set_text(sn)
         serial_entry.connect("changed", self.change_serial_number)
         serial_entry.set_visibility(True)
         entries.append(serial_entry)

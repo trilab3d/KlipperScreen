@@ -1,5 +1,6 @@
 import logging
 import os
+import time
 
 import gi
 
@@ -46,6 +47,11 @@ class SystemPanel(ScreenPanel):
         self.download_button.connect("clicked", self.download)
         self.download_button.set_vexpand(False)
         self.download_button.set_hexpand(True)
+
+        self.retry_button = self._gtk.Button('refresh', _('Retry'), 'color1')
+        self.retry_button.connect("clicked", self.download)
+        self.retry_button.set_vexpand(False)
+        self.retry_button.set_hexpand(True)
 
         self.update_button = self._gtk.Button('arrow-up', _('Update'), 'color2')
         self.update_button.connect("clicked", self.show_update_info)
@@ -216,9 +222,15 @@ class SystemPanel(ScreenPanel):
                 self.update_header.set_markup("<span size='xx-large'>"+_("Download failed")+"</span>")
                 self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}\n"
                                             f"<b>{_('Update version')}</b>: {update_resp['update_version']}")
-                self.release_notes_label.set_markup(f"<b>{_('Release notes')}</b>:\n{update_resp['release_notes']}")
                 self.icon_box.add(self.icon_warning)
-                self.button_box.add(self.download_button)
+                self.button_box.add(self.retry_button)
+                self.button_box.add(self.export_logs_button)
+            elif update_resp["update_status"] == "UNPACKING_FAILED":
+                self.update_header.set_markup("<span size='xx-large'>"+_("Unpacking failed")+"</span>")
+                self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}\n"
+                                            f"<b>{_('Update version')}</b>: {update_resp['update_version']}")
+                self.icon_box.add(self.icon_warning)
+                self.button_box.add(self.retry_button)
                 self.button_box.add(self.export_logs_button)
             elif update_resp["update_status"] == "USB_UPDATE_AVAILABLE":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Update found on USB")+"</span>")

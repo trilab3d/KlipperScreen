@@ -25,6 +25,12 @@ class SettingsPanel(ScreenPanel):
         #    "type": "menu",
         #    "menu": "lang"
         #}})
+        options.append({"prusa_connect": {
+            "name": "Prusa Connect",
+            "type": "wizard",
+            "panel_title": "Prusa Connect",
+            "wizard": "prusaConnectSteps.GetStatus"
+        }})
         options.append({"security": {
             "name": _("Security"),
             "type": "panel",

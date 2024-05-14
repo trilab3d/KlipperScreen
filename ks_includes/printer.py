@@ -414,7 +414,5 @@ class Printer:
         if has_gpio:
             def cb(channel):
                 self.process_status_update()
-            GPIO.setmode(GPIO.BCM)
-            GPIO.setup(EMERGENCY_STOP_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
             GPIO.add_event_detect(EMERGENCY_STOP_PIN, GPIO.BOTH,
                                   callback=cb, bouncetime=100)

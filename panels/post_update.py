@@ -25,10 +25,6 @@ class PostUpdatePanel(ScreenPanel):
         self.do_schedule_refresh = True
         self.last_emergency_state = False
 
-        if has_gpio:
-            GPIO.setmode(GPIO.BCM)
-            GPIO.setup(EMERGENCY_STOP_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.box.set_vexpand(True)
         header = Gtk.Label()

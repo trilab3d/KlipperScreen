@@ -32,6 +32,16 @@ from ks_includes.widgets.keypad import Keypad
 from ks_includes.config import KlipperScreenConfig
 from panels.base_panel import BasePanel
 
+has_gpio = False
+try:
+    import RPi.GPIO as GPIO
+    has_gpio = True
+    EMERGENCY_STOP_PIN = 27
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(EMERGENCY_STOP_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+except:
+    pass
+
 # Exception formater for Zabbix
 def my_except_hook(exctype, value, traceback):
     logging.error(f"Uncaught Exception Handler: {exctype} - {value}")
@@ -175,6 +185,12 @@ class KlipperScreen(Gtk.Window):
         self.initial_connection()
 
     def initial_connection(self):
+        if has_gpio and not GPIO.input(EMERGENCY_STOP_PIN):
+            if 'emergency_stop' not in self.panels:
+                self.show_panel('emergency_stop', "emergency_stop", None, 2)
+            self.initializing = False
+            GLib.timeout_add_seconds(3, self.initial_connection)
+            return False
         self.printers = self._config.get_printers()
         state_callbacks = {
             "disconnected": self.state_disconnected,

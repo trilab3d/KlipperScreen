@@ -30,6 +30,8 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
         save_variables = self._screen.printer.data['save_variables']['variables']
         if ("filamentretracted" in save_variables and save_variables['filamentretracted'] == 1):
             loaded_filament = save_variables['loaded_filament'] if 'loaded_filament' in save_variables else "NONE"
+            if loaded_filament == "NONE":
+                loaded_filament = save_variables['last_filament'] if 'last_filament' in save_variables else "NONE"
             if loaded_filament in self.preheat_options:
                 self.wizard_manager.set_wizard_data('currently_unloading', loaded_filament)
             wizard.set_step(self.next_step_on_skip(self._screen))
@@ -39,19 +41,23 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
         img = self._screen.gtk.Image("prusament", self._screen.gtk.content_width * .945, 450)
         self.content.add(img)
 
-        if (self.load_var and 'save_variables' in self._screen.printer.data and
-                "loaded_filament" in self._screen.printer.data['save_variables']['variables'] and
-                self._screen.printer.data['save_variables']['variables']["loaded_filament"] in self.preheat_options):
+        loaded_filament = "NONE"
+        if (self.load_var and 'save_variables' in self._screen.printer.data):
+            loaded_filament = save_variables['loaded_filament'] if 'loaded_filament' in save_variables else "NONE"
+            if loaded_filament == "NONE":
+                loaded_filament = save_variables['last_filament'] if 'last_filament' in save_variables else "NONE"
+
+        if (loaded_filament in self.preheat_options):
             save_variables = self._screen.printer.data['save_variables']['variables']
             label = self._screen.gtk.Label("")
             label.set_margin_top(20)
             label.set_markup(
                 "<span size='large'>" + (
-                        self.label2 + f"{save_variables['loaded_filament']}?") + "</span>")
+                        self.label2 + f"{loaded_filament}?") + "</span>")
             self.content.add(label)
             grid = self._screen.gtk.HomogeneousGrid()
             yes = self._screen.gtk.Button(label=_("Yes"), style=f"color1")
-            yes.connect("clicked", self.set_filament_clicked, save_variables["loaded_filament"])
+            yes.connect("clicked", self.set_filament_clicked, loaded_filament)
             yes.set_vexpand(False)
             grid.attach(yes, 0, 0, 1, 1)
             no = self._screen.gtk.Button(label=_("No, select a different material"), style=f"color1")

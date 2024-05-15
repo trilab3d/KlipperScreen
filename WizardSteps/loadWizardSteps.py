@@ -420,6 +420,8 @@ class Purging(Cancelable, BaseWizardStep, TemperatureSetter):
             self._screen._ws.klippy.gcode_script(f"SAVE_GCODE_STATE NAME=LOAD_FILAMENT")
             self._screen._ws.klippy.gcode_script(
                 f"SAVE_VARIABLE VARIABLE=loaded_filament VALUE='\"{self.wizard_manager.get_wizard_data('currently_loading')}\"'")
+            self._screen._ws.klippy.gcode_script(
+                f"SAVE_VARIABLE VARIABLE=last_filament VALUE='\"{self.wizard_manager.get_wizard_data('currently_loading')}\"'")
             self._screen._ws.klippy.gcode_script(f"M83")
             self._screen._ws.klippy.gcode_script(f"G0 E35 F{int(600*speed_request)}")
             self._screen._ws.klippy.gcode_script(f"G0 E50 F{int(300*speed_request)}")

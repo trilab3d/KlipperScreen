@@ -98,6 +98,7 @@ class KlipperScreenConfig:
                 "moonraker_api_key": self.config.get(printer, "moonraker_api_key", fallback="").replace('"', ''),
                 "tpc_host": self.config.get(printer, "moonraker_host", fallback="127.0.0.1"),
                 "tpc_port": self.config.get(printer, "tpc_port", fallback="5000"),
+                "prusa_connect_port": self.config.get(printer, "prusa_connect_port", fallback="5001")
             }} for printer in printers
         ]
 
@@ -221,7 +222,7 @@ class KlipperScreenConfig:
                     'extrude_distances', "extrude_speeds", "camera_url",
                 )
                 numbers = (
-                    'moonraker_port', 'tpc_port', 'move_speed_xy', 'move_speed_z',
+                    'moonraker_port', 'tpc_port', 'prusa_connect_port', 'move_speed_xy', 'move_speed_z',
                     'calibrate_x_position', 'calibrate_y_position',
                 )
             elif section.startswith('preheat '):

@@ -17,6 +17,45 @@ class Cancelable():
         self._screen._ws.klippy.gcode_script("_RESTORE_TEMPERATURE")
 
 
+class CheckLoaded(BaseWizardStep):
+    def __init__(self, screen):
+        super().__init__(screen)
+
+    def activate(self, wizard):
+        super().activate(wizard)
+        save_variables = self._screen.printer.data['save_variables']['variables']
+        loaded_filament = save_variables['loaded_filament'] if 'loaded_filament' in save_variables else "NONE"
+        logging.info(f"Loaded filament is {loaded_filament}")
+        if loaded_filament == "NONE":
+            logging.info(f"Loaded filament is NONE, skipping")
+            self.wizard_manager.set_step(SelectFilament(self._screen))
+            return
+
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945, -1)
+        self.content.add(img)
+        confirm_label = self._screen.gtk.Label("")
+        confirm_label.set_margin_top(20)
+        confirm_label.set_markup(
+            "<span size='large'>" + _("It seems that another filament is already inserted") + "</span>")
+        self.content.add(confirm_label)
+        unload_button = self._screen.gtk.Button(label=_("Perform Unload first"), style=f"color1")
+        unload_button.set_vexpand(False)
+        unload_button.connect("clicked", self.unload_pressed)
+        self.content.add(unload_button)
+        continue_button = self._screen.gtk.Button(label=_("Continue anyway"), style=f"color1")
+        continue_button.set_vexpand(False)
+        continue_button.connect("clicked", self.continue_pressed)
+        self.content.add(continue_button)
+
+    def continue_pressed(self, widget):
+        self.wizard_manager.set_step(SelectFilament(self._screen))
+
+    def unload_pressed(self, widget):
+        from WizardSteps import unloadWizardSteps
+        self.wizard_manager.set_heading(_("Load Filament"))
+        self.wizard_manager.set_step(unloadWizardSteps.SelectFilament(self._screen))
+
 class SelectFilament(BaseWizardStep, TemperatureSetter):
     def __init__(self, screen, load_var = False):
         super().__init__(screen)

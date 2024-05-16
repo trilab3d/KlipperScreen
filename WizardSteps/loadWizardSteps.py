@@ -368,7 +368,7 @@ class WaitForFilamentInserted(Cancelable, BaseWizardStep):
         self.content.add(self.load_button)
 
         self.fs_label = Gtk.Label()
-        self.fs_label.set_markup(f"<big><b>{_('Filament sensor')}</b></big>")
+        self.fs_label.set_markup(f"<big><b>{_('Filament Sensor')}</b></big>")
         self.fs_label.set_hexpand(True)
         self.fs_label.set_vexpand(True)
         self.fs_label.set_halign(Gtk.Align.START)
@@ -512,7 +512,7 @@ class PurgingMoreDialog(BaseWizardStep, TemperatureSetter):
         confirm_label = self._screen.gtk.Label("")
         confirm_label.set_margin_top(20)
         confirm_label.set_markup(
-            "<span size='large'>" + _("Is color clean?") + "</span>")
+            "<span size='large'>" + _("Is the color clean?") + "</span>")
         self.content.add(confirm_label)
         purge_button = self._screen.gtk.Button(label=_("Purge More"), style=f"color1")
         purge_button.set_vexpand(False)

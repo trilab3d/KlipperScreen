@@ -63,7 +63,7 @@ class ObjectMap(Gtk.DrawingArea):
         script = {"script": f"EXCLUDE_OBJECT NAME={name}"}
         self._screen._confirm_send_action(
             None,
-            _("Are you sure do you want to exclude the object?") + f"\n\n{name}",
+            _("Are you sure you want to exclude the object?") + f"\n\n{name}",
             "printer.gcode.script",
             script
         )

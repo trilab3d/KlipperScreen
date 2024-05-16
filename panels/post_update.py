@@ -36,7 +36,8 @@ class PostUpdatePanel(ScreenPanel):
         self.emergency_box.set_vexpand(True)
         e_header = Gtk.Label()
         e_header.set_margin_top(60)
-        e_header.set_markup("<span size='xx-large'>"+_("Emergency Stop Triggered!")+"</span>\n<span size='large'>Release Emerency Stop to continue.</span>")
+        e_header.set_markup("<span size='xx-large'>"+_("Emergency stop triggered!")+"</span>\n<span size='large'>"+
+                            _("Release emerency stop to continue")+"</span>")
         self.emergency_box.add(e_header)
 
         emergency_image_box = Gtk.Box()

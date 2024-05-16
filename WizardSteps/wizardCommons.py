@@ -67,7 +67,7 @@ class TemperatureSetter:
                 self._screen.printer.set_dev_stat(heater, "target", target)
                 return True
             elif target > max_temp:
-                self._screen.show_popup_message(_("Can't set above the maximum:") + f' {max_temp}')
+                self._screen.show_popup_message(_("Cannot set above the maximum:") + f' {max_temp}')
                 return False
         logging.debug(f"Invalid {heater} Target:{target}/{max_temp}")
         return False

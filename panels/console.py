@@ -34,7 +34,7 @@ class ConsolePanel(ScreenPanel):
         o1_button.get_style_context().add_class("buttons_slim")
         o1_button.connect("clicked", self.set_autoscroll)
 
-        o2_button = self._gtk.Button("heat-up", _("Hide temp.") + " ", None, self.bts, Gtk.PositionType.RIGHT, 1)
+        o2_button = self._gtk.Button("heat-up", _("Hide Temp.") + " ", None, self.bts, Gtk.PositionType.RIGHT, 1)
         o2_button.get_style_context().add_class("button_active")
         o2_button.get_style_context().add_class("buttons_slim")
         o2_button.connect("clicked", self.hide_temps)

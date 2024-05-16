@@ -197,7 +197,7 @@ class BedLevelPanel(ScreenPanel):
                 self.buttons['center'].connect("clicked", self.go_to_position, center)
         else:
             label = Gtk.Label(
-                _("Bed screw configuration:") + f" {nscrews}\n\n"
+                _("Bed Screw Configuration:") + f" {nscrews}\n\n"
                 + _("Not supported for auto-detection, it needs to be configured in klipperscreen.conf")
             )
             label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)

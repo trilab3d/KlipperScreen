@@ -41,8 +41,8 @@ class ExtrudePanel(ScreenPanel):
             'extrude': self._gtk.Button("arrow-up", _("Extrude"), "color4"),
             'retract': self._gtk.Button("arrow-down", _("Retract"), "color1"),
             'temperature': self._gtk.Button("heat-up", _(""), "color4"),
-            'temperature+': self._gtk.Button("arrow-up", _("+5°C"), "color4"),
-            'temperature-': self._gtk.Button("arrow-down", _("-5°C"), "color4"),
+            'temperature+': self._gtk.Button("arrow-up", _("+5 °C"), "color4"),
+            'temperature-': self._gtk.Button("arrow-down", _("-5 °C"), "color4"),
         }
         self.buttons['extrude'].connect("clicked", self.extrude, "+")
         self.buttons['retract'].connect("clicked", self.extrude, "-")
@@ -195,7 +195,7 @@ class ExtrudePanel(ScreenPanel):
 
         if target > max_temp:
             target = max_temp
-            self._screen.show_popup_message(_("Can't set above the maximum:") + f' {target}')
+            self._screen.show_popup_message(_("Cannot set above the maximum:") + f' {target}')
 
         self._screen._ws.klippy.gcode_script(f"SET_HEATER_TEMPERATURE HEATER=extruder TARGET={target}")
 

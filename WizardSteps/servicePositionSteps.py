@@ -17,7 +17,7 @@ class ConfirmNoPrintPressent(BaseWizardStep):
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)
         heating_label.set_markup(
-            "<span size='large'>" + _("Make sure print volume is empty.") + "</span>")
+            "<span size='large'>" + _("Make sure the print volume is empty.") + "</span>")
         self.content.add(heating_label)
         continue_button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
         continue_button.set_vexpand(False)
@@ -77,7 +77,7 @@ class DoneDialog(BaseWizardStep):
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)
         heating_label.set_markup(
-            "<span size='large'>" + _("Printhead has been moved to service position.") + "</span>")
+            "<span size='large'>" + _("Printhead has been moved to the service position.") + "</span>")
         self.content.add(heating_label)
         continue_button = self._screen.gtk.Button(label=_("Close"), style=f"color1")
         continue_button.set_vexpand(False)

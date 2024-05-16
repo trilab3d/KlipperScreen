@@ -260,7 +260,7 @@ class MainPanel(MenuPanel):
             self._screen._ws.klippy.set_temp_fan_temp(name, temp)
         else:
             logging.info(f"Unknown heater: {self.active_heater}")
-            self._screen.show_popup_message(_("Unknown Heater") + " " + self.active_heater)
+            self._screen.show_popup_message(_("Unknown heater") + " " + self.active_heater)
         self._printer.set_dev_stat(self.active_heater, "target", temp)
 
     def verify_max_temp(self, temp):
@@ -268,7 +268,7 @@ class MainPanel(MenuPanel):
         max_temp = int(float(self._printer.get_config_section(self.active_heater)['max_temp']))
         logging.debug(f"{temp}/{max_temp}")
         if temp > max_temp:
-            self._screen.show_popup_message(_("Can't set above the maximum:") + f' {max_temp}')
+            self._screen.show_popup_message(_("Cannot set above the maximum:") + f' {max_temp}')
             return False
         return max(temp, 0)
 

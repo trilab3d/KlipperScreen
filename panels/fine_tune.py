@@ -165,7 +165,7 @@ class FineTunePanel(ScreenPanel):
         max_temp = int(float(self._printer.get_config_section(heater)['max_temp']))
         if target > max_temp:
             target = max_temp
-            self._screen.show_popup_message(_("Can't set above the maximum:") + f' {target}')
+            self._screen.show_popup_message(_("Cannot set above the maximum:") + f' {target}')
 
         self._screen._ws.klippy.gcode_script(f"SET_HEATER_TEMPERATURE HEATER={heater} TARGET={target}")
         self.labels[heater].set_label(f'{target} °C')

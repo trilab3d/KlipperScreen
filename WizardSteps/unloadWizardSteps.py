@@ -198,7 +198,7 @@ class DoneDialog(loadWizardSteps.PurgingMoreDialog):
             "<span size='small'>" + _(
                 "Pull the end of the filament out of the printer and secure it against tangling.") + "</span>")
         self.content.add(second_label)
-        load_button = self._screen.gtk.Button(label=_("Load new material"), style=f"color1")
+        load_button = self._screen.gtk.Button(label=_("Load New Material"), style=f"color1")
         load_button.set_vexpand(False)
         load_button.connect("clicked", self.go_to_load)
         self.content.add(load_button)
@@ -206,7 +206,7 @@ class DoneDialog(loadWizardSteps.PurgingMoreDialog):
         cooldown_button.set_vexpand(False)
         cooldown_button.connect("clicked", self.cooldown_pressed)
         self.content.add(cooldown_button)
-        back_button = self._screen.gtk.Button(label=_("Filament can't be pulled out, try again"), style=f"color1")
+        back_button = self._screen.gtk.Button(label=_("Filament cannot be pulled out, try again"), style=f"color1")
         back_button.set_vexpand(False)
         back_button.connect("clicked", self.retry)
         self.content.add(back_button)

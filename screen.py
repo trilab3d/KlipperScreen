@@ -763,7 +763,7 @@ class KlipperScreen(Gtk.Window):
 
         msg = self.printer.get_stat("webhooks", "state_message")
         msg = msg if "ready" not in msg else ""
-        self.printer_initializing(_("Klipper has shutdown") + "\n\n" + msg, remove=True)
+        self.printer_initializing(_("Klipper has shut down") + "\n\n" + msg, remove=True)
 
     def state_emergency_stop(self):
         self.close_screensaver()
@@ -933,7 +933,7 @@ class KlipperScreen(Gtk.Window):
 
         if state['result']['klippy_connected'] is False:
             logging.info("Klipper not connected")
-            msg = _("Moonraker: connected") + "\n\n"
+            msg = _("Moonraker: Connected") + "\n\n"
             msg += f"Klipper: {state['result']['klippy_state']}" + "\n\n"
             if self.reinit_count <= self.max_retries:
                 msg += _("Retrying") + f' #{self.reinit_count}'

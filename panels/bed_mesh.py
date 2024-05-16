@@ -23,7 +23,7 @@ class BedMeshPanel(ScreenPanel):
         self.active_mesh = None
         self.profiles = {}
         self.buttons = {
-            'add': self._gtk.Button("increase", " " + _("Add profile"), "color1", self.bts, Gtk.PositionType.LEFT, 1),
+            'add': self._gtk.Button("increase", " " + _("Add Profile"), "color1", self.bts, Gtk.PositionType.LEFT, 1),
             'calib': self._gtk.Button("refresh", " " + _("Calibrate"), "color3", self.bts, Gtk.PositionType.LEFT, 1),
             'clear': self._gtk.Button("cancel", " " + _("Clear"), "color2", self.bts, Gtk.PositionType.LEFT, 1),
         }
@@ -275,7 +275,7 @@ class BedMeshPanel(ScreenPanel):
 
         # Load zcalibrate to do a manual mesh
         if not self._printer.get_probe():
-            self.menu_item_clicked(widget, "refresh", {"name": _("Mesh calibrate"), "panel": "zcalibrate"})
+            self.menu_item_clicked(widget, "refresh", {"name": _("Mesh Calibrate"), "panel": "zcalibrate"})
 
     def send_clear_mesh(self, widget):
         self._screen._ws.klippy.gcode_script("BED_MESH_CLEAR")

@@ -63,9 +63,9 @@ class SettingsPanel(ScreenPanel):
         }})
 
         self.nonlocal_options = {
-            "enable_door_sensor": {"name": _("Door sensor"), "type": "binary",
+            "enable_door_sensor": {"name": _("Door Sensor"), "type": "binary",
                                     "value_getter": self._door_sensor_getter, "callback": self._door_sensor_callback},
-            "enable_filament_sensor": {"name": _("Filament sensor"), "type": "binary",
+            "enable_filament_sensor": {"name": _("Filament Sensor"), "type": "binary",
                                    "value_getter": self._filament_sensor_getter, "callback": self._filament_sensor_callback},
         }
 

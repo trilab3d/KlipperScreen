@@ -66,7 +66,7 @@ class SplashScreenPanel(ScreenPanel):
         self.content.show_all()
 
     def update_text(self, text:str):
-        if text.startswith("Klipper has shutdown"):
+        if text.startswith("Klipper has shut down"):
             self.is_shutdown = True
         else:
             self.is_shutdown = False

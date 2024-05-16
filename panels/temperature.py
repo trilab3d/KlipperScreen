@@ -149,7 +149,7 @@ class TemperaturePanel(ScreenPanel):
                     max_temp = int(float(self._printer.get_config_section(heater)['max_temp']))
                     if target > max_temp:
                         target = max_temp
-                        self._screen.show_popup_message(_("Can't set above the maximum:") + f' {target}')
+                        self._screen.show_popup_message(_("Cannot set above the maximum:") + f' {target}')
 
                 else:
                     target -= int(self.tempdelta)
@@ -164,7 +164,7 @@ class TemperaturePanel(ScreenPanel):
                     self._screen._ws.klippy.set_temp_fan_temp(name, target)
                 else:
                     logging.info(f"Unknown heater: {heater}")
-                    self._screen.show_popup_message(_("Unknown Heater") + " " + heater)
+                    self._screen.show_popup_message(_("Unknown heater") + " " + heater)
                 self._printer.set_dev_stat(heater, "target", int(target))
                 logging.info(f"Setting {heater} to {target}")
 
@@ -279,7 +279,7 @@ class TemperaturePanel(ScreenPanel):
                 self._printer.set_dev_stat(heater, "target", target)
                 return True
             elif target > max_temp:
-                self._screen.show_popup_message(_("Can't set above the maximum:") + f' {max_temp}')
+                self._screen.show_popup_message(_("Cannot set above the maximum:") + f' {max_temp}')
                 return False
         logging.debug(f"Invalid {heater} Target:{target}/{max_temp}")
         return False
@@ -423,7 +423,7 @@ class TemperaturePanel(ScreenPanel):
             self._screen._ws.klippy.set_temp_fan_temp(name, temp)
         else:
             logging.info(f"Unknown heater: {self.active_heater}")
-            self._screen.show_popup_message(_("Unknown Heater") + " " + self.active_heater)
+            self._screen.show_popup_message(_("Unknown heater") + " " + self.active_heater)
         self._printer.set_dev_stat(self.active_heater, "target", temp)
         self._screen.remove_keyboard()
 
@@ -432,7 +432,7 @@ class TemperaturePanel(ScreenPanel):
         max_temp = int(float(self._printer.get_config_section(self.active_heater)['max_temp']))
         logging.debug(f"{temp}/{max_temp}")
         if temp > max_temp:
-            self._screen.show_popup_message(_("Can't set above the maximum:") + f' {max_temp}')
+            self._screen.show_popup_message(_("Cannot set above the maximum:") + f' {max_temp}')
             return False
         return max(temp, 0)
 

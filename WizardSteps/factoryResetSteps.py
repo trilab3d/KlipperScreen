@@ -128,6 +128,16 @@ class FactoryReset(BaseWizardStep):
         logging.info(f"Reset job - credentials reset")
         self._screen.tpcclient.send_request(f"settings", "POST", body={"locked": False})
         logging.info(f"Reset job - locked reset")
+        self._screen.tpcclient.send_request(f"settings", "POST", body={
+            "connect": {
+                "enable": True,
+                "hostname": "connect.prusa3d.com",
+                "port": None,
+                "tls": True,
+                "token": ""
+            }})
+        os.system("systemctl restart prusa-connect-ht90")
+        logging.info(f"Reset job - prusaconnect reset")
         os.system("echo Welcome > /opt/init_state")
         os.system("systemctl restart klipper-screen")
         self.progress = 1

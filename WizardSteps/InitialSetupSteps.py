@@ -393,14 +393,14 @@ class Privacy(BaseWizardStep):
         settings = {
             "privacy": PRESET_FIELDS["reduced"],
         }
-        self._screen.tpcclient.send_request(f"settings", "POST", body=settings)
+        requests.post("http://127.0.0.1/tpc/settings", json=settings)
         self.wizard_manager.set_step(Done(self._screen))
 
     def recommended_pressed(self, widget):
         settings = {
             "privacy": PRESET_FIELDS["standard"],
         }
-        self._screen.tpcclient.send_request(f"settings", "POST", body=settings)
+        requests.post("http://127.0.0.1/tpc/settings", json=settings)
         self.wizard_manager.set_step(Done(self._screen))
 
     def custom_pressed(self, widget):
@@ -411,7 +411,7 @@ class PrivacyCustom(BaseWizardStep):
         super().__init__(screen)
         self.can_exit = False
         self.can_back = True
-        self.privacy_info = requests.get("http://10.1.20.126/tpc/privacy_info").json()
+        self.privacy_info = requests.get("http://127.0.0.1/tpc/privacy_info").json()
         self.privacy_options = self.privacy_info["privacy_options"]
 
     def activate(self, wizard):
@@ -476,7 +476,7 @@ class PrivacyCustom(BaseWizardStep):
         settings = {
             "privacy": self.privacy_options,
         }
-        self._screen.tpcclient.send_request(f"settings", "POST", body=settings)
+        requests.post("http://127.0.0.1/tpc/settings", json=settings)
         self.wizard_manager.set_step(Done(self._screen))
 
     def on_back(self):

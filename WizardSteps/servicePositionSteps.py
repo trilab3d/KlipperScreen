@@ -88,6 +88,6 @@ class DoneDialog(BaseWizardStep):
         continue_button.connect("clicked", self.home_and_close)
         self.content.add(continue_button)
 
-    def home_and_close(self):
+    def home_and_close(self, widget):
         self._screen._ws.klippy.gcode_script(f"G28")
         self._screen._menu_go_back()

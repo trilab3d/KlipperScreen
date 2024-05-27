@@ -3,6 +3,8 @@ import contextlib
 
 class TemperatureSetter:
     def set_temperature(self, setting, heaters):
+        if not hasattr(self, "preheat_options"):
+            self.preheat_options = self._screen._config.get_preheat_options()
         self._screen._ws.klippy.gcode_script("_SAVE_TEMPERATURE")
         if len(heaters) == 0:
             self._screen.show_popup_message(_("Nothing selected"))

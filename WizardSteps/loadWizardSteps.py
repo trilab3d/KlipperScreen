@@ -11,10 +11,16 @@ from WizardSteps.wizardCommons import *
 speed_request = 1
 
 
-class Cancelable():
+class Cancelable(TemperatureSetter):
     def on_cancel(self):
         self._screen._ws.klippy.gcode_script("_FILAMENT_RETRACT")
-        self._screen._ws.klippy.gcode_script("_RESTORE_TEMPERATURE")
+        heaters = []
+        heaters.extend(iter(self._screen.printer.get_tools()))
+        for h in self._screen.printer.get_heaters():
+            if not h.endswith("panel"):
+                heaters.append(h)
+        logging.info(heaters)
+        self.set_temperature("cooldown",heaters)
 
 
 class CheckLoaded(BaseWizardStep):
@@ -538,6 +544,10 @@ class PurgingMoreDialog(BaseWizardStep, TemperatureSetter):
     def failed_pressed(self, widget):
         self.set_temperature(self.wizard_manager.get_wizard_data("temperature_override_option"),self._screen.printer.get_tools())
         self.wizard_manager.set_step(WaitForTemperature(self._screen))
+
+    def on_cancel(self):
+        self.set_temperature("cooldown",self.heaters)
+
 
 
 class CheckReheatNeeded(SelectFilament):

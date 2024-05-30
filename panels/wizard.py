@@ -37,8 +37,8 @@ class WizardPanel(ScreenPanel):
     def activate(self, **kvargs):
         logging.info(f"Current step: {self.current_step}")
         logging.info(f"First step: {self.first_step}")
-        self.set_step(self.first_step)
         self.data_store = {}
+        self.set_step(self.first_step)
         self.do_schedule_refresh = True
         GLib.timeout_add_seconds(1, self._update_loop)
 

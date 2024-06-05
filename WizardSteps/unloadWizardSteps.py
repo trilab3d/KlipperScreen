@@ -222,6 +222,8 @@ class DoneDialog(loadWizardSteps.PurgingMoreDialog):
 class ServicePositionNeededDialog(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
+        self.next_step_discard = SelectFilament
+        self.next_step_confirm = ConfirmNoPrintPressent
 
     def activate(self, wizard):
         super().activate(wizard)
@@ -244,10 +246,10 @@ class ServicePositionNeededDialog(BaseWizardStep):
         self.content.add(cancel_button)
 
     def confirm_pressed(self, widget):
-        self.wizard_manager.set_step(ConfirmNoPrintPressent(self._screen))
+        self.wizard_manager.set_step(self.next_step_confirm(self._screen))
 
     def discard_pressed(self, widget):
-        self.wizard_manager.set_step(SelectFilament(self._screen))
+        self.wizard_manager.set_step(self.next_step_discard(self._screen))
 
 
 class ConfirmNoPrintPressent(servicePositionSteps.ConfirmNoPrintPressent):

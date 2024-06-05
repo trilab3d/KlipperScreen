@@ -142,7 +142,9 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
         save_variables = self._screen.printer.data['save_variables']['variables']
         self.set_temperature(option, self.heaters)
 
-        if ("last_filament" in save_variables and save_variables["last_filament"] in self.preheat_options and
+        if self.wizard_manager.get_wizard_data("temperature_override_option"):
+            self.set_temperature(self.wizard_manager.get_wizard_data("temperature_override_option"), self._screen.printer.get_tools())
+        elif ("last_filament" in save_variables and save_variables["last_filament"] in self.preheat_options and
                 self.preheat_options[save_variables["last_filament"]]["extruder"] > self.preheat_options[option]["extruder"]):
             self.set_temperature(save_variables["last_filament"],self._screen.printer.get_tools())
             self.wizard_manager.set_wizard_data("temperature_override_option", save_variables["last_filament"])
@@ -503,6 +505,8 @@ class Purging(Cancelable, BaseWizardStep, TemperatureSetter):
 class PurgingMoreDialog(BaseWizardStep, TemperatureSetter):
     def __init__(self, screen):
         super().__init__(screen)
+        self.next_step = CheckReheatNeeded
+        self.next_step_failed = WaitForTemperature
         self.heaters = []
         self.heaters.extend(iter(self._screen.printer.get_tools()))
         self.preheat_options = self._screen._config.get_preheat_options()
@@ -539,11 +543,11 @@ class PurgingMoreDialog(BaseWizardStep, TemperatureSetter):
         self._screen._menu_go_back()
 
     def purge_filament_pressed(self, widget):
-        self.wizard_manager.set_step(CheckReheatNeeded(self._screen))
+        self.wizard_manager.set_step(self.next_step(self._screen))
 
     def failed_pressed(self, widget):
         self.set_temperature(self.wizard_manager.get_wizard_data("temperature_override_option"),self._screen.printer.get_tools())
-        self.wizard_manager.set_step(WaitForTemperature(self._screen))
+        self.wizard_manager.set_step(self.next_step_failed(self._screen))
 
     def on_cancel(self):
         self.set_temperature("cooldown",self.heaters)
@@ -553,6 +557,7 @@ class PurgingMoreDialog(BaseWizardStep, TemperatureSetter):
 class CheckReheatNeeded(SelectFilament):
     def __init__(self, screen):
         super().__init__(screen)
+        self.next_step = Purging
 
     def activate(self, wizard):
         super(SelectFilament,self).activate(wizard)
@@ -562,7 +567,7 @@ class CheckReheatNeeded(SelectFilament):
             self.next_step = WaitForTemperatureForPurge
             self.set_temperature(currently_loading, self.heaters)
         else:
-            self.wizard_manager.set_step(Purging(self._screen, False))
+            self.wizard_manager.set_step(self.next_step(self._screen, False))
 
 
 class WaitForTemperatureForPurge(WaitForTemperature):

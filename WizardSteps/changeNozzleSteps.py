@@ -6,7 +6,7 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk, GLib, Pango
 
 from WizardSteps.baseWizardStep import BaseWizardStep
-from WizardSteps import loadWizardSteps, unloadWizardSteps, servicePositionSteps
+from WizardSteps import loadWizardSteps, unloadWizardSteps, servicePositionSteps, wizardCommons
 
 class CooldownPrompt(BaseWizardStep):
     def __init__(self, screen):
@@ -221,6 +221,8 @@ class SelectNozzleType(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
         self.nozzle_types = self._screen._config.get_nozzle_types()
+        self.next_step = SelectNozzleDiameter
+        self.can_exit = False
 
     def activate(self, wizard):
         super().activate(wizard)
@@ -249,7 +251,7 @@ class SelectNozzleType(BaseWizardStep):
     def option_selected(self, widget, option):
         print(option)
         print(self.nozzle_types[option])
-        self.wizard_manager.set_step(SelectNozzleDiameter(self._screen,option))
+        self.wizard_manager.set_step(self.next_step(self._screen,option))
 
 
 class SelectNozzleDiameter(BaseWizardStep):
@@ -259,6 +261,8 @@ class SelectNozzleDiameter(BaseWizardStep):
         self.nozzle_types = self._screen._config.get_nozzle_types()
         self.nozzle_diameters = self.nozzle_types[nozzle_type]['diameters']
         self.can_back = True
+        self.can_exit = False
+        self.next_step = ScrewNozzleIn
 
     def activate(self, wizard):
         super().activate(wizard)
@@ -285,7 +289,7 @@ class SelectNozzleDiameter(BaseWizardStep):
 
     def option_selected(self, widget, option):
         print(f"{option} {self.nozzle_type}")
-        self.wizard_manager.set_step(ScrewNozzleIn(self._screen, self.nozzle_type, option))
+        self.wizard_manager.set_step(self.next_step(self._screen, self.nozzle_type, option))
 
     def on_back(self):
         self.wizard_manager.set_step(SelectNozzleType(self._screen))
@@ -298,6 +302,7 @@ class ScrewNozzleIn(BaseWizardStep):
         self.nozzle_type = nozzle_type
         self.nozzle_diameter = nozzle_diameter
         self.can_back = True
+        self.can_exit = False
 
     def activate(self, wizard):
         super().activate(wizard)
@@ -319,17 +324,200 @@ class ScrewNozzleIn(BaseWizardStep):
             "<span size='small'>" + _("Nozzle") + f" {self.nozzle_diameter} {self.nozzle_type}" + "</span>")
         self.content.add(second_label)
 
-        continue_button = self._screen.gtk.Button(label=_("Save and Close"), style=f"color1")
+        continue_button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
         continue_button.set_vexpand(False)
         continue_button.connect("clicked", self.continue_pressed)
         self.content.add(continue_button)
 
     def continue_pressed(self, widget):
         self._screen._ws.klippy.gcode_script(f"SAVE_VARIABLE VARIABLE=nozzle VALUE='\"{self.nozzle_diameter} {self.nozzle_type}\"'")
-        self._screen._menu_go_back()
+        self.wizard_manager.set_step(PurgeDialog(self._screen))
 
     def on_back(self):
         self.wizard_manager.set_step(SelectNozzleDiameter(self._screen,self.nozzle_type))
         return True
 
+class PurgeDialog(BaseWizardStep, wizardCommons.TemperatureSetter):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.can_back = False
 
+    def activate(self, wizard):
+        super().activate(wizard)
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945, -1)
+        self.content.add(img)
+        heating_label = self._screen.gtk.Label("")
+        heating_label.set_margin_top(20)
+        heating_label.set_markup(
+            "<span size='large'>" + _("Nozzle purge is required") + "</span>")
+        self.content.add(heating_label)
+
+        save_variables = self._screen.printer.data['save_variables']['variables']
+        loaded_filament = save_variables['loaded_filament'] if 'loaded_filament' in save_variables else "NONE"
+
+        if loaded_filament == "NONE":
+            button = self._screen.gtk.Button(label=_("Load filament"), style=f"color1")
+            button.set_vexpand(False)
+            button.connect("clicked", self.load_pressed)
+            self.content.add(button)
+        else:
+            self.wizard_manager.set_wizard_data('currently_loading', loaded_filament)
+            button = self._screen.gtk.Button(label=_("Purge with") + f" {loaded_filament}" , style=f"color1")
+            button.set_vexpand(False)
+            button.connect("clicked", self.continue_pressed)
+            self.content.add(button)
+            button = self._screen.gtk.Button(label=_("Load another filament"), style=f"color1")
+            button.set_vexpand(False)
+            button.connect("clicked", self.load_another_pressed)
+            self.content.add(button)
+
+        # guess of filament inside the new nozzle. Not destructive for any material,
+        # but may not be good enough for HT materials
+        self.wizard_manager.set_wizard_data("temperature_override_option", "PC")
+
+    def load_pressed(self, widget):
+        self.wizard_manager.set_step(SelectFilamentLoad(self._screen))
+
+    def continue_pressed(self, widget):
+        self.set_temperature(self.wizard_manager.get_wizard_data("temperature_override_option"),
+                             self._screen.printer.get_tools())
+        self.wizard_manager.set_step(WaitForTemperatureLoad(self._screen))
+
+    def load_another_pressed(self, widget):
+        self.wizard_manager.set_step(SelectFilament(self._screen))
+
+
+class SelectFilament(unloadWizardSteps.SelectFilament):
+    def __init__(self, screen, load_var=True):
+        super().__init__(screen)
+        self.next_step = WaitForTemperature
+        self.next_step_on_skip = Unloading
+        self.label = _("Which material would you like to unload?")
+        self.label2 = _("Is the loaded material ")
+        self.load_var = load_var
+
+        self.heaters = []
+        self.heaters.extend(iter(self._screen.printer.get_tools()))
+        self.preheat_options = self._screen._config.get_preheat_options()
+        self.max_head_temp = float(self._screen.printer.data['configfile']["config"]["extruder"]["max_temp"]) - 10
+
+class WaitForTemperature(unloadWizardSteps.WaitForTemperature):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.next_step = Unloading
+
+class Unloading(unloadWizardSteps.Unloading):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.waiting_for_start = 5
+        self.next_step = DoneDialog
+
+class DoneDialog(loadWizardSteps.PurgingMoreDialog):
+    def __init__(self, screen):
+        super().__init__(screen)
+
+    def activate(self, wizard):
+        super().activate(wizard)
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        img = self._screen.gtk.Image("unload_guide32", self._screen.gtk.content_width * .945, 450)
+        self.content.add(img)
+        confirm_label = self._screen.gtk.Label("")
+        confirm_label.set_margin_top(20)
+        confirm_label.set_markup(
+            "<span size='large'>" + _("Filament unloaded") + "</span>")
+        self.content.add(confirm_label)
+        second_label = self._screen.gtk.Label("")
+        second_label.set_margin_left(40)
+        second_label.set_margin_right(40)
+        second_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        second_label.set_line_wrap(True)
+        second_label.set_markup(
+            "<span size='small'>" + _(
+                "Pull the end of the filament out of the printer and secure it against tangling.") + "</span>")
+        self.content.add(second_label)
+        load_button = self._screen.gtk.Button(label=_("Load New Material"), style=f"color1")
+        load_button.set_vexpand(False)
+        load_button.connect("clicked", self.go_to_load)
+        self.content.add(load_button)
+        back_button = self._screen.gtk.Button(label=_("Filament cannot be pulled out, try again"), style=f"color1")
+        back_button.set_vexpand(False)
+        back_button.connect("clicked", self.retry)
+        self.content.add(back_button)
+
+    def go_to_load(self, widget):
+        self.wizard_manager.set_heading(_("Load Filament"))
+        self.wizard_manager.set_step(SelectFilamentLoad(self._screen))
+
+    def retry(self, widget):
+        self.wizard_manager.set_step(ServicePositionNeededDialog(self._screen))
+
+class ServicePositionNeededDialog(unloadWizardSteps.ServicePositionNeededDialog):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.next_step_discard = SelectFilament
+        self.next_step_confirm = ConfirmNoPrintPressent
+
+class ConfirmNoPrintPressent(servicePositionSteps.ConfirmNoPrintPressent):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.next_step = MoveToServicePosition2
+
+    def cancel_pressed(self, widget):
+        self.wizard_manager.set_step(ServicePositionNeededDialog(self._screen))
+
+
+class MoveToServicePosition2(servicePositionSteps.MoveToServicePosition):
+    def __init__(self, screen, first_purge=True):
+        super().__init__(screen)
+        self.next_step = SelectFilamentLoad
+
+
+class SelectFilamentLoad(loadWizardSteps.SelectFilament):
+    def __init__(self, screen, load_var = False):
+        super().__init__(screen)
+        if ('config_constant printhead' in self._screen.printer.data and
+                self._screen.printer.data['config_constant printhead']['value'] == "revoht"):
+            self.next_step = SetFlapDialog
+        else:
+            self.next_step = WaitForChamberCooldown
+
+        self.heaters = []
+        self.heaters.extend(iter(self._screen.printer.get_tools()))
+        logging.info(f"SelectFilamentLoad(loadWizardSteps.SelectFilament).init called")
+
+class SetFlapDialog(loadWizardSteps.SetFlapDialog):
+    def __init__(self, screen):
+        super().__init__(screen)
+
+class WaitForChamberCooldown(loadWizardSteps.WaitForChamberCooldown):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.next_step = WaitForTemperatureLoad
+
+class WaitForTemperatureLoad(loadWizardSteps.WaitForTemperature):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.next_step = WaitForFilamentInserted
+
+class WaitForFilamentInserted(loadWizardSteps.WaitForFilamentInserted):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.next_step = Purging
+
+class Purging(loadWizardSteps.Purging):
+    def __init__(self, screen, first_purge=True):
+        super().__init__(screen)
+        self.first_purge = first_purge
+        self.next_step = PurgingMoreDialog
+
+class PurgingMoreDialog(loadWizardSteps.PurgingMoreDialog):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.next_step = CheckReheatNeeded
+        self.next_step_failed = WaitForTemperatureLoad
+
+class CheckReheatNeeded(loadWizardSteps.CheckReheatNeeded):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.next_step = Purging

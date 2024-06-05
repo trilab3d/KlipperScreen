@@ -33,7 +33,9 @@ class Welcome(BaseWizardStep):
         self.content.add(continue_button)
 
     def continue_pressed(self, widget):
-        self.wizard_manager.set_step(TermsAndConditions(self._screen))
+        # TODO
+        #self.wizard_manager.set_step(TermsAndConditions(self._screen))
+        self.wizard_manager.set_step(Timezone(self._screen))
 
 class TermsAndConditions(BaseWizardStep):
     def __init__(self, screen):

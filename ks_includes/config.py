@@ -284,7 +284,7 @@ class KlipperScreenConfig:
                     {"name": "Z-bolt" + " " + _("(default)"), "value": "z-bolt"}]}},
             {"print_estimate_method": {
                 "section": "main", "name": _("Estimated Time Method"), "type": "dropdown",
-                "value": "slicer", "options": [
+                "value": "auto", "options": [
                     {"name": _("Auto") + " " + _("(default)"), "value": "auto"},
                     {"name": _("File"), "value": "file"},
                     {"name": _("Filament Used"), "value": "filament"},

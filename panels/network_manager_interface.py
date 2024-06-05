@@ -147,8 +147,10 @@ class NetworkManagerInterfacePanel(ScreenPanel):
                 "ipv4.may-fail": "false",
                 "ipv6.addr-gen-mode": "0"
             }
-        self._screen.tpcclient.send_request(f"network-manager/add-connection/{conn_type}/{conn_name}", "POST",
-                                            body=new_conn)
+        rsp, code = self._screen.tpcclient.send_request(f"network-manager/add-connection/{conn_type}/{conn_name}", "POST",
+                                            body=new_conn, keep_err_code=True)
+        if code != 200:
+            self._screen.show_popup_message(rsp["stderr"], 3)
         self.load_connections()
 
     def remove_connection(self, widget, connection):

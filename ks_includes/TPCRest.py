@@ -14,7 +14,7 @@ class TPCRest:
     def endpoint(self):
         return f"http://{self.ip}:{self.port}"
 
-    def send_request(self, endpoint, method="GET", body={}, json=True, timeout=3):
+    def send_request(self, endpoint, method="GET", body={}, json=True, timeout=3, keep_err_code=False):
         url = f"{self.endpoint}/{endpoint}"
         data = False
         try:
@@ -22,7 +22,8 @@ class TPCRest:
                 response = requests.get(url, timeout=timeout)
             elif method == "POST":
                 response = requests.post(url, timeout=timeout, json=body)
-            response.raise_for_status()
+            if not keep_err_code:
+                response.raise_for_status()
             if json:
                 data = response.json()
             else:
@@ -43,7 +44,12 @@ class TPCRest:
             self.status = ''
         else:
             logging.error(self.status.replace('\n', '>>'))
-        return data
+            logging.info(f"Data was: {data}")
+            logging.info(f"body was: {body}")
+        if keep_err_code:
+            return data, response.status_code
+        else:
+            return data
 
     def post_request(self, endpoint, js):
         #logging.info(f"Send request: {js}")

@@ -493,10 +493,14 @@ class NetworkManagerConnectionPanel(ScreenPanel):
 
     def save_changes(self, widget):
         print(json.dumps(self.changed_fields, indent=2))
-        self._screen.tpcclient.send_request(f"network-manager/modify-connection/{self.connection['id']}", "POST",
-                                            body=self.changed_fields)
-        #self.rebuild_pages()
-        self._screen._menu_go_back()
+        rsp, code = self._screen.tpcclient.send_request(f"network-manager/modify-connection/{self.connection['id']}", "POST",
+                                            body=self.changed_fields, keep_err_code=True)
+        logging.info(f"rsp: {rsp}, code: {code}")
+        if code == 200:
+            #self.rebuild_pages()
+            self._screen._menu_go_back()
+        else:
+            self._screen.show_popup_message(rsp["stderr"], 3)
 
     def revert_changes(self, widget):
         print(json.dumps(self.changed_fields, indent=2))

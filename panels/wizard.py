@@ -44,6 +44,8 @@ class WizardPanel(ScreenPanel):
 
     def deactivate(self):
         self.do_schedule_refresh = False
+
+    def on_home(self):
         self.current_step.on_cancel()
 
     def get_wizard_data(self, key):

@@ -35,7 +35,7 @@ class BasePanel(ScreenPanel):
         self.control['back'] = self._gtk.Button('back', scale=abscale)
         self.control['back'].connect("clicked", self.back)
         self.control['home'] = self._gtk.Button('main', scale=abscale)
-        self.control['home'].connect("clicked", self._screen._menu_go_back, True)
+        self.control['home'].connect("clicked", self.home)
         self.control['help'] = self._gtk.Button('help', scale=abscale)
         self.control['help'].connect("clicked", self.show_help)
         #self.control['help'].set_sensitive(False)
@@ -251,6 +251,11 @@ class BasePanel(ScreenPanel):
                 and not self.current_panel.back() \
                 or not hasattr(self.current_panel, "back"):
             self._screen._menu_go_back()
+
+    def home(self, widget=None):
+        if hasattr(self.current_panel, "on_home"):
+            self.current_panel.on_home()
+        self._screen._menu_go_back(home=True)
 
     def process_update(self, action, data):
         if action == "notify_update_response":

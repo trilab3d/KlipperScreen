@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="24"
+   height="24"
+   fill-rule="evenodd"
+   clip-rule="evenodd"
+   image-rendering="optimizeQuality"
+   shape-rendering="geometricPrecision"
+   text-rendering="geometricPrecision"
+   viewBox="0 0 363.64 363.64"
+   version="1.1"
+   id="svg15042"
+   sodipodi:docname="cancel-orange.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs15046" />
+  <sodipodi:namedview
+     id="namedview15044"
+     pagecolor="#000000"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="35"
+     inkscape:cx="12.014286"
+     inkscape:cy="12"
+     inkscape:window-width="1920"
+     inkscape:window-height="1023"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg15042" />
+  <path
+     fill="#fff"
+     d="M363.64 305.89L237.74 181.58 361.92 56.04 305.89 0 181.45 126.03 55.55 1.72 0 57.26 126.03 182.19 1.72 308.09 57.26 363.64 182.07 237.62 307.6 361.92z"
+     id="path15040"
+     style="fill:#fa6831;fill-opacity:1" />
+</svg>

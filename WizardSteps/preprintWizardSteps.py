@@ -62,6 +62,7 @@ class PrintDetail(BaseWizardStep):
         if ('save_variables' in self._screen.printer.data):
             save_variables = self._screen.printer.data['save_variables']['variables']
             floaded = save_variables['loaded_filament'] if 'loaded_filament' in save_variables else "NONE"
+            floaded = floaded.replace("-","")
         else:
             floaded = "UNKNOWN"
         self.wizard_manager.set_wizard_data("filament_loaded", floaded)

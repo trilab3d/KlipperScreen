@@ -1058,25 +1058,9 @@ class JobStatusPanel(ScreenPanel):
             "limit": (self._screen.width * 37 / 480) // (self._gtk.font_size / 11),
             "length": len(self.labels["file"].get_label()),
         }
-        if (
-            self.animation_timeout is None
-            and (self.filename_label["length"] - self.filename_label["limit"]) > 0
-        ):
-            self.animation_timeout = GLib.timeout_add_seconds(1, self.animate_label)
+
         self.update_percent_complete()
         self.update_file_metadata()
-
-    def animate_label(self):
-        pos = self.filename_label["position"]
-        if pos > (self.filename_label["length"] - self.filename_label["limit"]):
-            self.filename_label["position"] = 0
-            self.labels["file"].set_label(self.filename_label["complete"])
-        else:
-            self.labels["file"].set_label(
-                self.filename_label["current"][pos : self.filename_label["length"]]
-            )
-            self.filename_label["position"] += 1
-        return True
 
     def update_file_metadata(self):
         if self._files.file_metadata_exists(self.filename):

@@ -155,6 +155,19 @@ class ScreenPanel:
             return f"{self.format_time(total - elapsed)}", f"{eta:%H:%M} {f' +{days:2.0f}d' if days > 0 else ''}"
         return f"{self.format_time(total - elapsed)}", f"{eta:%I:%M %p} {f' +{days:2.0f}d' if days > 0 else ''}"
 
+    def format_eta_new(self, seconds):
+        if seconds <= 0:
+            return "-"
+        days = seconds // 86400
+        seconds %= 86400
+        hours = seconds // 3600
+        seconds %= 3600
+        minutes = seconds // 60
+        eta = datetime.datetime.now() + datetime.timedelta(days=days, hours=hours, minutes=minutes)
+        if self._config.get_main_config().getboolean("24htime", True):
+            return f"{eta:%H:%M} {f' +{days:2.0f}d' if days > 0 else ''}"
+        return f"{eta:%I:%M %p} {f' +{days:2.0f}d' if days > 0 else ''}"
+
     @staticmethod
     def format_size(size):
         size = float(size)

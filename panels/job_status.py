@@ -880,15 +880,7 @@ class JobStatusPanel(ScreenPanel):
             )
 
         if "print_duration" in ps:
-            if "filament_used" in ps:
-                self.labels["filament_used"].set_label(
-                    f"{float(ps['filament_used']) / 1000:.1f} m"
-                )
-                self.update_time_left(
-                    ps["total_duration"], ps["print_duration"], ps["filament_used"]
-                )
-            else:
-                self.update_time_left(ps["total_duration"], ps["print_duration"])
+            self.update_time_left(ps["total_duration"], ps["print_duration"])
 
         elapsed_label = (
             f"{self.labels['elapsed'].get_text()}  {self.labels['duration'].get_text()}"
@@ -911,55 +903,13 @@ class JobStatusPanel(ScreenPanel):
         return True
 
     def update_time_left(self, total_duration, print_duration, fila_used=0):
-        self.labels["duration"].set_label(self.format_time(total_duration))
-        non_printing = total_duration - print_duration
-        estimated = None
-        slicer_time = filament_time = file_time = None
-        timeleft_type = self._config.get_config()["main"].get(
-            "print_estimate_method", "auto"
-        )
+        remaining = float(self._screen.printer.data['display_status']['remaining'])*60
+        total = total_duration + remaining
 
-        with contextlib.suppress(KeyError):
-            if self.file_metadata["estimated_time"] > 0:
-                # speed_factor compensation based on empirical testing
-                spdcomp = sqrt(self.speed_factor)
-                slicer_time = (
-                    (self.file_metadata["estimated_time"]) / spdcomp
-                ) + non_printing
-        self.labels["slicer_time"].set_label(self.format_time(slicer_time))
-
-        with contextlib.suppress(Exception):
-            if self.file_metadata["filament_total"] > fila_used:
-                filament_time = (
-                    total_duration / (fila_used / self.file_metadata["filament_total"])
-                ) + non_printing
-        self.labels["filament_time"].set_label(self.format_time(filament_time))
-        with contextlib.suppress(ZeroDivisionError):
-            file_time = (total_duration / self.progress) + non_printing
-        self.labels["file_time"].set_label(self.format_time(file_time))
-
-        if timeleft_type == "file":
-            estimated = file_time
-        elif timeleft_type == "filament":
-            estimated = filament_time
-        elif slicer_time is not None:
-            if timeleft_type == "slicer":
-                estimated = slicer_time
-            elif filament_time is not None and self.progress > 0.14:
-                # Weighted arithmetic mean (Slicer is the most accurate)
-                estimated = (slicer_time * 3 + filament_time + file_time) / 5
-            else:
-                # At the begining file and filament are innacurate
-                estimated = slicer_time
-        elif file_time is not None:
-            if filament_time is not None:
-                estimated = (filament_time + file_time) / 2
-            else:
-                estimated = file_time
-        self.labels["est_time"].set_label(self.format_time(estimated))
-        duration_label, end_label = self.format_eta(estimated, total_duration)
-        self.labels["time_left"].set_label(duration_label)
-        self.labels["time_end"].set_label(end_label)
+        self.labels["est_time"].set_label(self.format_time(total))
+        self.labels["time_left"].set_label(self.format_time(remaining))
+        eta = self.format_eta_new(remaining)
+        self.labels["time_end"].set_label(eta)
 
     def state_check(self):
         ps = self._printer.get_stat("print_stats")
@@ -1167,17 +1117,7 @@ class JobStatusPanel(ScreenPanel):
         if self.state not in ["printing", "paused"]:
             return
 
-        if "gcode_start_byte" in self.file_metadata:
-            progress = max(
-                self._printer.get_stat("virtual_sdcard", "file_position")
-                - self.file_metadata["gcode_start_byte"],
-                0,
-            ) / (
-                self.file_metadata["gcode_end_byte"]
-                - self.file_metadata["gcode_start_byte"]
-            )
-        else:
-            progress = self._printer.get_stat("virtual_sdcard", "progress")
+        progress = self._screen.printer.data['display_status']['progress']
 
         if progress != self.progress:
             self.progress = progress

@@ -11,6 +11,7 @@ from WizardSteps import loadWizardSteps, unloadWizardSteps, servicePositionSteps
 class CooldownPrompt(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
+        self.can_back = True
 
     def activate(self, wizard):
         super().activate(wizard)
@@ -59,7 +60,7 @@ class CooldownPrompt(BaseWizardStep):
         self.wizard_manager.set_step(Cooling(self._screen))
 
     def _go_back(self, widget):
-        pass
+        self._screen._menu_go_back()
 
 class Cooling(BaseWizardStep):
     def __init__(self, screen):
@@ -139,6 +140,7 @@ class ConfirmSkipCooling(BaseWizardStep):
 class ServicePositionDialog(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
+        self.can_back = True
 
     def activate(self, wizard):
         super().activate(wizard)

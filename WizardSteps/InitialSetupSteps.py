@@ -1,14 +1,16 @@
 import gi
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, Gdk, GLib, Pango
+from gi.repository import Gtk, Gdk, GdkPixbuf, GLib, Pango
 from threading import Thread
 import os
 import logging
 import requests
+import qrcode
 
 from panels.privacy import PRESET_FIELDS
 
 from WizardSteps.baseWizardStep import BaseWizardStep
+from WizardSteps.prusaConnectSteps import CONNECT_PARAMS
 
 class Welcome(BaseWizardStep):
     def __init__(self, screen):
@@ -33,7 +35,7 @@ class Welcome(BaseWizardStep):
         self.content.add(continue_button)
 
     def continue_pressed(self, widget):
-        # TODO
+        # TODO - get proper T&C
         #self.wizard_manager.set_step(TermsAndConditions(self._screen))
         self.wizard_manager.set_step(Timezone(self._screen))
 
@@ -262,8 +264,10 @@ class NetworkTest(BaseWizardStep):
     def update_loop(self):
         r = requests.get("https://google.com")
         if r.status_code == 200:
+            self.wizard_manager.set_wizard_data("network_working", True)
             self.wizard_manager.set_step(NetworkTestSucesfull(self._screen))
         else:
+            self.wizard_manager.set_wizard_data("network_working", False)
             self.wizard_manager.set_step(NetworkTestFailure(self._screen))
 
 class NetworkTestSucesfull(BaseWizardStep):
@@ -357,7 +361,7 @@ class NoNetworkWarning(BaseWizardStep):
         self.wizard_manager.set_step(Network(self._screen))
 
     def continue_pressed(self, widget):
-        self.wizard_manager.set_step(NoNetworkWarning(self._screen))
+        self.wizard_manager.set_step(Privacy(self._screen))
 
 class Privacy(BaseWizardStep):
     def __init__(self, screen):
@@ -403,7 +407,7 @@ class Privacy(BaseWizardStep):
             "privacy": PRESET_FIELDS["standard"],
         }
         requests.post("http://127.0.0.1/tpc/settings", json=settings)
-        self.wizard_manager.set_step(Done(self._screen))
+        self.wizard_manager.set_step(PrinterName(self._screen))
 
     def custom_pressed(self, widget):
         self.wizard_manager.set_step(PrivacyCustom(self._screen))
@@ -479,12 +483,206 @@ class PrivacyCustom(BaseWizardStep):
             "privacy": self.privacy_options,
         }
         requests.post("http://127.0.0.1/tpc/settings", json=settings)
-        self.wizard_manager.set_step(Done(self._screen))
+        self.wizard_manager.set_step(PrinterName(self._screen))
 
     def on_back(self):
         self.wizard_manager.set_step(Privacy(self._screen))
         return True
 
+class PrinterName(BaseWizardStep):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.can_exit = False
+        self.changed_fields = {}
+
+    def activate(self, wizard):
+        super().activate(wizard)
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        self.content.set_vexpand(True)
+        #TODO - Entry can't be too low on screen, because keyboard is rendered bellow
+        #img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945, -1)
+        #self.content.add(img)
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
+            "<span size='large'>" +
+            _("Choose name for the printer") + "</span>")
+        label.set_line_wrap(True)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        self.content.add(label)
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(10)
+        label.set_markup(
+            "<span size='small'>" +
+            _("This name will be used as local network name") + "</span>")
+        label.set_line_wrap(True)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        self.content.add(label)
+
+        grid = self._screen.gtk.HomogeneousGrid()
+        grid.set_hexpand(True)
+        grid.set_vexpand(True)
+        grid.set_margin_top(30)
+        grid.set_margin_left(10)
+        grid.set_margin_right(10)
+        hostname_label = Gtk.Label(label=_("Printer Name:"))
+        hostname_label.set_halign(Gtk.Align.END)
+        hostname_entry = Gtk.Entry()
+        hostname_entry.set_text(os.popen(f"hostname").read().strip())
+        hostname_entry.connect("changed", self.change_hostname)
+        hostname_entry.set_visibility(True)
+        hostname_entry.connect("button-press-event", self._screen.show_keyboard)
+        hostname_entry.set_hexpand(True)
+        hostname_entry.set_vexpand(False)
+        self._screen.show_keyboard(hostname_entry)
+        grid.attach(hostname_label, 0, 0, 1, 1)
+        grid.attach(hostname_entry, 1, 0, 3, 1)
+        self.content.add(grid)
+
+        button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
+        button.set_vexpand(False)
+        button.connect("clicked", self.continue_pressed)
+        self.content.add(button)
+
+    def change_hostname(self, widget):
+        self.changed_fields["hostname"] = widget.get_text()
+
+    def continue_pressed(self, widget):
+        if "hostname" in self.changed_fields:
+            b = {
+                "hostname": self.changed_fields["hostname"]
+            }
+            requests.post("http://127.0.0.1/tpc/set_hostname", json=b)
+        self._screen.remove_keyboard()
+        self.wizard_manager.set_step(PrusaConnectDialog(self._screen))
+
+class PrusaConnectDialog(BaseWizardStep):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.can_exit = False
+        self.changed_fields = {}
+
+    def activate(self, wizard):
+        super().activate(wizard)
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        self.content.set_vexpand(True)
+        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945, -1)
+        self.content.add(img)
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
+            "<span size='large'>" +
+            _("Configure Prusa Connect") + "</span>")
+        label.set_line_wrap(True)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        self.content.add(label)
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(10)
+        label.set_markup(
+            "<span size='small'>" +
+            _("You will need a smartphone, computer, or another device with a working browser "
+              "and internet connection to proceed.") + "</span>")
+        label.set_line_wrap(True)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        self.content.add(label)
+
+        button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
+        button.set_vexpand(False)
+        button.connect("clicked", self.continue_pressed)
+        self.content.add(button)
+
+        button = self._screen.gtk.Button(label=_("Skip Prusa Connect configuration"), style=f"color1")
+        button.set_vexpand(False)
+        button.connect("clicked", self.skip_pressed)
+        self.content.add(button)
+
+    def continue_pressed(self, widget):
+        self.wizard_manager.set_step(PrusaConnectInProgress(self._screen))
+
+    def skip_pressed(self, widget):
+        self.wizard_manager.set_step(Done(self._screen))
+
+class PrusaConnectInProgress(BaseWizardStep):
+    def __init__(self, screen):
+        super().__init__(screen)
+        logging.info(f"self._screen.printers: {self._screen.printers}")
+        try:
+            r = requests.post(f"http://127.0.0.1:5001/connection",json=CONNECT_PARAMS).json()
+            self.code = r["code"]
+            self.url = r["url"]
+            logging.info(f"Continue on {self.url}")
+            self.skip = False
+        except:
+            self.skip = True
+    def activate(self, wizard):
+        super().activate(wizard)
+        # This shouldn't happen, if proper factory reset is performed before, but it blocked me during development
+        if self.skip:
+            self._screen.show_popup_message("Error on PrusaConnect module, skipping PrusaConnect configuration. You can configure it later.")
+            self.wizard_manager.set_step(Done(self._screen))
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+        )
+        qr.add_data(self.url)
+        qr.make(fit=True)
+        qr_pil = qr.make_image(fill_color="black", back_color="white")
+        qr_pil.save("/tmp/ConnectQRCode.png")
+        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size("/tmp/ConnectQRCode.png", -1, -1)
+
+        img = Gtk.Image.new_from_pixbuf(pixbuf)
+        self.content.add(img)
+
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
+            "<span size='xx-large'>" + self.code + "</span>")
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
+
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
+            "<span size='large'>" + _("Scan this QR code and continue on your mobile device.") + "\n" +
+            _("Alternatively, you can visit") + " <span color='#7777FF'>prusa.io/add</span> " +
+            _("and provide code manually") + "</span>")
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
+
+    def update_loop(self):
+        r = requests.get(f"http://127.0.0.1:5001/connection").json()
+        if "registration" in r:
+            if r["registration"] == "FINISHED":
+                self.wizard_manager.set_step(PrusConnectDone(self._screen))
+
+class PrusConnectDone(BaseWizardStep):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.can_back = True
+
+    def activate(self, wizard):
+        super().activate(wizard)
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945, 450)
+        self.content.add(img)
+        heating_label = self._screen.gtk.Label("")
+        heating_label.set_margin_top(20)
+        heating_label.set_markup(
+            "<span size='large'>" + _("Your Connect is configured successfully") + "</span>")
+        self.content.add(heating_label)
+        button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
+        button.set_vexpand(False)
+        button.connect("clicked", self.continue_pressed)
+        self.content.add(button)
+
+    def continue_pressed(self, widget):
+        self.wizard_manager.set_step(Done(self._screen))
 
 class Done(BaseWizardStep):
     def __init__(self, screen):

@@ -175,10 +175,11 @@ class KlipperScreen(Gtk.Window):
             self.show_error_modal("Invalid config file", self._config.get_errors())
             # Prevent this dialog from being destroyed
             self.dialogs = []
+        self.set_screenblanking_timeout(self._config.get_main_config().get('screen_blanking'))
         if os.path.exists("/opt/init_state"):
             with open("/opt/init_state","r") as f:
                 step = f.read().strip()
-            self.show_panel("Setup", "wizard", "", 1, False, wizard=f"InitialSetupSteps.{step}", wizard_name="Setup")
+            self.show_panel("Setup", "wizard", "", 1, False, wizard=f"InitialSetupSteps.{step}", wizard_name="Initial Setup")
             return
         self.set_screenblanking_timeout(self._config.get_main_config().get('screen_blanking'))
 

@@ -618,7 +618,8 @@ class PrusaConnectInProgress(BaseWizardStep):
         super().activate(wizard)
         # This shouldn't happen, if proper factory reset is performed before, but it blocked me during development
         if self.skip:
-            self._screen.show_popup_message("Error on PrusaConnect module, skipping PrusaConnect configuration. You can configure it later.")
+            self._screen.show_popup_message("Error on PrusaConnect module, skipping PrusaConnect configuration. "
+                                            "You can configure it later.", 2)
             self.wizard_manager.set_step(Done(self._screen))
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
 

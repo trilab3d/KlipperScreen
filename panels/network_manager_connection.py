@@ -188,7 +188,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         if self.wireless:
             wireless_mode_grid = self._gtk.HomogeneousGrid()
             wireless_mode_grid.set_hexpand(True)
-            wireless_mode_label = Gtk.Label(label="IPv6 Method:")
+            wireless_mode_label = Gtk.Label(label="Mode:")
             wireless_mode_label.set_halign(Gtk.Align.END)
             wireless_mode_dropdown = Gtk.ComboBoxText()
             wireless_modes = [("infrastructure", _("Client")), ("mesh", _("Mesh")), ("adhoc", _("Ad-hoc")), ("ap", _("AP"))]
@@ -209,8 +209,8 @@ class NetworkManagerConnectionPanel(ScreenPanel):
             ssid_label = Gtk.Label(label="SSID:")
             ssid_label.set_halign(Gtk.Align.END)
             ssid_entry = Gtk.Entry()
-            ssid_entry.set_text(self.connection_full["connection"]["id"])
-            #ssid_entry.connect("changed", self.change_ssid)
+            ssid_entry.set_text(self.connection_full["wireless"]["ssid"])
+            ssid_entry.connect("changed", self.change_ssid)
             entries.append(ssid_entry)
             ssid_grid.attach(ssid_label, 0, 0, 2, 1)
             ssid_grid.attach(ssid_entry, 2, 0, 2, 1)
@@ -219,7 +219,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
             wireless_security_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
             wireless_security_grid = self._gtk.HomogeneousGrid()
             wireless_security_grid.set_hexpand(True)
-            wireless_security_label = Gtk.Label(label="IPv6 Method:")
+            wireless_security_label = Gtk.Label(label="Security:")
             wireless_security_label.set_halign(Gtk.Align.END)
             wireless_security_dropdown = Gtk.ComboBoxText()
             wireless_securitys = [("none", "WEP"), ("ieee8021x", "Dynamic WEP"), ("wpa-psk", "WPA-PSK"), ("sae", "SAE"),
@@ -490,6 +490,9 @@ class NetworkManagerConnectionPanel(ScreenPanel):
 
     def change_wpa_password(self, widget):
         self.changed_fields["wireless-security.psk"] = widget.get_text()
+
+    def change_ssid(self, widget):
+        self.changed_fields["802-11-wireless.ssid"] = widget.get_text()
 
     def save_changes(self, widget):
         print(json.dumps(self.changed_fields, indent=2))

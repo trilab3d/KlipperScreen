@@ -12,7 +12,7 @@ class ConfirmNoPrintPressent(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945,-1)
+        img = self._screen.gtk.Image("is_bed_clear", self._screen.gtk.content_width * .945,-1)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)
@@ -49,7 +49,7 @@ class MoveToServicePosition(BaseWizardStep):
         self._screen._ws.klippy.gcode_script(f"G0 X0 Y-100 Z250 F2000")
 
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945, -1)
+        img = self._screen.gtk.Image("printhead_is_moving", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
         load_label = self._screen.gtk.Label("")
         load_label.set_margin_top(20)

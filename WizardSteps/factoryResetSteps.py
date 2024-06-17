@@ -14,7 +14,7 @@ class ConfirmFactoryReset(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945,-1)
+        img = self._screen.gtk.Image("warning", self._screen.gtk.content_width * .945,-1)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)
@@ -46,7 +46,7 @@ class ConfirmFactoryResetSecond(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945,-1)
+        img = self._screen.gtk.Image("warning", self._screen.gtk.content_width * .945,-1)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)
@@ -81,7 +81,7 @@ class FactoryReset(BaseWizardStep):
         super().activate(wizard)
         self.thread.start()
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945,-1)
+        img = self._screen.gtk.Image("factory_reset_in_progress", self._screen.gtk.content_width * .945,-1)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)
@@ -158,7 +158,8 @@ class FactoryResetDone(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945,-1)
+        # SEM FAJKFKU
+        img = self._screen.gtk.Image("success_combined", self._screen.gtk.content_width * .945,-1)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)

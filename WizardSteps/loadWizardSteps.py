@@ -38,7 +38,7 @@ class CheckLoaded(BaseWizardStep):
             return
 
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945, -1)
+        img = self._screen.gtk.Image("filament_already_inserted", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
         confirm_label = self._screen.gtk.Label("")
         confirm_label.set_margin_top(20)

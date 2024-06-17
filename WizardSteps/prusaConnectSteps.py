@@ -30,7 +30,7 @@ class GetStatus(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945, 450)
+        img = self._screen.gtk.Image("prusa_connect_getting_status", self._screen.gtk.content_width * .945, 450)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)
@@ -131,7 +131,7 @@ class Done(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945, 450)
+        img = self._screen.gtk.Image("prusa_connect_success", self._screen.gtk.content_width * .945, 450)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)

@@ -166,18 +166,33 @@ class Network(BaseWizardStep):
         heating_label.set_line_wrap(True)
         heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
         self.content.add(heating_label)
-        button = self._screen.gtk.Button(label=_("Configure Wired Connection"), style=f"color1")
+        button = self._screen.gtk.Button(label=_("Open Network Configuration"), style=f"color1")
         button.set_vexpand(False)
-        button.connect("clicked", self.configure_wired)
+        button.connect("clicked", self.open_network)
         self.content.add(button)
-        button = self._screen.gtk.Button(label=_("Configure Wireless Connection"), style=f"color1")
+        button = self._screen.gtk.Button(label=_("Continue With Network Test"), style=f"color1")
         button.set_vexpand(False)
-        button.connect("clicked", self.configure_wireless)
+        button.connect("clicked", self.test_network)
         self.content.add(button)
+
+        # button = self._screen.gtk.Button(label=_("Configure Wired Connection"), style=f"color1")
+        # button.set_vexpand(False)
+        # button.connect("clicked", self.configure_wired)
+        # self.content.add(button)
+        # button = self._screen.gtk.Button(label=_("Configure Wireless Connection"), style=f"color1")
+        # button.set_vexpand(False)
+        # button.connect("clicked", self.configure_wireless)
+        # self.content.add(button)
         button = self._screen.gtk.Button(label=_("Skip network configuration"), style=f"color1")
         button.set_vexpand(False)
         button.connect("clicked", self.skip_pressed)
         self.content.add(button)
+
+    def open_network(self, widget):
+        self._screen.show_panel("Network", "network_manager", "network_manager", 1, False)
+
+    def test_network(self, widget):
+        self.wizard_manager.set_step(NetworkTest(self._screen))
 
     def configure_wired(self, widget):
         self.wizard_manager.set_step(WiredNetwork(self._screen))
@@ -193,6 +208,7 @@ class WiredNetwork(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
         self.can_exit = False
+        self.can_back = True
 
     def activate(self, wizard):
         super().activate(wizard)
@@ -215,11 +231,16 @@ class WiredNetwork(BaseWizardStep):
     def continue_pressed(self, widget):
         self.wizard_manager.set_step(NetworkTest(self._screen))
 
+    def on_back(self):
+        self.wizard_manager.set_step(Network(self._screen))
+        return True
+
 
 class WirelessNetwork(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
         self.can_exit = False
+        self.can_back = True
 
     def activate(self, wizard):
         super().activate(wizard)
@@ -230,7 +251,7 @@ class WirelessNetwork(BaseWizardStep):
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)
         heating_label.set_markup(
-            "<span size='large'>" + _("TODO...") + "</span>")
+            "<span size='large'>" + _("Make sure wireless adapter is connected") + "</span>")
         heating_label.set_line_wrap(True)
         heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
         self.content.add(heating_label)
@@ -240,7 +261,12 @@ class WirelessNetwork(BaseWizardStep):
         self.content.add(button)
 
     def continue_pressed(self, widget):
-        self.wizard_manager.set_step(NetworkTest(self._screen))
+        #self.wizard_manager.set_step(NetworkTest(self._screen))
+        pass
+
+    def on_back(self):
+        self.wizard_manager.set_step(Network(self._screen))
+        return True
 
 class NetworkTest(BaseWizardStep):
     def __init__(self, screen):

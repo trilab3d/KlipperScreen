@@ -49,6 +49,18 @@ class SettingsPanel(ScreenPanel):
             "panel_title": "Time Zone",
             "panel_type": "timezone"
         }})
+        options.append({"import_config": {
+            "name": _("Import Config"),
+            "type": "wizard",
+            "panel_title": "Import Config",
+            "wizard": "loadConfigSteps.SelectFile"
+        }})
+        options.append({"export_config": {
+            "name": _("Backup Config"),
+            "type": "wizard",
+            "panel_title": "Backup Config",
+            "wizard": "exportPersistentSteps.ExportPersistent"
+        }})
         options.append({"factory_reset": {
             "name": _("Factory Reset"),
             "type": "wizard",

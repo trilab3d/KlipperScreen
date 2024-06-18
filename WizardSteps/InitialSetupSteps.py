@@ -631,22 +631,27 @@ class PrusaConnectDialog(BaseWizardStep):
 class PrusaConnectInProgress(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
-        logging.info(f"self._screen.printers: {self._screen.printers}")
+        self.can_back = True
+    def activate(self, wizard):
+        super().activate(wizard)
+
         try:
-            r = requests.post(f"http://127.0.0.1:5001/connection",json=CONNECT_PARAMS).json()
+            r = requests.get(f"http://127.0.0.1:5001/connection").json()
+            if "registration" in r:
+                if r["registration"] == "FINISHED":
+                    self.wizard_manager.set_step(PrusConnectDone(self._screen))
+                    return
+
+            r = requests.post(f"http://127.0.0.1:5001/connection", json=CONNECT_PARAMS).json()
             self.code = r["code"]
             self.url = r["url"]
             logging.info(f"Continue on {self.url}")
             self.skip = False
         except:
-            self.skip = True
-    def activate(self, wizard):
-        super().activate(wizard)
-        # This shouldn't happen, if proper factory reset is performed before, but it blocked me during development
-        if self.skip:
             self._screen.show_popup_message("Error on PrusaConnect module, skipping PrusaConnect configuration. "
                                             "You can configure it later.", 2)
             self.wizard_manager.set_step(Done(self._screen))
+            return
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
 
         qr = qrcode.QRCode(
@@ -687,6 +692,10 @@ class PrusaConnectInProgress(BaseWizardStep):
         if "registration" in r:
             if r["registration"] == "FINISHED":
                 self.wizard_manager.set_step(PrusConnectDone(self._screen))
+
+    def on_back(self):
+        self.wizard_manager.set_step(PrusaConnectDialog(self._screen))
+        return True
 
 class PrusConnectDone(BaseWizardStep):
     def __init__(self, screen):

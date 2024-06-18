@@ -592,7 +592,7 @@ class PrusaConnectDialog(BaseWizardStep):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.content.set_vexpand(True)
-        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945, -1)
+        img = self._screen.gtk.Image("prusa-connect", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
         label = self._screen.gtk.Label("")
         label.set_margin_top(20)
@@ -705,7 +705,7 @@ class PrusConnectDone(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945, 450)
+        img = self._screen.gtk.Image("prusa-connect-ok", self._screen.gtk.content_width * .945, 450)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)

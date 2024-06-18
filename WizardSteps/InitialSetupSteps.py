@@ -8,6 +8,7 @@ import requests
 import qrcode
 
 from panels.privacy import PRESET_FIELDS
+from panels.hostname import HOSTNAME_REGEX
 
 from WizardSteps.baseWizardStep import BaseWizardStep
 from WizardSteps.prusaConnectSteps import CONNECT_PARAMS
@@ -565,13 +566,22 @@ class PrinterName(BaseWizardStep):
         grid.attach(hostname_entry, 1, 0, 3, 1)
         self.content.add(grid)
 
-        button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
-        button.set_vexpand(False)
-        button.connect("clicked", self.continue_pressed)
-        self.content.add(button)
+        self.button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
+        self.button.set_vexpand(False)
+        self.button.connect("clicked", self.continue_pressed)
+        self.content.add(self.button)
 
     def change_hostname(self, widget):
-        self.changed_fields["hostname"] = widget.get_text()
+        hostname = widget.get_text()
+        self.changed_fields["hostname"] = hostname
+        if HOSTNAME_REGEX.match(hostname):
+            context = widget.get_style_context()
+            context.remove_class("entry-invalid")
+            self.button.set_sensitive(True)
+        else:
+            context = widget.get_style_context()
+            context.add_class("entry-invalid")
+            self.button.set_sensitive(False)
 
     def continue_pressed(self, widget):
         if "hostname" in self.changed_fields:

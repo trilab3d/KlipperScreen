@@ -1,6 +1,6 @@
 import logging
 import os
-
+import re
 import gi
 import json
 
@@ -8,6 +8,7 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk, GLib, Pango
 from ks_includes.screen_panel import ScreenPanel
 
+HOSTNAME_REGEX = re.compile("^(?!-)(?!_)[A-Za-z0-9-]{1,63}(?<!-)(?<!_)(\.[A-Za-z0-9-]{1,63}(?<!-)(?<!_)){0,253}$")
 
 def create_panel(*args, **kvargs):
     return NetworkManagerConnectionPanel(*args, **kvargs)
@@ -26,10 +27,10 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         scroll.add(self.grid)
         self.box.add(scroll)
 
-        btn_save = self._gtk.Button("settings", _("Save"), "color1")
-        btn_save.set_hexpand(False)
-        btn_save.set_vexpand(False)
-        btn_save.connect("clicked", self.save_changes)
+        self.btn_save = self._gtk.Button("settings", _("Save"), "color1")
+        self.btn_save.set_hexpand(False)
+        self.btn_save.set_vexpand(False)
+        self.btn_save.connect("clicked", self.save_changes)
         btn_discard = self._gtk.Button("cancel", _("Discard"), "color1")
         btn_discard.set_hexpand(False)
         btn_discard.set_vexpand(False)
@@ -39,7 +40,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         # self.button_panel
         self.box.add(self.button_panel)
         self.button_panel.attach(btn_discard, 0, 0, 1, 1)
-        self.button_panel.attach(btn_save, 1, 0, 1, 1)
+        self.button_panel.attach(self.btn_save, 1, 0, 1, 1)
 
         self.changed_fields = {}
 
@@ -70,7 +71,16 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         self._screen.show_all()
 
     def change_hostname(self, widget):
-        self.changed_fields["hostname"] = widget.get_text()
+        hostname = widget.get_text()
+        self.changed_fields["hostname"] = hostname
+        if HOSTNAME_REGEX.match(hostname):
+            context = widget.get_style_context()
+            context.remove_class("entry-invalid")
+            self.btn_save.set_sensitive(True)
+        else:
+            context = widget.get_style_context()
+            context.add_class("entry-invalid")
+            self.btn_save.set_sensitive(False)
 
     def save_changes(self, widget):
         #print(json.dumps(self.changed_fields, indent=2))
@@ -85,6 +95,7 @@ class NetworkManagerConnectionPanel(ScreenPanel):
     def revert_changes(self, widget):
         #print(json.dumps(self.changed_fields, indent=2))
         self.rebuild_pages()
+        self.btn_save.set_sensitive(True)
 
     def refetch_settings(self):
         settings = {

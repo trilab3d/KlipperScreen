@@ -141,6 +141,11 @@ entry {
     padding: .2em;
 }
 
+.entry-invalid {
+    background-color: #33150a;
+    border: .2em solid #fa6831;
+}
+
 label {
     color: white;
 }

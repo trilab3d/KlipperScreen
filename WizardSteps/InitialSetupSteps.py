@@ -399,7 +399,7 @@ class Privacy(BaseWizardStep):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.content.set_vexpand(True)
-        img = self._screen.gtk.Image("privacy_settings", self._screen.gtk.content_width * .945,-1)
+        img = self._screen.gtk.Image("privacy", self._screen.gtk.content_width * .945,-1)
         self.content.add(img)
         heating_label = self._screen.gtk.Label("")
         heating_label.set_margin_top(20)

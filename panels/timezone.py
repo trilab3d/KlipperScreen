@@ -61,8 +61,13 @@ class TimezonePanel(ScreenPanel):
             box.add(dev)
     def set_timezone(self, widget, zone):
         os.system(f"timedatectl set-timezone {self.zones[zone]}")
-        os.system(f"cp -P /etc/timezone /opt/timezone")  # to have timezone persistent between updates
-        os.system(f"cp -P /etc/localtime /opt/localtime")
+
+        # Not working aproach
+        # os.system(f"cp -P /etc/timezone /opt/timezone")  # to have timezone persistent between updates
+        # os.system(f"cp -P /etc/localtime /opt/localtime")
+
+        os.system(f"echo {zone} > /opt/timezone")  # to have timezone persistent between updates
+
         # self._screen.restart_ks()
         os.system("systemctl restart klipper-screen")
 

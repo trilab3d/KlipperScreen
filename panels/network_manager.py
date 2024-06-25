@@ -83,10 +83,15 @@ class NetworkManagerPanel(ScreenPanel):
             labels.add(ifc)
 
             if interface['GENERAL']['TYPE'] == "wifi":
-                ssid = Gtk.Label()
-                ssid.set_markup(f"<big><b>SSID:</b> {interface['GENERAL']['CONNECTION']}</big>")
-                ssid.set_halign(Gtk.Align.START)
-                labels.add(ssid)
+                try:
+                    uuid = interface['GENERAL']['CON-UUID']
+                    conn = self._screen.tpcclient.send_request(f"/network-manager/show-connection/{uuid}")
+                    ssid = Gtk.Label()
+                    ssid.set_markup(f"<big><b>SSID:</b> {conn['802-11-wireless']['ssid']}</big>")
+                    ssid.set_halign(Gtk.Align.START)
+                    labels.add(ssid)
+                except Exception as e:
+                    logging.warning(f"Error on displaying SSID: {e}")
 
             for addr in interface['IP4']['ADDRESS'] if 'IP4' in interface and "ADDRESS" in interface['IP4'] else []:
                 ip = Gtk.Label()

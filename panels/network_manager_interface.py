@@ -123,14 +123,19 @@ class NetworkManagerInterfacePanel(ScreenPanel):
         conn_type = "wifi" if self.wireless else "ethernet"
         conn_name = "New-Profile"
         if self.wireless:
+            hostname = self._screen.tpcclient.send_request(f"hostname")
+            if not hostname:
+                hostname = "Printer"  # Should never really happen, but...
+            else:
+                hostname = hostname["hostname"]
             new_conn = {
                 "connection.interface-name": self.interface['GENERAL']['DEVICE'],
                 "802-11-wireless.band": "bg",
                 "802-11-wireless.channel": "3",
                 "802-11-wireless-security.key-mgmt": "wpa-psk",
                 "802-11-wireless-security.psk": "12345678",
-                "ssid": "Printer",  # change me
-                "ipv4.method": "manual",
+                "ssid": hostname,
+                "ipv4.method": "shared",
                 "ipv4.addresses": "10.0.0.5/8",
                 "ipv6.addr-gen-mode": "0",
                 "autoconnect": "yes",

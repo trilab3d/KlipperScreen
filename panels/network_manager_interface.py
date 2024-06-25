@@ -121,8 +121,8 @@ class NetworkManagerInterfacePanel(ScreenPanel):
 
     def add_connection(self, widget):
         conn_type = "wifi" if self.wireless else "ethernet"
-        conn_name = "New-Profile"
         if self.wireless:
+            conn_name = "New-Profile AP"
             hostname = self._screen.tpcclient.send_request(f"hostname")
             if not hostname:
                 hostname = "Printer"  # Should never really happen, but...
@@ -132,6 +132,7 @@ class NetworkManagerInterfacePanel(ScreenPanel):
                 "connection.interface-name": self.interface['GENERAL']['DEVICE'],
                 "802-11-wireless.band": "bg",
                 "802-11-wireless.channel": "3",
+                "802-11-wireless.mode": "ap",
                 "802-11-wireless-security.key-mgmt": "wpa-psk",
                 "802-11-wireless-security.psk": "12345678",
                 "ssid": hostname,
@@ -142,6 +143,7 @@ class NetworkManagerInterfacePanel(ScreenPanel):
                 "connection.autoconnect-priority": "0"
             }
         else:
+            conn_name = "New-Profile"
             new_conn = {
                 "connection.interface-name": self.interface['GENERAL']['DEVICE'],
                 "autoconnect": "yes",

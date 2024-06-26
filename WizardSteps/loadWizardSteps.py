@@ -8,9 +8,6 @@ from gi.repository import Gtk, Gdk, GLib, Pango
 from WizardSteps.baseWizardStep import BaseWizardStep
 from WizardSteps.wizardCommons import *
 
-speed_request = 1
-
-
 class Cancelable(TemperatureSetter):
     def on_cancel(self):
         self._screen._ws.klippy.gcode_script("_FILAMENT_RETRACT")
@@ -139,6 +136,8 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
     def set_filament_clicked(self, widget, option):
         self.wizard_manager.set_wizard_data("currently_loading", option)
         max_load_temp = self.preheat_options[option]["extruder_max"] if "extruder_max" in self.preheat_options[option] else None
+        speed = self.preheat_options[option]["speed"] if "speed" in self.preheat_options[option] else 1
+        self.wizard_manager.set_wizard_data("speed_request", speed)
         save_variables = self._screen.printer.data['save_variables']['variables']
         self.set_temperature(option, self.heaters)
 
@@ -460,7 +459,8 @@ class Purging(Cancelable, BaseWizardStep, TemperatureSetter):
 
     def activate(self, wizard):
         super().activate(wizard)
-        logging.info(f"Currently loading {self.wizard_manager.get_wizard_data('currently_loading')}")
+        speed_request = self.wizard_manager.get_wizard_data('speed_request')
+        logging.info(f"Currently loading {self.wizard_manager.get_wizard_data('currently_loading')}, speed_request: {speed_request}")
         if self.first_purge:
             self.set_temperature(self.wizard_manager.get_wizard_data('currently_loading'),
                                  self._screen.printer.get_tools())
@@ -473,15 +473,15 @@ class Purging(Cancelable, BaseWizardStep, TemperatureSetter):
             self._screen._ws.klippy.gcode_script(f"G0 E35 F{int(600*speed_request)}")
             self._screen._ws.klippy.gcode_script(f"G0 E50 F{int(300*speed_request)}")
             self._screen._ws.klippy.gcode_script(f"SAVE_VARIABLE VARIABLE=filamentretracted VALUE=0")
-            self._screen._ws.klippy.gcode_script(f"_FILAMENT_RETRACT")
+            self._screen._ws.klippy.gcode_script(f"_FILAMENT_RETRACT SPEED={int(40*speed_request)}")
             self._screen._ws.klippy.gcode_script(f"RESTORE_GCODE_STATE NAME=LOAD_FILAMENT")
             self._screen._ws.klippy.gcode_script(f"SET_STEPPER_ENABLE STEPPER=extruder ENABLE=0")
         else:
             self._screen._ws.klippy.gcode_script(f"SAVE_GCODE_STATE NAME=LOAD_FILAMENT")
             self._screen._ws.klippy.gcode_script(f"M83")
-            self._screen._ws.klippy.gcode_script(f"_FILAMENT_DERETRACT")
+            self._screen._ws.klippy.gcode_script(f"_FILAMENT_DERETRACT SPEED={int(40*speed_request)}")
             self._screen._ws.klippy.gcode_script(f"G0 E50 F{int(300*speed_request)}")
-            self._screen._ws.klippy.gcode_script(f"_FILAMENT_RETRACT")
+            self._screen._ws.klippy.gcode_script(f"_FILAMENT_RETRACT SPEED={int(40*speed_request)}")
             self._screen._ws.klippy.gcode_script(f"RESTORE_GCODE_STATE NAME=LOAD_FILAMENT")
             self._screen._ws.klippy.gcode_script(f"SET_STEPPER_ENABLE STEPPER=extruder ENABLE=0")
 

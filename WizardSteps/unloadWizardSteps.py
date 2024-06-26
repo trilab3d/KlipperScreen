@@ -34,6 +34,8 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
                 loaded_filament = save_variables['last_filament'] if 'last_filament' in save_variables else "NONE"
             if loaded_filament in self.preheat_options:
                 self.wizard_manager.set_wizard_data('currently_unloading', loaded_filament)
+                speed = self.preheat_options[loaded_filament]["speed"] if "speed" in self.preheat_options[loaded_filament] else 1
+                self.wizard_manager.set_wizard_data('speed_request', speed)
             wizard.set_step(self.next_step_on_skip(self._screen))
             return
 
@@ -92,6 +94,8 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
     def set_filament_clicked(self, widget, option):
         logging.info(f"unloadWizardSteps.SelectFilament.set_filament_clicked: option: {option}")
         self.wizard_manager.set_wizard_data("currently_unloading", option)
+        speed = self.preheat_options[option]["speed"] if "speed" in self.preheat_options[option] else 1
+        self.wizard_manager.set_wizard_data('speed_request', speed)
         self.set_temperature(option, self.heaters)
         self.wizard_manager.set_step(self.next_step(self._screen))
 
@@ -135,8 +139,8 @@ class Unloading(loadWizardSteps.Cancelable, BaseWizardStep):
 
     def activate(self, wizard):
         super().activate(wizard)
-
-        logging.info(f"unloading: {self.wizard_manager.get_wizard_data('currently_unloading')}")
+        speed_requests = self.wizard_manager.get_wizard_data('speed_request')
+        logging.info(f"unloading: {self.wizard_manager.get_wizard_data('currently_unloading')}, speed_request: {speed_requests}")
 
         self._screen._ws.klippy.gcode_script(f"SAVE_GCODE_STATE NAME=LOAD_FILAMENT")
         self._screen._ws.klippy.gcode_script(f"M83")
@@ -145,10 +149,10 @@ class Unloading(loadWizardSteps.Cancelable, BaseWizardStep):
                     'variables'] and
                 self._screen.printer.data['save_variables']['variables'][
                     'filamentretracted'] == 1):
-            self._screen._ws.klippy.gcode_script(f"G0 E3.0 F300")
-            self._screen._ws.klippy.gcode_script(f"_FILAMENT_RETRACT")
+            self._screen._ws.klippy.gcode_script(f"G0 E3.0 F{int(300*speed_requests)}")
+            self._screen._ws.klippy.gcode_script(f"_FILAMENT_RETRACT SPEED={int(40*speed_requests)}")
             self._screen._ws.klippy.gcode_script(f"G4 P4000")
-        self._screen._ws.klippy.gcode_script(f"G1 E-30.0 F900 C")
+        self._screen._ws.klippy.gcode_script(f"G1 E-30.0 F{int(900*speed_requests)} C")
         self._screen._ws.klippy.gcode_script(
             f"SAVE_VARIABLE VARIABLE=loaded_filament VALUE='\"NONE\"'")
         self._screen._ws.klippy.gcode_script(

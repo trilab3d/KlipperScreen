@@ -150,6 +150,8 @@ class KlippyGtk:
             pixbuf = GdkPixbuf.Pixbuf.new_from_stream_at_scale(stream, int(width), int(height), True)
         except Exception as e:
             logging.exception(e)
+            import screen
+            screen.log_exception(type(e), e, e.__traceback__)
             return None
         stream.close_async(2)
         return pixbuf

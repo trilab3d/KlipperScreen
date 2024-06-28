@@ -13,6 +13,9 @@ import traceback  # noqa
 import locale
 import sys
 import gi
+import threading
+import base64
+from types import TracebackType
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk, GLib, Pango
@@ -43,10 +46,25 @@ except:
     pass
 
 # Exception formater for Zabbix
-def my_except_hook(exctype, value, traceback):
-    logging.error(f"Uncaught Exception Handler: {exctype} - {value}")
-    sys.__excepthook__(exctype, value, traceback)
-sys.excepthook = my_except_hook
+def log_exception(exctype:type[BaseException], value:BaseException, tb:TracebackType, thr = None):
+    str_tb = ""
+    local_vars = {}
+    while tb:
+        filename = tb.tb_frame.f_code.co_filename
+        name = tb.tb_frame.f_code.co_name
+        line_no = tb.tb_lineno
+        str_tb += f"File {filename} line {line_no}, in {name}\n"
+        local_vars = tb.tb_frame.f_locals
+        tb = tb.tb_next
+    str_tb += f"local variables: {local_vars}\ntraceback end"
+    compressed_tb = base64.b64encode(str_tb.encode())
+    logging.error(f"Compressed unhandled exception: {exctype.__name__}: {value}, compressed traceback: {compressed_tb}, thread: {thr}, traceback:\n{str_tb}")
+
+def log_thread_exception(err):
+    log_exception(*err)
+
+sys.excepthook = log_exception
+threading.excepthook = log_thread_exception
 
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 
@@ -120,6 +138,7 @@ class KlipperScreen(Gtk.Window):
             super().__init__(title="KlipperScreen")
         except Exception as e:
             logging.exception(e)
+            log_exception(type(e), e, e.__traceback__)
             raise RuntimeError from e
         self.blanking_time = 600
         self.use_dpms = True
@@ -322,6 +341,7 @@ class KlipperScreen(Gtk.Window):
             return self.load_panel[panel](*args, **kwargs)
         except Exception as e:
             logging.exception(e)
+            log_exception(type(e), e, e.__traceback__)
             raise RuntimeError(f"Unable to create panel: {panel}\n{e}") from e
 
     def show_panel(self, panel_name, panel_type, title, remove=None, pop=True, **kwargs):
@@ -353,6 +373,7 @@ class KlipperScreen(Gtk.Window):
             self.attach_panel(panel_name)
         except Exception as e:
             logging.exception(f"Error attaching panel:\n{e}")
+            log_exception(type(e), e, e.__traceback__)
 
     def attach_panel(self, panel_name):
         self.base_panel.add_content(self.panels[panel_name])
@@ -1132,6 +1153,7 @@ def main():
         win = KlipperScreen(args, version)
     except Exception as e:
         logging.exception("Failed to initialize window")
+        log_exception(type(e), e, e.__traceback__)
         raise RuntimeError from e
     win.connect("destroy", Gtk.main_quit)
     win.show_all()
@@ -1143,4 +1165,5 @@ if __name__ == "__main__":
         main()
     except Exception as ex:
         logging.exception(f"Fatal error in main loop:\n{ex}")
+        log_exception(type(ex), ex, ex.__traceback__)
         sys.exit(1)

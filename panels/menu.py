@@ -111,6 +111,8 @@ class MenuPanel(ScreenPanel):
                         params = json.loads(p)
                     except Exception as e:
                         logging.exception(f"Unable to parse parameters for [{name}]:\n{e}")
+                        import screen
+                        screen.log_exception(type(e), e, e.__traceback__)
                         params = {}
 
                 if item['confirm'] is not None:

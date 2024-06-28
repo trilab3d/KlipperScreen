@@ -78,6 +78,8 @@ class CameraPanel(ScreenPanel):
             logging.info('Exiting Fullscreen')
         except Exception as e:
             logging.exception(e)
+            import screen
+            screen.log_exception(type(e), e, e.__traceback__)
         self.mpv.terminate()
         self.mpv = None
         self._screen._menu_go_back()

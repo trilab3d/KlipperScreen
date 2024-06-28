@@ -334,6 +334,8 @@ class PrintPanel(ScreenPanel):
             self.filelist[directory]["files"].pop(self.filelist[directory]["files"].index(os.path.basename(filename)))
         except Exception as e:
             logging.exception(e)
+            import screen
+            screen.log_exception(type(e), e, e.__traceback__)
         dir_parts = directory.split(os.sep)
         i = len(dir_parts)
         while i > 1:
@@ -357,6 +359,8 @@ class PrintPanel(ScreenPanel):
             self.dir_panels[directory].remove(self.files[filename])
         except Exception as e:
             logging.exception(e)
+            import screen
+            screen.log_exception(type(e), e, e.__traceback__)
         self.dir_panels[directory].show_all()
         self.files.pop(filename)
 

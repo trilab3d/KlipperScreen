@@ -181,6 +181,8 @@ def setup_logging(log_file, software_version):
             f'Uncaught exception {ex_type}: {value}\n'
             + '\n'.join([str(x) for x in [*traceback.format_tb(tb)]])
         )
+        import screen
+        screen.log_exception(ex_type, value, tb)
 
     sys.excepthook = logging_exception_handler
     logging.captureWarnings(True)

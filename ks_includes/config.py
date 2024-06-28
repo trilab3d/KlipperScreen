@@ -77,15 +77,21 @@ class KlipperScreenConfig:
         except KeyError as Kerror:
             msg = f"Error reading config: {self.config_path}\n{Kerror}"
             logging.exception(msg)
+            import screen
+            screen.log_exception(type(Kerror), Kerror, Kerror.__traceback__)
             self.errors.append(msg)
             raise ConfigError(msg) from Kerror
         except ValueError as Verror:
             msg = f"Invalid Value in the config:\n{Verror}"
             logging.exception(msg)
+            import screen
+            screen.log_exception(type(Verror), Verror, Verror.__traceback__)
             self.errors.append(msg)
         except Exception as e:
             msg = f"Unknown error with the config:\n{e}"
             logging.exception(msg)
+            import screen
+            screen.log_exception(type(e), e, e.__traceback__)
             self.errors.append(msg)
 
         printers = sorted([i for i in self.config.sections() if i.startswith("printer ")])

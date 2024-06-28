@@ -286,8 +286,8 @@ class NetworkManagerConnectionPanel(ScreenPanel):
             gateway_label = Gtk.Label(label="Gateway:")
             gateway_label.set_halign(Gtk.Align.END)
             gateway_entry = Gtk.Entry()
-            gateway_entry.set_text(self.connection_full["ipv4"]["dns"]
-                              if self.connection_full["ipv4"]["dns"] != "--" else "")
+            gateway_entry.set_text(self.connection_full["ipv4"]["gateway"]
+                              if self.connection_full["ipv4"]["gateway"] != "--" else "")
             gateway_entry.connect("changed", self.change_ipv4_gateway)
             gateway_entry.connect("button-press-event", self._screen.show_keyboard)
             gateway_entry.set_hexpand(True)

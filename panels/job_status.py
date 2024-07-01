@@ -903,7 +903,11 @@ class JobStatusPanel(ScreenPanel):
         return True
 
     def update_time_left(self, total_duration, print_duration, fila_used=0):
-        remaining = float(self._screen.printer.data['display_status']['remaining'])*60
+        if "remaining" in self._screen.printer.data['display_status'] and \
+                self._screen.printer.data['display_status']['remaining']:
+            remaining = float(self._screen.printer.data['display_status']['remaining'])*60
+        else:
+            remaining = 0
         total = total_duration + remaining
 
         self.labels["est_time"].set_label(self.format_time(total))

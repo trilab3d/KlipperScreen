@@ -140,6 +140,8 @@ class Unloading(loadWizardSteps.Cancelable, BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         speed_requests = self.wizard_manager.get_wizard_data('speed_request')
+        if not speed_requests:
+            speed_requests = 1
         logging.info(f"unloading: {self.wizard_manager.get_wizard_data('currently_unloading')}, speed_request: {speed_requests}")
 
         self._screen._ws.klippy.gcode_script(f"SAVE_GCODE_STATE NAME=LOAD_FILAMENT")

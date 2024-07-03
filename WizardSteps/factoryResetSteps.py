@@ -144,6 +144,18 @@ class FactoryReset(BaseWizardStep):
                 "tls": True,
                 "token": ""
             }})
+
+        try:
+            connections = self._screen.tpcclient.send_request(f"/network-manager/list-connections", "GET")["connections"]
+            for connection in connections:
+                if "TYPE" in connection and connection["TYPE"] in ("ethernet", "wifi"):
+                    if "UUID" in connection:
+                        logging.info(f"removing connection {connection}")
+                        self._screen.tpcclient.send_request(f"/network-manager/delete-connection/{connection['UUID']}", "POST")
+            os.system("systemctl restart NetworkManager")
+        except Exception as e:
+            logging.error(f"Error on removing connections: {e}")
+
         os.system("systemctl restart prusa-connect-ht90")
         logging.info(f"Reset job - prusaconnect reset")
         os.system("echo Welcome > /opt/init_state")

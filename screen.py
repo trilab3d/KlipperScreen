@@ -393,6 +393,22 @@ class KlipperScreen(Gtk.Window):
     # Handles commands from RESPOND TYPE=command MSG=...
     def handle_message_command(self, command):
         logging.info(f"Incomming command {command}")
+        if command == "DOOR_OPEN_PRE":
+            is_hot = False
+            try:
+                if self.printer.data["heater_bed"]["temperature"] > 60:
+                    is_hot = True
+            except:
+                pass
+            try:
+                if self.printer.data["heater_generic panel"]["temperature"] > 60:
+                    is_hot = True
+            except:
+                pass
+            #is_hot = True
+            if is_hot:
+                self.show_popup_message("Be careful, some surfaces can be still dangerously hot!", 2)
+
         if command == "DOOR_OPEN":
             self.show_panel("door_open", "door_open", _("Door Opened"), 2,
                             False, reason="door")

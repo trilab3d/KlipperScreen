@@ -583,6 +583,38 @@ popover button {
     padding-bottom: 0;
 }
 
+.thumbnail_overlay_box {
+    background: rgba(0,0,0,0.5);
+}
+
+.thumbnail_overlay_box_hidden {
+    background: rgba(0,0,0,0);
+}
+
+.thumbnail_overlay {
+    font-size: 25px;
+    color: white;
+    animation: blinker 0.75s linear infinite;
+}
+
+@keyframes blinker {
+    0% {
+        color: white;
+    }
+    25% {
+        color: white;
+    }
+    50% {
+        color: #fa6831;
+    }
+    75% {
+        color: #fa6831;
+    }
+    100% {
+        color: white;
+    }
+}
+
 /* Hardcoded values until creation of dynamic CSS updates */
 .graph_label_hidden {padding-left: .9em;} /* .4em on top of normal button padding */
 .graph_label_extruder {border-left-width: .4em; border-left-style: solid;}

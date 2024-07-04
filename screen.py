@@ -86,6 +86,7 @@ PRINTER_BASE_STATUS_OBJECTS = [
     'firmware_retraction',
     'exclude_object',
     'manual_probe',
+    'heaters'
 ]
 
 klipperscreendir = pathlib.Path(__file__).parent.resolve()
@@ -302,6 +303,7 @@ class KlipperScreen(Gtk.Window):
                 "motion_report": ["live_position", "live_velocity", "live_extruder_velocity"],
                 "exclude_object": ["current_object", "objects", "excluded_objects"],
                 "manual_probe": ['is_active'],
+                "heaters": ['waiting_status'],
             }
         }
         requested_updates['objects']["save_variables"] = ["variables"]

@@ -151,14 +151,26 @@ class JobStatusPanel(ScreenPanel):
         # self.grid.attach(overlay, 0, 0, 1, 1)
 
         self.labels["thumbnail"] = self._gtk.Image()
-        tbox = Gtk.Box()
-        tbox.set_hexpand(True)
-        tbox.set_vexpand(False)
-        tbox.set_halign(Gtk.Align.CENTER)
-        tbox.set_valign(Gtk.Align.CENTER)
         self.labels["thumbnail"].set_margin_top(10)
         self.labels["thumbnail"].set_margin_bottom(10)
+        tbox = Gtk.Overlay()
+        tbox.set_hexpand(True)
+        tbox.set_vexpand(False)
         tbox.add(self.labels["thumbnail"])
+        self.tobox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.tobox.set_hexpand(True)
+        self.tobox.set_vexpand(True)
+        self.tobox.get_style_context().add_class("thumbnail_overlay_box")
+        #tobox.set_halign(Gtk.Align.CENTER)
+        self.tobox.set_valign(Gtk.Align.END)
+        self.tobox.set_margin_bottom(32)
+        self.labels["thumbnail_overlay"] = Gtk.Label(label="")
+        self.labels["thumbnail_overlay"].get_style_context().add_class("thumbnail_overlay")
+        self.labels["thumbnail_overlay"].set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        self.labels["thumbnail_overlay"].set_line_wrap(True)
+        self.labels["thumbnail_overlay"].set_justify(Gtk.Justification.CENTER)
+        self.tobox.add(self.labels["thumbnail_overlay"])
+        tbox.add_overlay(self.tobox)
         self.labels["info_grid"] = Gtk.Grid()
         # self.labels['info_grid'].attach(tbox, 0, 0, 1, 1)
         self.grid.attach(tbox, 0, 0, 2, 1)
@@ -707,6 +719,15 @@ class JobStatusPanel(ScreenPanel):
     def disable_button(self, *args):
         for arg in args:
             self.buttons[arg].set_sensitive(False)
+
+    def update_status_message(self, message):
+        if message == "":
+            self.tobox.get_style_context().add_class("thumbnail_overlay_box_hidden")
+            self.tobox.get_style_context().remove_class("thumbnail_overlay_box")
+        else:
+            self.tobox.get_style_context().add_class("thumbnail_overlay_box")
+            self.tobox.get_style_context().remove_class("thumbnail_overlay_box_hidden")
+        self.labels["thumbnail_overlay"].set_label(message)
 
     def _callback_metadata(self, newfiles, deletedfiles, modifiedfiles):
         if not bool(self.file_metadata) and self.filename in modifiedfiles:

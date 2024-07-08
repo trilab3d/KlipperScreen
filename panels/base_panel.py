@@ -3,6 +3,7 @@ import contextlib
 import logging
 import gi
 import netifaces
+import subprocess
 gi.require_version("Gtk", "3.0")
 from gi.repository import GLib, Gtk, Pango, GdkPixbuf
 from jinja2 import Environment
@@ -14,6 +15,28 @@ from panels.manual import ManualPanel
 
 
 class BasePanel(ScreenPanel):
+    WARNING_ICONS = {
+        "undervoltage": "undervoltage",
+        # "throttled": "",
+        # "arm_frequency_capped": "",
+        "overheat": "overheat",
+    }
+    NOTIFICATION_NAMES = {
+        "undervoltage": "Undervoltage detected",
+        # "throttled": "",
+        # "arm_frequency_capped": "",
+        "overheat": "Electronic is overheating"
+    }
+    NOTIFICATION_TEXTS = {
+        "undervoltage": "Voltage on CPU power rail is insufficient, resulting in limited performance. "
+                        "This may indicate hardware fault. If problem persist, please contact customer "
+                        "support for help.",
+        # "throttled": "",
+        # "arm_frequency_capped": "",
+        "overheat": "Printer does not have sufficient cooling and it's performance is reduced. "
+                    "Make sure cooling vents are not blocked and printer is not operated outside "
+                    "permitted limits. Overheating may significantly reduce service life of your printer."
+    }
     def __init__(self, screen, title):
         super().__init__(screen, title)
         self.current_panel = None
@@ -22,6 +45,7 @@ class BasePanel(ScreenPanel):
         self.time_min = -1
         self.time_format = self._config.get_main_config().getboolean("24htime", True)
         self.time_update = None
+        self.fault_states_update = None
         self.last_update_status = None
         self.last_update_status_time = datetime.now()
         self.titlebar_items = []
@@ -83,8 +107,15 @@ class BasePanel(ScreenPanel):
 
         self.control['time'] = Gtk.Label("00:00 AM")
         self.control['time_box'] = Gtk.Box()
+        notification_box_outer = Gtk.EventBox()
+        self.control['notification_box'] = Gtk.Box(spacing=5)
+        self.control['notification_box'].set_halign(Gtk.Align.END)
+        notification_box_outer.add(self.control['notification_box'])
+        self.control['time_box'].add(notification_box_outer)
         self.control['time_box'].set_halign(Gtk.Align.END)
         self.control['time_box'].pack_end(self.control['time'], True, True, 10)
+
+        notification_box_outer.connect("button-press-event", self.notification_clicked)
 
         self.titlebar = Gtk.Box(spacing=5)
         self.titlebar.get_style_context().add_class("title_bar")
@@ -129,6 +160,24 @@ class BasePanel(ScreenPanel):
         self.main_layout.put(self.main_grid, 0, 0)
 
         self.update_time()
+
+    def rebuild_notification_states(self, new_states):
+        for key in self.notification_states:
+            if key not in new_states:
+                new_states[key] = self.notification_states[key]
+        if new_states != self.notification_states:
+            self.notification_states = new_states
+            for child in self.control['notification_box'].get_children():
+                self.control['notification_box'].remove(child)
+            has_warnings = False
+            for state in new_states:
+                if new_states[state]:
+                    has_warnings = True
+            if has_warnings:
+                self.control['notification_box'].add(self._gtk.Image("warning",26,26))
+
+    def notification_clicked(self, widget, argument):
+        self._screen.show_panel("notifications", "notifications", "Notifications", 1, False)
 
     def set_background(self, printhead):
         icon = "styles/prusa/images/extruder-unknown.png"
@@ -228,6 +277,8 @@ class BasePanel(ScreenPanel):
     def activate(self):
         if self.time_update is None:
             self.time_update = GLib.timeout_add_seconds(1, self.update_time)
+        if self.fault_states_update is None:
+            self.fault_states_update = GLib.timeout_add_seconds(10, self.update_fault_states)
 
     def add_content(self, panel):
         self.current_panel = panel
@@ -363,6 +414,27 @@ class BasePanel(ScreenPanel):
                 self.control['time'].set_text(f'{now:%I:%M %p}')
             self.time_min = now.minute
             self.time_format = confopt
+        return True
+
+    def update_fault_states(self):
+        # get_throttled
+        try:
+            command = ["vcgencmd", "get_throttled"]
+            sp = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            throttled_reg = int(sp.stdout.decode('ascii').split("=")[1],0)
+            under_voltage = 1
+            currently_throttled = 2
+            arm_frequency_capped = 4
+            soft_temperature_reached = 8
+            fault_update = {
+                "undervoltage": bool(throttled_reg & under_voltage),
+                # "throttled": bool(throttled_reg & currently_throttled),
+                # "arm_frequency_capped": bool(throttled_reg & arm_frequency_capped),
+                "overheat": bool(throttled_reg & soft_temperature_reached)
+            }
+            self.rebuild_notification_states(fault_update)
+        except Exception as e:
+            logging.error(f"Exception during get_throttled: {e}")
         return True
 
     def show_estop(self, show=True):

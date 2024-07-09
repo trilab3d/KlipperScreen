@@ -405,9 +405,10 @@ class KlipperScreen(Gtk.Window):
                     is_hot = True
             except:
                 pass
-            #is_hot = True
-            if is_hot:
-                self.show_popup_message("Be careful, some surfaces can be still dangerously hot!", 2)
+            is_hot = True
+            if is_hot and 'hot_surfaces' not in self._cur_panels:
+                self.show_panel("hot_surfaces", "hot_surfaces", _("Hot Surfaces"), 1,
+                                False)
 
         if command == "DOOR_OPEN":
             self.show_panel("door_open", "door_open", _("Door Opened"), 2,

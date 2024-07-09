@@ -10,9 +10,9 @@ from ks_includes.screen_panel import ScreenPanel
 
 
 def create_panel(*args, **kvargs):
-    return NetworkManagerConnectionPanel(*args, **kvargs)
+    return ServiceSettings(*args, **kvargs)
 
-class NetworkManagerConnectionPanel(ScreenPanel):
+class ServiceSettings(ScreenPanel):
     def __init__(self, screen, title, **kvargs):
         super().__init__(screen, title)
 
@@ -125,6 +125,16 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         self.grid.attach(update_channel_label, 0, index, 2, 1)
         self.grid.attach(self.update_channel_dropdown, 2, index, 3, 1)
 
+        index += 1
+        hw_serial_label = Gtk.Label(label="CPU serial")
+        hw_serial_label.set_halign(Gtk.Align.END)
+        hw_serial_label.set_margin_right(10)
+        hw_serial_value = Gtk.Label(label=self.hw_serial)
+        hw_serial_value.set_halign(Gtk.Align.START)
+        #hw_serial_value.set_margin_right(10)
+        self.grid.attach(hw_serial_label, 0, index, 2, 1)
+        self.grid.attach(hw_serial_value, 2, index, 3, 1)
+
         for entry in entries:
             entry.connect("button-press-event", self._screen.show_keyboard)
             entry.set_hexpand(True)
@@ -166,6 +176,11 @@ class NetworkManagerConnectionPanel(ScreenPanel):
     def refetch_settings(self):
         settings = self._screen.tpcclient.send_request(f"settings")
         self.settings = settings
+        try:
+            self.hw_serial = self._screen.tpcclient.send_request(f"cpu_serial")["cpu_serial"]
+        except Exception as e:
+            logging.error(f"Error on fetch cpu_serial: {e}")
+            self.hw_serial = ""
 
     def activate(self):
         self.rebuild_pages()

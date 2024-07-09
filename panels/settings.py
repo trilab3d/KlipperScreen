@@ -1,6 +1,7 @@
 import os
 
 import gi
+import logging
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib, Pango
@@ -60,6 +61,26 @@ class SettingsPanel(ScreenPanel):
             "type": "wizard",
             "panel_title": "Backup Config",
             "wizard": "exportPersistentSteps.ExportPersistent"
+        }})
+        try:
+            serial = self._screen.tpcclient.send_request("settings")["serial_number"]
+        except Exception as e:
+            logging.error(f"exception during getting tpc settings: {e}")
+            serial = ""
+        options.append({"label1": {
+            "name": _("Serial Number"),
+            "type": "label",
+            "text": serial
+        }})
+        try:
+            cpu_serial = self._screen.tpcclient.send_request("cpu_serial")["cpu_serial"]
+        except Exception as e:
+            logging.error(f"exception during getting cpu_serial: {e}")
+            cpu_serial = ""
+        options.append({"label2": {
+            "name": _("Electronic Serial"),
+            "type": "label",
+            "text": cpu_serial
         }})
         options.append({"factory_reset": {
             "name": _("Factory Reset"),
@@ -171,7 +192,11 @@ class SettingsPanel(ScreenPanel):
         dev.set_valign(Gtk.Align.CENTER)
 
         dev.add(labels)
-        if option['type'] == "binary":
+        if option['type'] == "label":
+            label = Gtk.Label()
+            label.set_label(option['text'])
+            dev.add(label)
+        elif option['type'] == "binary":
             switch = Gtk.Switch()
             if option['section'] == '_nonlocal':
                 switch.connect("notify::active", option['callback'], option)

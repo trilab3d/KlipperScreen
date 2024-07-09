@@ -116,6 +116,7 @@ class BasePanel(ScreenPanel):
         self.control['time_box'].pack_end(self.control['time'], True, True, 10)
 
         notification_box_outer.connect("button-press-event", self.notification_clicked)
+        #self.rebuild_notification_states({"overheat": True, "undervoltage": True})
 
         self.titlebar = Gtk.Box(spacing=5)
         self.titlebar.get_style_context().add_class("title_bar")

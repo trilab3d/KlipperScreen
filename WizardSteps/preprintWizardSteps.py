@@ -99,6 +99,9 @@ class PrintDetail(BaseWizardStep):
         if ('save_variables' in self._screen.printer.data):
             save_variables = self._screen.printer.data['save_variables']['variables']
             nozzle_current = save_variables['nozzle'] if 'nozzle' in save_variables else "NONE"
+            # for compatibility with nozzles configured before change HT-A to HT
+            if nozzle_current == "HT-A":
+                nozzle_current = "HT"
         else:
             nozzle_current = "UNKNOWN"
         self.wizard_manager.set_wizard_data("nozzle_current", nozzle_current)

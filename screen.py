@@ -405,8 +405,8 @@ class KlipperScreen(Gtk.Window):
                     is_hot = True
             except:
                 pass
-            is_hot = True
-            if is_hot and 'hot_surfaces' not in self._cur_panels:
+            if (is_hot and 'hot_surfaces' not in self._cur_panels and
+                    self.panels[self._cur_panels[-1]].__class__.__name__ != 'WizardPanel'):
                 self.show_panel("hot_surfaces", "hot_surfaces", _("Hot Surfaces"), 1,
                                 False)
 

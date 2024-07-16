@@ -62,7 +62,7 @@ class BasePanel(ScreenPanel):
         self.control['home'].connect("clicked", self.home)
         self.control['help'] = self._gtk.Button('help', scale=abscale)
         self.control['help'].connect("clicked", self.show_help)
-        #self.control['help'].set_sensitive(False)
+        self.control['help'].set_sensitive(False)
 
         if len(self._config.get_printers()) > 1:
             self.control['printer_select'] = self._gtk.Button('shuffle', scale=abscale)

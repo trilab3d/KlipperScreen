@@ -89,6 +89,10 @@ PRINTER_BASE_STATUS_OBJECTS = [
     'heaters'
 ]
 
+FILTERED_MESSAGES = [
+    'Doors are open'
+]
+
 klipperscreendir = pathlib.Path(__file__).parent.resolve()
 
 
@@ -321,7 +325,7 @@ class KlipperScreen(Gtk.Window):
         for p in self.printer.get_output_pins():
             requested_updates['objects'][p] = ["value"]
         for s in self.printer.get_door_sensors():
-            requested_updates['objects'][s] = ["door_closed", "enabled"]
+            requested_updates['objects'][s] = ["door_closed","door_closed_raw", "enabled"]
 
         self._ws.klippy.object_subscription(requested_updates)
 
@@ -861,7 +865,9 @@ class KlipperScreen(Gtk.Window):
                 if data.startswith("echo: "):
                     self.show_popup_message(data[6:], 1)
                 elif data.startswith("!! "):
-                    self.show_popup_message(data[3:], 3)
+                    msg = data[3:]
+                    if msg not in FILTERED_MESSAGES:
+                        self.show_popup_message(msg, 3)
                 elif data.startswith("// "):
                     self.handle_message_command(data[3:])
                 elif "unknown" in data.lower() and \

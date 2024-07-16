@@ -49,6 +49,7 @@ class MoveToServicePosition(BaseWizardStep):
 
         self._screen._ws.klippy.gcode_script(f"G28")
         self._screen._ws.klippy.gcode_script(f"G0 X0 Y-100 Z250 F2000")
+        self._screen._ws.klippy.gcode_script(f"M84")  # disable steppers
 
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         img = self._screen.gtk.Image("printhead_is_moving", self._screen.gtk.content_width * .945, -1)

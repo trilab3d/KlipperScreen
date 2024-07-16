@@ -24,6 +24,8 @@ class RemoveFilamentDialog(BaseWizardStep):
         confirm_label.set_margin_top(20)
         confirm_label.set_markup(
             "<span size='large'>" + _("Remove remaining filament.") + "</span>")
+        confirm_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        confirm_label.set_line_wrap(True)
         self.content.add(confirm_label)
         second_label = self._screen.gtk.Label("")
         second_label.set_margin_top(20)
@@ -97,6 +99,8 @@ class PurgingMoreDialog(BaseWizardStep):
         confirm_label.set_margin_top(20)
         confirm_label.set_markup(
             "<span size='large'>" + _("Is the color clean?") + "</span>")
+        confirm_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        confirm_label.set_line_wrap(True)
         self.content.add(confirm_label)
         purge_button = self._screen.gtk.Button(label=_("No, purge more"), style=f"color1")
         purge_button.set_vexpand(False)
@@ -128,11 +132,15 @@ class ContinuePrintDialog(BaseWizardStep):
         confirm_label.set_margin_top(20)
         confirm_label.set_markup(
             "<span size='large'>" + _("Clean extruded material and close the door.") + "</span>")
+        confirm_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        confirm_label.set_line_wrap(True)
         self.content.add(confirm_label)
         second_label = self._screen.gtk.Label("")
         second_label.set_margin_top(5)
         second_label.set_markup(
             "<span size='small'>" + _("Then click Resume print") + "</span>")
+        second_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        second_label.set_line_wrap(True)
         self.content.add(second_label)
         continue_button = self._screen.gtk.Button(label=_("Resume Print"), style=f"color1")
         continue_button.set_vexpand(False)

@@ -31,6 +31,8 @@ class CooldownPrompt(BaseWizardStep):
         confirm_label.set_margin_top(20)
         confirm_label.set_markup(
             "<span size='large'>" + _("Nozzle is Hot!") + "</span>")
+        confirm_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        confirm_label.set_line_wrap(True)
         self.content.add(confirm_label)
         second_label = self._screen.gtk.Label("")
         second_label.set_margin_top(20)
@@ -75,6 +77,8 @@ class Cooling(BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Wait for nozzle cooldown") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
         extruder = self._screen.printer.data['extruder']
         self.actual_temperature = self._screen.gtk.Label(f"Temperature: {int(extruder['temperature'])} °C")
@@ -151,6 +155,8 @@ class ServicePositionDialog(BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Check Print volume is empty") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
         comment = self._screen.gtk.Label("")
         comment.set_margin_top(5)
@@ -195,6 +201,8 @@ class UnscrewNozzle(BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Unscrew Nozzle") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
         extruder = self._screen.printer.data['extruder']
         self.actual_temperature = self._screen.gtk.Label(f"Temperature: {int(extruder['temperature'])} °C")
@@ -235,6 +243,8 @@ class SelectNozzleType(BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Select Nozzle Type") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
 
         preheat_grid = self._screen.gtk.HomogeneousGrid()
@@ -275,6 +285,8 @@ class SelectNozzleDiameter(BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Select Nozzle Diameter") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
 
         preheat_grid = self._screen.gtk.HomogeneousGrid()
@@ -315,6 +327,8 @@ class ScrewNozzleIn(BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Screw the nozzle in") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
         second_label = self._screen.gtk.Label("")
         second_label.set_margin_top(20)
@@ -353,6 +367,8 @@ class PurgeDialog(BaseWizardStep, wizardCommons.TemperatureSetter):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Nozzle purge is required") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
 
         save_variables = self._screen.printer.data['save_variables']['variables']
@@ -428,6 +444,8 @@ class DoneDialog(loadWizardSteps.PurgingMoreDialog):
         confirm_label.set_margin_top(20)
         confirm_label.set_markup(
             "<span size='large'>" + _("Filament unloaded") + "</span>")
+        confirm_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        confirm_label.set_line_wrap(True)
         self.content.add(confirm_label)
         second_label = self._screen.gtk.Label("")
         second_label.set_margin_left(40)

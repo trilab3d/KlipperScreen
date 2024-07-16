@@ -726,6 +726,8 @@ class PrusConnectDone(BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Your Connect is configured successfully") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
         button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
         button.set_vexpand(False)
@@ -750,12 +752,16 @@ class PreUpdate(BaseWizardStep):
         label.set_margin_top(20)
         label.set_markup(
             "<span size='large'>" + _("Software update") + "</span>")
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
         self.content.add(label)
         if not self.wizard_manager.get_wizard_data("network_working"):
             label = self._screen.gtk.Label("")
             label.set_margin_top(20)
             label.set_markup(
                 "<span size='small'>" + _("Insert provided USB disk with software update") + "</span>")
+            label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+            label.set_line_wrap(True)
             self.content.add(label)
         button = self._screen.gtk.Button(label=_("Check For Updates"), style=f"color1")
         button.set_vexpand(False)

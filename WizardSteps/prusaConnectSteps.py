@@ -36,6 +36,8 @@ class GetStatus(BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Getting Prusa Connect state") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
         self.update_loop()
 
@@ -63,6 +65,8 @@ class InitConnect(BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Prusa Connect not configured") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
         continue_button = self._screen.gtk.Button(label=_("Configure Prusa Connect"), style=f"color1")
         continue_button.set_vexpand(False)
@@ -137,6 +141,8 @@ class Done(BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Your Connect is configured successfully") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
 
         dev = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
@@ -206,6 +212,8 @@ class ConfirmUnconfigure(BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Your Prusa Connect will be reset.") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
         continue_button = self._screen.gtk.Button(label=_("Continue, reset my Prusa Connect"), style=f"color1")
         continue_button.set_vexpand(False)

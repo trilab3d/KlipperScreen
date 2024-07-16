@@ -41,6 +41,8 @@ class CheckLoaded(BaseWizardStep):
         confirm_label.set_margin_top(20)
         confirm_label.set_markup(
             "<span size='large'>" + _("It seems that another filament is already inserted") + "</span>")
+        confirm_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        confirm_label.set_line_wrap(True)
         self.content.add(confirm_label)
         unload_button = self._screen.gtk.Button(label=_("Perform Unload first"), style=f"color1")
         unload_button.set_vexpand(False)
@@ -98,6 +100,8 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
             label.set_markup(
                 "<span size='large'>" + (
                     self.label2 + f"{save_variables['loaded_filament']}?") + "</span>")
+            label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+            label.set_line_wrap(True)
             self.content.add(label)
             grid = self._screen.gtk.HomogeneousGrid()
             yes = self._screen.gtk.Button(label=_("Yes"), style=f"color1")
@@ -114,6 +118,8 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
             label.set_margin_top(20)
             label.set_markup(
                 "<span size='large'>" + self.label + "</span>")
+            label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+            label.set_line_wrap(True)
             self.content.add(label)
             preheat_grid = self._screen.gtk.HomogeneousGrid()
             i = 0
@@ -177,6 +183,8 @@ class SetFlapDialog(Cancelable, BaseWizardStep):
         confirm_label.set_margin_top(20)
         confirm_label.set_markup(
             "<span size='large'>" + _("Set flap to position ") + f"{int(flap_position)}</span>")
+        confirm_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        confirm_label.set_line_wrap(True)
         self.content.add(confirm_label)
         continue_button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
         continue_button.set_vexpand(False)
@@ -211,6 +219,8 @@ class WaitForChamberCooldown(Cancelable, BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Chamber too hot") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
         self.chamber_progressbar = Gtk.ProgressBar()
         self.chamber_progressbar.set_show_text(False)
@@ -282,6 +292,8 @@ class WaitForTemperature(Cancelable, BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Wait for temperature...") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
         self.temperature_progressbar = Gtk.ProgressBar()
         #self.labels['temperature_progressbar'].set_fraction(0)
@@ -491,6 +503,8 @@ class Purging(Cancelable, BaseWizardStep, TemperatureSetter):
         load_label = self._screen.gtk.Label("")
         load_label.set_margin_top(20)
         load_label.set_markup("<span size='large'>" + _("Filament is purging...") + "</span>")
+        load_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        load_label.set_line_wrap(True)
         self.content.add(load_label)
 
     def update_loop(self):
@@ -523,6 +537,8 @@ class PurgingMoreDialog(BaseWizardStep, TemperatureSetter):
         confirm_label.set_margin_top(20)
         confirm_label.set_markup(
             "<span size='large'>" + _("Is the color clean?") + "</span>")
+        confirm_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        confirm_label.set_line_wrap(True)
         self.content.add(confirm_label)
         purge_button = self._screen.gtk.Button(label=_("Purge More"), style=f"color1")
         purge_button.set_vexpand(False)

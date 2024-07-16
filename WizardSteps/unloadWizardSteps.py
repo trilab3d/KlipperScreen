@@ -56,6 +56,8 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
             label.set_markup(
                 "<span size='large'>" + (
                         self.label2 + f"{loaded_filament}?") + "</span>")
+            label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+            label.set_line_wrap(True)
             self.content.add(label)
             grid = self._screen.gtk.HomogeneousGrid()
             yes = self._screen.gtk.Button(label=_("Yes"), style=f"color1")
@@ -72,6 +74,8 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
             label.set_margin_top(20)
             label.set_markup(
                 "<span size='large'>" + self.label + "</span>")
+            label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+            label.set_line_wrap(True)
             self.content.add(label)
             preheat_grid = self._screen.gtk.HomogeneousGrid()
             i = 0
@@ -168,6 +172,8 @@ class Unloading(loadWizardSteps.Cancelable, BaseWizardStep):
         unload_label = self._screen.gtk.Label("")
         unload_label.set_margin_top(20)
         unload_label.set_markup("<span size='large'>" + _("Filament is unloading...") + "</span>")
+        unload_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        unload_label.set_line_wrap(True)
         self.content.add(unload_label)
 
     def update_loop(self):
@@ -194,6 +200,8 @@ class DoneDialog(loadWizardSteps.PurgingMoreDialog):
         confirm_label.set_margin_top(20)
         confirm_label.set_markup(
             "<span size='large'>" + _("Filament unloaded") + "</span>")
+        confirm_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        confirm_label.set_line_wrap(True)
         self.content.add(confirm_label)
         second_label = self._screen.gtk.Label("")
         second_label.set_margin_left(40)
@@ -241,6 +249,8 @@ class ServicePositionNeededDialog(BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Move printhead to service position?") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
         continue_button = self._screen.gtk.Button(label=_("Yes"), style=f"color1")
         continue_button.set_vexpand(False)

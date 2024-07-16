@@ -177,6 +177,8 @@ class FactoryResetDone(BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Printer was reset to factory defaults.") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
         self.progressbar = Gtk.ProgressBar()
         self.progressbar.set_fraction(0)

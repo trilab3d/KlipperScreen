@@ -18,6 +18,8 @@ class ConfirmNoPrintPressent(BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Make sure the print volume is empty.") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
         continue_button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
         continue_button.set_vexpand(False)
@@ -54,6 +56,8 @@ class MoveToServicePosition(BaseWizardStep):
         load_label = self._screen.gtk.Label("")
         load_label.set_margin_top(20)
         load_label.set_markup("<span size='large'>" + _("Printhead is moving...") + "</span>")
+        load_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        load_label.set_line_wrap(True)
         self.content.add(load_label)
 
     def update_loop(self):
@@ -78,6 +82,8 @@ class DoneDialog(BaseWizardStep):
         heating_label.set_margin_top(20)
         heating_label.set_markup(
             "<span size='large'>" + _("Printhead has been moved to the service position.") + "</span>")
+        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        heating_label.set_line_wrap(True)
         self.content.add(heating_label)
         continue_button = self._screen.gtk.Button(label=_("Close"), style=f"color1")
         continue_button.set_vexpand(False)

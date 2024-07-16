@@ -89,7 +89,7 @@ class DoneDialog(BaseWizardStep):
         continue_button.set_vexpand(False)
         continue_button.connect("clicked", self._screen._menu_go_back)
         self.content.add(continue_button)
-        continue_button = self._screen.gtk.Button(label=_("Home and Close"), style=f"color1")
+        continue_button = self._screen.gtk.Button(label=_("Home Printhead and Close"), style=f"color1")
         continue_button.set_vexpand(False)
         continue_button.connect("clicked", self.home_and_close)
         self.content.add(continue_button)

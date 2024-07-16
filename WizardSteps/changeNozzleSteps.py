@@ -27,13 +27,13 @@ class CooldownPrompt(BaseWizardStep):
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         img = self._screen.gtk.Image("warning", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
-        confirm_label = self._screen.gtk.Label("")
-        confirm_label.set_margin_top(20)
-        confirm_label.set_markup(
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
             "<span size='large'>" + _("Nozzle is Hot!") + "</span>")
-        confirm_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
-        confirm_label.set_line_wrap(True)
-        self.content.add(confirm_label)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
         second_label = self._screen.gtk.Label("")
         second_label.set_margin_top(20)
         second_label.set_margin_left(10)
@@ -73,13 +73,13 @@ class Cooling(BaseWizardStep):
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         img = self._screen.gtk.Image("cooling", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
-        heating_label = self._screen.gtk.Label("")
-        heating_label.set_margin_top(20)
-        heating_label.set_markup(
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
             "<span size='large'>" + _("Wait for nozzle cooldown") + "</span>")
-        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
-        heating_label.set_line_wrap(True)
-        self.content.add(heating_label)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
         extruder = self._screen.printer.data['extruder']
         self.actual_temperature = self._screen.gtk.Label(f"Temperature: {int(extruder['temperature'])} °C")
         self.actual_temperature.set_hexpand(True)
@@ -115,13 +115,13 @@ class ConfirmSkipCooling(BaseWizardStep):
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         img = self._screen.gtk.Image("warning", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
-        heating_label = self._screen.gtk.Label("")
-        heating_label.set_margin_top(20)
-        heating_label.set_markup(
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
             "<span size='large'>" + _("Nozzle is still dangerously hot. Continue at your own risk!") + "</span>")
-        heating_label.set_line_wrap(True)
-        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
-        self.content.add(heating_label)
+        label.set_line_wrap(True)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        self.content.add(label)
         extruder = self._screen.printer.data['extruder']
         self.actual_temperature = self._screen.gtk.Label(f"Temperature: {int(extruder['temperature'])} °C")
         self.actual_temperature.set_hexpand(True)
@@ -151,13 +151,13 @@ class ServicePositionDialog(BaseWizardStep):
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         img = self._screen.gtk.Image("is_bed_clear", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
-        heating_label = self._screen.gtk.Label("")
-        heating_label.set_margin_top(20)
-        heating_label.set_markup(
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
             "<span size='large'>" + _("Check Print volume is empty") + "</span>")
-        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
-        heating_label.set_line_wrap(True)
-        self.content.add(heating_label)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
         comment = self._screen.gtk.Label("")
         comment.set_margin_top(5)
         comment.set_margin_left(10)
@@ -197,13 +197,13 @@ class UnscrewNozzle(BaseWizardStep):
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         img = self._screen.gtk.Image("unscrew", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
-        heating_label = self._screen.gtk.Label("")
-        heating_label.set_margin_top(20)
-        heating_label.set_markup(
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
             "<span size='large'>" + _("Unscrew Nozzle") + "</span>")
-        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
-        heating_label.set_line_wrap(True)
-        self.content.add(heating_label)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
         extruder = self._screen.printer.data['extruder']
         self.actual_temperature = self._screen.gtk.Label(f"Temperature: {int(extruder['temperature'])} °C")
         self.actual_temperature.set_hexpand(True)
@@ -239,13 +239,13 @@ class SelectNozzleType(BaseWizardStep):
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         img = self._screen.gtk.Image("revos", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
-        heating_label = self._screen.gtk.Label("")
-        heating_label.set_margin_top(20)
-        heating_label.set_markup(
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
             "<span size='large'>" + _("Select Nozzle Type") + "</span>")
-        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
-        heating_label.set_line_wrap(True)
-        self.content.add(heating_label)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
 
         preheat_grid = self._screen.gtk.HomogeneousGrid()
         i = 0
@@ -281,13 +281,13 @@ class SelectNozzleDiameter(BaseWizardStep):
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         img = self._screen.gtk.Image("revos", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
-        heating_label = self._screen.gtk.Label("")
-        heating_label.set_margin_top(20)
-        heating_label.set_markup(
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
             "<span size='large'>" + _("Select Nozzle Diameter") + "</span>")
-        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
-        heating_label.set_line_wrap(True)
-        self.content.add(heating_label)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
 
         preheat_grid = self._screen.gtk.HomogeneousGrid()
         i = 0
@@ -323,13 +323,13 @@ class ScrewNozzleIn(BaseWizardStep):
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         img = self._screen.gtk.Image("screw-in", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
-        heating_label = self._screen.gtk.Label("")
-        heating_label.set_margin_top(20)
-        heating_label.set_markup(
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
             "<span size='large'>" + _("Screw the nozzle in") + "</span>")
-        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
-        heating_label.set_line_wrap(True)
-        self.content.add(heating_label)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
         second_label = self._screen.gtk.Label("")
         second_label.set_margin_top(20)
         second_label.set_margin_left(10)
@@ -363,13 +363,13 @@ class PurgeDialog(BaseWizardStep, wizardCommons.TemperatureSetter):
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         img = self._screen.gtk.Image("purged", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
-        heating_label = self._screen.gtk.Label("")
-        heating_label.set_margin_top(20)
-        heating_label.set_markup(
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
             "<span size='large'>" + _("Nozzle purge is required") + "</span>")
-        heating_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
-        heating_label.set_line_wrap(True)
-        self.content.add(heating_label)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
 
         save_variables = self._screen.printer.data['save_variables']['variables']
         loaded_filament = save_variables['loaded_filament'] if 'loaded_filament' in save_variables else "NONE"
@@ -440,13 +440,13 @@ class DoneDialog(loadWizardSteps.PurgingMoreDialog):
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         img = self._screen.gtk.Image("unload_guide32", self._screen.gtk.content_width * .945, 450)
         self.content.add(img)
-        confirm_label = self._screen.gtk.Label("")
-        confirm_label.set_margin_top(20)
-        confirm_label.set_markup(
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
             "<span size='large'>" + _("Filament unloaded") + "</span>")
-        confirm_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
-        confirm_label.set_line_wrap(True)
-        self.content.add(confirm_label)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
         second_label = self._screen.gtk.Label("")
         second_label.set_margin_left(40)
         second_label.set_margin_right(40)

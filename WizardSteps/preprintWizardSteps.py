@@ -35,15 +35,15 @@ class PrintDetail(BaseWizardStep):
         else:
             img = self._screen.gtk.Image("thumbnail", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
-        heating_label = self._screen.gtk.Label("")
-        heating_label.set_margin_top(20)
-        heating_label.set_margin_left(10)
-        heating_label.set_margin_right(10)
-        heating_label.set_markup(
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_margin_left(10)
+        label.set_margin_right(10)
+        label.set_markup(
             "<span size='x-large'>" + (filename if filename else "None") + "</span>")
-        heating_label.set_line_wrap(True)
-        heating_label.set_line_wrap_mode(Pango.WrapMode.CHAR)
-        self.content.add(heating_label)
+        label.set_line_wrap(True)
+        label.set_line_wrap_mode(Pango.WrapMode.CHAR)
+        self.content.add(label)
 
         info_box = Gtk.Box()
         info_box.set_hexpand(True)

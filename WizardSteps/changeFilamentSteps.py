@@ -19,13 +19,13 @@ class ConfirmPause(BaseWizardStep):
         img = self._screen.gtk.Image("pause", self._screen.gtk.content_width * .9,
                                      self._screen.gtk.content_height * .5)
         self.content.add(img)
-        confirm_label = self._screen.gtk.Label("")
-        confirm_label.set_margin_top(20)
-        confirm_label.set_markup(
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
             "<span size='large'>" + _("Pause Print") + "</span>")
-        confirm_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
-        confirm_label.set_line_wrap(True)
-        self.content.add(confirm_label)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
         second_label = self._screen.gtk.Label("")
         second_label.set_margin_top(20)
         second_label.set_margin_left(10)
@@ -137,13 +137,13 @@ class UnloadedDialog(BaseWizardStep):
         img = self._screen.gtk.Image("unload_guide", self._screen.gtk.content_width * .9,
                                      self._screen.gtk.content_height * .5)
         self.content.add(img)
-        confirm_label = self._screen.gtk.Label("")
-        confirm_label.set_margin_top(20)
-        confirm_label.set_markup(
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
             "<span size='large'>" + _("Filament unloaded successfully") + "</span>")
-        confirm_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
-        confirm_label.set_line_wrap(True)
-        self.content.add(confirm_label)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
         second_label = self._screen.gtk.Label("")
         second_label.set_margin_left(40)
         second_label.set_margin_right(40)
@@ -207,13 +207,13 @@ class PurgingMoreDialog(BaseWizardStep):
         img = self._screen.gtk.Image("purging", self._screen.gtk.content_width * .9,
                                      self._screen.gtk.content_height * .5)
         self.content.add(img)
-        confirm_label = self._screen.gtk.Label("")
-        confirm_label.set_margin_top(20)
-        confirm_label.set_markup(
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
             "<span size='large'>" + _("Is the color clean?") + "</span>")
-        confirm_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
-        confirm_label.set_line_wrap(True)
-        self.content.add(confirm_label)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
         purge_button = self._screen.gtk.Button(label=_("No, purge more"), style=f"color1")
         purge_button.set_vexpand(False)
         purge_button.connect("clicked", self.purge_filament_pressed)
@@ -240,13 +240,13 @@ class ContinuePrintDialog(BaseWizardStep):
         img = self._screen.gtk.Image("clean_extrusion", self._screen.gtk.content_width * .9,
                                      self._screen.gtk.content_height * .5)
         self.content.add(img)
-        confirm_label = self._screen.gtk.Label("")
-        confirm_label.set_margin_top(20)
-        confirm_label.set_markup(
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
             "<span size='large'>" + _("Clean extruded material and close the door.") + "</span>")
-        confirm_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
-        confirm_label.set_line_wrap(True)
-        self.content.add(confirm_label)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
         second_label = self._screen.gtk.Label("")
         second_label.set_margin_top(5)
         second_label.set_markup(

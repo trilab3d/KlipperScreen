@@ -789,6 +789,26 @@ class JobStatusPanel(ScreenPanel):
                 f"{data['extruder']['pressure_advance']:.2f}"
             )
 
+        if "heaters" in data:
+            waiting_status = data["heaters"]["waiting_status"]
+            parts = waiting_status.split(":")
+            waiting_condition = parts[0]
+            waiting_heater = parts[1] if len(parts) > 1 else None
+            if waiting_status == "upper-threshold:heater_chamber":
+                self.update_status_message("Waiting for chamber to cool down")
+            elif waiting_condition == "check_busy":
+                if waiting_heater == "extruder":
+                    heater_pretty = "extruder"
+                elif waiting_heater == "heater_bed":
+                    heater_pretty = "bed"
+                elif waiting_heater == "heater_chamber":
+                    heater_pretty = "chamber"
+                else:
+                    heater_pretty = waiting_heater
+                self.update_status_message(f"Waiting for {heater_pretty} to heat up")
+            else:
+                self.update_status_message("")
+
         if "gcode_move" in data:
             with contextlib.suppress(KeyError):
                 self.pos_z = round(float(data["gcode_move"]["gcode_position"][2]), 2)

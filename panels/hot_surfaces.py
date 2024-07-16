@@ -37,6 +37,11 @@ class HotSurfacesPanel(ScreenPanel):
         label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
         box.add(label)
 
+        button = self._screen.gtk.Button(label=_("Ok"), style=f"color1")
+        button.set_vexpand(False)
+        button.connect("clicked", self._screen._menu_go_back)
+        box.add(button)
+
         self.fetch_sensors()
         GLib.timeout_add_seconds(1, self.fetch_sensors)
 

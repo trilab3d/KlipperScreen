@@ -49,27 +49,38 @@ class HotSurfacesPanel(ScreenPanel):
 
     def activate(self):
         self.do_schedule_refresh = True
-        self.fetch_sensors()
         GLib.timeout_add_seconds(1, self.fetch_sensors)
 
     def deactivate(self):
         self.do_schedule_refresh = False
 
     def fetch_sensors(self):
+        if not self.do_schedule_refresh:
+            return False
+
         is_hot = False
         try:
-            if self.printer.data["heater_bed"]["temperature"] > 60:
+            if self._printer.data["heater_bed"]["temperature"] > 60:
                 is_hot = True
         except:
             pass
         try:
-            if self.printer.data["heater_generic panel"]["temperature"] > 60:
+            if self._printer.data["heater_generic panel"]["temperature"] > 60:
                 is_hot = True
         except:
             pass
 
-        is_hot = True
         if not is_hot:
+            logging.info(f"Going back - temperature reason")
             self._screen._menu_go_back()
+            return self.do_schedule_refresh
+
+        try:
+            closed = self._printer.data["door_sensor"]["door_closed_raw"]
+            if closed:
+                self._screen._menu_go_back()
+                return self.do_schedule_refresh
+        except Exception as e:
+            pass
 
         return self.do_schedule_refresh

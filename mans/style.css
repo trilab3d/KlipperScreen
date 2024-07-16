@@ -1,0 +1,36 @@
+body {
+    background: black;
+    color: white;
+    cursor: none !important;
+    -webkit-user-select: none !important;
+}
+
+a {
+    cursor: none !important;
+    -webkit-user-select: none !important;
+}
+
+h1 a {
+    color: white;
+    text-decoration: none;
+}
+
+h1, h2 {
+    border-bottom: 3px solid #333333;
+    padding-bottom: 5px;
+    width: 100%;
+    display: block;
+}
+
+img {
+    width: 90%;
+    margin-left: 5%;
+}
+
+.inline-icon {
+    display: inline-block;
+    height: 1em;
+    width: auto;
+    margin: auto;
+    vertical-align:text-bottom;
+}

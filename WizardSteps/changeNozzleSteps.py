@@ -208,7 +208,7 @@ class UnscrewNozzle(BaseWizardStep):
         self.actual_temperature = self._screen.gtk.Label(f"Temperature: {int(extruder['temperature'])} °C")
         self.actual_temperature.set_hexpand(True)
         self.content.add(self.actual_temperature)
-        continue_button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
+        continue_button = self._screen.gtk.Button(label=_("Nozzle unscrewed, continue"), style=f"color1")
         continue_button.set_vexpand(False)
         continue_button.connect("clicked", self.continue_pressed)
         self.content.add(continue_button)

@@ -250,7 +250,12 @@ class SelectNozzleType(BaseWizardStep):
         preheat_grid = self._screen.gtk.HomogeneousGrid()
         i = 0
         for option in self.nozzle_types:
-            option_btn = self._screen.gtk.Button(label=option, style=f"color{(i % 4) + 1}")
+            option_pretty = option
+            if option == "HF":
+                option_pretty = "HF - HighFlow"
+            elif option == "HT":
+                option_pretty = "HT - HighTemp"
+            option_btn = self._screen.gtk.Button(label=option_pretty, style=f"color{(i % 4) + 1}")
             option_btn.connect("clicked", self.option_selected, option)
             option_btn.set_vexpand(False)
             preheat_grid.attach(option_btn, (i % 2), int(i / 2), 1, 1)

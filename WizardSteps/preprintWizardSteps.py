@@ -137,7 +137,7 @@ class PrintDetail(BaseWizardStep):
         box2.set_spacing(4)
         box2.set_halign(Gtk.Align.START)
         box2.set_orientation(Gtk.Orientation.HORIZONTAL)
-        lbl = self._screen.gtk.Label("#TODO#")
+        lbl = self._screen.gtk.Label(self.wizard_manager.format_time(fileinfo["estimated_time"]))
         box2.add(lbl)
         box.add(box2)
         box.set_margin_start(12)

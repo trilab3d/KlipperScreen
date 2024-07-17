@@ -86,7 +86,8 @@ PRINTER_BASE_STATUS_OBJECTS = [
     'firmware_retraction',
     'exclude_object',
     'manual_probe',
-    'heaters'
+    'heaters',
+    'gcode_macro _CLIENT_VARIABLE'
 ]
 
 FILTERED_MESSAGES = [
@@ -308,6 +309,7 @@ class KlipperScreen(Gtk.Window):
                 "exclude_object": ["current_object", "objects", "excluded_objects"],
                 "manual_probe": ['is_active'],
                 "heaters": ['waiting_status'],
+                "gcode_macro _CLIENT_VARIABLE": ['print_state']
             }
         }
         requested_updates['objects']["save_variables"] = ["variables"]
@@ -398,6 +400,13 @@ class KlipperScreen(Gtk.Window):
     def handle_message_command(self, command):
         logging.info(f"Incomming command {command}")
         if command == "DOOR_OPEN_PRE":
+            try:
+                print_state = self.printer.data["gcode_macro _CLIENT_VARIABLE"]["print_state"]
+                door_sensor_enabled = self.printer.data["door_sensor"]["enabled"]
+                if print_state >= 20 and print_state < 80 and door_sensor_enabled:  # printer is printing and
+                    return
+            except:
+                pass
             is_hot = False
             try:
                 if self.printer.data["heater_bed"]["temperature"] > 60:
@@ -410,6 +419,10 @@ class KlipperScreen(Gtk.Window):
             except:
                 pass
             if (is_hot and 'hot_surfaces' not in self._cur_panels and
+            if not is_hot:
+                return
+
+            if ('hot_surfaces' not in self._cur_panels and
                     self.panels[self._cur_panels[-1]].__class__.__name__ != 'WizardPanel'):
                 self.show_panel("hot_surfaces", "hot_surfaces", _("Hot Surfaces"), 1,
                                 False)

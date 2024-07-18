@@ -19,6 +19,14 @@ class Security(ScreenPanel):
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
         self.content.add(self.box)
 
+        heading = Gtk.Label(label="<span size='x-large'>" + _("Security") + "</span>", use_markup=True)
+        heading.set_margin_top(10)
+        self.box.add(heading)
+        heading = Gtk.Label(label=_("Login for the web interface."))
+        heading.set_margin_top(5)
+        heading.set_margin_bottom(10)
+        self.box.add(heading)
+
         self.grid = self._gtk.HomogeneousGrid()
         self.grid.set_hexpand(True)
         scroll = self._gtk.ScrolledWindow()

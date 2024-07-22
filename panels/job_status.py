@@ -789,14 +789,22 @@ class JobStatusPanel(ScreenPanel):
                 f"{data['extruder']['pressure_advance']:.2f}"
             )
 
-        if "heaters" in data:
-            waiting_status = data["heaters"]["waiting_status"]
+        heater_updated = False
+        for heater in self._printer.get_heaters():
+            if heater in data:
+                heater_updated = True
+
+        if "heaters" in data or heater_updated:
+            waiting_status = self._printer.data["heaters"]["waiting_status"]
             parts = waiting_status.split(":")
             waiting_condition = parts[0]
             waiting_heater = parts[1] if len(parts) > 1 else None
-            if waiting_status == "upper-threshold:heater_chamber":
-                self.update_status_message("Waiting for chamber to cool down")
-            elif waiting_condition == "check_busy":
+            waiting_arguments = parts[2:] if len(parts) > 2 else []
+            if waiting_condition == "upper-threshold" and waiting_heater == "heater_chamber":
+                target = int(float(waiting_arguments[0]))
+                actual = int(float(self._printer.data["heater_chamber"]["temperature"]))
+                self.update_status_message(f"Waiting for chamber to cool down\n({actual} °C / {target} °C)")
+            elif waiting_condition == "check-busy":
                 if waiting_heater == "extruder":
                     heater_pretty = "extruder"
                 elif waiting_heater == "heater_bed":
@@ -805,7 +813,9 @@ class JobStatusPanel(ScreenPanel):
                     heater_pretty = "chamber"
                 else:
                     heater_pretty = waiting_heater
-                self.update_status_message(f"Waiting for {heater_pretty} to heat up")
+                target = int(float(self._printer.data[waiting_heater]["target"]))
+                actual = int(float(self._printer.data[waiting_heater]["temperature"]))
+                self.update_status_message(f"Waiting for {heater_pretty} to heat up\n({actual} °C / {target} °C)")
             else:
                 self.update_status_message("")
 

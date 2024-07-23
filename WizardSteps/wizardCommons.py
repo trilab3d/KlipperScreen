@@ -57,11 +57,12 @@ class TemperatureSetter:
                 self._screen._ws.klippy.gcode_script(f"SET_FAN_SPEED FAN=intake_flap SPEED=1")
             elif "flap" in self.preheat_options[setting]:
                 self._screen._ws.klippy.gcode_script(f"SET_FAN_SPEED FAN=intake_flap SPEED={self.preheat_options[setting]['flap']}")
-            global speed_request
-            if setting in self.preheat_options and "speed" in self.preheat_options[setting]:
-                speed_request = float(self.preheat_options[setting]["speed"])
-            else:
-                speed_request = 1
+            # This is probably dead stump
+            # global speed_request
+            # if setting in self.preheat_options and "speed" in self.preheat_options[setting]:
+            #     speed_request = float(self.preheat_options[setting]["speed"])
+            # else:
+            #     speed_request = 1
 
     def validate(self, heater, target=None, max_temp=None):
         if target is not None and max_temp is not None:

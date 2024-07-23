@@ -212,7 +212,7 @@ class KlipperScreenConfig:
                 )
                 strs = (
                     'default_printer', 'language', 'print_sort_dir', 'theme', 'screen_blanking', 'font_size',
-                    'print_estimate_method', 'screen_blanking', "screen_on_devices", "screen_off_devices", "view_group"
+                    'screen_blanking', "screen_on_devices", "screen_off_devices", "view_group"
                 )
                 numbers = (
                     'job_complete_timeout', 'job_error_timeout', 'move_speed_xy', 'move_speed_z',
@@ -288,13 +288,6 @@ class KlipperScreenConfig:
                 "section": "main", "name": _("Icon Theme"), "type": "dropdown",
                 "value": "z-bolt", "callback": screen.restart_ks, "options": [
                     {"name": "Z-bolt" + " " + _("(default)"), "value": "z-bolt"}]}},
-            {"print_estimate_method": {
-                "section": "main", "name": _("Estimated Time Method"), "type": "dropdown",
-                "value": "auto", "options": [
-                    {"name": _("Auto") + " " + _("(default)"), "value": "auto"},
-                    {"name": _("File"), "value": "file"},
-                    {"name": _("Filament Used"), "value": "filament"},
-                    {"name": _("Slicer"), "value": "slicer"}]}},
             {"screen_blanking": {
                 "section": "main", "name": _("Screen Power Off Time"), "type": "dropdown",
                 "value": "off", "callback": screen.set_screenblanking_timeout, "options": [

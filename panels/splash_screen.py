@@ -43,7 +43,13 @@ class SplashScreenPanel(ScreenPanel):
         scroll = self._gtk.ScrolledWindow()
         scroll.set_hexpand(True)
         scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        scroll.add(self.labels['text'])
+        self.scroll_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        scroll.add(self.scroll_box)
+        self.scroll_box.add(self.labels['text'])
+
+        self.temperature_info = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.heaters = {}
+        self.heater_labels = {}
 
         self.image_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
 
@@ -59,6 +65,16 @@ class SplashScreenPanel(ScreenPanel):
 
         self.content.add(main)
 
+    def process_update(self, action, data):
+        if action != "notify_status_update":
+            return
+
+        for heater in self.heaters:
+            if heater in data:
+                self.heater_labels[heater].set_label(f"{heater}: {data[heater]['temperature']:.1f}°C / "
+                                    f"{self.heaters[heater]['min_temp']}°C to {self.heaters[heater]['max_temp']}°C")
+
+
     def update_image(self, image):
         for child in self.image_box.get_children():
             self.image_box.remove(child)
@@ -70,6 +86,10 @@ class SplashScreenPanel(ScreenPanel):
             self.is_shutdown = True
         else:
             self.is_shutdown = False
+        if "ADC out of range" in text and self.temperature_info not in self.scroll_box.get_children():
+            self.scroll_box.add(self.temperature_info)
+        elif "ADC out of range" not in text and self.temperature_info in self.scroll_box.get_children():
+            self.scroll_box.remove(self.temperature_info)
         self.labels['text'].set_label(f"{text}")
         self.show_restart_buttons()
         if text.startswith("Connecting"):
@@ -108,6 +128,19 @@ class SplashScreenPanel(ScreenPanel):
         self.check_power_status()
         self._screen.base_panel.show_heaters(False)
         self._screen.base_panel.show_estop(False)
+
+        # rebuild heater debug
+        heaters = self._printer.get_heaters() + self._printer.get_tools()
+        self.heaters = {}
+        self.heater_labels = {}
+        config = self._printer.data["configfile"]["config"]
+        for child in self.temperature_info.get_children():
+            self.temperature_info.remove(child)
+        for heater in heaters:
+            self.heaters[heater] = {"min_temp": config[heater]["min_temp"] if "min_temp" in config[heater] else None,
+                                    "max_temp": config[heater]["max_temp"] if "max_temp" in config[heater] else None}
+            self.heater_labels[heater] = Gtk.Label(heater)
+            self.temperature_info.add(self.heater_labels[heater])
 
     def check_power_status(self):
         if 'power' in self.labels:

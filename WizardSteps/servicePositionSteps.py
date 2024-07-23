@@ -8,6 +8,7 @@ class ConfirmNoPrintPressent(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
         self.next_step = MoveToServicePosition
+        self.cancel_step = None
 
     def activate(self, wizard):
         super().activate(wizard)
@@ -21,17 +22,26 @@ class ConfirmNoPrintPressent(BaseWizardStep):
         label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
         label.set_line_wrap(True)
         self.content.add(label)
-        continue_button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
+        continue_button = self._screen.gtk.Button(label=_("Print volume empty, continue"), style=f"color1")
         continue_button.set_vexpand(False)
         continue_button.connect("clicked", self.continue_pressed)
         self.content.add(continue_button)
-        cancel_button = self._screen.gtk.Button(label=_("Cancel"), style=f"color1")
-        cancel_button.set_vexpand(False)
-        cancel_button.connect("clicked", self.cancel_pressed)
-        self.content.add(cancel_button)
+        if not self.cancel_step:
+            cancel_button = self._screen.gtk.Button(label=_("Cancel"), style=f"color1")
+            cancel_button.set_vexpand(False)
+            cancel_button.connect("clicked", self.cancel_pressed)
+            self.content.add(cancel_button)
+        else:
+            cancel_button = self._screen.gtk.Button(label=_("Continue in current position"), style=f"color1")
+            cancel_button.set_vexpand(False)
+            cancel_button.connect("clicked", self.cancel_step_pressed)
+            self.content.add(cancel_button)
 
     def cancel_pressed(self, widget):
         self._screen._menu_go_back()
+
+    def cancel_step_pressed(self, widget):
+        self.wizard_manager.set_step(self.cancel_step(self._screen))
 
     def continue_pressed(self, widget):
         self.wizard_manager.set_step(self.next_step(self._screen))

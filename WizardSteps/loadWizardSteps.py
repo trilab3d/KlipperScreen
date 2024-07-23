@@ -493,6 +493,8 @@ class Purging(Cancelable, BaseWizardStep, TemperatureSetter):
     def activate(self, wizard):
         super().activate(wizard)
         speed_request = self.wizard_manager.get_wizard_data('speed_request')
+        if not speed_request:
+            speed_request = 1
         logging.info(f"Currently loading {self.wizard_manager.get_wizard_data('currently_loading')}, speed_request: {speed_request}")
         if self.first_purge:
             self.set_temperature(self.wizard_manager.get_wizard_data('currently_loading'),

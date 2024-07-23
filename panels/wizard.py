@@ -26,7 +26,12 @@ class WizardPanel(ScreenPanel):
         self.name_label.set_margin_bottom(10)
         self.set_heading(name)
 
-        self.data_store = {}
+        if "data" in kvargs:
+            self.first_step_data = kvargs["data"]
+        else:
+            self.first_step_data = {}
+
+        self.data_store = self.first_step_data
 
         self.first_step: BaseWizardStep = getattr(module,parts[1])(screen)
         self.current_step: BaseWizardStep = self.first_step
@@ -37,7 +42,7 @@ class WizardPanel(ScreenPanel):
     def activate(self, **kvargs):
         logging.info(f"Current step: {self.current_step}")
         logging.info(f"First step: {self.first_step}")
-        self.data_store = {}
+        self.data_store = self.first_step_data
         self.set_step(self.first_step)
         self.do_schedule_refresh = True
         GLib.timeout_add_seconds(1, self._update_loop)

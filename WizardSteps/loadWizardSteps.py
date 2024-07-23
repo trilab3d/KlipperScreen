@@ -91,7 +91,27 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
         img = self._screen.gtk.Image("prusament", self._screen.gtk.content_width * .945, 450)
         self.content.add(img)
 
-        if (self.load_var and 'save_variables' in self._screen.printer.data and
+        expected_filament = self.wizard_manager.get_wizard_data("expected_filament")
+        if (expected_filament and expected_filament in self.preheat_options):
+            label = self._screen.gtk.Label("")
+            label.set_margin_top(20)
+            label.set_markup(
+                "<span size='large'>" + (
+                        self.label2 + f"{expected_filament}?") + "</span>")
+            label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+            label.set_line_wrap(True)
+            self.content.add(label)
+            grid = self._screen.gtk.HomogeneousGrid()
+            yes = self._screen.gtk.Button(label=_("Yes"), style=f"color1")
+            yes.connect("clicked", self.set_filament_clicked, self.preheat_options)
+            yes.set_vexpand(False)
+            grid.attach(yes, 0, 0, 1, 1)
+            no = self._screen.gtk.Button(label=_("No, select a different material"), style=f"color1")
+            no.connect("clicked", self.set_filament_unknown)
+            no.set_vexpand(False)
+            grid.attach(no, 0, 1, 1, 1)
+            self.content.add(grid)
+        elif (self.load_var and 'save_variables' in self._screen.printer.data and
                 "loaded_filament" in self._screen.printer.data['save_variables']['variables'] and
                 self._screen.printer.data['save_variables']['variables']["loaded_filament"] in self.preheat_options):
             save_variables = self._screen.printer.data['save_variables']['variables']
@@ -160,6 +180,7 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
         self.wizard_manager.set_step(self.next_step(self._screen))
 
     def set_filament_unknown(self, widget):
+        self.wizard_manager.set_wizard_data("expected_filament", None)
         self.wizard_manager.set_step(self.__class__(self._screen, False))
 
 

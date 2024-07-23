@@ -251,11 +251,13 @@ class PrintDetail(BaseWizardStep):
 
     def load_button_pressed(self, widget):
         self._screen.show_panel("Load Filament", "wizard", "Load Filament", 1, False,
-                                wizard="loadWizardSteps.CheckLoaded", wizard_name="Load Filament")
+                                wizard="loadWizardSteps.CheckLoaded", wizard_name="Load Filament",
+                                data={"expected_filament": self.wizard_manager.get_wizard_data("filament_type")})
 
     def unload_button_pressed(self, widget):
         self._screen.show_panel("Unload Filament", "wizard", "Unload Filament", 1, False,
-                                wizard="unloadWizardSteps.SelectFilament", wizard_name="Unload Filament")
+                                wizard="unloadWizardSteps.SelectFilament", wizard_name="Unload Filament",
+                                data={"expected_filament": self.wizard_manager.get_wizard_data("filament_type")})
 
     def print_pressed(self, widget):
         if self.nozzle_ok and self.filament_ok:
@@ -396,11 +398,13 @@ class MismatchDetected(BaseWizardStep):
 
     def load_button_pressed(self, widget):
         self._screen.show_panel("Load Filament", "wizard", "Load Filament", 1, False,
-                                wizard="loadWizardSteps.CheckLoaded", wizard_name="Load Filament")
+                                wizard="loadWizardSteps.CheckLoaded", wizard_name="Load Filament",
+                                data={"expected_filament": self.wizard_manager.get_wizard_data("filament_type")})
 
     def unload_button_pressed(self, widget):
         self._screen.show_panel("Unload Filament", "wizard", "Unload Filament", 1, False,
-                                wizard="unloadWizardSteps.SelectFilament", wizard_name="Unload Filament")
+                                wizard="unloadWizardSteps.SelectFilament", wizard_name="Unload Filament",
+                                data={"expected_filament": self.wizard_manager.get_wizard_data("filament_type")})
 
     def print_button_pressed(self, widget):
         filename = self.wizard_manager.get_wizard_data("filename")

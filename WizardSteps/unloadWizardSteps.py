@@ -243,7 +243,7 @@ class ServicePositionNeededDialog(BaseWizardStep):
         super().activate(wizard)
         self._screen._ws.klippy.gcode_script(f"SAVE_VARIABLE VARIABLE=filamentretracted VALUE=0")
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945, -1)
+        img = self._screen.gtk.Image("service_position", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
         label = self._screen.gtk.Label("")
         label.set_margin_top(20)

@@ -418,7 +418,7 @@ class KlipperScreen(Gtk.Window):
                     is_hot = True
             except:
                 pass
-            if (is_hot and 'hot_surfaces' not in self._cur_panels and
+
             if not is_hot:
                 return
 

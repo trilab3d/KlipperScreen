@@ -212,7 +212,7 @@ class PrintDetail(BaseWizardStep):
                 button_grid.attach(box, 0, 0, 1, 1)
             else:
                 button = self._screen.gtk.Button("filament", None, "color1")
-                label = self._screen.gtk.Label("Unload")
+                label = self._screen.gtk.Label("Filament Change")
                 button.connect("clicked", self.unload_button_pressed)
                 (width, height) = button.get_size_request()
                 button.set_size_request(width, width)
@@ -256,8 +256,9 @@ class PrintDetail(BaseWizardStep):
 
     def unload_button_pressed(self, widget):
         self._screen.show_panel("Unload Filament", "wizard", "Unload Filament", 1, False,
-                                wizard="unloadWizardSteps.SelectFilament", wizard_name="Unload Filament",
-                                data={"expected_filament": self.wizard_manager.get_wizard_data("filament_type")})
+                                wizard="unloadWizardSteps.SelectFilament", wizard_name="Filament Change",
+                                data={"expected_filament": self.wizard_manager.get_wizard_data("filament_type"),
+                                      "should_act_as_change_wizard": True})
 
     def print_pressed(self, widget):
         if self.nozzle_ok and self.filament_ok:
@@ -376,7 +377,7 @@ class MismatchDetected(BaseWizardStep):
                 nozzle_change_button.connect("clicked", self.load_button_pressed)
                 self.content.add(nozzle_change_button)
             else:
-                nozzle_change_button = self._screen.gtk.Button(label=_("Open filament unload wizard"), style=f"color1")
+                nozzle_change_button = self._screen.gtk.Button(label=_("Open filament change wizard"), style=f"color1")
                 nozzle_change_button.set_vexpand(False)
                 nozzle_change_button.connect("clicked", self.unload_button_pressed)
                 self.content.add(nozzle_change_button)
@@ -403,8 +404,9 @@ class MismatchDetected(BaseWizardStep):
 
     def unload_button_pressed(self, widget):
         self._screen.show_panel("Unload Filament", "wizard", "Unload Filament", 1, False,
-                                wizard="unloadWizardSteps.SelectFilament", wizard_name="Unload Filament",
-                                data={"expected_filament": self.wizard_manager.get_wizard_data("filament_type")})
+                                wizard="unloadWizardSteps.SelectFilament", wizard_name="Filament Change",
+                                data={"expected_filament": self.wizard_manager.get_wizard_data("filament_type"),
+                                      "should_act_as_change_wizard": True})
 
     def print_button_pressed(self, widget):
         filename = self.wizard_manager.get_wizard_data("filename")

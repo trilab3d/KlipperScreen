@@ -87,7 +87,8 @@ PRINTER_BASE_STATUS_OBJECTS = [
     'exclude_object',
     'manual_probe',
     'heaters',
-    'gcode_macro _CLIENT_VARIABLE'
+    'gcode_macro _CLIENT_VARIABLE',
+    'prusa_state'
 ]
 
 FILTERED_MESSAGES = [
@@ -309,7 +310,8 @@ class KlipperScreen(Gtk.Window):
                 "exclude_object": ["current_object", "objects", "excluded_objects"],
                 "manual_probe": ['is_active'],
                 "heaters": ['waiting_status'],
-                "gcode_macro _CLIENT_VARIABLE": ['print_state']
+                "gcode_macro _CLIENT_VARIABLE": ['print_state'],
+                "prusa_state": "state"
             }
         }
         requested_updates['objects']["save_variables"] = ["variables"]

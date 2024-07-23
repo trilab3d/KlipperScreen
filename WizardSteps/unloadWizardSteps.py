@@ -10,6 +10,46 @@ from WizardSteps.baseWizardStep import BaseWizardStep
 from WizardSteps import loadWizardSteps, servicePositionSteps
 from WizardSteps.wizardCommons import *
 
+class CheckPauseNeeded(BaseWizardStep):
+    def __init__(self, screen):
+        super().__init__(screen)
+
+    def activate(self, wizard):
+        super().activate(wizard)
+
+        if self._screen.printer.data["prusa_state"]["state"] != "printing":
+            self.wizard_manager.set_step(SelectFilament(self._screen))
+            return
+
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        img = self._screen.gtk.Image("placeholder34", self._screen.gtk.content_width * .945, 450)
+        self.content.add(img)
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
+            "<span size='large'>" + _("Printer has to be paused") + "</span>")
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
+        pause_button = self._screen.gtk.Button(label=_("Pause print"), style=f"color1")
+        pause_button.set_vexpand(False)
+        pause_button.connect("clicked", self.pause_clicked)
+        self.content.add(pause_button)
+        cancel_button = self._screen.gtk.Button(label=_("Cancel"), style=f"color1")
+        cancel_button.set_vexpand(False)
+        cancel_button.connect("clicked", self.cancel_clicked)
+        self.content.add(cancel_button)
+
+    def update_loop(self):
+        if self._screen.printer.data["prusa_state"]["state"] != "printing":
+            self.wizard_manager.set_step(SelectFilament(self._screen))
+
+    def pause_clicked(self, widget):
+        self._screen._ws.klippy.gcode_script("PAUSE X=-108 Y=-108 Z_MIN=50")
+        self.wizard_manager.set_step(SelectFilament(self._screen))
+
+    def cancel_clicked(self, widget):
+        self._screen._menu_go_back()
 
 class SelectFilament(BaseWizardStep, TemperatureSetter):
     def __init__(self, screen, load_var=True):
@@ -212,21 +252,28 @@ class DoneDialog(loadWizardSteps.PurgingMoreDialog):
             "<span size='small'>" + _(
                 "Pull the end of the filament out of the printer and secure it against tangling.") + "</span>")
         self.content.add(second_label)
-        load_button = self._screen.gtk.Button(label=_("Load New Material"), style=f"color1")
-        load_button.set_vexpand(False)
-        load_button.connect("clicked", self.go_to_load)
-        self.content.add(load_button)
-        cooldown_button = self._screen.gtk.Button(label=_("Close"), style=f"color1")
-        cooldown_button.set_vexpand(False)
-        cooldown_button.connect("clicked", self.cooldown_pressed)
-        self.content.add(cooldown_button)
+        if self.wizard_manager.get_wizard_data("should_act_as_change_wizard"):
+            load_button = self._screen.gtk.Button(label=_("Continue to load new material"), style=f"color1")
+            load_button.set_vexpand(False)
+            load_button.connect("clicked", self.go_to_load)
+            self.content.add(load_button)
+        else:
+            load_button = self._screen.gtk.Button(label=_("Load New Material"), style=f"color1")
+            load_button.set_vexpand(False)
+            load_button.connect("clicked", self.go_to_load)
+            self.content.add(load_button)
+            cooldown_button = self._screen.gtk.Button(label=_("Close"), style=f"color1")
+            cooldown_button.set_vexpand(False)
+            cooldown_button.connect("clicked", self.cooldown_pressed)
+            self.content.add(cooldown_button)
         back_button = self._screen.gtk.Button(label=_("Filament cannot be pulled out, try again"), style=f"color1")
         back_button.set_vexpand(False)
         back_button.connect("clicked", self.retry)
         self.content.add(back_button)
 
     def go_to_load(self, widget):
-        self.wizard_manager.set_heading(_("Load Filament"))
+        if not self.wizard_manager.get_wizard_data("should_act_as_change_wizard"):
+            self.wizard_manager.set_heading(_("Load Filament"))
         self.wizard_manager.set_step(loadWizardSteps.SelectFilament(self._screen))
 
     def retry(self, widget):

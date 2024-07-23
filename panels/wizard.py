@@ -26,7 +26,8 @@ class WizardPanel(ScreenPanel):
         self.name_label.set_margin_bottom(10)
         self.set_heading(name)
 
-        if "data" in kvargs:
+        if "data" in kvargs and kvargs["data"]:
+            logging.info(f"Using wizard data: {kvargs['data']}")
             self.first_step_data = kvargs["data"]
         else:
             self.first_step_data = {}

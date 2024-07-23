@@ -238,7 +238,7 @@ class KlipperScreenConfig:
             elif section.startswith('nozzle_type '):
                 strs = ('diameters', )
             elif section.startswith('menu '):
-                strs = ('name', 'icon', 'panel', 'method', 'params', 'enable', 'confirm', 'style', 'view_groups', 'wizard', 'wizard_name')
+                strs = ('name', 'icon', 'panel', 'method', 'params', 'enable', 'confirm', 'style', 'view_groups', 'wizard', 'wizard_name', 'wizard_data')
             elif section == 'bed_screws':
                 # This section may be deprecated in favor of moving this options under the printer section
                 numbers = ('rotation', '')
@@ -602,6 +602,13 @@ class KlipperScreenConfig:
         if name not in self.config:
             return False
         cfg = self.config[name]
+        wizard_data = cfg.get("wizard_data", "")
+        logging.info(f"wizard data string: {wizard_data}")
+        if wizard_data == "":
+            wizard_data = None
+        else:
+            wizard_data = json.loads(wizard_data)
+        logging.info(f"wizard data: {wizard_data}")
         item = {
             "name": cfg.get("name"),
             "icon": cfg.get("icon", None),
@@ -612,7 +619,8 @@ class KlipperScreenConfig:
             "params": cfg.get("params", "{}"),
             "style": cfg.get("style", None),
             "wizard": cfg.get("wizard", None),
-            "wizard_name": cfg.get("wizard_name", None)
+            "wizard_name": cfg.get("wizard_name", None),
+            "wizard_data": wizard_data
         }
 
         return {name[(len(menu) + 6):]: item}

@@ -403,25 +403,14 @@ class KlipperScreen(Gtk.Window):
         logging.info(f"Incomming command {command}")
         if command == "DOOR_OPEN_PRE":
             try:
-                print_state = self.printer.data["gcode_macro _CLIENT_VARIABLE"]["print_state"]
+                print_state = self.printer.data["prusa_state"]["state"]
                 door_sensor_enabled = self.printer.data["door_sensor"]["enabled"]
-                if print_state >= 20 and print_state < 80 and door_sensor_enabled:  # printer is printing and
+                if door_sensor_enabled and print_state == "printing":  # DOOR_OPEN command will come
                     return
             except:
                 pass
-            is_hot = False
-            try:
-                if self.printer.data["heater_bed"]["temperature"] > 60:
-                    is_hot = True
-            except:
-                pass
-            try:
-                if self.printer.data["heater_generic panel"]["temperature"] > 60:
-                    is_hot = True
-            except:
-                pass
 
-            if not is_hot:
+            if not self.check_hot_surfaces():
                 return
 
             if ('hot_surfaces' not in self._cur_panels and
@@ -432,6 +421,9 @@ class KlipperScreen(Gtk.Window):
         if command == "DOOR_OPEN":
             self.show_panel("door_open", "door_open", _("Door Opened"), 2,
                             False, reason="door")
+            if self.check_hot_surfaces():
+                self.show_panel("hot_surfaces", "hot_surfaces", _("Hot Surfaces"), 1,
+                                False)
         elif command == "FILAMENT_RUNOUT":
             self.show_panel("filament_runout", "wizard", _("Filament Runout"), 2,
                             False, wizard="filamentRunoutSteps.RemoveFilamentDialog", wizard_name=_("Filament Runout"))
@@ -440,6 +432,18 @@ class KlipperScreen(Gtk.Window):
         elif command == "UPDATE_AVAILABLE":
             if 'system' not in self._cur_panels:
                 self.show_panel("system", "system", "System", 1, False)
+    def check_hot_surfaces(self):
+        try:
+            if self.printer.data["heater_bed"]["temperature"] > 60:
+                return True
+        except:
+            pass
+        try:
+            if self.printer.data["heater_generic panel"]["temperature"] > 60:
+                return True
+        except:
+            pass
+        return False
     def show_popup_message(self, message, level=3):
         self.close_screensaver()
         if self.popup_message is not None:

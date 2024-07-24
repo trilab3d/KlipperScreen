@@ -58,19 +58,7 @@ class HotSurfacesPanel(ScreenPanel):
         if not self.do_schedule_refresh:
             return False
 
-        is_hot = False
-        try:
-            if self._printer.data["heater_bed"]["temperature"] > 60:
-                is_hot = True
-        except:
-            pass
-        try:
-            if self._printer.data["heater_generic panel"]["temperature"] > 60:
-                is_hot = True
-        except:
-            pass
-
-        if not is_hot:
+        if not self._screen.check_hot_surfaces():
             logging.info(f"Going back - temperature reason")
             self._screen._menu_go_back()
             return self.do_schedule_refresh

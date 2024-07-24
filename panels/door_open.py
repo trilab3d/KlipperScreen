@@ -22,7 +22,7 @@ class DoorOpenFilamentRunoutPanel(ScreenPanel):
         self.header = Gtk.Label()
         self.header.set_margin_top(40)
         self.header.set_margin_bottom(20)
-        self.header.set_markup("<span size='xx-large'>" + _("Door Opened!") + "</span>")
+        self.header.set_markup("<span size='xx-large'>" + _("The door was open") + "</span>")
         box.add(self.header)
 
         image_box = Gtk.Box()

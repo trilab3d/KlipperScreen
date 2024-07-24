@@ -39,15 +39,8 @@ class RemoveFilamentDialog(BaseWizardStep):
         self.content.add(second_label)
         self.continue_button = self._screen.gtk.Button(label=_("Filament unloaded, continue"), style=f"color1")
         self.continue_button.set_vexpand(False)
-        self.continue_button.set_sensitive(False)
         self.continue_button.connect("clicked", self.go_to_load)
         self.content.add(self.continue_button)
-
-    def update_loop(self):
-        if self.filament_sensor and self.filament_sensor["enabled"] and self.filament_sensor["filament_detected"]:
-            self.continue_button.set_sensitive(False)
-        else:
-            self.continue_button.set_sensitive(True)
 
     def go_to_load(self, widget):
         self.wizard_manager.set_step(SelectFilament(self._screen))

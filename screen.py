@@ -445,6 +445,11 @@ class KlipperScreen(Gtk.Window):
                 return True
         except:
             pass
+        try:
+            if self.printer.data["extruder"]["temperature"] > 60:
+                return True
+        except:
+            pass
         return False
     def show_popup_message(self, message, level=3):
         self.close_screensaver()

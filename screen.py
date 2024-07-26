@@ -155,7 +155,6 @@ class KlipperScreen(Gtk.Window):
         self.dialogs = []
         self.confirm = None
         self.panels_reinit = []
-        self.panel_mutex = threading.RLock()
 
         configfile = os.path.normpath(os.path.expanduser(args.configfile))
 
@@ -375,43 +374,34 @@ class KlipperScreen(Gtk.Window):
                 logging.info(f"extra: {kwargs['extra']}")
                 self.panels[panel_name].__init__(self, title, **kwargs)
 
-            self._cur_panels.append(panel_name)
             if panel_name in self.panels_reinit:
                 logging.info("Reinitializing panel")
                 self.panels[panel_name].__init__(self, title, **kwargs)
                 self.panels_reinit.remove(panel_name)
 
+            self._cur_panels.append(panel_name)  # this must be atomic operation with attach_panel
             self.attach_panel(panel_name)
         except Exception as e:
             logging.exception(f"Error attaching panel:\n{e}")
             log_exception(type(e), e, e.__traceback__)
 
     def attach_panel(self, panel_name):
-        with self.panel_mutex:
-            self.base_panel.add_content(self.panels[panel_name])
-            logging.debug(f"Current panel hierarchy: {' > '.join(self._cur_panels)}")
-            self.base_panel.show_back(len(self._cur_panels) > 1)
-            if hasattr(self.panels[panel_name], "process_update"):
-                self.add_subscription(panel_name)
-                self.process_update("notify_status_update", self.printer.data)
-                self.process_update("notify_busy", self.printer.busy)
-            if hasattr(self.panels[panel_name], "activate"):
-                self.panels[panel_name].activate()
-            self.show_all()
-            self.base_panel.show_background(self.panels[panel_name].show_bg)
+        self.base_panel.add_content(self.panels[panel_name])
+        logging.debug(f"Current panel hierarchy: {' > '.join(self._cur_panels)}")
+        self.base_panel.show_back(len(self._cur_panels) > 1)
+        if hasattr(self.panels[panel_name], "process_update"):
+            self.add_subscription(panel_name)
+            self.process_update("notify_status_update", self.printer.data)
+            self.process_update("notify_busy", self.printer.busy)
+        if hasattr(self.panels[panel_name], "activate"):
+            self.panels[panel_name].activate()
+        self.show_all()
+        self.base_panel.show_background(self.panels[panel_name].show_bg)
 
     # Handles commands from RESPOND TYPE=command MSG=...
     def handle_message_command(self, command):
         logging.info(f"Incomming command {command}")
         if command == "DOOR_OPEN_PRE":
-            try:
-                print_state = self.printer.data["prusa_state"]["state"]
-                door_sensor_enabled = self.printer.data["door_sensor"]["enabled"]
-                if door_sensor_enabled and print_state == "printing":  # DOOR_OPEN command will come
-                    return
-            except:
-                pass
-
             if not self.check_hot_surfaces():
                 return
 
@@ -625,31 +615,30 @@ class KlipperScreen(Gtk.Window):
             logging.info("No items in menu")
 
     def _remove_all_panels(self):
-        with self.panel_mutex:
-            for _ in self.base_panel.content.get_children():
-                self.base_panel.content.remove(_)
-            for dialog in self.dialogs:
-                self.gtk.remove_dialog(dialog)
-            for panel in list(self.panels):
-                if hasattr(self.panels[panel], "deactivate"):
-                    self.panels[panel].deactivate()
-            self.subscriptions.clear()
-            self._cur_panels.clear()
-            self.close_screensaver()
+        for _ in self.base_panel.content.get_children():
+            self.base_panel.content.remove(_)
+        for dialog in self.dialogs:
+            self.gtk.remove_dialog(dialog)
+        for panel in list(self.panels):
+            if hasattr(self.panels[panel], "deactivate"):
+                self.panels[panel].deactivate()
+        self.subscriptions.clear()
+        self._cur_panels.clear()
+        self.close_screensaver()
 
     def _remove_current_panel(self, pop=True):
-        with self.panel_mutex:
-            if len(self._cur_panels) < 1:
-                self.reload_panels()
-                return
-            self.base_panel.remove(self.panels[self._cur_panels[-1]].content)
-            if hasattr(self.panels[self._cur_panels[-1]], "deactivate"):
-                self.panels[self._cur_panels[-1]].deactivate()
-            if self._cur_panels[-1] in self.subscriptions:
-                self.subscriptions.remove(self._cur_panels[-1])
-            if pop:
-                del self._cur_panels[-1]
-                self.attach_panel(self._cur_panels[-1])
+        logging.debug(f"_remove_current_panel pop={pop}, cur_panels: {self._cur_panels[-1]} - thread: {threading.get_ident()}")
+        if len(self._cur_panels) < 1:
+            self.reload_panels()
+            return
+        self.base_panel.remove(self.panels[self._cur_panels[-1]].content)
+        if hasattr(self.panels[self._cur_panels[-1]], "deactivate"):
+            self.panels[self._cur_panels[-1]].deactivate()
+        if self._cur_panels[-1] in self.subscriptions:
+            self.subscriptions.remove(self._cur_panels[-1])
+        if pop:
+            del self._cur_panels[-1]
+            self.attach_panel(self._cur_panels[-1])
 
     def _menu_go_back(self, widget=None, home=False):
         logging.info(f"#### Menu go {'home' if home else 'back'}")

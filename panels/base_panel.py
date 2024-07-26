@@ -49,6 +49,7 @@ class BasePanel(ScreenPanel):
         self.last_update_status = None
         self.last_update_status_time = datetime.now()
         self.titlebar_items = []
+        self.notification_states = {}
         self.titlebar_name_type = None
         self.buttons_showing = {
             'printer_select': len(self._config.get_printers()) > 1,
@@ -284,6 +285,8 @@ class BasePanel(ScreenPanel):
     def add_content(self, panel):
         self.current_panel = panel
         self.set_title(panel.title)
+        for child in self.content.get_children():
+            self.content.remove(child)
         self.content.add(panel.content)
 
     def show_help(self, widget=None):

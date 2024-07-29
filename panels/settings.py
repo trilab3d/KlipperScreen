@@ -32,6 +32,12 @@ class SettingsPanel(ScreenPanel):
             "panel_title": "Prusa Connect",
             "wizard": "prusaConnectSteps.GetStatus"
         }})
+        options.append({"slicer_profiles": {
+            "name": _("Slicer Profiles"),
+            "type": "wizard",
+            "panel_title": "Slicer Profiles",
+            "wizard": "exportSlicerProfilesSteps.ExportSlicerProfiles"
+        }})
         options.append({"security": {
             "name": _("Security"),
             "type": "panel",

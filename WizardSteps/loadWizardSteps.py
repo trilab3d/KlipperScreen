@@ -103,7 +103,7 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
             self.content.add(label)
             grid = self._screen.gtk.HomogeneousGrid()
             yes = self._screen.gtk.Button(label=_("Yes"), style=f"color1")
-            yes.connect("clicked", self.set_filament_clicked, self.preheat_options)
+            yes.connect("clicked", self.set_filament_clicked, expected_filament)
             yes.set_vexpand(False)
             grid.attach(yes, 0, 0, 1, 1)
             no = self._screen.gtk.Button(label=_("No, select a different material"), style=f"color1")

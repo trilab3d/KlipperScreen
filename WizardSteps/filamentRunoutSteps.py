@@ -17,8 +17,7 @@ class RemoveFilamentDialog(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("unload_guide_disassembled", self._screen.gtk.content_width * .9,
-                                     self._screen.gtk.content_height * .5)
+        img = self._screen.gtk.Image("unload_guide_disassembled", self._screen.gtk.content_width * .945, -1)
         self.content.add(img)
         label = self._screen.gtk.Label("")
         label.set_margin_top(20)
@@ -85,8 +84,7 @@ class PurgingMoreDialog(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("purging", self._screen.gtk.content_width * .9,
-                                     self._screen.gtk.content_height * .5)
+        img = self._screen.gtk.Image("purging", self._screen.gtk.content_width * .945,-1)
         self.content.add(img)
         label = self._screen.gtk.Label("")
         label.set_margin_top(20)
@@ -118,8 +116,7 @@ class ContinuePrintDialog(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("clean_extrusion", self._screen.gtk.content_width * .9,
-                                     self._screen.gtk.content_height * .5)
+        img = self._screen.gtk.Image("clean_extrusion", self._screen.gtk.content_width * .945,-1)
         self.content.add(img)
         label = self._screen.gtk.Label("")
         label.set_margin_top(20)

@@ -64,12 +64,19 @@ class NoUSB(BaseWizardStep):
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("warning", self._screen.gtk.content_width * .945,-1)
+        img = self._screen.gtk.Image("warning43", self._screen.gtk.content_width * .945,-1)
         self.content.add(img)
         label = self._screen.gtk.Label("")
         label.set_margin_top(20)
         label.set_markup(
             "<span size='large'>" + _("No USB disk found") + "</span>")
+        label.set_line_wrap(True)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        self.content.add(label)
+        label = self._screen.gtk.Label("")
+        #label.set_margin_top(20)
+        label.set_markup(
+            "<span size='small'>" + _("Insert USB disk where slicer profiles can be exported.") + "</span>")
         label.set_line_wrap(True)
         label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
         self.content.add(label)

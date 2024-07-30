@@ -73,7 +73,8 @@ class KlippyFiles:
                     self.file_metadata_counters[filename] = 0
                 if self.file_metadata_counters[filename] < 10:
                     self.file_metadata_counters[filename] += 1
-                    GLib.timeout_add_seconds(3, self._screen._ws.klippy.get_file_metadata, filename, self._callback)
+                    progressive_interval = 3 * self.file_metadata_counters[filename]  # To eliminate lagging all printer but also keep fast initial response
+                    GLib.timeout_add_seconds(progressive_interval, self._screen._ws.klippy.get_file_metadata, filename, self._callback)
                 else:
                     logging.warning(f"No metadata found in time limit for file {filename}")
                 return

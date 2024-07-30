@@ -52,7 +52,9 @@ class ExportSlicerProfiles(BaseWizardStep):
         if "factory_device_name" in rsp:
             logging.info(f"exporting to /opt/gcodes/usb/")
             os.system(f"cp /home/trilab/printer_data/profiles/* /opt/gcodes/usb/")
+            os.system("sync")
             logging.info("Export done")
+            time.sleep(3)
             self.wizard_manager.set_step(Exported(self._screen))
         else:
             logging.error("No factory_device_name in rsp")
@@ -105,3 +107,17 @@ class Exported(BaseWizardStep):
         label.set_line_wrap(True)
         label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
         self.content.add(label)
+        label = self._screen.gtk.Label("")
+        # label.set_margin_top(20)
+        label.set_markup(
+            "<span size='small'>" + _("You can now remove USB disk and continue with importing in PrusaSlicer.") + "</span>")
+        label.set_line_wrap(True)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        self.content.add(label)
+        close_button = self._screen.gtk.Button(label=_("Close"), style=f"color1")
+        close_button.set_vexpand(False)
+        close_button.connect("clicked", self.close_pressed)
+        self.content.add(close_button)
+
+    def close_pressed(self, widget):
+        self._screen._menu_go_back()

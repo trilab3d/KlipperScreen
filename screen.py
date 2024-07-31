@@ -22,6 +22,7 @@ from gi.repository import Gtk, Gdk, GLib, Pango
 from importlib import import_module
 from jinja2 import Environment
 from signal import SIGTERM
+from inspect import signature
 
 from ks_includes import functions
 from ks_includes.KlippyWebsocket import KlippyWebsocket
@@ -385,7 +386,7 @@ class KlipperScreen(Gtk.Window):
             logging.exception(f"Error attaching panel:\n{e}")
             log_exception(type(e), e, e.__traceback__)
 
-    def attach_panel(self, panel_name):
+    def attach_panel(self, panel_name, is_back=False):
         self.base_panel.add_content(self.panels[panel_name])
         logging.debug(f"Current panel hierarchy: {' > '.join(self._cur_panels)}")
         self.base_panel.show_back(len(self._cur_panels) > 1)
@@ -394,7 +395,10 @@ class KlipperScreen(Gtk.Window):
             self.process_update("notify_status_update", self.printer.data)
             self.process_update("notify_busy", self.printer.busy)
         if hasattr(self.panels[panel_name], "activate"):
-            self.panels[panel_name].activate()
+            if is_back and "is_back" in signature(self.panels[panel_name].activate).parameters:
+                self.panels[panel_name].activate(is_back=is_back)
+            else:
+                self.panels[panel_name].activate()
         self.show_all()
         self.base_panel.show_background(self.panels[panel_name].show_bg)
 
@@ -405,8 +409,7 @@ class KlipperScreen(Gtk.Window):
             if not self.check_hot_surfaces():
                 return
 
-            if ('hot_surfaces' not in self._cur_panels and
-                    self.panels[self._cur_panels[-1]].__class__.__name__ != 'WizardPanel'):
+            if 'hot_surfaces' not in self._cur_panels:
                 self.show_panel("hot_surfaces", "hot_surfaces", _("Hot Surfaces"), 1,
                                 False)
 
@@ -638,7 +641,7 @@ class KlipperScreen(Gtk.Window):
             self.subscriptions.remove(self._cur_panels[-1])
         if pop:
             del self._cur_panels[-1]
-            self.attach_panel(self._cur_panels[-1])
+            self.attach_panel(self._cur_panels[-1], is_back=True)
 
     def _menu_go_back(self, widget=None, home=False):
         logging.info(f"#### Menu go {'home' if home else 'back'}")

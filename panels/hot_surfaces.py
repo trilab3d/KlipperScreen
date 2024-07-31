@@ -42,12 +42,10 @@ class HotSurfacesPanel(ScreenPanel):
         button.connect("clicked", self._screen._menu_go_back)
         box.add(button)
 
-        self.fetch_sensors()
-        GLib.timeout_add_seconds(1, self.fetch_sensors)
-
         self.content.add(box)
 
     def activate(self):
+        self._screen.base_panel.show_back(False)
         self.do_schedule_refresh = True
         GLib.timeout_add_seconds(1, self.fetch_sensors)
 

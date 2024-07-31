@@ -68,16 +68,28 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
     def activate(self, wizard):
         super().activate(wizard)
         save_variables = self._screen.printer.data['save_variables']['variables']
+
+        # skip selection without heating
         if ("filamentretracted" in save_variables and save_variables['filamentretracted'] == 1):
             loaded_filament = save_variables['loaded_filament'] if 'loaded_filament' in save_variables else "NONE"
             if loaded_filament == "NONE":
                 loaded_filament = save_variables['last_filament'] if 'last_filament' in save_variables else "NONE"
             if loaded_filament in self.preheat_options:
+                logging.info(f"Skip filament selection without reheat. loaded_filament: {loaded_filament}")
                 self.wizard_manager.set_wizard_data('currently_unloading', loaded_filament)
                 speed = self.preheat_options[loaded_filament]["speed"] if "speed" in self.preheat_options[loaded_filament] else 1
                 self.wizard_manager.set_wizard_data('speed_request', speed)
-            wizard.set_step(self.next_step_on_skip(self._screen))
-            return
+                wizard.set_step(self.next_step_on_skip(self._screen))
+                return
+
+        # skip selection with heating
+        if (not self.wizard_manager.get_wizard_data("repeated_unload") and self.load_var and
+                'save_variables' in self._screen.printer.data and 'loaded_filament' in save_variables):
+            loaded_filament = save_variables['loaded_filament']
+            if loaded_filament in self.preheat_options:
+                logging.info(f"Skip filament selection with reheat. loaded_filament: {loaded_filament}")
+                self.set_filament_clicked(None, loaded_filament)
+                return
 
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         img = self._screen.gtk.Image("prusament", self._screen.gtk.content_width * .945, 450)
@@ -277,6 +289,7 @@ class DoneDialog(loadWizardSteps.PurgingMoreDialog):
         self.wizard_manager.set_step(loadWizardSteps.SelectFilament(self._screen))
 
     def retry(self, widget):
+        self.wizard_manager.set_wizard_data("repeated_unload", True)
         self.wizard_manager.set_step(ServicePositionNeededDialog(self._screen))
 
 

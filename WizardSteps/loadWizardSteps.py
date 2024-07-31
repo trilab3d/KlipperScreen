@@ -294,11 +294,17 @@ class WaitForChamberCooldown(Cancelable, BaseWizardStep):
     def cancel_pressed(self, widget):
         self._screen._menu_go_back()
 
-class WaitForTemperature(Cancelable, BaseWizardStep):
+class WaitForTemperature(Cancelable, TemperatureSetter, BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
         self.next_step = WaitForFilamentInserted
         self.settling_counter = self.settling_counter_max = 3
+        self.heaters = []
+        self.heaters.extend(iter(self._screen.printer.get_tools()))
+        self.preheat_options = self._screen._config.get_preheat_options()
+        for h in self._screen.printer.get_heaters():
+            if not h.endswith("panel"):
+                self.heaters.append(h)
 
     def activate(self, wizard):
         super().activate(wizard)
@@ -360,6 +366,7 @@ class WaitForTemperature(Cancelable, BaseWizardStep):
         return extruder
 
     def cancel_pressed(self, widget):
+        self.set_temperature('cooldown', self.heaters)
         self._screen._menu_go_back()
 
 class WaitForFilamentInserted(Cancelable, BaseWizardStep):

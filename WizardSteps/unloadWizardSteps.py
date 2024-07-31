@@ -22,7 +22,7 @@ class CheckPauseNeeded(BaseWizardStep):
             return
 
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder34", self._screen.gtk.content_width * .945, 450)
+        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945, 450)
         self.content.add(img)
         label = self._screen.gtk.Label("")
         label.set_margin_top(20)

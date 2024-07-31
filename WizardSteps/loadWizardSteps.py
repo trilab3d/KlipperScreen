@@ -13,9 +13,11 @@ class Cancelable(TemperatureSetter):
         self._screen._ws.klippy.gcode_script("_FILAMENT_RETRACT")
         heaters = []
         heaters.extend(iter(self._screen.printer.get_tools()))
-        for h in self._screen.printer.get_heaters():
-            if not h.endswith("panel"):
-                heaters.append(h)
+        # if mid-print change, cooldown just nozzle
+        if not self.wizard_manager.get_wizard_data("should_act_as_change_wizard"):
+            for h in self._screen.printer.get_heaters():
+                if not h.endswith("panel"):
+                    heaters.append(h)
         logging.info(heaters)
         self.set_temperature("cooldown",heaters)
 
@@ -92,6 +94,23 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
         self.content.add(img)
 
         expected_filament = self.wizard_manager.get_wizard_data("expected_filament")
+        if not expected_filament:
+            try:
+                print_stats = self._screen.printer.data["print_stats"]
+                if print_stats["state"] in ["printing", "paused"]:
+                    fileinfo = self._screen.files.get_file_info(print_stats["filename"])
+                    expected_filament = fileinfo["filament_type"]
+                    if expected_filament == "PACF":
+                        expected_filament = "PA-CF"
+                    elif expected_filament == "PCCF":
+                        expected_filament = "PC-CF"
+                    elif expected_filament == "PEKKCF":
+                        expected_filament = "PEKK-CF"
+                    elif expected_filament == "PEEKCF":
+                        expected_filament = "PEEK-CF"
+                    logging.info(f"Expected filament: {expected_filament}")
+            except Exception as e:
+                logging.info(f"Error getting current file filament: {e}")
         if (expected_filament and expected_filament in self.preheat_options):
             label = self._screen.gtk.Label("")
             label.set_margin_top(20)
@@ -366,7 +385,7 @@ class WaitForTemperature(Cancelable, TemperatureSetter, BaseWizardStep):
         return extruder
 
     def cancel_pressed(self, widget):
-        self.set_temperature('cooldown', self.heaters)
+        self.on_cancel()
         self._screen._menu_go_back()
 
 class WaitForFilamentInserted(Cancelable, BaseWizardStep):
@@ -546,7 +565,7 @@ class Purging(Cancelable, BaseWizardStep, TemperatureSetter):
         if self.waiting_for_start <= 0 and it["state"] in ["Ready", "Idle"]:
             self.wizard_manager.set_step(self.next_step(self._screen))
 
-class PurgingMoreDialog(BaseWizardStep, TemperatureSetter):
+class PurgingMoreDialog(Cancelable, BaseWizardStep, TemperatureSetter):
     def __init__(self, screen):
         super().__init__(screen)
         self.next_step = CheckReheatNeeded
@@ -574,10 +593,16 @@ class PurgingMoreDialog(BaseWizardStep, TemperatureSetter):
         purge_button.set_vexpand(False)
         purge_button.connect("clicked", self.purge_filament_pressed)
         self.content.add(purge_button)
-        cooldown_button = self._screen.gtk.Button(label=_("Close"), style=f"color1")
-        cooldown_button.set_vexpand(False)
-        cooldown_button.connect("clicked", self.cooldown_pressed)
-        self.content.add(cooldown_button)
+        if self.wizard_manager.get_wizard_data("should_act_as_change_wizard"):
+            continue_button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
+            continue_button.set_vexpand(False)
+            continue_button.connect("clicked", self.continue_pressed)
+            self.content.add(continue_button)
+        else:
+            cooldown_button = self._screen.gtk.Button(label=_("Close"), style=f"color1")
+            cooldown_button.set_vexpand(False)
+            cooldown_button.connect("clicked", self.cooldown_pressed)
+            self.content.add(cooldown_button)
         if self.wizard_manager.get_wizard_data("temperature_override_option"):
             failed_button = self._screen.gtk.Button(label=_("Load Failed, Re-Heat"), style=f"color1")
             failed_button.set_vexpand(False)
@@ -585,8 +610,11 @@ class PurgingMoreDialog(BaseWizardStep, TemperatureSetter):
             self.content.add(failed_button)
 
     def cooldown_pressed(self, widget):
-        self.set_temperature("cooldown",self.heaters)
+        self.on_cancel()
         self._screen._menu_go_back()
+
+    def continue_pressed(self, widget):
+        self.wizard_manager.set_step(CleanMaterialAndResume(self._screen))
 
     def purge_filament_pressed(self, widget):
         self.wizard_manager.set_step(self.next_step(self._screen))
@@ -595,10 +623,38 @@ class PurgingMoreDialog(BaseWizardStep, TemperatureSetter):
         self.set_temperature(self.wizard_manager.get_wizard_data("temperature_override_option"),self._screen.printer.get_tools())
         self.wizard_manager.set_step(self.next_step_failed(self._screen))
 
-    def on_cancel(self):
-        self.set_temperature("cooldown",self.heaters)
+class CleanMaterialAndResume(Cancelable, BaseWizardStep, TemperatureSetter):
+    def __init__(self, screen):
+        super().__init__(screen)
 
+    def activate(self, wizard):
+        super().activate(wizard)
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        img = self._screen.gtk.Image("clean_extrusion", self._screen.gtk.content_width * .945, -1)
+        self.content.add(img)
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
+            "<span size='large'>" + _("Clean extruded material and close the door.") + "</span>")
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
+        restore_button = self._screen.gtk.Button(label=_("Resume Print"), style=f"color1")
+        restore_button.set_vexpand(False)
+        restore_button.connect("clicked", self.restore)
+        self.content.add(restore_button)
+        close_button = self._screen.gtk.Button(label=_("Close"), style=f"color1")
+        close_button.set_vexpand(False)
+        close_button.connect("clicked", self.close)
+        self.content.add(close_button)
 
+    def restore(self, wizard):
+        self._screen._ws.klippy.print_resume()
+        self._screen.show_panel('job_status', "job_status", _("Printing"), 2)
+
+    def close(self, wizard):
+        self.on_cancel()
+        self._screen._menu_go_back()
 
 class CheckReheatNeeded(SelectFilament):
     def __init__(self, screen):

@@ -7,6 +7,7 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk, GLib, Pango
 from ks_includes.screen_panel import ScreenPanel
 
+OVERSAMPLE_LIMIT = 2
 
 def create_panel(*args, **kvargs):
     return HotSurfacesPanel(*args, **kvargs)
@@ -16,6 +17,8 @@ class HotSurfacesPanel(ScreenPanel):
         super().__init__(screen, title)
         self.screen = screen
         self.do_schedule_refresh = True
+
+        self.oversample_counter = 0
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         box.set_vexpand(True)
@@ -56,17 +59,28 @@ class HotSurfacesPanel(ScreenPanel):
         if not self.do_schedule_refresh:
             return False
 
+        should_close = False
         if not self._screen.check_hot_surfaces():
-            logging.info(f"Going back - temperature reason")
-            self._screen._menu_go_back()
-            return self.do_schedule_refresh
+            logging.info(f"Should back - temperature reason")
+            should_close = True
 
         try:
             closed = self._printer.data["door_sensor"]["door_closed_raw"]
             if closed:
-                self._screen._menu_go_back()
-                return self.do_schedule_refresh
+                logging.info(f"Should back - door reason")
+                should_close = True
         except Exception as e:
             pass
+
+        # wea re doing oversampling to prevent glitches on fast door toggling
+        if should_close:
+            self.oversample_counter += 1
+        else:
+            self.oversample_counter = 0
+
+        if self.oversample_counter >= OVERSAMPLE_LIMIT:
+            logging.info(f"Hot surfaces closing")
+            self._screen._menu_go_back()
+            return False
 
         return self.do_schedule_refresh

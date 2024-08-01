@@ -24,6 +24,7 @@ class PrintDetail(BaseWizardStep):
 
     def activate(self, wizard):
         super().activate(wizard)
+        self.wizard_manager.set_wizard_data("always_reinit_wizard", True)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         filename = self.wizard_manager.title
         self.wizard_manager.set_wizard_data("filename", filename)

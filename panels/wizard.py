@@ -41,7 +41,7 @@ class WizardPanel(ScreenPanel):
         self.content.add(self.current_step.content)
 
     def activate(self, is_back=False, **kvargs):
-        if not is_back:
+        if not is_back or self.get_wizard_data("always_reinit_wizard"):
             self.data_store = self.first_step_data
             self.set_step(self.first_step)
         self._screen.base_panel.show_back(self.current_step.can_back, self.current_step.can_exit)

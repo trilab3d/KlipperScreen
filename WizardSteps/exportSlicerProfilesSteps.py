@@ -5,6 +5,7 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk, GdkPixbuf, GLib, Pango
 import os
 import logging
+import subprocess
 import configparser
 from WizardSteps.baseWizardStep import BaseWizardStep
 
@@ -48,16 +49,21 @@ class ExportSlicerProfiles(BaseWizardStep):
 
     def export_job(self):
         logging.info("export job started")
-        rsp = self._screen.tpcclient.send_request("settings")
-        if "factory_device_name" in rsp:
-            logging.info(f"exporting to /opt/gcodes/usb/")
-            os.system(f"cp /home/trilab/printer_data/profiles/* /opt/gcodes/usb/")
-            os.system("sync")
-            logging.info("Export done")
-            time.sleep(3)
-            self.wizard_manager.set_step(Exported(self._screen))
-        else:
-            logging.error("No factory_device_name in rsp")
+        logging.info(f"exporting to /opt/gcodes/usb/")
+        stdout, stderr = subprocess.Popen("cp /home/trilab/printer_data/profiles/prusa-pro-ht90-profiles.zip /opt/gcodes/usb/".split(" "),
+                         stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        logging.info(f"stdout: {stdout}, stderr: {stderr}")
+        if len(stderr) == 0:
+            stdout, stderr = subprocess.Popen("sync".split(" "),  stdout=subprocess.PIPE,
+                                              stderr=subprocess.PIPE).communicate()
+            logging.info(f"stdout: {stdout}, stderr: {stderr}")
+        if len(stderr) != 0:
+            self._screen.show_popup_message(_("Export failed"))
+            self.wizard_manager.set_step(ExportSlicerProfiles(self._screen))
+            return
+        logging.info("Export done")
+        time.sleep(3)
+        self.wizard_manager.set_step(Exported(self._screen))
 class NoUSB(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)

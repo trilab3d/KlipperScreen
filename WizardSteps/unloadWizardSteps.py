@@ -22,7 +22,7 @@ class CheckPauseNeeded(BaseWizardStep):
             return
 
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        img = self._screen.gtk.Image("placeholder43", self._screen.gtk.content_width * .945, 450)
+        img = self._screen.gtk.Image("pause", self._screen.gtk.content_width * .945, 450)
         self.content.add(img)
         label = self._screen.gtk.Label("")
         label.set_margin_top(20)
@@ -290,7 +290,10 @@ class DoneDialog(loadWizardSteps.PurgingMoreDialog):
 
     def retry(self, widget):
         self.wizard_manager.set_wizard_data("repeated_unload", True)
-        self.wizard_manager.set_step(ServicePositionNeededDialog(self._screen))
+        if self.wizard_manager.get_wizard_data("should_act_as_change_wizard"):
+            self.wizard_manager.set_step(SelectFilament(self._screen))
+        else:
+            self.wizard_manager.set_step(ServicePositionNeededDialog(self._screen))
 
 
 class ServicePositionNeededDialog(BaseWizardStep):

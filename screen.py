@@ -818,6 +818,17 @@ class KlipperScreen(Gtk.Window):
         if "job_status" in self._cur_panels and wait:
             return
         self.show_panel('main_panel', "main_menu", None, 2, items=self._config.get_menu_items("__main"))
+
+        # Check PrintHead change
+        try:
+            if not self.printer.data["save_variables"]["variables"]["printhead_init"]:
+                self.show_panel("printhead_change_detected", "wizard", "PrintHead Change Detected", 1, False,
+                                wizard=f"headChangedSteps.HeadChangeDetected",
+                                wizard_name="PrintHead Change Detected")
+                self.base_panel_show_all()
+        except Exception as e:
+            logging.info(f"Check PrintHead change exception: {e}")
+
         self.base_panel_show_all()
 
     def state_startup(self):

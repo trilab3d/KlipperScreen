@@ -630,7 +630,7 @@ class KlipperScreen(Gtk.Window):
         self.close_screensaver()
 
     def _remove_current_panel(self, pop=True):
-        logging.debug(f"_remove_current_panel pop={pop}, cur_panels: {self._cur_panels[-1]} - thread: {threading.get_ident()}")
+        #logging.debug(f"_remove_current_panel pop={pop}, cur_panels: {self._cur_panels[-1]} - thread: {threading.get_ident()}")
         if len(self._cur_panels) < 1:
             self.reload_panels()
             return

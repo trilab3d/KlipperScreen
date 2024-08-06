@@ -66,7 +66,7 @@ class KlippyFiles:
         elif method == "server.files.metadata":
             if "error" in result.keys():
                 filename = params['filename']
-                logging.debug(f"Error in getting metadata for {params['filename']}. Retrying in 3 seconds. {result['error']}")
+                logging.debug(f"Error in getting metadata for {params['filename']}")
                 if not filename.endswith(".g") and not filename.endswith(".gcode"):
                     logging.warning(f"Not a gcode: {filename}")
                 if params['filename'] not in self.file_metadata_counters:
@@ -74,7 +74,11 @@ class KlippyFiles:
                 if self.file_metadata_counters[filename] < 10:
                     self.file_metadata_counters[filename] += 1
                     progressive_interval = 3 * self.file_metadata_counters[filename]  # To eliminate lagging all printer but also keep fast initial response
-                    GLib.timeout_add_seconds(progressive_interval, self._screen._ws.klippy.get_file_metadata, filename, self._callback)
+                    def cb(a,b):
+                        if filename in self.filelist:
+                            self._screen._ws.klippy.get_file_metadata(filename,self._callback)
+                        return False
+                    GLib.timeout_add_seconds(progressive_interval, cb, filename, self._callback)
                 else:
                     logging.warning(f"No metadata found in time limit for file {filename}")
                 return

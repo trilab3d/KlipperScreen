@@ -111,7 +111,7 @@ class PrintPanel(ScreenPanel):
         if fileinfo is None:
             return
         filename = os.path.basename(filepath)
-        if filename.startswith("."):
+        if filename.startswith(".") and not filepath.startswith("usb/"):
             return
         directory = os.path.dirname(os.path.join("gcodes", filepath))
         d = directory.split(os.sep)
@@ -122,6 +122,9 @@ class PrintPanel(ScreenPanel):
                 if d[i].startswith("."):
                     return
                 self.add_directory(newdir)
+
+        if filename.startswith("."):
+            return
 
         if filename not in self.filelist[directory]['files']:
             for i in range(1, len(d)):
@@ -328,7 +331,7 @@ class PrintPanel(ScreenPanel):
 
     def delete_file(self, filename):
         directory = os.path.join("gcodes", os.path.dirname(filename)) if os.path.dirname(filename) else "gcodes"
-        if directory not in self.filelist or os.path.basename(filename).startswith("."):
+        if directory not in self.filelist:
             return
         try:
             self.filelist[directory]["files"].pop(self.filelist[directory]["files"].index(os.path.basename(filename)))

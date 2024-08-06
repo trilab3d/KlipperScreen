@@ -230,7 +230,15 @@ class UnscrewNozzle(BaseWizardStep):
 class SelectNozzleType(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
-        self.nozzle_types = self._screen._config.get_nozzle_types()
+        current_printhead = self._screen.printer.data["config_constant printhead"]["value"] \
+            if "config_constant printhead" in self._screen.printer.data else ""
+        all_nozzle_types = self._screen._config.get_nozzle_types()
+        self.nozzle_types = {}
+        logging.info(f"current printhead: {current_printhead}")
+        for nt in all_nozzle_types:
+            logging.info(f"Checking nozzle type {nt} - {all_nozzle_types[nt]}")
+            if current_printhead in all_nozzle_types[nt]["printheads"]:
+                self.nozzle_types[nt] = all_nozzle_types[nt]
         self.next_step = SelectNozzleDiameter
         self.can_exit = False
 

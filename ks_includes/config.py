@@ -236,7 +236,7 @@ class KlipperScreenConfig:
                 bools = ('abrasive', )
                 numbers = [f'{option}' for option in self.config[section] if option not in [*strs, *bools]]
             elif section.startswith('nozzle_type '):
-                strs = ('diameters', )
+                strs = ('diameters', 'printheads')
             elif section.startswith('menu '):
                 strs = ('name', 'icon', 'panel', 'method', 'params', 'enable', 'confirm', 'style', 'view_groups', 'wizard', 'wizard_name', 'wizard_data')
             elif section == 'bed_screws':
@@ -502,6 +502,10 @@ class KlipperScreenConfig:
             vals = resp['diameters'].split(',')
             vals = list(x.strip() for x in vals)
             resp['diameters'] = vals
+        if 'printheads' in resp:
+            vals = resp['printheads'].split(',')
+            vals = list(x.strip() for x in vals)
+            resp['printheads'] = vals
         return resp
 
     def get_printer_config(self, name):

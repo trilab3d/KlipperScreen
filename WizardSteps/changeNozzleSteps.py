@@ -255,8 +255,8 @@ class SelectNozzleType(BaseWizardStep):
                 option_pretty = "HF - HighFlow"
             elif option == "HT":
                 option_pretty = "HT - HighTemp"
-            elif option == "Standart":
-                option_pretty = "Standart (Brass)"
+            elif option == "Standard":
+                option_pretty = "Standard (Brass)"
             option_btn = self._screen.gtk.Button(label=option_pretty, style=f"color{(i % 4) + 1}")
             option_btn.connect("clicked", self.option_selected, option)
             option_btn.set_vexpand(False)

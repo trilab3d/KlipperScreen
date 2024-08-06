@@ -86,6 +86,23 @@ class SelectNozzleType(changeNozzleSteps.SelectNozzleType):
 
 
 class SelectNozzleDiameter(changeNozzleSteps.SelectNozzleDiameter):
+    def option_selected(self, widget, nozzle_diameter):
+        print(f"{nozzle_diameter} {self.nozzle_type}")
+        self.wizard_manager.set_step(PurgeDialog(self._screen, self.nozzle_type, nozzle_diameter))
+
     def on_back(self):
         self.wizard_manager.set_step(SelectNozzleType(self._screen))
+        return True
+
+class PurgeDialog(changeNozzleSteps.PurgeDialog):
+    def __init__(self, screen, nozzle_type, nozzle_diameter):
+        super().__init__(screen)
+        self.can_back = True
+        self.nozzle_type = nozzle_type
+        self.nozzle_diameter = nozzle_diameter
+        self._screen._ws.klippy.gcode_script(
+            f"SAVE_VARIABLE VARIABLE=nozzle VALUE='\"{self.nozzle_diameter} {self.nozzle_type}\"'")
+
+    def on_back(self):
+        self.wizard_manager.set_step(SelectNozzleDiameter(self._screen, self.nozzle_type))
         return True

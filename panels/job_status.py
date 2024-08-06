@@ -815,7 +815,15 @@ class JobStatusPanel(ScreenPanel):
                     heater_pretty = waiting_heater
                 target = int(float(self._printer.data[waiting_heater]["target"]))
                 actual = int(float(self._printer.data[waiting_heater]["temperature"]))
-                self.update_status_message(f"Waiting for {heater_pretty} to heat up\n({actual} °C / {target} °C)")
+
+                if (abs(target-actual) < 2):
+                    verb = "stabilize"
+                elif (target > actual):
+                    verb = "heat up"
+                else:
+                    verb = "cool down"
+
+                self.update_status_message(f"Waiting for {heater_pretty} to {verb}\n({actual} °C / {target} °C)")
             else:
                 self.update_status_message("")
 

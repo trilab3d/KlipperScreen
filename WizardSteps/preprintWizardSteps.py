@@ -44,6 +44,7 @@ class PrintDetail(BaseWizardStep):
             "<span size='x-large'>" + (filename if filename else "None") + "</span>")
         label.set_line_wrap(True)
         label.set_line_wrap_mode(Pango.WrapMode.CHAR)
+        label.set_ellipsize(Pango.EllipsizeMode.END)
         self.content.add(label)
 
         info_box = Gtk.Box()

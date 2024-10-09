@@ -388,8 +388,11 @@ class PurgeDialog(BaseWizardStep, wizardCommons.TemperatureSetter):
 
         save_variables = self._screen.printer.data['save_variables']['variables']
         loaded_filament = save_variables['loaded_filament'] if 'loaded_filament' in save_variables else "NONE"
+        printhead = self._screen.printer.data['config_constant printhead']['value'] \
+            if 'config_constant printhead_pretty' in self._screen.printer.data else ""
 
-        if loaded_filament == "NONE":
+        if (loaded_filament == "NONE" or loaded_filament not in loaded_filament or
+                not printhead in self._screen._config.get_preheat_options()[loaded_filament]["printheads"]):
             button = self._screen.gtk.Button(label=_("Load filament"), style=f"color1")
             button.set_vexpand(False)
             button.connect("clicked", self.load_pressed)

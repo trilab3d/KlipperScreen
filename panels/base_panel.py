@@ -63,7 +63,7 @@ class BasePanel(ScreenPanel):
         self.control['home'].connect("clicked", self.home)
         self.control['help'] = self._gtk.Button('help', scale=abscale)
         self.control['help'].connect("clicked", self.show_help)
-        self.control['help'].set_sensitive(False)
+        #self.control['help'].set_sensitive(False)
 
         if len(self._config.get_printers()) > 1:
             self.control['printer_select'] = self._gtk.Button('shuffle', scale=abscale)
@@ -149,7 +149,7 @@ class BasePanel(ScreenPanel):
         self.main_layout.set_size_request(self._gtk.width, self._gtk.height)
         
         pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
-            filename="styles/prusa/images/extruder.jpg", 
+            filename="styles/prusa/images/extruder-STD.png",
             width=self._gtk.content_width, 
             height=self._gtk.content_height, 
             preserve_aspect_ratio=True
@@ -438,7 +438,8 @@ class BasePanel(ScreenPanel):
             }
             self.rebuild_notification_states(fault_update)
         except Exception as e:
-            logging.error(f"Exception during get_throttled: {e}")
+            pass
+            #logging.error(f"Exception during get_throttled: {e}")
         return True
 
     def show_estop(self, show=True):

@@ -19,6 +19,7 @@ class CheckPauseNeeded(BaseWizardStep):
 
         if self._screen.printer.data["prusa_state"]["state"] != "printing":
             self.wizard_manager.set_step(SelectFilament(self._screen))
+            self._screen._ws.klippy.gcode_script("_TOOLHEAD_PARK_PAUSE_CANCEL X=-108 Y=-108 Z_MIN=50")
             return
 
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)

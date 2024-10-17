@@ -233,7 +233,7 @@ class KlipperScreenConfig:
                 )
             elif section.startswith('preheat '):
                 strs = ('gcode', 'printheads', '')
-                bools = ('abrasive', )
+                bools = ('abrasive', 'always_reheat')
                 numbers = [f'{option}' for option in self.config[section] if option not in [*strs, *bools]]
             elif section.startswith('nozzle_type '):
                 strs = ('diameters', 'printheads')
@@ -490,7 +490,7 @@ class KlipperScreenConfig:
         cfg = self.config[name]
         return {opt: cfg.get("gcode", None) if opt == "gcode"
             else [a.strip() for a in cfg.get(opt, None).split(",")] if opt == "printheads"
-            else cfg.getboolean(opt, None) if opt == "abrasive"
+            else cfg.getboolean(opt, None) if opt == "abrasive" or opt == "always_reheat"
             else cfg.getfloat(opt, None) for opt in cfg}
 
     def _build_nozzle_type(self, name):

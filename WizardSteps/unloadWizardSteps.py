@@ -75,7 +75,8 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
             loaded_filament = save_variables['loaded_filament'] if 'loaded_filament' in save_variables else "NONE"
             if loaded_filament == "NONE":
                 loaded_filament = save_variables['last_filament'] if 'last_filament' in save_variables else "NONE"
-            if loaded_filament in self.preheat_options:
+            always_reheat = self.preheat_options[loaded_filament]["always_reheat"] if "always_reheat" in self.preheat_options[loaded_filament] else False
+            if loaded_filament in self.preheat_options and not always_reheat:
                 logging.info(f"Skip filament selection without reheat. loaded_filament: {loaded_filament}")
                 self.wizard_manager.set_wizard_data('currently_unloading', loaded_filament)
                 speed = self.preheat_options[loaded_filament]["speed"] if "speed" in self.preheat_options[loaded_filament] else 1

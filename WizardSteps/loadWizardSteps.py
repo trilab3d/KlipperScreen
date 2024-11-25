@@ -187,7 +187,12 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
         self.set_temperature(option, self.heaters)
 
         if self.wizard_manager.get_wizard_data("temperature_override_option"):
-            self.set_temperature(self.wizard_manager.get_wizard_data("temperature_override_option"), self._screen.printer.get_tools())
+            required_temp = self.preheat_options[option]["extruder"]
+            override_temp = self.preheat_options[self.wizard_manager.get_wizard_data("temperature_override_option")]["extruder"]
+            if override_temp > required_temp:
+                self.set_temperature(self.wizard_manager.get_wizard_data("temperature_override_option"), self._screen.printer.get_tools())
+            else:
+                self.wizard_manager.set_wizard_data("temperature_override_option", None)
         elif ("last_filament" in save_variables and save_variables["last_filament"] in self.preheat_options and
                 self.preheat_options[save_variables["last_filament"]]["extruder"] > self.preheat_options[option]["extruder"]):
             self.set_temperature(save_variables["last_filament"],self._screen.printer.get_tools())

@@ -129,11 +129,11 @@ scale-mark {
 }
 
 scrollbar, scrollbar button, scrollbar trough {
-    background-color: #121212;
+    background-color: #1c1c1c;
 }
 
 scrollbar slider {
-    background-color: #1c1c1c;
+    background-color: #3b3b3b;
 }
 
 textview .time {

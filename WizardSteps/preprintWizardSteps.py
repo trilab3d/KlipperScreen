@@ -32,6 +32,61 @@ class CheckMaintenance(BaseWizardStep):
                 self._screen.show_panel("maintenance-wizard", "wizard", "Maintenance", 1, False, wizard="maintenanceWizardSteps.CheckMaintenance",
                                     wizard_name="Maintenance Recommended", data={"maintenance_required": maintenance_required})
                 return
+        self.wizard_manager.set_step(PrinterCompatibilityCheck(self._screen))
+
+class PrinterCompatibilityCheck(BaseWizardStep):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.can_exit = True
+        self.can_back = True
+
+    def activate(self, wizard):
+        super().activate(wizard)
+        self.wizard_manager.set_wizard_data("always_reinit_wizard", True)
+
+        filename = self.wizard_manager.title
+        self.wizard_manager.set_wizard_data("filename", filename)
+        fileinfo = self._screen.files.get_file_info(filename)
+        printer_model = fileinfo["printer_model"] if "printer_model" in fileinfo else None
+        if printer_model in ("HT90", "HT90_HT"):
+            self.wizard_manager.set_step(PrintDetail(self._screen))
+
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+
+        img = self._screen.gtk.Image("warning43", self._screen.gtk.content_width * .945, 450)
+        self.content.add(img)
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
+            "<span size='large'>" + _("This is not HT90 gcode") + "</span>")
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
+        second_label = self._screen.gtk.Label("")
+        second_label.set_margin_top(20)
+        second_label.set_margin_left(10)
+        second_label.set_margin_right(10)
+        second_label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        second_label.set_line_wrap(True)
+        second_label.set_markup(
+            "<span size='small'>" + _("Gcode seems to be sliced for different type of printer. "
+                                      "Printing incompatible Gcodes may lead to unpredictable "
+                                      "behaviour and printer damage!") + "</span>")
+        self.content.add(second_label)
+
+        button = self._screen.gtk.Button(label=_("Go back"), style=f"color1")
+        button.set_vexpand(False)
+        button.connect("clicked", self.go_back)
+        self.content.add(button)
+        button = self._screen.gtk.Button(label=_("Continue anyway"), style=f"color1")
+        button.set_vexpand(False)
+        button.connect("clicked", self.continue_clicked)
+        self.content.add(button)
+
+    def go_back(self, widget):
+        self._screen._menu_go_back()
+
+    def continue_clicked(self, widget):
         self.wizard_manager.set_step(PrintDetail(self._screen))
 
 class PrintDetail(BaseWizardStep):
@@ -42,7 +97,6 @@ class PrintDetail(BaseWizardStep):
 
     def activate(self, wizard):
         super().activate(wizard)
-        self.wizard_manager.set_wizard_data("always_reinit_wizard", True)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         filename = self.wizard_manager.title
         self.wizard_manager.set_wizard_data("filename", filename)

@@ -34,6 +34,7 @@ from ks_includes.printer import Printer
 from ks_includes.widgets.keyboard import Keyboard
 from ks_includes.widgets.keypad import Keypad
 from ks_includes.config import KlipperScreenConfig
+from ks_includes.Maintenance import Maintenance
 from panels.base_panel import BasePanel
 
 has_gpio = False
@@ -140,6 +141,7 @@ class KlipperScreen(Gtk.Window):
     max_retries = 4
     initialized = initializing = False
     popup_timeout = None
+    maintenance = None
 
     def __init__(self, args, version):
         try:
@@ -288,6 +290,7 @@ class KlipperScreen(Gtk.Window):
                                    )
 
         self.files = KlippyFiles(self)
+        self.maintenance = Maintenance(self)
         self._ws.initial_connect()
 
     def ws_subscribe(self):

@@ -16,6 +16,24 @@ NOZZLE_DICTIONARY = {
     "HT": "HT"
 }
 
+class CheckMaintenance(BaseWizardStep):
+    def __init__(self, screen, load_var=True):
+        super().__init__(screen)
+
+    def activate(self, wizard):
+        super().activate(wizard)
+
+    def update_loop(self):
+        if not self.wizard_manager.get_wizard_data("maintenance_checked"):
+            maintenance_required = self._screen.maintenance.check_maintenance()
+            if len(maintenance_required):
+                self.wizard_manager.set_wizard_data("maintenance_checked", True)
+                self._screen.panels_reinit.append("maintenance-wizard")
+                self._screen.show_panel("maintenance-wizard", "wizard", "Maintenance", 1, False, wizard="maintenanceWizardSteps.CheckMaintenance",
+                                    wizard_name="Maintenance Recommended", data={"maintenance_required": maintenance_required})
+                return
+        self.wizard_manager.set_step(PrintDetail(self._screen))
+
 class PrintDetail(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)

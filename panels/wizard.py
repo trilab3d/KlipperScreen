@@ -32,20 +32,22 @@ class WizardPanel(ScreenPanel):
         else:
             self.first_step_data = {}
 
-        self.data_store = self.first_step_data
+        self.data_store = self.first_step_data.copy()
 
         self.first_step: BaseWizardStep = getattr(module,parts[1])(screen)
         self.current_step: BaseWizardStep = self.first_step
         self.current_step.activate(self)
         self.content.add(self.name_label)
-        self.content.add(self.current_step.content)
+        if self.current_step.content:
+            self.content.add(self.current_step.content)
 
     def activate(self, is_back=False, **kvargs):
         if not is_back or self.get_wizard_data("always_reinit_wizard"):
-            self.data_store = self.first_step_data
+            self.data_store = self.first_step_data.copy()
             self.set_step(self.first_step)
         self._screen.base_panel.show_back(self.current_step.can_back, self.current_step.can_exit)
         self.do_schedule_refresh = True
+        self._update_loop()
         GLib.timeout_add_seconds(1, self._update_loop)
 
     def deactivate(self):
@@ -63,6 +65,9 @@ class WizardPanel(ScreenPanel):
     def set_wizard_data(self, key, value):
         self.data_store[key] = value
 
+    def debug_wizard_data(self):
+        logging.info(f"debug wizard data: {self.data_store}")
+
     def _update_loop(self):
         if self.do_schedule_refresh:
             self.current_step.update_loop()
@@ -79,7 +84,8 @@ class WizardPanel(ScreenPanel):
         for ch in self.content.get_children():
             self.content.remove(ch)
         self.content.add(self.name_label)
-        self.content.add(self.current_step.content)
+        if self.current_step.content:
+            self.content.add(self.current_step.content)
         self.content.show_all()
 
     def back(self):

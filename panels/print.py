@@ -319,7 +319,7 @@ class PrintPanel(ScreenPanel):
         grid.set_valign(Gtk.Align.CENTER)
         grid.add(label)
 
-        self._screen.show_panel(filename, "wizard", filename, 1, False, wizard="preprintWizardSteps.PrintDetail", wizard_name="File detail", wizard_data={"filename": filename})
+        self._screen.show_panel(filename, "wizard", filename, 1, False, wizard="preprintWizardSteps.CheckMaintenance", wizard_name="File detail", wizard_data={"filename": filename})
         return
 
     def confirm_print_response(self, dialog, response_id, filename):

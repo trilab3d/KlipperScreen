@@ -23,9 +23,9 @@ class MenuPanel(ScreenPanel):
         self.items = items
         self.create_menu_items()
         self.grid = self._gtk.HomogeneousGrid(row_homogenous=True, column_homogenous=True)
-        self.grid.set_margin_left(20)
-        self.grid.set_margin_right(20)
-        self.grid.set_column_spacing(20)
+        self.grid.set_margin_left(10)
+        self.grid.set_margin_right(10)
+        self.grid.set_column_spacing(10)
         self.grid.set_row_spacing(20)
         self.grid.set_vexpand(False)
         self.scroll = self._gtk.ScrolledWindow()
@@ -88,15 +88,14 @@ class MenuPanel(ScreenPanel):
             icon = self._screen.env.from_string(item['icon']).render(printer) if item['icon'] else None
             style = self._screen.env.from_string(item['style']).render(printer) if item['style'] else None
 
-            button = self._gtk.Button(icon, label=None, style=style or f"color{i % 4 + 1}", scale=scale)
+            button = self._gtk.Button(icon, label=None, style=style or f"color{i % 4 + 1}")
             label = self._gtk.Label(name)
             
             grid = self._gtk.HomogeneousGrid(row_homogenous=False)
             grid.attach(button, 0, 0, 1, 1)
             grid.attach(label, 0, 1, 1, 1)
 
-            button_width, _button_height = button.get_size_request()
-            button.set_size_request(button_width, button_width) 
+            button.set_size_request(-1, 130)
 
             if item['panel'] is not None:
                 panel = self._screen.env.from_string(item['panel']).render(printer)

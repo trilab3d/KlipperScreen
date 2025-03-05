@@ -425,6 +425,9 @@ class KlipperScreen(Gtk.Window):
         elif command == "FILAMENT_RUNOUT":
             self.show_panel("filament_runout", "wizard", _("Filament Runout"), 2,
                             False, wizard="filamentRunoutSteps.RemoveFilamentDialog", wizard_name=_("Filament Runout"))
+        elif command == "FILAMENT_CHANGE":
+            self.show_panel("filament_change", "wizard", _("Filament Change"), 1,
+                            False, wizard="loadWizardSteps.ChangeScheduled", wizard_name=_("Filament Change"))
         elif command == "FS_CHANGE":
             self.files.refresh_files()
         elif command == "UPDATE_AVAILABLE":

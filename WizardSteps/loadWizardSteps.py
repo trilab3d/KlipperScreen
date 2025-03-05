@@ -21,6 +21,45 @@ class Cancelable(TemperatureSetter):
         logging.info(heaters)
         self.set_temperature("cooldown",heaters)
 
+class ChangeScheduled(BaseWizardStep):
+    def __init__(self, screen):
+        super().__init__(screen)
+
+    def activate(self, wizard):
+        super().activate(wizard)
+        self.wizard_manager.set_wizard_data("should_act_as_change_wizard", True)
+
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        img = self._screen.gtk.Image("unload_guide", self._screen.gtk.content_width * .945, -1)
+        self.content.add(img)
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
+            "<span size='large'>" + _("Filament change scheduled") + "</span>")
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
+
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(5)
+        label.set_margin_left(10)
+        label.set_margin_right(10)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        label.set_markup("<span size='small'>" +
+                         _("Filament was unloaded.") + " " +
+                         _("Pull the end of the filament out of the printer and secure it against tangling.")
+                         + "</span>")
+        self.content.add(label)
+
+        continue_button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
+        continue_button.set_vexpand(False)
+        continue_button.connect("clicked", self.continue_pressed)
+        self.content.add(continue_button)
+
+    def continue_pressed(self, widget):
+        self.wizard_manager.set_step(SelectFilament(self._screen))
+
 
 class CheckLoaded(BaseWizardStep):
     def __init__(self, screen):
@@ -221,6 +260,9 @@ class SetFlapDialog(Cancelable, BaseWizardStep):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         setting = self._screen._config.get_preheat_options()[self.wizard_manager.get_wizard_data('currently_loading')]
+        if "flap_position" not in setting:
+            self.wizard_manager.set_step(WaitForTemperature(self._screen))
+            return
         flap_position = setting["flap_position"]
         img = self._screen.gtk.Image(f"htflap{int(flap_position)}", self._screen.gtk.content_width * .945,-1)
         self.content.add(img)

@@ -435,10 +435,11 @@ class WaitForTemperature(Cancelable, TemperatureSetter, BaseWizardStep):
         self.on_cancel()
         self._screen._menu_go_back()
 
-class WaitForFilamentInserted(Cancelable, BaseWizardStep):
+class WaitForFilamentInserted(Cancelable, SelectFilament):
     def __init__(self, screen):
         super().__init__(screen)
         self.next_step = Purging
+        self.reheat_step = WaitForTemperature
         self.filament_sensor = self._screen.printer.data['filament_switch_sensor fil_sensor']\
             if 'filament_switch_sensor fil_sensor' in self._screen.printer.data else None
 
@@ -524,7 +525,13 @@ class WaitForFilamentInserted(Cancelable, BaseWizardStep):
             self.load_guide.show()
 
     def load_filament_pressed(self, widget):
-        self.wizard_manager.set_step(self.next_step(self._screen))
+        # check, if heater timeout hasn't occurred
+        if self._screen.printer.data['extruder']["target"] > 0:
+            self.wizard_manager.set_step(self.next_step(self._screen))
+        else:
+            currently_loading = self.wizard_manager.get_wizard_data('currently_loading')
+            self.set_temperature(currently_loading, self.heaters)
+            self.wizard_manager.set_step(self.reheat_step(self._screen))
 
     def _filament_sensor_getter(self):
         filament_sensor = self._screen.printer.data['filament_switch_sensor fil_sensor']
@@ -713,8 +720,8 @@ class CheckReheatNeeded(SelectFilament):
         currently_loading = self.wizard_manager.get_wizard_data('currently_loading')
         if ("extruder" in self.preheat_options[currently_loading] and
                 self.preheat_options[currently_loading]["extruder"] > self._screen.printer.data['extruder']["target"]):
-            self.next_step = WaitForTemperatureForPurge
             self.set_temperature(currently_loading, self.heaters)
+            self.wizard_manager.set_step(WaitForTemperatureForPurge(self._screen))
         else:
             self.wizard_manager.set_step(self.next_step(self._screen, False))
 

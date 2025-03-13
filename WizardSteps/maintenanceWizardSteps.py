@@ -9,6 +9,21 @@ import qrcode
 
 from WizardSteps.baseWizardStep import BaseWizardStep
 
+def get_QRCode(maintenance_required):
+    if not os.path.isfile(f"/tmp/{maintenance_required['code']}QRCode.png"):
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+        )
+        qr.add_data(maintenance_required['guide_url'])
+        qr.make(fit=True)
+        qr_pil = qr.make_image(fill_color="black", back_color="white")
+        qr_pil.save(f"/tmp/{maintenance_required['code']}QRCode.png")
+    pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(f"/tmp/{maintenance_required['code']}QRCode.png", -1, 450)
+    return Gtk.Image.new_from_pixbuf(pixbuf)
+
 
 class CheckMaintenance(BaseWizardStep):
     def __init__(self, screen, load_var=True):
@@ -24,19 +39,7 @@ class CheckMaintenance(BaseWizardStep):
             self._screen._menu_go_back()
             return
 
-        qr = qrcode.QRCode(
-            version=1,
-            error_correction=qrcode.constants.ERROR_CORRECT_L,
-            box_size=10,
-            border=4,
-        )
-        qr.add_data(self.maintenance_required[0]['guide_url'])
-        qr.make(fit=True)
-        qr_pil = qr.make_image(fill_color="black", back_color="white")
-        qr_pil.save(f"/tmp/{self.maintenance_required[0]['code']}QRCode.png")
-        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(f"/tmp/{self.maintenance_required[0]['code']}QRCode.png", -1, 450)
-
-        img = Gtk.Image.new_from_pixbuf(pixbuf)
+        img = get_QRCode(self.maintenance_required[0])
 
         self.content.add(img)
         label = self._screen.gtk.Label("")
@@ -86,11 +89,7 @@ class ConfirmDone(BaseWizardStep):
         self.maintenance_required = self.wizard_manager.get_wizard_data("maintenance_required")
         self.called_from_panel = self.wizard_manager.get_wizard_data("called_from_panel")
 
-        if self.called_from_panel:
-            img = self._screen.gtk.Image("warning43", self._screen.gtk.content_width * .945, 450)
-        else:
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(f"/tmp/{self.maintenance_required[0]['code']}QRCode.png", -1, 450)
-            img = Gtk.Image.new_from_pixbuf(pixbuf)
+        img = get_QRCode(self.maintenance_required[0])
 
         self.content.add(img)
         label = self._screen.gtk.Label("")

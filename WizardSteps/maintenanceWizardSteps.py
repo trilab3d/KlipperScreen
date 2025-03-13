@@ -28,6 +28,7 @@ def get_QRCode(maintenance_required):
 class CheckMaintenance(BaseWizardStep):
     def __init__(self, screen, load_var=True):
         super().__init__(screen)
+        self.can_back = True
 
     def activate(self, wizard):
         super().activate(wizard)
@@ -63,9 +64,9 @@ class CheckMaintenance(BaseWizardStep):
         button.set_vexpand(False)
         button.connect("clicked", self.remind_later)
         self.content.add(button)
-        button = self._screen.gtk.Button(label=_("Mark as done"), style=f"color1")
+        button = self._screen.gtk.Button(label=_("Go back"), style=f"color1")
         button.set_vexpand(False)
-        button.connect("clicked", self.mark_done)
+        button.connect("clicked", self.go_back_clicked)
         self.content.add(button)
 
     def remind_later(self, widget):
@@ -73,8 +74,14 @@ class CheckMaintenance(BaseWizardStep):
         self.wizard_manager.set_wizard_data("maintenance_required", self.maintenance_required)
         self.wizard_manager.set_step(CheckMaintenance(self._screen))
 
-    def mark_done(self, widget):
-        self.wizard_manager.set_step(ConfirmDone(self._screen))
+    def go_back_clicked(self, widget):
+        self._screen._menu_go_back()
+        self._screen._menu_go_back()  # Go back to print page
+
+    def on_back(self):
+        self._screen._menu_go_back()
+        self._screen._menu_go_back()  # Go back to print page
+        return True
 
 class ConfirmDone(BaseWizardStep):
     def __init__(self, screen, load_var=True):

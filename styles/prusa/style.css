@@ -56,15 +56,23 @@ button.highlight {
     border-style: none;
 }
 
-button.color1, button.color2, button.color3, button.color4 {
+button.color1, button.color2, button.color3, button.color4, button.danger {
     background-color: #3b3b3b;
     margin: 15px;
     border-style: none;
 }
 
-button.color1:active, button.color2:active, button.color3:active, button.color4:active, button.update:active, button.invalid:active, .dialog button:active {
+button.danger {
+    background-color: #471d0d;
+}
+
+button.color1:active, button.color2:active, button.color3:active, button.color4:active, button.danger:active, button.update:active, button.invalid:active, .dialog button:active {
     border-style: none;
     background-color: #686868;
+}
+
+button.danger label {
+    color: #FF0000;
 }
 
 button.update {

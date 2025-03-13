@@ -78,7 +78,7 @@ class PrinterCompatibilityCheck(BaseWizardStep):
         button.set_vexpand(False)
         button.connect("clicked", self.go_back)
         self.content.add(button)
-        button = self._screen.gtk.Button(label=_("Continue anyway"), style=f"color1")
+        button = self._screen.gtk.Button(label=_("Continue anyway"), style=f"danger")
         button.set_vexpand(False)
         button.connect("clicked", self.continue_clicked)
         self.content.add(button)

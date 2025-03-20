@@ -243,7 +243,7 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
         self.wizard_manager.set_step(self.next_step(self._screen))
 
     def set_filament_unknown(self, widget):
-        self.wizard_manager.set_wizard_data("expected_filament", None)
+        self.wizard_manager.set_wizard_data("expected_filament", "None")
         self.wizard_manager.set_step(self.__class__(self._screen, False))
 
 

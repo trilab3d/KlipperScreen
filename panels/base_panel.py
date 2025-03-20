@@ -460,11 +460,11 @@ class BasePanel(ScreenPanel):
                     self._screen.printer.connect_status = "CONN_ERROR"
             else:
                 self._screen.printer.connect_status = "UNCONFIGURED"
-
-            logging.info(f"Prusa connect status: {self._screen.printer.connect_status}")
                 
         except Exception as e:
             logging.error(f"Exception during check_connect_status: {e}")
+            if self._screen.printer:
+                self._screen.printer.connect_status = "CONN_ERROR"
         return True
 
     def show_estop(self, show=True):

@@ -81,7 +81,7 @@ class PrintPanel(ScreenPanel):
         self.pending_animation = self._gtk.LoadingAnimation()
         label = Gtk.Label()
         label.set_markup(f"Processing metadata...\n")
-        label.set_margin_top(10)
+        label.set_margin_top(20)
         box.add(self.pending_animation)
         box.add(label)
         self.pending_panel.add(box)

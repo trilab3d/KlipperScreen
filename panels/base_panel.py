@@ -9,6 +9,7 @@ from gi.repository import GLib, Gtk, Pango, GdkPixbuf
 from jinja2 import Environment
 from datetime import datetime
 from math import log
+import requests
 
 from ks_includes.screen_panel import ScreenPanel
 from panels.manual import ManualPanel
@@ -20,12 +21,14 @@ class BasePanel(ScreenPanel):
         # "throttled": "",
         # "arm_frequency_capped": "",
         "overheat": "overheat",
+        "connect_error": "connect-error"
     }
     NOTIFICATION_NAMES = {
         "undervoltage": "Undervoltage detected",
         # "throttled": "",
         # "arm_frequency_capped": "",
-        "overheat": "Electronic is overheating"
+        "overheat": "Electronic is overheating",
+        "connect_error": "Prusa Connect Error"
     }
     NOTIFICATION_TEXTS = {
         "undervoltage": "Voltage on CPU power rail is insufficient, resulting in limited performance. "
@@ -35,7 +38,8 @@ class BasePanel(ScreenPanel):
         # "arm_frequency_capped": "",
         "overheat": "Printer does not have sufficient cooling and it's performance is reduced. "
                     "Make sure cooling vents are not blocked and printer is not operated outside "
-                    "permitted limits. Overheating may significantly reduce service life of your printer."
+                    "permitted limits. Overheating may significantly reduce service life of your printer.",
+        "connect_error": "Prusa Connect can't connect to server. Check your network connection."
     }
     def __init__(self, screen, title):
         super().__init__(screen, title)
@@ -177,6 +181,7 @@ class BasePanel(ScreenPanel):
                     has_warnings = True
             if has_warnings:
                 self.control['notification_box'].add(self._gtk.Image("warning",26,26))
+                self.control['notification_box'].show_all()
 
     def notification_clicked(self, widget, argument):
         self._screen.show_panel("notifications", "notifications", "Notifications", 1, False)
@@ -277,6 +282,7 @@ class BasePanel(ScreenPanel):
             return self._gtk.Image("heat-up", img_size, img_size)
 
     def activate(self):
+        self.check_connect_status()
         if self.time_update is None:
             self.time_update = GLib.timeout_add_seconds(1, self.update_time)
         if self.fault_states_update is None:
@@ -421,6 +427,10 @@ class BasePanel(ScreenPanel):
         return True
 
     def update_fault_states(self):
+        self.check_connect_status()
+        fault_update = {
+            "connect_error": bool(self._screen.printer.connect_status == "CONN_ERROR")
+        }
         # get_throttled
         try:
             command = ["vcgencmd", "get_throttled"]
@@ -430,16 +440,31 @@ class BasePanel(ScreenPanel):
             currently_throttled = 2
             arm_frequency_capped = 4
             soft_temperature_reached = 8
-            fault_update = {
-                "undervoltage": bool(throttled_reg & under_voltage),
-                # "throttled": bool(throttled_reg & currently_throttled),
-                # "arm_frequency_capped": bool(throttled_reg & arm_frequency_capped),
-                "overheat": bool(throttled_reg & soft_temperature_reached)
-            }
-            self.rebuild_notification_states(fault_update)
+            fault_update["undervoltage"] = bool(throttled_reg & under_voltage)
+            fault_update["overheat"] = bool(throttled_reg & soft_temperature_reached)
         except Exception as e:
             pass
             #logging.error(f"Exception during get_throttled: {e}")
+        self.rebuild_notification_states(fault_update)
+        return True
+    
+    def check_connect_status(self):
+        try:
+            r = requests.get(
+                f"http://{self._screen.printer_config['moonraker_host']}:{self._screen.printer_config['prusa_connect_port']}/connection"
+            ).json()
+            if r["registration"] == "FINISHED": 
+                if r["status"]["ok"]:
+                    self._screen.printer.connect_status = "OK"
+                else:
+                    self._screen.printer.connect_status = "CONN_ERROR"
+            else:
+                self._screen.printer.connect_status = "UNCONFIGURED"
+
+            logging.info(f"Prusa connect status: {self._screen.printer.connect_status}")
+                
+        except Exception as e:
+            logging.error(f"Exception during check_connect_status: {e}")
         return True
 
     def show_estop(self, show=True):

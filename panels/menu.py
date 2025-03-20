@@ -52,9 +52,13 @@ class MenuPanel(ScreenPanel):
         i = 0
         for item in items:
             key = list(item)[0]
+            is_enabled = True
             if not self.evaluate_enable(item[key]['enable']):
-                logging.debug(f"X > {key}")
-                continue
+                if not item[key]['show_disabled']:
+                    logging.debug(f"X > {key}")
+                    continue
+                else:
+                    is_enabled = False
 
             if columns == 4:
                 if length <= 4:
@@ -71,6 +75,7 @@ class MenuPanel(ScreenPanel):
             if expand_last is True and i + 1 == length and length % 2 == 1:
                 width = 2
 
+            self.labels[key].set_sensitive(is_enabled)
             self.grid.attach(self.labels[key], col, row, width, height)
             i += 1
         self.j2_data = None

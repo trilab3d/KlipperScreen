@@ -243,6 +243,7 @@ class KlipperScreenConfig:
                 strs = ('diameters', 'printheads')
             elif section.startswith('menu '):
                 strs = ('name', 'icon', 'panel', 'method', 'params', 'enable', 'confirm', 'style', 'view_groups', 'wizard', 'wizard_name', 'wizard_data')
+                bools = ('show_disabled')
             elif section == 'bed_screws':
                 # This section may be deprecated in favor of moving this options under the printer section
                 numbers = ('rotation', '')
@@ -605,7 +606,8 @@ class KlipperScreenConfig:
             "style": cfg.get("style", None),
             "wizard": cfg.get("wizard", None),
             "wizard_name": cfg.get("wizard_name", None),
-            "wizard_data": wizard_data
+            "wizard_data": wizard_data,
+            "show_disabled": cfg.get("show_disabled", False),
         }
 
         return {name[(len(menu) + 6):]: item}

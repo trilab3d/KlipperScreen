@@ -132,7 +132,7 @@ class KlipperScreen(Gtk.Window):
     panels = {}
     popup_message = None
     screensaver = None
-    printers = printer = None
+    printers = printer = printer_config = None
     subscriptions = []
     updating = False
     _ws = None
@@ -265,6 +265,7 @@ class KlipperScreen(Gtk.Window):
                 ind = self.printers.index(printer)
                 break
 
+        self.printer_config = self.printers[ind][name]
         self.printer = self.printers[ind]["data"]
         self.apiclient = KlippyRest(
             self.printers[ind][name]["moonraker_host"],

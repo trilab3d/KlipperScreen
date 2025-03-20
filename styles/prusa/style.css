@@ -71,6 +71,16 @@ button.color1:active, button.color2:active, button.color3:active, button.color4:
     background-color: #686868;
 }
 
+label:disabled,
+button:disabled label,
+button.color1:disabled label,
+button.color2:disabled label,
+button.color3:disabled label,
+button.color4:disabled label,
+button.danger:disabled label {
+    color: grey;
+}
+
 button.danger label {
     color: #FF0000;
 }

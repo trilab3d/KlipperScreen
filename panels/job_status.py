@@ -184,12 +184,13 @@ class JobStatusPanel(ScreenPanel):
         info_grid.set_margin_start(12)
         info_grid.attach(self._gtk.Label("Print will end", "property-name", xalign = 0.0), 0, 0, 1, 1)
         info_grid.attach(self.labels["time_end"], 1, 0, 1, 1)
-        info_grid.attach(self._gtk.Label("Remaining time", "property-name", xalign=0.0), 0, 1, 1, 1)
-        info_grid.attach(self.labels["time_left"], 1, 1, 1, 1)
-        info_grid.attach(self._gtk.Label("Next pause", "property-name", xalign=0.0), 0, 2, 1, 1)
-        info_grid.attach(self.labels["time_left_to_pause"], 1, 2, 1, 1)
-        info_grid.attach(self._gtk.Label("Printing time", "property-name", xalign=0.0), 0, 3, 1, 1)
-        info_grid.attach(self.labels["est_time"], 1, 3, 1, 1)
+        info_grid.attach(self._gtk.Label("Printing time", "property-name", xalign=0.0), 0, 1, 1, 1)
+        info_grid.attach(self.labels["est_time"], 1, 1, 1, 1)
+        info_grid.attach(self._gtk.Label("Remaining time", "property-name", xalign=0.0), 0, 2, 1, 1)
+        info_grid.attach(self.labels["time_left"], 1, 2, 1, 1)
+        self.time_left_to_pause_label = self._gtk.Label("Next pause", "property-name", xalign=0.0)
+        info_grid.attach(self.time_left_to_pause_label, 0, 3, 1, 1)
+        info_grid.attach(self.labels["time_left_to_pause"], 1, 3, 1, 1)
         self.grid.attach(info_grid, 0, 3, 1, 3)
 
         self.labels["progress_text"] = Gtk.Label("0%")
@@ -814,9 +815,11 @@ class JobStatusPanel(ScreenPanel):
         self.labels["est_time"].set_label(self.format_time(total))
         self.labels["time_left"].set_label(self.format_time(remaining))
         if(remaining_to_pause):
+            self.time_left_to_pause_label.set_label("Next pause")
             self.labels["time_left_to_pause"].set_label(self.format_time(remaining_to_pause))
         else:
-            self.labels["time_left_to_pause"].set_label("-")
+            self.time_left_to_pause_label.set_label(" ")
+            self.labels["time_left_to_pause"].set_label(" ")
         eta = self.format_eta_new(remaining)
         self.labels["time_end"].set_label(eta)
 

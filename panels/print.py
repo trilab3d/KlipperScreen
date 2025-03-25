@@ -73,6 +73,19 @@ class PrintPanel(ScreenPanel):
 
         self.dir_panels['gcodes'] = Gtk.Grid()
 
+        self.pending_panel = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        box.set_vexpand(False)
+        box.set_hexpand(True)
+        box.set_valign(Gtk.Align.CENTER)
+        self.pending_animation = self._gtk.LoadingAnimation()
+        label = Gtk.Label()
+        label.set_markup(f"Processing metadata...\n")
+        label.set_margin_top(20)
+        box.add(self.pending_animation)
+        box.add(label)
+        self.pending_panel.add(box)
+
         GLib.idle_add(self.reload_files)
 
         self.scroll.add(self.dir_panels['gcodes'])
@@ -81,6 +94,9 @@ class PrintPanel(ScreenPanel):
         self.showing_rename = False
 
     def activate(self):
+        if self._screen.files.get_metascan_pending():
+            self.show_pending()
+            return
         if self.cur_directory != "gcodes":
             self.change_dir(None, "gcodes")
         self._refresh_files()
@@ -280,6 +296,27 @@ class PrintPanel(ScreenPanel):
         self.scroll.add(self.dir_panels[directory])
         self.content.show_all()
 
+    def check_pending(self):
+        if not self._screen.files.get_metascan_pending():
+            self.change_dir(None, "gcodes")
+            return False
+        self.pending_animation.advance()
+        self.content.show_all()
+        return True
+
+    def show_pending(self):
+        logging.debug(f"Changing dir to pending screen")
+
+        for child in self.scroll.get_children():
+            self.scroll.remove(child)
+        self.cur_directory = None
+        self.labels['path'].set_text(f"")
+
+        self.scroll.add(self.pending_panel)
+        self.content.show_all()
+
+        GLib.timeout_add(500, self.check_pending)
+
     def change_sort(self, widget, key):
         if self.sort_current[0] == key:
             self.sort_current[1] = (self.sort_current[1] + 1) % 2
@@ -319,7 +356,7 @@ class PrintPanel(ScreenPanel):
         grid.set_valign(Gtk.Align.CENTER)
         grid.add(label)
 
-        self._screen.show_panel(filename, "wizard", filename, 1, False, wizard="preprintWizardSteps.PrintDetail", wizard_name="File detail", wizard_data={"filename": filename})
+        self._screen.show_panel(filename, "wizard", filename, 1, False, wizard="preprintWizardSteps.CheckMaintenance", wizard_name="File detail", wizard_data={"filename": filename})
         return
 
     def confirm_print_response(self, dialog, response_id, filename):
@@ -400,23 +437,21 @@ class PrintPanel(ScreenPanel):
             logging.debug(f"Cannot update file, file not in labels: {filename}")
             return
 
-        logging.info(f"Updating file {filename}")
         self.labels['files'][filename]['info'].set_markup(self.get_file_info_str(filename))
 
         # Update icon
         GLib.idle_add(self.image_load, filename)
 
     def _callback(self, newfiles, deletedfiles, updatedfiles=None):
-        logging.debug(f"newfiles: {newfiles}")
         for file in newfiles:
             self.add_file(file)
-        logging.debug(f"deletedfiles: {deletedfiles}")
         for file in deletedfiles:
             self.delete_file(file)
         if updatedfiles is not None:
-            logging.debug(f"updatefiles: {updatedfiles}")
             for file in updatedfiles:
                 self.update_file(file)
+        if self.cur_directory is not None and self._screen.files.get_metascan_pending():
+            self.show_pending()
         return False
 
     def _refresh_files(self, widget=None):

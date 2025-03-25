@@ -218,3 +218,7 @@ class KlippyFiles:
         if filename not in self.files:
             return {"path": None, "modified": 0, "size": 0}
         return self.files[filename]
+
+    def get_metascan_pending(self):
+        r = self._screen.apiclient.send_request("server/files/metascan_pending", json=True)
+        return r["result"]["metascan_pending"]

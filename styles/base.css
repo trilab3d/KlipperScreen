@@ -46,7 +46,8 @@ button:disabled,
 button.color1:disabled,
 button.color2:disabled,
 button.color3:disabled,
-button.color4:disabled {
+button.color4:disabled,
+button.danger:disabled {
     border: 0;
 }
 
@@ -54,13 +55,20 @@ button:disabled label,
 button.color1:disabled label,
 button.color2:disabled label,
 button.color3:disabled label,
-button.color4:disabled label {
+button.color4:disabled label,
+button.danger:disabled label {
     color: grey;
 }
 
 button label {
     margin-top: .25em;
     margin-bottom: 0;
+}
+
+button.danger {
+    border-bottom: .4em solid #ED6500;
+    margin: .3em;
+    min-height: 3em;
 }
 
 button.color1 {

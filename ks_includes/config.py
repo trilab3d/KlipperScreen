@@ -23,6 +23,7 @@ SCREEN_BLANKING_OPTIONS = [
 ]
 
 klipperscreendir = pathlib.Path(__file__).parent.resolve().parent
+persistentdir = "/opt/"
 
 
 class ConfigError(Exception):
@@ -65,6 +66,9 @@ class KlipperScreenConfig:
                 if saved_def is not None:
                     self.config.read_string(saved_def)
                     logging.info(f"====== Saved Def ======\n{saved_def}\n=======================")
+
+            if "persistent_data" not in self.config.sections():
+                self.config.add_section("persistent_data")
             # This is the final config
             # self.log_config(self.config)
             if self.validate_config():
@@ -200,7 +204,7 @@ class KlipperScreenConfig:
     def validate_config(self):
         valid = True
         for section in self.config:
-            if section == 'DEFAULT' or section.startswith('include '):
+            if section in ('DEFAULT', "persistent_data") or section.startswith('include '):
                 # Do not validate 'DEFAULT' or 'include*' sections
                 continue
             bools = strs = numbers = ()
@@ -239,6 +243,7 @@ class KlipperScreenConfig:
                 strs = ('diameters', 'printheads')
             elif section.startswith('menu '):
                 strs = ('name', 'icon', 'panel', 'method', 'params', 'enable', 'confirm', 'style', 'view_groups', 'wizard', 'wizard_name', 'wizard_data')
+                bools = ('show_disabled')
             elif section == 'bed_screws':
                 # This section may be deprecated in favor of moving this options under the printer section
                 numbers = ('rotation', '')
@@ -413,27 +418,7 @@ class KlipperScreenConfig:
         if os.path.exists(file):
             return file
 
-        file = os.path.join(klipperscreendir, self.configfile_name)
-        if os.path.exists(file):
-            return file
-        file = os.path.join(klipperscreendir, self.configfile_name.lower())
-        if os.path.exists(file):
-            return file
-
-        klipper_config = os.path.join(os.path.expanduser("~/"), "printer_data", "config")
-        file = os.path.join(klipper_config, self.configfile_name)
-        if os.path.exists(file):
-            return file
-        file = os.path.join(klipper_config, self.configfile_name.lower())
-        if os.path.exists(file):
-            return file
-
-        # OLD config folder
-        klipper_config = os.path.join(os.path.expanduser("~/"), "klipper_config")
-        file = os.path.join(klipper_config, self.configfile_name)
-        if os.path.exists(file):
-            return file
-        file = os.path.join(klipper_config, self.configfile_name.lower())
+        file = os.path.join(persistentdir, self.configfile_name)
         if os.path.exists(file):
             return file
 
@@ -530,6 +515,11 @@ class KlipperScreenConfig:
                     save_config.add_section(opt['section'])
                 save_config.set(opt['section'], name, str(curval))
 
+        if len(self.config["persistent_data"]):
+            save_config.add_section("persistent_data")
+        for item in self.config["persistent_data"]:
+            save_config.set("persistent_data", item, str(self.config["persistent_data"].get(item)))
+
         extra_sections = [i for i in self.config.sections() if i.startswith("displayed_macros")]
         extra_sections.extend([i for i in self.config.sections() if i.startswith("graph")])
         for section in extra_sections:
@@ -562,15 +552,7 @@ class KlipperScreenConfig:
         if self.config_path != self.default_config_path:
             filepath = self.config_path
         else:
-            filepath = os.path.expanduser("~/")
-            klipper_config = os.path.join(filepath, "printer_data", "config")
-            old_klipper_config = os.path.join(filepath, "klipper_config")
-            if os.path.exists(klipper_config):
-                filepath = os.path.join(klipper_config, self.configfile_name)
-            elif os.path.exists(old_klipper_config):
-                filepath = os.path.join(old_klipper_config, self.configfile_name)
-            else:
-                filepath = os.path.join(filepath, self.configfile_name)
+            filepath = os.path.join(persistentdir, self.configfile_name)
             logging.info(f'Creating a new config file in {filepath}')
 
         try:
@@ -624,7 +606,8 @@ class KlipperScreenConfig:
             "style": cfg.get("style", None),
             "wizard": cfg.get("wizard", None),
             "wizard_name": cfg.get("wizard_name", None),
-            "wizard_data": wizard_data
+            "wizard_data": wizard_data,
+            "show_disabled": cfg.get("show_disabled", False),
         }
 
         return {name[(len(menu) + 6):]: item}

@@ -256,3 +256,26 @@ class KlippyGtk:
                           Gdk.EventMask.BUTTON_RELEASE_MASK)
         scroll.set_kinetic_scrolling(True)
         return scroll
+
+    def LoadingAnimation(outer):
+        class _LoadingAnimation(Gtk.Box):
+            def __init__(self):
+                super().__init__(orientation=Gtk.Orientation.VERTICAL)
+                self.pixbufs = []
+                self.animation_length = 6
+                self.index = 0
+
+                for i in range(self.animation_length):
+                    filename = os.path.join(outer.themedir, f"loading-{i+1}.svg")
+                    self.pixbufs.append(GdkPixbuf.Pixbuf.new_from_file_at_size(f"{filename}", 100, -1))
+                self.img = Gtk.Image.new_from_pixbuf(self.pixbufs[1])
+
+                self.add(self.img)
+
+            def advance(self):
+                self.index += 1
+                if self.index >= self.animation_length:
+                    self.index = 0
+                self.img.set_from_pixbuf(self.pixbufs[self.index])
+
+        return _LoadingAnimation()

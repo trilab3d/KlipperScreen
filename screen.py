@@ -34,6 +34,7 @@ from ks_includes.printer import Printer
 from ks_includes.widgets.keyboard import Keyboard
 from ks_includes.widgets.keypad import Keypad
 from ks_includes.config import KlipperScreenConfig
+from ks_includes.Maintenance import Maintenance
 from panels.base_panel import BasePanel
 
 has_gpio = False
@@ -131,7 +132,7 @@ class KlipperScreen(Gtk.Window):
     panels = {}
     popup_message = None
     screensaver = None
-    printers = printer = None
+    printers = printer = printer_config = None
     subscriptions = []
     updating = False
     _ws = None
@@ -140,6 +141,7 @@ class KlipperScreen(Gtk.Window):
     max_retries = 4
     initialized = initializing = False
     popup_timeout = None
+    maintenance = None
 
     def __init__(self, args, version):
         try:
@@ -263,6 +265,7 @@ class KlipperScreen(Gtk.Window):
                 ind = self.printers.index(printer)
                 break
 
+        self.printer_config = self.printers[ind][name]
         self.printer = self.printers[ind]["data"]
         self.apiclient = KlippyRest(
             self.printers[ind][name]["moonraker_host"],
@@ -288,6 +291,7 @@ class KlipperScreen(Gtk.Window):
                                    )
 
         self.files = KlippyFiles(self)
+        self.maintenance = Maintenance(self)
         self._ws.initial_connect()
 
     def ws_subscribe(self):
@@ -295,7 +299,7 @@ class KlipperScreen(Gtk.Window):
             "objects": {
                 "bed_mesh": ["profile_name", "mesh_max", "mesh_min", "probed_matrix", "profiles"],
                 "configfile": ["config"],
-                "display_status": ["progress", "message", "remaining"],
+                "display_status": ["progress", "message", "remaining", "remaining_to_pause"],
                 "fan": ["speed"],
                 "gcode_move": ["extrude_factor", "gcode_position", "homing_origin", "speed_factor", "speed"],
                 "idle_timeout": ["state"],
@@ -422,6 +426,9 @@ class KlipperScreen(Gtk.Window):
         elif command == "FILAMENT_RUNOUT":
             self.show_panel("filament_runout", "wizard", _("Filament Runout"), 2,
                             False, wizard="filamentRunoutSteps.RemoveFilamentDialog", wizard_name=_("Filament Runout"))
+        elif command == "FILAMENT_CHANGE":
+            self.show_panel("filament_change", "wizard", _("Filament Change"), 1,
+                            False, wizard="loadWizardSteps.ChangeScheduled", wizard_name=_("Filament Change"))
         elif command == "FS_CHANGE":
             self.files.refresh_files()
         elif command == "UPDATE_AVAILABLE":

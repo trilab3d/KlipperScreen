@@ -543,6 +543,7 @@ class WaitForFilamentInserted(loadWizardSteps.WaitForFilamentInserted):
     def __init__(self, screen):
         super().__init__(screen)
         self.next_step = Purging
+        self.reheat_step = WaitForTemperature
 
 class Purging(loadWizardSteps.Purging):
     def __init__(self, screen, first_purge=True):

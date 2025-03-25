@@ -35,6 +35,7 @@ class Printer:
         self.tempstore_size = 1200
         self.init_emergency_stop()
         self.hostname = ""
+        self.connect_status = "UNCONFIGURED"
 
     def reinit(self, printer_info, data):
         self.config = data['configfile']['config']
@@ -263,6 +264,7 @@ class Printer:
                 "idle_timeout": self.get_stat("idle_timeout").copy(),
                 "pause_resume": {"is_paused": self.state == "paused"},
                 "power_devices": {"count": len(self.get_power_devices())},
+                "connect_status": self.connect_status,
             }
         }
 

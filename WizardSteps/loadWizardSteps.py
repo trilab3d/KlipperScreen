@@ -21,6 +21,45 @@ class Cancelable(TemperatureSetter):
         logging.info(heaters)
         self.set_temperature("cooldown",heaters)
 
+class ChangeScheduled(BaseWizardStep):
+    def __init__(self, screen):
+        super().__init__(screen)
+
+    def activate(self, wizard):
+        super().activate(wizard)
+        self.wizard_manager.set_wizard_data("should_act_as_change_wizard", True)
+
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        img = self._screen.gtk.Image("unload_guide", self._screen.gtk.content_width * .945, -1)
+        self.content.add(img)
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
+            "<span size='large'>" + _("Filament change scheduled") + "</span>")
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
+
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(5)
+        label.set_margin_left(10)
+        label.set_margin_right(10)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        label.set_markup("<span size='small'>" +
+                         _("Filament was unloaded.") + " " +
+                         _("Pull the end of the filament out of the printer and secure it against tangling.")
+                         + "</span>")
+        self.content.add(label)
+
+        continue_button = self._screen.gtk.Button(label=_("Continue"), style=f"color1")
+        continue_button.set_vexpand(False)
+        continue_button.connect("clicked", self.continue_pressed)
+        self.content.add(continue_button)
+
+    def continue_pressed(self, widget):
+        self.wizard_manager.set_step(SelectFilament(self._screen))
+
 
 class CheckLoaded(BaseWizardStep):
     def __init__(self, screen):
@@ -187,7 +226,12 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
         self.set_temperature(option, self.heaters)
 
         if self.wizard_manager.get_wizard_data("temperature_override_option"):
-            self.set_temperature(self.wizard_manager.get_wizard_data("temperature_override_option"), self._screen.printer.get_tools())
+            required_temp = self.preheat_options[option]["extruder"]
+            override_temp = self.preheat_options[self.wizard_manager.get_wizard_data("temperature_override_option")]["extruder"]
+            if override_temp > required_temp:
+                self.set_temperature(self.wizard_manager.get_wizard_data("temperature_override_option"), self._screen.printer.get_tools())
+            else:
+                self.wizard_manager.set_wizard_data("temperature_override_option", None)
         elif ("last_filament" in save_variables and save_variables["last_filament"] in self.preheat_options and
                 self.preheat_options[save_variables["last_filament"]]["extruder"] > self.preheat_options[option]["extruder"]):
             self.set_temperature(save_variables["last_filament"],self._screen.printer.get_tools())
@@ -199,7 +243,7 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
         self.wizard_manager.set_step(self.next_step(self._screen))
 
     def set_filament_unknown(self, widget):
-        self.wizard_manager.set_wizard_data("expected_filament", None)
+        self.wizard_manager.set_wizard_data("expected_filament", "None")
         self.wizard_manager.set_step(self.__class__(self._screen, False))
 
 
@@ -216,6 +260,9 @@ class SetFlapDialog(Cancelable, BaseWizardStep):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         setting = self._screen._config.get_preheat_options()[self.wizard_manager.get_wizard_data('currently_loading')]
+        if "flap_position" not in setting:
+            self.wizard_manager.set_step(WaitForTemperature(self._screen))
+            return
         flap_position = setting["flap_position"]
         img = self._screen.gtk.Image(f"htflap{int(flap_position)}", self._screen.gtk.content_width * .945,-1)
         self.content.add(img)
@@ -388,10 +435,11 @@ class WaitForTemperature(Cancelable, TemperatureSetter, BaseWizardStep):
         self.on_cancel()
         self._screen._menu_go_back()
 
-class WaitForFilamentInserted(Cancelable, BaseWizardStep):
+class WaitForFilamentInserted(Cancelable, SelectFilament):
     def __init__(self, screen):
         super().__init__(screen)
         self.next_step = Purging
+        self.reheat_step = WaitForTemperature
         self.filament_sensor = self._screen.printer.data['filament_switch_sensor fil_sensor']\
             if 'filament_switch_sensor fil_sensor' in self._screen.printer.data else None
 
@@ -477,7 +525,13 @@ class WaitForFilamentInserted(Cancelable, BaseWizardStep):
             self.load_guide.show()
 
     def load_filament_pressed(self, widget):
-        self.wizard_manager.set_step(self.next_step(self._screen))
+        # check, if heater timeout hasn't occurred
+        if self._screen.printer.data['extruder']["target"] > 0:
+            self.wizard_manager.set_step(self.next_step(self._screen))
+        else:
+            currently_loading = self.wizard_manager.get_wizard_data('currently_loading')
+            self.set_temperature(currently_loading, self.heaters)
+            self.wizard_manager.set_step(self.reheat_step(self._screen))
 
     def _filament_sensor_getter(self):
         filament_sensor = self._screen.printer.data['filament_switch_sensor fil_sensor']
@@ -666,8 +720,8 @@ class CheckReheatNeeded(SelectFilament):
         currently_loading = self.wizard_manager.get_wizard_data('currently_loading')
         if ("extruder" in self.preheat_options[currently_loading] and
                 self.preheat_options[currently_loading]["extruder"] > self._screen.printer.data['extruder']["target"]):
-            self.next_step = WaitForTemperatureForPurge
             self.set_temperature(currently_loading, self.heaters)
+            self.wizard_manager.set_step(WaitForTemperatureForPurge(self._screen))
         else:
             self.wizard_manager.set_step(self.next_step(self._screen, False))
 

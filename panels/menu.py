@@ -23,9 +23,9 @@ class MenuPanel(ScreenPanel):
         self.items = items
         self.create_menu_items()
         self.grid = self._gtk.HomogeneousGrid(row_homogenous=True, column_homogenous=True)
-        self.grid.set_margin_left(20)
-        self.grid.set_margin_right(20)
-        self.grid.set_column_spacing(20)
+        self.grid.set_margin_left(10)
+        self.grid.set_margin_right(10)
+        self.grid.set_column_spacing(10)
         self.grid.set_row_spacing(20)
         self.grid.set_vexpand(False)
         self.scroll = self._gtk.ScrolledWindow()
@@ -52,9 +52,13 @@ class MenuPanel(ScreenPanel):
         i = 0
         for item in items:
             key = list(item)[0]
+            is_enabled = True
             if not self.evaluate_enable(item[key]['enable']):
-                logging.debug(f"X > {key}")
-                continue
+                if not item[key]['show_disabled']:
+                    logging.debug(f"X > {key}")
+                    continue
+                else:
+                    is_enabled = False
 
             if columns == 4:
                 if length <= 4:
@@ -71,6 +75,7 @@ class MenuPanel(ScreenPanel):
             if expand_last is True and i + 1 == length and length % 2 == 1:
                 width = 2
 
+            self.labels[key].set_sensitive(is_enabled)
             self.grid.attach(self.labels[key], col, row, width, height)
             i += 1
         self.j2_data = None
@@ -88,15 +93,14 @@ class MenuPanel(ScreenPanel):
             icon = self._screen.env.from_string(item['icon']).render(printer) if item['icon'] else None
             style = self._screen.env.from_string(item['style']).render(printer) if item['style'] else None
 
-            button = self._gtk.Button(icon, label=None, style=style or f"color{i % 4 + 1}", scale=scale)
+            button = self._gtk.Button(icon, label=None, style=style or f"color{i % 4 + 1}")
             label = self._gtk.Label(name)
             
             grid = self._gtk.HomogeneousGrid(row_homogenous=False)
             grid.attach(button, 0, 0, 1, 1)
             grid.attach(label, 0, 1, 1, 1)
 
-            button_width, _button_height = button.get_size_request()
-            button.set_size_request(button_width, button_width) 
+            button.set_size_request(-1, 130)
 
             if item['panel'] is not None:
                 panel = self._screen.env.from_string(item['panel']).render(printer)

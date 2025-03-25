@@ -241,3 +241,105 @@ class ConfirmUnconfigure(BaseWizardStep):
     def on_back(self):
         self.wizard_manager.set_step(Done(self._screen))
         return True
+
+class SetReady(BaseWizardStep):
+    def __init__(self, screen, load_var=True):
+        super().__init__(screen)
+        self.printer_config = self._screen.printers[0][list(self._screen.printers[0])[0]]
+        self.can_back = True
+
+    def activate(self, wizard):
+        super().activate(wizard)
+
+        self.ready = self.fetch_ready()
+
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        img = self._screen.gtk.Image("prusa-connect", self._screen.gtk.content_width * .945, 450)
+        self.content.add(img)
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        if self.ready:
+            label.set_markup(
+                "<span size='large'>" + _("Printer is ready") + "</span>")
+        else:
+            label.set_markup(
+                "<span size='large'>" + _("Printer is not ready") + "</span>")
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
+
+        if self.ready:
+            button = self._screen.gtk.Button(label=_("Set NOT ready"), style=f"color1")
+            button.set_vexpand(False)
+            button.connect("clicked", self.set_not_ready_clicked)
+            self.content.add(button)
+        else:
+            button = self._screen.gtk.Button(label=_("Set ready"), style=f"color1")
+            button.set_vexpand(False)
+            button.connect("clicked", self.set_ready_clicked)
+            self.content.add(button)
+
+        button = self._screen.gtk.Button(label=_("Go back"), style=f"color1")
+        button.set_vexpand(False)
+        button.connect("clicked", self.go_back_clicked)
+        self.content.add(button)
+
+    def fetch_ready(self):
+        r = requests.get(
+            f"http://{self.printer_config['moonraker_host']}:{self.printer_config['prusa_connect_port']}/status"
+        ).json()
+
+        if r["state"] == "READY":
+            return True
+        else:
+            return False
+
+    def set_ready_clicked(self, widget):
+        self.wizard_manager.set_step(SetReadyConfirm(self._screen))
+
+    def set_not_ready_clicked(self, widget):
+        requests.post(
+            f"http://{self.printer_config['moonraker_host']}:{self.printer_config['prusa_connect_port']}/set_printer_ready/false"
+        )
+        self._screen._menu_go_back()
+
+    def go_back_clicked(self, widget):
+        self._screen._menu_go_back()
+
+class SetReadyConfirm(BaseWizardStep):
+    def __init__(self, screen, load_var=True):
+        super().__init__(screen)
+        self.printer_config = self._screen.printers[0][list(self._screen.printers[0])[0]]
+        self.can_back = True
+
+    def activate(self, wizard):
+        super().activate(wizard)
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        img = self._screen.gtk.Image("prusa-connect", self._screen.gtk.content_width * .945, 450)
+        self.content.add(img)
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
+            "<span size='large'>" + _("Make sure filament is loaded and print sheet is empty and clean.") + "</span>")
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_line_wrap(True)
+        self.content.add(label)
+
+        button = self._screen.gtk.Button(label=_("Set ready"), style=f"color1")
+        button.set_vexpand(False)
+        button.connect("clicked", self.set_ready_clicked)
+        self.content.add(button)
+
+        button = self._screen.gtk.Button(label=_("Go back"), style=f"color1")
+        button.set_vexpand(False)
+        button.connect("clicked", self.go_back_clicked)
+        self.content.add(button)
+
+    def set_ready_clicked(self, widget):
+        requests.post(
+            f"http://{self.printer_config['moonraker_host']}:{self.printer_config['prusa_connect_port']}/set_printer_ready/true"
+        )
+        self._screen._menu_go_back()
+
+    def go_back_clicked(self, widget):
+        self._screen._menu_go_back()

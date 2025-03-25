@@ -56,15 +56,33 @@ button.highlight {
     border-style: none;
 }
 
-button.color1, button.color2, button.color3, button.color4 {
+button.color1, button.color2, button.color3, button.color4, button.danger {
     background-color: #3b3b3b;
     margin: 15px;
     border-style: none;
 }
 
-button.color1:active, button.color2:active, button.color3:active, button.color4:active, button.update:active, button.invalid:active, .dialog button:active {
+button.danger {
+    background-color: #471d0d;
+}
+
+button.color1:active, button.color2:active, button.color3:active, button.color4:active, button.danger:active, button.update:active, button.invalid:active, .dialog button:active {
     border-style: none;
     background-color: #686868;
+}
+
+label:disabled,
+button:disabled label,
+button.color1:disabled label,
+button.color2:disabled label,
+button.color3:disabled label,
+button.color4:disabled label,
+button.danger:disabled label {
+    color: grey;
+}
+
+button.danger label {
+    color: #FF0000;
 }
 
 button.update {
@@ -129,11 +147,11 @@ scale-mark {
 }
 
 scrollbar, scrollbar button, scrollbar trough {
-    background-color: #121212;
+    background-color: #1c1c1c;
 }
 
 scrollbar slider {
-    background-color: #1c1c1c;
+    background-color: #3b3b3b;
 }
 
 textview .time {

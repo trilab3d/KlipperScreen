@@ -134,10 +134,13 @@ class ScreenPanel:
         seconds %= 3600
         minutes = seconds // 60
         seconds %= 60
-        return f"{f'{days:2.0f}d ' if days > 0 else ''}" \
-               f"{f'{hours:2.0f}h ' if hours > 0 else ''}" \
-               f"{f'{minutes:2.0f}m ' if minutes > 0 else ''}" \
-               f"{f'{seconds:2.0f}s' if days == 0 and hours == 0 and minutes == 0 else ''}"
+        decimals = (4 if days > 0 else (3 if hours > 0 else (2 if minutes > 0 else 1)))
+        if decimals == 4:
+            return (f"{days:2.0f}d {hours:2.0f}h")
+        elif decimals == 3:
+            return (f"{hours:2.0f}h {minutes:2.0f}m")
+        else:
+            return (f"{minutes:2.0f}m {seconds:2.0f}s")
 
     def format_eta(self, total, elapsed):
         if total is None:
@@ -165,8 +168,8 @@ class ScreenPanel:
         minutes = seconds // 60
         eta = datetime.datetime.now() + datetime.timedelta(days=days, hours=hours, minutes=minutes)
         if self._config.get_main_config().getboolean("24htime", True):
-            return f"{eta:%H:%M} {f' +{days:2.0f}d' if days > 0 else ''}"
-        return f"{eta:%I:%M %p} {f' +{days:2.0f}d' if days > 0 else ''}"
+            return f"{eta:%H:%M}{f' +{days:2.0f}d' if days > 0 else ''}"
+        return f"{eta:%I:%M %p}{f' +{days:2.0f}d' if days > 0 else ''}"
 
     @staticmethod
     def format_size(size):

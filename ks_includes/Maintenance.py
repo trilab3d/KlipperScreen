@@ -31,7 +31,7 @@ MagBallsMaintenance = {
 
 LinearRailsMaintenance = {
     "code": "linear_rails_maintenance",
-    "interval": 300,
+    "interval": 1000,
     "name": "Linear Rails Lubrication",
     "guide_url": "prusa.io/ht90-linear-rails-lubrication",
     "label1": "Linear Rails Lubrication Recommended",
@@ -83,7 +83,7 @@ class Maintenance:
             if last_maintenance == 0:
                 last_maintenance = self._randomize_first_maintenance(mi)
             mi["since_last_maintenance"] = current_printed_hours - last_maintenance
-            mi["to_next_maintenance"] = max(mi["interval"] - mi["since_last_maintenance"], 0)
+            mi["to_next_maintenance"] = mi["interval"] - mi["since_last_maintenance"]
             show_maintenance.append(mi)
 
         return show_maintenance

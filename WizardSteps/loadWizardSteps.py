@@ -223,7 +223,10 @@ class SelectFilament(BaseWizardStep, TemperatureSetter):
         speed = self.preheat_options[option]["speed"] if "speed" in self.preheat_options[option] else 1
         self.wizard_manager.set_wizard_data("speed_request", speed)
         save_variables = self._screen.printer.data['save_variables']['variables']
-        self.set_temperature(option, self.heaters)
+        if self.wizard_manager.get_wizard_data("should_act_as_change_wizard"):
+            self.set_temperature(option, self._screen.printer.get_tools())
+        else:
+            self.set_temperature(option, self.heaters)
 
         if self.wizard_manager.get_wizard_data("temperature_override_option"):
             required_temp = self.preheat_options[option]["extruder"]

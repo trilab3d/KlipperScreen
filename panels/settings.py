@@ -99,11 +99,21 @@ class SettingsPanel(ScreenPanel):
             "enable_door_sensor": {"name": _("Door Sensor"), "type": "binary",
                                     "value_getter": self._door_sensor_getter, "callback": self._door_sensor_callback},
             "enable_filament_sensor": {"name": _("Filament Sensor"), "type": "binary",
-                                   "value_getter": self._filament_sensor_getter, "callback": self._filament_sensor_callback},
+                                        "value_getter": self._filament_sensor_getter, "callback": self._filament_sensor_callback},
+            "LED_timeout": {"name": _("LED Timeout"), "type": "dropdown",
+                            "options": [
+                                {"name": "disabled", "value": 0},
+                                {"name": "5s", "value": 5},
+                                {"name": "5m", "value": 5*60},
+                                {"name": "10m", "value": 10*60},
+                                {"name": "30m", "value": 30*60},
+                            ],
+                            "value_getter": self._LED_timeout_getter, "callback": self._LED_timeout_callback},
         }
 
         options.insert(2, {"enable_door_sensor": self.nonlocal_options["enable_door_sensor"]})
         options.insert(3, {"enable_filament_sensor": self.nonlocal_options["enable_filament_sensor"]})
+        options.insert(4, {"LED_timeout": self.nonlocal_options["LED_timeout"]})
 
         for nlo in self.nonlocal_options:
             self.nonlocal_options[nlo]["section"] = "_nonlocal"
@@ -209,12 +219,18 @@ class SettingsPanel(ScreenPanel):
             dev.add(switch)
         elif option['type'] == "dropdown":
             dropdown = Gtk.ComboBoxText()
-            for i, opt in enumerate(option['options']):
-                dropdown.append(opt['value'], opt['name'])
-                if opt['value'] == self._config.get_config()[option['section']].get(opt_name, option['value']):
-                    dropdown.set_active(i)
-            dropdown.connect("changed", self.on_dropdown_change, option['section'], opt_name,
-                             option['callback'] if "callback" in option else None)
+            if option['section'] == '_nonlocal':
+                for i, opt in enumerate(option['options']):
+                    dropdown.append(str(opt['value']), str(opt['name']))
+                dropdown.connect("changed", option['callback'], option)
+                option['control'] = dropdown
+            else:
+                for i, opt in enumerate(option['options']):
+                    dropdown.append(str(opt['value']), str(opt['name']))
+                    if opt['value'] == self._config.get_config()[option['section']].get(opt_name, option['value']):
+                        dropdown.set_active(i)
+                dropdown.connect("changed", self.on_dropdown_change, option['section'], opt_name,
+                                option['callback'] if "callback" in option else None)
             dropdown.set_entry_text_column(0)
             dev.add(dropdown)
         elif option['type'] == "scale":
@@ -337,5 +353,34 @@ class SettingsPanel(ScreenPanel):
             obj["loaded"] = True
             if switch.get_active():
                 return
+        obj["update_deadtime"] = 3
+        obj["control"].set_sensitive(False)
+
+    def _LED_timeout_getter(self, obj):
+        led_light = self._screen.printer.data['led light']
+        timeout = led_light["timeout"]
+
+        if not obj["update_deadtime"]:
+            obj["control"].set_sensitive(True)
+            model = obj["control"].get_model()
+            current_i = obj["control"].get_active()
+            for i, opt in enumerate(model):
+                if int(opt[1]) == timeout and current_i != i:
+                    obj["control"].set_sensitive(False)
+                    obj["control"].set_active(i)
+                    obj["update_deadtime"] = 1
+        else:
+            obj["control"].set_sensitive(False)
+            obj["update_deadtime"] -= 1
+
+
+    def _LED_timeout_callback(self, dropdown, obj):
+        if not dropdown.get_sensitive():
+            return
+        tree_iter = obj["control"].get_active_iter()
+        if tree_iter is not None:
+            model = obj["control"].get_model()
+            timeout = model[tree_iter][1]
+            self._screen._ws.klippy.gcode_script(f"SET_LED_TIMEOUT LED=light TIMEOUT={timeout}")
         obj["update_deadtime"] = 3
         obj["control"].set_sensitive(False)

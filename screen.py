@@ -328,7 +328,7 @@ class KlipperScreen(Gtk.Window):
         for f in self.printer.get_fans():
             requested_updates['objects'][f] = ["speed", "set_speed"]
         for l in self.printer.get_lights():
-            requested_updates['objects'][l] = ["color_data"]
+            requested_updates['objects'][l] = ["color_data", "timeout"]
         for f in self.printer.get_filament_sensors():
             requested_updates['objects'][f] = ["enabled", "filament_detected"]
         for p in self.printer.get_output_pins():
@@ -1045,6 +1045,8 @@ class KlipperScreen(Gtk.Window):
                           if self.printer.config_section_exists("config_constant printhead_pretty") else [])
                        + (["save_variables"]
                             if self.printer.config_section_exists("save_variables") else [])
+                       + (["led light"]
+                            if self.printer.config_section_exists("led light") else [])
                        )
 
         data = self.apiclient.send_request("printer/objects/query?" + "&".join(PRINTER_BASE_STATUS_OBJECTS +

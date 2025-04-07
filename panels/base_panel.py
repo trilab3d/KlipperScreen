@@ -132,7 +132,15 @@ class BasePanel(ScreenPanel):
 
         # Main layout
         self.main_grid = Gtk.Grid()
-        self.main_layout = Gtk.Layout()
+        self.main_layout_iner = Gtk.Layout()
+
+        self.main_layout = Gtk.EventBox()
+        self.main_layout.set_hexpand(True)
+        self.main_layout.set_vexpand(True)
+        #self.main_layout.get_style_context().add_class("red_debug")
+        self.main_layout.set_size_request(self._gtk.width, self._gtk.height)
+        self.main_layout.connect("button-press-event", self.click_overlay_handler)
+        self.main_layout.add(self.main_layout_iner)
 
         if self._screen.vertical_mode:
             self.main_grid.attach(self.titlebar, 0, 0, 1, 1)
@@ -147,10 +155,10 @@ class BasePanel(ScreenPanel):
            
             
         self.main_grid.set_vexpand(True)
-        self.main_layout.set_vexpand(True)
-        self.main_layout.set_hexpand(True)
+        self.main_layout_iner.set_vexpand(True)
+        self.main_layout_iner.set_hexpand(True)
         self.main_grid.set_size_request(self._gtk.width, self._gtk.height)
-        self.main_layout.set_size_request(self._gtk.width, self._gtk.height)
+        self.main_layout_iner.set_size_request(self._gtk.width, self._gtk.height)
         
         pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
             filename="styles/prusa/images/extruder-STD.png",
@@ -162,10 +170,17 @@ class BasePanel(ScreenPanel):
         self.background_image_box = Gtk.Box()
         self.background_image_box.add(background_image)
 
-        self.main_layout.put(self.background_image_box, 0, 0)
-        self.main_layout.put(self.main_grid, 0, 0)
+        self.main_layout_iner.put(self.background_image_box, 0, 0)
+        self.main_layout_iner.put(self.main_grid, 0, 0)
 
         self.update_time()
+
+    def click_overlay_handler(self, widget, argument):
+        led_light = self._screen.printer.data['led light']
+        power = led_light["color_data"][0][3]
+        if power == 0:
+            self._screen._ws.klippy.gcode_script(f"SET_LED LED=light WHITE=1")
+        return False  # propagate click bellow
 
     def rebuild_notification_states(self, new_states):
         for key in self.notification_states:

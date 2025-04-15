@@ -62,6 +62,7 @@ class ScreenPanel:
         return None
 
     def menu_item_clicked(self, widget, panel_type, item):
+        self._screen.base_panel.click_overlay_handler()  # for LED on click
         if item['panel'] == 'wizard':
             self._screen.show_panel(f"wizard_{item['name']}", item['panel'], item['name'], 1, False, wizard=item['wizard'],
                                     wizard_name=item['wizard_name'], data=item['wizard_data'])

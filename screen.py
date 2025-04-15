@@ -607,6 +607,7 @@ class KlipperScreen(Gtk.Window):
         )
 
     def _go_to_submenu(self, widget, name):
+        self.base_panel.click_overlay_handler()  # for LED on click
         logging.info(f"#### Go to submenu {name}")
         # Find current menu item
         if "main_panel" in self._cur_panels:
@@ -927,6 +928,7 @@ class KlipperScreen(Gtk.Window):
             GLib.idle_add(self.panels[x].process_update, *args)
 
     def _confirm_send_action(self, widget, text, method, params=None):
+        self.base_panel.click_overlay_handler()  # for LED on click
         buttons = [
             {"name": _("Continue"), "response": Gtk.ResponseType.OK},
             {"name": _("Cancel"), "response": Gtk.ResponseType.CANCEL}
@@ -960,6 +962,7 @@ class KlipperScreen(Gtk.Window):
             GLib.timeout_add_seconds(2, self.files.refresh_files)
 
     def _send_action(self, widget, method, params):
+        self.base_panel.click_overlay_handler()  # for LED on click
         logging.info(f"{method}: {params}")
         self._ws.send_method(method, params)
 

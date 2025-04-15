@@ -255,6 +255,7 @@ class PrintPanel(ScreenPanel):
         return False
 
     def confirm_delete_file(self, widget, filepath):
+        self._screen.base_panel.click_overlay_handler()  # for LED on click
         logging.debug(f"Sending delete_file {filepath}")
         params = {"path": f"{filepath}"}
         self._screen._confirm_send_action(
@@ -265,6 +266,7 @@ class PrintPanel(ScreenPanel):
         )
 
     def confirm_delete_directory(self, widget, dirpath):
+        self._screen.base_panel.click_overlay_handler()  # for LED on click
         logging.debug(f"Sending delete_directory {dirpath}")
         params = {"path": f"{dirpath}", "force": True}
         self._screen._confirm_send_action(
@@ -318,6 +320,7 @@ class PrintPanel(ScreenPanel):
         GLib.timeout_add(500, self.check_pending)
 
     def change_sort(self, widget, key):
+        self._screen.base_panel.click_overlay_handler()  # for LED on click
         if self.sort_current[0] == key:
             self.sort_current[1] = (self.sort_current[1] + 1) % 2
         else:
@@ -335,7 +338,7 @@ class PrintPanel(ScreenPanel):
         self._config.save_user_config_options()
 
     def confirm_print(self, widget, filename):
-
+        self._screen.base_panel.click_overlay_handler()  # for LED on click
         buttons = [
             {"name": _("Print"), "response": Gtk.ResponseType.OK},
             {"name": _("Cancel"), "response": Gtk.ResponseType.CANCEL}
@@ -360,6 +363,7 @@ class PrintPanel(ScreenPanel):
         return
 
     def confirm_print_response(self, dialog, response_id, filename):
+        self._screen.base_panel.click_overlay_handler()  # for LED on click
         self._gtk.remove_dialog(dialog)
         if response_id == Gtk.ResponseType.CANCEL:
             return

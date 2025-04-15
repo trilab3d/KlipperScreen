@@ -46,7 +46,6 @@ class MenuPanel(ScreenPanel):
             self.enabled_update = None
 
     def update_enabled(self):
-        logging.info(f"Reevaluate items")
         # To reevaluate enabled items
         self.add_content()
         return True

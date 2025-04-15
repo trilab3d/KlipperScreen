@@ -5,7 +5,7 @@ import gi
 import json
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, GdkPixbuf
+from gi.repository import Gtk, GdkPixbuf, GLib
 from jinja2 import Template
 
 from ks_includes.screen_panel import ScreenPanel
@@ -30,20 +30,43 @@ class MenuPanel(ScreenPanel):
         self.grid.set_vexpand(False)
         self.scroll = self._gtk.ScrolledWindow()
         self.scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        self.enabled_update = None
+        self.initialized = False
 
     def activate(self):
+        logging.info(f"Self activate")
         self.add_content()
+        if self.enabled_update is None:
+                logging.info(f"Add timeout")
+                self.enabled_update = GLib.timeout_add_seconds(2, self.update_enabled)
+    
+    def deactivate(self):
+        if self.enabled_update is not None:
+            GLib.source_remove(self.enabled_update)
+            self.enabled_update = None
+
+    def update_enabled(self):
+        logging.info(f"Reevaluate items")
+        # To reevaluate enabled items
+        self.add_content()
+        return True
 
     def add_content(self):
         for child in self.scroll.get_children():
             self.scroll.remove(child)
         if self._screen.vertical_mode:
             # self.scroll.add(self.arrangeMenuItems(self.items, 3))
-            self.content.add(self.arrangeMenuItems(self.items, 3))
+            self.arrangeMenuItems(self.items, 3)
         else:
-            self.scroll.add(self.arrangeMenuItems(self.items, 4))
-        # if not self.content.get_children():
-        #     self.content.add(self.scroll)
+            self.arrangeMenuItems(self.items, 4)
+
+        # to prevent Gtk-WARNING: Attempting to add a widget with type GtkGrid
+        # to a container of type GtkBox, but the widget is already inside a
+        # container of type GtkViewport, please remove the widget from its
+        # existing container first.
+        if not self.initialized:
+            self.initialized = True
+            self.content.add(self.grid)
 
     def arrangeMenuItems(self, items, columns, expand_last=False):
         for child in self.grid.get_children():

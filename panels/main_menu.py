@@ -126,6 +126,7 @@ class MainPanel(MenuPanel):
 
     def activate(self):
         # self.update_graph_visibility()
+        self.add_content()
         self._screen.base_panel_show_all()
         printhead = self._printer.data['config_constant printhead_pretty']['value']\
             if 'config_constant printhead_pretty' in self._printer.data else ""
@@ -140,6 +141,9 @@ class MainPanel(MenuPanel):
                 'loaded_filament' in self._printer.data['save_variables']['variables'] )\
             else ""
         self.filament_value.set_label(filament)
+        if self.enabled_update is None:
+                logging.info(f"Add timeout")
+                self.enabled_update = GLib.timeout_add_seconds(2, self.update_enabled)
 
     def deactivate(self):
         if self.graph_update is not None:
@@ -150,6 +154,9 @@ class MainPanel(MenuPanel):
             self.graph_retry_timeout = None
         if self.active_heater is not None:
             self.hide_numpad()
+        if self.enabled_update is not None:
+            GLib.source_remove(self.enabled_update)
+            self.enabled_update = None
 
     def add_device(self, device):
 

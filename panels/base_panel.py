@@ -317,6 +317,7 @@ class BasePanel(ScreenPanel):
         self._screen.show_panel(f"manual", "manual", "Help", 1, False)
 
     def back(self, widget=None):
+        self.click_overlay_handler() # for LED on click
         if self.current_panel is None:
             return
 
@@ -329,6 +330,7 @@ class BasePanel(ScreenPanel):
             self._screen._menu_go_back()
 
     def home(self, widget=None):
+        self.click_overlay_handler() # for LED on click
         if hasattr(self.current_panel, "on_home"):
             self.current_panel.on_home()
         self._screen._menu_go_back(home=True)

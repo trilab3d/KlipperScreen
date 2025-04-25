@@ -176,6 +176,8 @@ class BasePanel(ScreenPanel):
         self.update_time()
 
     def click_overlay_handler(self, widget=None, argument=None):
+        if not self._screen.printer.data or not 'led light' in self._screen.printer.data:
+            return False
         led_light = self._screen.printer.data['led light']
         power = led_light["color_data"][0][3]
         if power == 0:

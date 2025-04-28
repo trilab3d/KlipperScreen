@@ -42,7 +42,7 @@ MaintenanceIntervals = [
     ElectronicFilterMaintenance,
     ChamberFilterMaintenance,
     MagBallsMaintenance,
-    LinearRailsMaintenance
+    #LinearRailsMaintenance
 ]
 
 VAR_PREFIX = "maintenance_interval_"

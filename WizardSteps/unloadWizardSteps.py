@@ -213,6 +213,7 @@ class Unloading(loadWizardSteps.Cancelable, BaseWizardStep):
             self._screen._ws.klippy.gcode_script(f"_FILAMENT_RETRACT SPEED={int(40*speed_requests)}")
             self._screen._ws.klippy.gcode_script(f"G4 P4000")
         self._screen._ws.klippy.gcode_script(f"G1 E-30.0 F{int(900*speed_requests)} C")
+        self._screen._ws.klippy.gcode_script(f"M400")
         self._screen._ws.klippy.gcode_script(
             f"SAVE_VARIABLE VARIABLE=loaded_filament VALUE='\"NONE\"'")
         self._screen._ws.klippy.gcode_script(

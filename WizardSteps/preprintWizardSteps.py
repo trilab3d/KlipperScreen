@@ -5,6 +5,7 @@ from threading import Thread
 import os
 import logging
 import requests
+import re
 
 from panels.privacy import PRESET_FIELDS
 
@@ -486,3 +487,213 @@ class MismatchDetected(BaseWizardStep):
         filename = self.wizard_manager.get_wizard_data("filename")
         logging.info(f"Starting print: {filename}")
         self._screen._ws.klippy.print_start(filename)
+
+class RemoteMismatchDetected(BaseWizardStep):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.can_exit = False
+        self.can_back = False
+
+    def activate(self, wizard):
+        super().activate(wizard)
+        wizard.set_wizard_data("always_reinit_wizard", True)
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        
+        filename = self._screen.printer.data['virtual_sdcard']['file_path']
+        res = re.match(r".*printer_data/gcodes/(.*$)", filename)
+        filename = res.group(1)
+        self.printer_config = self._screen.printers[0][list(self._screen.printers[0])[0]]
+        r = requests.get(
+            f"http://{self.printer_config['moonraker_host']}:{self.printer_config['moonraker_port']}/server/files/metadata?filename={filename}").json()
+        fileinfo = r["result"]
+
+        pixbuf = self.wizard_manager.get_file_image(filename, self._screen.gtk.content_width * .945, self._screen.gtk.content_height * .2)
+        if pixbuf is not None:
+            img = Gtk.Image.new_from_pixbuf(pixbuf)
+            img.set_vexpand(False)
+        else:
+            img = self._screen.gtk.Image("thumbnail", self._screen.gtk.content_width * .945, self._screen.gtk.content_height * .2)
+        self.content.add(img)
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(20)
+        label.set_markup(
+            "<span size='large'>" + _("Mismatch between actual printer configuration and gcode sent from Prusa Connect.") + "</span>")
+        label.set_line_wrap(True)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        self.content.add(label)
+
+        grid = self._screen.gtk.HomogeneousGrid()
+        grid.set_margin_top(20)
+        grid.set_vexpand(True)
+        grid.set_hexpand(True)
+        grid.set_row_homogeneous(False)
+        self.content.add(grid)
+
+        filament_type = fileinfo["filament_type"] if "filament_type" in fileinfo else "UNKNOWN"
+
+        if ('save_variables' in self._screen.printer.data):
+            save_variables = self._screen.printer.data['save_variables']['variables']
+            filament_loaded = save_variables['loaded_filament'] if 'loaded_filament' in save_variables else "NONE"
+            filament_loaded = filament_loaded.replace("-","")
+        else:
+            filament_loaded = "UNKNOWN"
+
+        filament_notes = fileinfo["filament_notes"] if "filament_notes" in fileinfo else None
+        nozzle_diameter = fileinfo["nozzle_diameter"] if "filament_notes" in fileinfo else None
+        if filament_notes and nozzle_diameter and filament_notes in NOZZLE_DICTIONARY:
+            nozzle_wanted = f"{nozzle_diameter} {NOZZLE_DICTIONARY[filament_notes]}"
+        else:
+            nozzle_wanted = "UNKNOWN"
+
+        if ('save_variables' in self._screen.printer.data):
+            save_variables = self._screen.printer.data['save_variables']['variables']
+            nozzle_current = save_variables['nozzle'] if 'nozzle' in save_variables else "NONE"
+            # for compatibility with nozzles configured before change HT-A to HT
+            if nozzle_current == "HT-A":
+                nozzle_current = "HT"
+        else:
+            nozzle_current = "UNKNOWN"
+
+        if filament_type != filament_loaded or nozzle_current != nozzle_wanted:
+
+            box = Gtk.Box()
+            box.set_spacing(4)
+            box.set_halign(Gtk.Align.START)
+            box.set_orientation(Gtk.Orientation.VERTICAL)
+            lbl = self._screen.gtk.Label(f"Required", xalign=0.0)
+            box.add(lbl)
+            box.set_margin_bottom(8)
+            box.set_margin_start(12)
+            grid.attach(box, 0, 0, 1, 1)
+
+            if filament_type != filament_loaded:
+                box = Gtk.Box()
+                box.set_spacing(4)
+                box.set_halign(Gtk.Align.START)
+                box.set_orientation(Gtk.Orientation.VERTICAL)
+                box.add(self._screen.gtk.Label(_("Filament"), "property-name", xalign=0.0))
+                lbl = self._screen.gtk.Label("", xalign=0.0)
+                lbl.set_markup("<span bgcolor='#008800'>" + filament_type + "</span>")
+                box.add(lbl)
+                box.set_margin_start(12)
+                grid.attach(box, 0, 1, 1, 1)
+
+            if nozzle_current != nozzle_wanted:
+                box = Gtk.Box()
+                box.set_spacing(4)
+                box.set_halign(Gtk.Align.START)
+                box.set_orientation(Gtk.Orientation.VERTICAL)
+                box.add(self._screen.gtk.Label(_("Nozzle"), "property-name", xalign=0.0))
+                lbl = self._screen.gtk.Label("", xalign=0.0)
+                lbl.set_markup("<span bgcolor='#008800'>" + nozzle_wanted + "</span>")
+                box.add(lbl)
+                box.set_margin_start(12)
+                grid.attach(box, 0, 2, 1, 1)
+
+            box = Gtk.Box()
+            box.set_spacing(4)
+            box.set_halign(Gtk.Align.START)
+            box.set_orientation(Gtk.Orientation.VERTICAL)
+            lbl = self._screen.gtk.Label(f"Actual", xalign=0.0)
+            box.add(lbl)
+            box.set_margin_bottom(8)
+            box.set_margin_start(12)
+            grid.attach(box, 1, 0, 1, 1)
+
+            if filament_type != filament_loaded:
+                box = Gtk.Box()
+                box.set_spacing(4)
+                box.set_halign(Gtk.Align.START)
+                box.set_orientation(Gtk.Orientation.VERTICAL)
+                box.add(self._screen.gtk.Label(_("Filament"), "property-name", xalign=0.0))
+                #filament_loaded = self.wizard_manager.get_wizard_data("filament_loaded")
+                lbl = self._screen.gtk.Label("", xalign=0.0)
+                lbl.set_markup("<span bgcolor='#AA0000'>" + filament_loaded + "</span>")
+                lbl.set_vexpand(False)
+                box.add(lbl)
+                box.set_margin_start(12)
+                grid.attach(box, 1, 1, 1, 1)
+
+            if nozzle_current != nozzle_wanted:
+                box = Gtk.Box()
+                box.set_spacing(4)
+                box.set_halign(Gtk.Align.START)
+                box.set_orientation(Gtk.Orientation.VERTICAL)
+                box.add(self._screen.gtk.Label(_("Nozzle"), "property-name", xalign=0.0))
+                lbl = self._screen.gtk.Label(nozzle_current, xalign=0.0)
+                lbl.set_markup("<span bgcolor='#AA0000'>" + nozzle_current + "</span>")
+                lbl.set_vexpand(False)
+                box.add(lbl)
+                box.set_margin_start(12)
+                grid.attach(box, 1, 2, 1, 1)
+
+            if filament_type != filament_loaded:
+                if filament_loaded == "NONE":
+                    nozzle_change_button = self._screen.gtk.Button(label=_("Open filament load wizard"), style=f"color1")
+                    nozzle_change_button.set_vexpand(False)
+                    nozzle_change_button.connect("clicked", self.load_button_pressed)
+                    self.content.add(nozzle_change_button)
+                else:
+                    nozzle_change_button = self._screen.gtk.Button(label=_("Open filament change wizard"), style=f"color1")
+                    nozzle_change_button.set_vexpand(False)
+                    nozzle_change_button.connect("clicked", self.unload_button_pressed)
+                    self.content.add(nozzle_change_button)
+
+            if nozzle_current != nozzle_wanted:
+                nozzle_change_button = self._screen.gtk.Button(label=_("Open nozzle change wizard"), style=f"color1")
+                nozzle_change_button.set_vexpand(False)
+                nozzle_change_button.connect("clicked", self.nozzle_change_button_pressed)
+                self.content.add(nozzle_change_button)
+
+            button = self._screen.gtk.Button(label=_("Cancel print"), style=f"color1")
+            button.set_vexpand(False)
+            button.connect("clicked", self.cancel_button_pressed)
+            self.content.add(button)
+
+            button = self._screen.gtk.Button(label=_("Print anyway"), style=f"color1")
+            button.set_vexpand(False)
+            button.connect("clicked", self.print_button_pressed)
+            self.content.add(button)
+        else:
+
+            box = Gtk.Box()
+            box.set_spacing(4)
+            box.set_halign(Gtk.Align.CENTER)
+            box.set_orientation(Gtk.Orientation.VERTICAL)
+            lbl = self._screen.gtk.Label("", xalign=0.0)
+            lbl.set_markup("<span color='#888888'>All problems resolved</span>")
+            box.add(lbl)
+            box.set_margin_bottom(8)
+            box.set_margin_start(12)
+            grid.attach(box, 0, 0, 2, 1)
+
+            button = self._screen.gtk.Button(label=_("Continue print"), style=f"color1")
+            button.set_vexpand(False)
+            button.connect("clicked", self.print_button_pressed)
+            self.content.add(button)
+
+            button = self._screen.gtk.Button(label=_("Cancel print"), style=f"color1")
+            button.set_vexpand(False)
+            button.connect("clicked", self.cancel_button_pressed)
+            self.content.add(button)
+
+    def nozzle_change_button_pressed(self, widget):
+        self._screen.show_panel("Nozzle Change", "wizard", "Nozzle Change", 1, False,
+                                wizard="changeNozzleSteps.CooldownPrompt", wizard_name="Nozzle Change")
+
+    def load_button_pressed(self, widget):
+        self._screen.show_panel("Load Filament", "wizard", "Load Filament", 1, False,
+                                wizard="loadWizardSteps.CheckLoaded", wizard_name="Load Filament",
+                                data={"expected_filament": self.wizard_manager.get_wizard_data("filament_type")})
+
+    def unload_button_pressed(self, widget):
+        self._screen.show_panel("Unload Filament", "wizard", "Unload Filament", 1, False,
+                                wizard="unloadWizardSteps.SelectFilament", wizard_name="Filament Change",
+                                data={"expected_filament": self.wizard_manager.get_wizard_data("filament_type"),
+                                      "should_act_as_change_wizard": True})
+
+    def cancel_button_pressed(self, widget):
+        self._screen._ws.klippy.print_cancel()
+
+    def print_button_pressed(self, widget):
+        self._screen._ws.klippy.print_resume()

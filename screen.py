@@ -308,7 +308,7 @@ class KlipperScreen(Gtk.Window):
                                 "info"],
                 "toolhead": ["homed_axes", "estimated_print_time", "print_time", "position", "extruder",
                              "max_accel", "max_accel_to_decel", "max_velocity", "square_corner_velocity"],
-                "virtual_sdcard": ["file_position", "is_active", "progress"],
+                "virtual_sdcard": ["file_position", "is_active", "progress", "file_path"],
                 "webhooks": ["state", "state_message"],
                 "firmware_retraction": ["retract_length", "retract_speed", "unretract_extra_length", "unretract_speed"],
                 "motion_report": ["live_position", "live_velocity", "live_extruder_velocity"],
@@ -816,7 +816,10 @@ class KlipperScreen(Gtk.Window):
         self.base_panel_show_all()
         for dialog in self.dialogs:
             self.gtk.remove_dialog(dialog)
-        if 'door_sensor' in self.printer.data and not self.printer.data['door_sensor']['door_closed']:
+        if 'pause_resume' in self.printer.data and self.printer.data['pause_resume']['is_paused'] and self.printer.data['pause_resume']['pause_reason'] == "INCOMPATIBLE_GCODE":
+            self.show_panel("uncompatible_gcode", "wizard", _("Uncompatible Gcode"), 2,
+                             False, wizard="preprintWizardSteps.RemoteMismatchDetected", wizard_name=_("Uncompatible Gcode"))
+        elif 'door_sensor' in self.printer.data and not self.printer.data['door_sensor']['door_closed']:
             self.show_panel("door_open", "door_open", _("Door Opened"), 2, False)
         else:
             self.show_panel('job_status', "job_status", _("Printing"), 2)

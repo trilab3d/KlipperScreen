@@ -16,6 +16,7 @@ import gi
 import threading
 import base64
 from types import TracebackType
+import requests
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk, GLib, Pango
@@ -816,7 +817,10 @@ class KlipperScreen(Gtk.Window):
         self.base_panel_show_all()
         for dialog in self.dialogs:
             self.gtk.remove_dialog(dialog)
-        if 'pause_resume' in self.printer.data and self.printer.data['pause_resume']['is_paused'] and self.printer.data['pause_resume']['pause_reason'] == "INCOMPATIBLE_GCODE":
+        printer_config = self.printers[0][list(self.printers[0])[0]]
+        r = requests.get(
+            f"http://{printer_config['moonraker_host']}:{printer_config['moonraker_port']}/printer/objects/query?pause_resume").json()["result"]["status"]
+        if r["pause_resume"]["is_paused"] and r["pause_resume"]["pause_reason"] == "INCOMPATIBLE_GCODE":
             self.show_panel("uncompatible_gcode", "wizard", _("Uncompatible Gcode"), 2,
                              False, wizard="preprintWizardSteps.RemoteMismatchDetected", wizard_name=_("Uncompatible Gcode"))
         elif 'door_sensor' in self.printer.data and not self.printer.data['door_sensor']['door_closed']:

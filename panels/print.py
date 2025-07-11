@@ -228,7 +228,7 @@ class PrintPanel(ScreenPanel):
         #row.attach(rename, 2, 1, 1, 1)
         row.attach(delete, 2, 1, 1, 1)
 
-        if not filename or (filename and os.path.splitext(filename)[1] in [".gcode", ".g", ".gco"]):
+        if not filename or (filename and os.path.splitext(filename)[1] in [".gcode", ".g", ".gco", ".bgcode"]):
             row.attach(action, 4, 0, 1, 2)
 
         if filename is not None:

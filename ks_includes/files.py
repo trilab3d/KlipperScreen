@@ -67,7 +67,8 @@ class KlippyFiles:
             if "error" in result.keys():
                 filename = params['filename']
                 logging.debug(f"Error in getting metadata for {params['filename']}")
-                if not filename.endswith(".g") and not filename.endswith(".gcode"):
+                if not filename.endswith(".g") and not filename.endswith(".gcode") \
+                  and not filename.endswith(".bgcode"):
                     logging.warning(f"Not a gcode: {filename}")
                 if params['filename'] not in self.file_metadata_counters:
                     self.file_metadata_counters[filename] = 0
@@ -161,9 +162,11 @@ class KlippyFiles:
         return False
 
     def get_thumbnail_location(self, filename, small=False):
-        if small and len(self.files[filename]['thumbnails']) > 1 \
-                and self.files[filename]['thumbnails'][0]['width'] > self.files[filename]['thumbnails'][1]['width']:
-            thumb = self.files[filename]['thumbnails'][1]
+        if len(self.files[filename]['thumbnails']) > 1:
+                if self.files[filename]['thumbnails'][0]['width'] > self.files[filename]['thumbnails'][1]['width']:
+                    thumb = self.files[filename]['thumbnails'][1] if small else self.files[filename]['thumbnails'][0]
+                else:
+                    thumb = self.files[filename]['thumbnails'][0] if small else self.files[filename]['thumbnails'][1]
         else:
             thumb = self.files[filename]['thumbnails'][0]
         if thumb['local'] is False:
@@ -178,7 +181,8 @@ class KlippyFiles:
     def request_metadata(self, filename):
         if filename not in self.filelist:
             return False
-        if not filename.endswith(".g") and not filename.endswith(".gcode"):
+        if not filename.endswith(".g") and not filename.endswith(".gcode")\
+          and not filename.endswith(".bgcode"):
             return False
         self.file_metadata_counters[filename] = 0
         self._screen._ws.klippy.get_file_metadata(filename, self._callback)

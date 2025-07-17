@@ -793,7 +793,7 @@ class JobStatusPanel(ScreenPanel):
             and "object_height" in self.file_metadata
         ):
             self.labels["layer"].set_label(
-                f"{1 + round((self.pos_z - self.f_layer_h) / self.layer_h)} / {self.labels['total_layers'].get_text()}"
+                f"{(1 + round((self.pos_z - self.f_layer_h) / self.layer_h) if self.layer_h else 0)} / {self.labels['total_layers'].get_text()}"
             )
 
         if "print_duration" in ps:

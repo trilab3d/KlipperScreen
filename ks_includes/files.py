@@ -224,5 +224,9 @@ class KlippyFiles:
         return self.files[filename]
 
     def get_metascan_pending(self):
-        r = self._screen.apiclient.send_request("server/files/metascan_pending", json=True)
-        return r["result"]["metascan_pending"]
+        try:
+            r = self._screen.apiclient.send_request("server/files/metascan_pending", json=True)
+            return r["result"]["metascan_pending"]
+        except Exception as e:
+            logging.exception(e)
+            return False

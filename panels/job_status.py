@@ -997,7 +997,7 @@ class JobStatusPanel(ScreenPanel):
                     else:
                         self.f_layer_h = self.layer_h
                     self.labels["total_layers"].set_label(
-                        f"{((self.oheight - self.f_layer_h) / self.layer_h) + 1:.0f}"
+                        f"{((self.oheight - self.f_layer_h) / self.layer_h) + 1 if self.layer_h else 0:.0f}"
                     )
             if "filament_total" in self.file_metadata:
                 self.labels["filament_total"].set_label(

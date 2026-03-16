@@ -80,6 +80,7 @@ class SystemPanel(ScreenPanel):
         infogrid.get_style_context().add_class("system-program-grid")
 
         self.icon_ok = self._gtk.Image("complete", self._gtk.content_width * .9, self._gtk.content_height * .2)
+        self.icon_offline = self._gtk.Image("network_check_error", self._gtk.content_width * .9, self._gtk.content_height * .2)
         self.icon_update = self._gtk.Image("update-available", self._gtk.content_width * .9, self._gtk.content_height * .2)
         self.icon_update_usb = self._gtk.Image("update-available-usb", self._gtk.content_width * .9, self._gtk.content_height * .2)
         self.icon_downloading = self._gtk.Image("update-downloading", self._gtk.content_width * .9, self._gtk.content_height * .2)
@@ -96,7 +97,9 @@ class SystemPanel(ScreenPanel):
         self.icon_box.add(self.icon_ok)
 
         self.update_header = Gtk.Label()
-        self.update_header.set_hexpand(True)  # align to center
+        self.update_header.set_hexpand(True)
+        self.update_header.set_justify(Gtk.Justification.CENTER)
+        self.update_header.set_halign(Gtk.Align.CENTER)
         self.update_header.set_margin_top(40)
         self.update_label = Gtk.Label()
         self.update_label.set_hexpand(False)
@@ -212,12 +215,19 @@ class SystemPanel(ScreenPanel):
                 self.button_box.add(self.export_logs_button)
                 self.update_button.set_sensitive(not is_printing)
             elif update_resp["update_status"] == "UP_TO_DATE":
-                self.update_header.set_markup("<span size='xx-large'>"+_("System is up to date")+"</span>")
-                self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}")
-                self.release_notes_label.set_label("")
-                self.icon_box.add(self.icon_ok)
-                self.button_box.add(self.refresh_button)
-                self.button_box.add(self.export_logs_button)
+                if self._screen.offline:
+                    self.update_header.set_markup("<span size='xx-large'>"+_("No update available\nPrinter offline")+"</span>")
+                    self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}")
+                    self.release_notes_label.set_label("")
+                    self.icon_box.add(self.icon_offline)
+                    self.button_box.add(self.export_logs_button)
+                else:
+                    self.update_header.set_markup("<span size='xx-large'>"+_("System is up to date")+"</span>")
+                    self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}")
+                    self.release_notes_label.set_label("")
+                    self.icon_box.add(self.icon_ok)
+                    self.button_box.add(self.refresh_button)
+                    self.button_box.add(self.export_logs_button)
             elif update_resp["update_status"] == "DOWNLOAD_FAILED":
                 self.update_header.set_markup("<span size='xx-large'>"+_("Download failed")+"</span>")
                 self.update_label.set_markup(f"<b>{_('Current version')}</b>: {update_resp['current_version']}\n"

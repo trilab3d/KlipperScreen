@@ -35,6 +35,7 @@ class ScreenPanel:
         self.bts = self._gtk.bsidescale
 
         self.update_dialog = None
+        self.offline = True
 
     def _autoscroll(self, scroll, *args):
         adj = scroll.get_vadjustment()

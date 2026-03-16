@@ -431,6 +431,7 @@ class BasePanel(ScreenPanel):
             if netifaces.AF_INET in addrs or netifaces.AF_INET6 in addrs:
                 offline = False
                 break
+        self._screen.offline = offline
         if offline:
             self.control['time'].set_markup(f"<span foreground='#FF0000'>offline</span>")
             return True

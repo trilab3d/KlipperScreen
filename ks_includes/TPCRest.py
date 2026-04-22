@@ -45,7 +45,7 @@ class TPCRest:
         else:
             logging.error(self.status.replace('\n', '>>'))
             logging.info(f"Data was: {data}")
-            logging.info(f"body was: {body}")
+            logging.info(f"body was: {self._redact_body(body)}")
         if keep_err_code:
             return data, response.status_code
         else:
@@ -78,6 +78,13 @@ class TPCRest:
         else:
             logging.error(self.status.replace('\n', '>>'))
         return data
+
+    @staticmethod
+    def _redact_body(body):
+        if not isinstance(body, dict):
+            return body
+        sensitive = {"password", "passwd", "secret", "token", "api_key"}
+        return {k: ("***" if k.lower() in sensitive else v) for k, v in body.items()}
 
     @staticmethod
     def format_status(status):

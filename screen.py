@@ -828,9 +828,25 @@ class KlipperScreen(Gtk.Window):
         else:
             self.show_panel('job_status', "job_status", _("Printing"), 2)
 
+    def _check_password_required(self):
+        try:
+            creds = self.tpcclient.send_request("/credentials")
+        except Exception as e:
+            logging.error(f"Password check failed: {e}")
+            return False
+        if not creds or creds.get("user"):
+            return False
+        self.tpcclient.send_request("settings", "POST", body={"locked": True})
+        self.show_panel("password_required", "wizard", _("Password Required"), 2, False,
+                        wizard="passwordSetupSteps.PasswordRequired",
+                        wizard_name=_("Password Required"))
+        return True
+
     def state_ready(self, wait=True):
         # Do not return to main menu if completing a job, timeouts/user input will return
         if "job_status" in self._cur_panels and wait:
+            return
+        if self._check_password_required():
             return
         self.show_panel('main_panel', "main_menu", None, 2, items=self._config.get_menu_items("__main"))
 

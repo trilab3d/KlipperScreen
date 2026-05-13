@@ -449,7 +449,7 @@ class BasePanel(ScreenPanel):
     def update_fault_states(self):
         self.check_connect_status()
         fault_update = {
-            "connect_error": bool(self._screen.printer.connect_status == "CONN_ERROR")
+            "connect_error": bool((not self._screen.printer) or (self._screen.printer.connect_status == "CONN_ERROR"))
         }
         # get_throttled
         try:
@@ -470,6 +470,8 @@ class BasePanel(ScreenPanel):
     
     def check_connect_status(self):
         try:
+            if not self._screen.printer:
+                return True
             r = requests.get(
                 f"http://{self._screen.printer_config['moonraker_host']}:{self._screen.printer_config['prusa_connect_port']}/connection"
             ).json()
@@ -483,6 +485,7 @@ class BasePanel(ScreenPanel):
                 
         except Exception as e:
             logging.error(f"Exception during check_connect_status: {e}")
+            logging.exception(e)
             if self._screen.printer:
                 self._screen.printer.connect_status = "CONN_ERROR"
         return True

@@ -12,6 +12,7 @@ from panels.hostname import HOSTNAME_REGEX
 
 from WizardSteps.baseWizardStep import BaseWizardStep
 from WizardSteps.prusaConnectSteps import CONNECT_PARAMS
+from WizardSteps import changeNozzleSteps
 
 class Welcome(BaseWizardStep):
     def __init__(self, screen):
@@ -599,7 +600,67 @@ class PrinterName(BaseWizardStep):
             }
             requests.post("http://127.0.0.1/tpc/set_hostname", json=b)
         self._screen.remove_keyboard()
+        self.wizard_manager.set_step(ConnectingToPrinter(self._screen))
+
+class ConnectingToPrinter(BaseWizardStep):
+    # The initial wizard normally runs without a Klipper connection (see screen.py
+    # `/opt/init_state` branch). The connection is started in silent mode at wizard
+    # launch; this step parks the UI until printer.data has the fields needed by the
+    # nozzle selection step.
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.can_exit = False
+        self.can_back = False
+
+    def activate(self, wizard):
+        super().activate(wizard)
+        if self._is_ready():
+            self.wizard_manager.set_step(SelectNozzleType(self._screen))
+            return
+        self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        label = self._screen.gtk.Label("")
+        label.set_margin_top(40)
+        label.set_markup(
+            "<span size='large'>" + _("Connecting to printer…") + "</span>")
+        label.set_line_wrap(True)
+        label.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        self.content.add(label)
+        self.spinner = Gtk.Spinner()
+        self.spinner.set_size_request(64, 64)
+        self.spinner.start()
+        self.content.add(self.spinner)
+
+    def _is_ready(self):
+        return (self._screen.initialized
+                and self._screen.printer is not None
+                and self._screen.printer.data is not None
+                and "config_constant printhead" in self._screen.printer.data)
+
+    def update_loop(self):
+        if self._is_ready():
+            self.wizard_manager.set_step(SelectNozzleType(self._screen))
+
+class SelectNozzleType(changeNozzleSteps.SelectNozzleType):
+    def __init__(self, screen):
+        super().__init__(screen)
+        self.next_step = SelectNozzleDiameter
+        self.can_exit = False
+        self.can_back = False
+
+class SelectNozzleDiameter(changeNozzleSteps.SelectNozzleDiameter):
+    def __init__(self, screen, nozzle_type):
+        super().__init__(screen, nozzle_type)
+        self.can_exit = False
+
+    def option_selected(self, widget, option):
+        self._screen._ws.klippy.gcode_script(
+            f"SAVE_VARIABLE VARIABLE=nozzle VALUE='\"{option} {self.nozzle_type}\"'"
+        )
         self.wizard_manager.set_step(PrusaConnectDialog(self._screen))
+
+    def on_back(self):
+        self.wizard_manager.set_step(SelectNozzleType(self._screen))
+        return True
 
 class PrusaConnectDialog(BaseWizardStep):
     def __init__(self, screen):

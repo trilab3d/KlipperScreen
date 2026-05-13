@@ -143,6 +143,7 @@ class KlipperScreen(Gtk.Window):
     initialized = initializing = False
     popup_timeout = None
     maintenance = None
+    wizard_mode = False
 
     def __init__(self, args, version):
         try:
@@ -210,12 +211,16 @@ class KlipperScreen(Gtk.Window):
             self.tpcclient = TPCRest("127.0.0.1",5000)
             with open("/opt/init_state","r") as f:
                 step = f.read().strip()
+            self.wizard_mode = True
             self.show_panel("Setup", "wizard", "", 1, False, wizard=f"InitialSetupSteps.{step}", wizard_name="Initial Setup")
+            # Connect to printer in background so wizard steps that need printer.data work.
+            # silent=True keeps state callbacks as no-ops so panel swaps don't kill the wizard.
+            self.initial_connection(silent=True)
             return
 
         self.initial_connection()
 
-    def initial_connection(self):
+    def initial_connection(self, silent=False):
         if has_gpio and not GPIO.input(EMERGENCY_STOP_PIN):
             if 'emergency_stop' not in self.panels:
                 self.show_panel('emergency_stop', "emergency_stop", None, 2)
@@ -223,16 +228,24 @@ class KlipperScreen(Gtk.Window):
             GLib.timeout_add_seconds(3, self.initial_connection)
             return False
         self.printers = self._config.get_printers()
-        state_callbacks = {
-            "disconnected": self.state_disconnected,
-            "error": self.state_error,
-            "paused": self.state_printing,
-            "printing": self.state_printing,
-            "ready": self.state_ready,
-            "startup": self.state_startup,
-            "shutdown": self.state_shutdown,
-            "emergency_stop": self.state_emergency_stop
-        }
+        if silent:
+            # During initial wizard: suppress state callbacks so they don't swap panels
+            # and kill the wizard. Connection still happens; printer.data still populates.
+            state_callbacks = {
+                "disconnected": None, "error": None, "paused": None, "printing": None,
+                "ready": None, "startup": None, "shutdown": None, "emergency_stop": None,
+            }
+        else:
+            state_callbacks = {
+                "disconnected": self.state_disconnected,
+                "error": self.state_error,
+                "paused": self.state_printing,
+                "printing": self.state_printing,
+                "ready": self.state_ready,
+                "startup": self.state_startup,
+                "shutdown": self.state_shutdown,
+                "emergency_stop": self.state_emergency_stop
+            }
         for printer in self.printers:
             printer["data"] = Printer(state_execute, state_callbacks, self.process_busy_state)
         default_printer = self._config.get_main_config().get('default_printer')
@@ -268,6 +281,11 @@ class KlipperScreen(Gtk.Window):
 
         self.printer_config = self.printers[ind][name]
         self.printer = self.printers[ind]["data"]
+        # Keep ScreenPanel class-level reference in sync. Normally this is refreshed
+        # whenever a new panel is instantiated (e.g., splash_screen via
+        # printer_initializing), but in wizard mode we bypass that.
+        from ks_includes.screen_panel import ScreenPanel
+        ScreenPanel._printer = self.printer
         self.apiclient = KlippyRest(
             self.printers[ind][name]["moonraker_host"],
             self.printers[ind][name]["moonraker_port"],
@@ -990,6 +1008,11 @@ class KlipperScreen(Gtk.Window):
         self._ws.send_method(method, params)
 
     def printer_initializing(self, msg, remove=False):
+        if self.wizard_mode:
+            # During initial wizard we keep the wizard panel visible.
+            # Connection status is observed by polling printer.data from wizard steps.
+            logging.debug(f"printer_initializing suppressed (wizard mode): {msg}")
+            return
         if 'splash_screen' not in self.panels or remove:
             self.show_panel('splash_screen', "splash_screen", None, 2)
         self.panels['splash_screen'].update_text(msg)

@@ -294,8 +294,12 @@ class NetworkTest(BaseWizardStep):
         self.content.add(label)
 
     def update_loop(self):
-        r = requests.get("https://google.com")
-        if r.status_code == 200:
+        try:
+            r = requests.get("https://google.com", timeout=5)
+            ok = r.status_code == 200
+        except requests.RequestException:
+            ok = False
+        if ok:
             self.wizard_manager.set_wizard_data("network_working", True)
             self.wizard_manager.set_step(NetworkTestSucesfull(self._screen))
         else:

@@ -107,17 +107,25 @@ class FactoryReset(BaseWizardStep):
         self.progress = 0.1
         logging.info(f"Reset job - database removed")
         gcode_path = "/home/trilab/printer_data/gcodes/"
+        def should_remove(path):
+            if os.path.islink(path):
+                return False
+            if os.path.ismount(path):
+                return False
+            return True
         num_gcodes = 0
         for f in os.listdir(gcode_path):
-            if not os.path.islink(gcode_path + f):
+            if should_remove(gcode_path + f):
                 num_gcodes += 1
         logging.info(f"Reset job - numgcodes: {num_gcodes}")
         if num_gcodes > 0:
             for f in os.listdir(gcode_path):
-                if not os.path.islink(gcode_path + f):
+                if should_remove(gcode_path + f):
                     os.system(f"rm -rf \"{gcode_path + f}\"")
                     self.progress += 0.5/num_gcodes
                     logging.info(f"Reset job - removed gcode \"{gcode_path + f}\"")
+                else:
+                    logging.info(f"Reset job - skipped \"{gcode_path + f}\" (symlink or mount point)")
         else:
             self.progress += 0.5
         logging.info(f"Reset job - all gcodes removed")

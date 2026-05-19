@@ -495,7 +495,13 @@ class NetworkManagerConnectionPanel(ScreenPanel):
         self.changed_fields["802-11-wireless.ssid"] = widget.get_text()
 
     def save_changes(self, widget):
+        print(f"Saving {len(self.changed_fields)} changes")
         print(json.dumps(self.changed_fields, indent=2))
+
+        if len(self.changed_fields) == 0:
+            self._screen._menu_go_back()  #nothing to save
+            return
+
         rsp, code = self._screen.tpcclient.send_request(f"network-manager/modify-connection/{self.connection['id']}", "POST",
                                             body=self.changed_fields, keep_err_code=True)
         logging.info(f"rsp: {rsp}, code: {code}")
@@ -506,8 +512,9 @@ class NetworkManagerConnectionPanel(ScreenPanel):
             self._screen.show_popup_message(rsp["stderr"], 3)
 
     def revert_changes(self, widget):
+        print(f"Reverting {len(self.changed_fields)} changes")
         print(json.dumps(self.changed_fields, indent=2))
-        self.rebuild_pages()
+        self._screen._menu_go_back()
 
     def refetch_connection(self):
         conn = self._screen.tpcclient.send_request(f"network-manager/show-connection/{self.connection['id']}")

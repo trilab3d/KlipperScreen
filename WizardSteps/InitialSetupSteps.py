@@ -11,7 +11,6 @@ from panels.privacy import PRESET_FIELDS
 from panels.hostname import HOSTNAME_REGEX
 
 from WizardSteps.baseWizardStep import BaseWizardStep
-from WizardSteps.prusaConnectSteps import CONNECT_PARAMS
 from WizardSteps import changeNozzleSteps
 
 class Welcome(BaseWizardStep):
@@ -712,6 +711,7 @@ class PrusaConnectInProgress(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
         self.can_back = True
+
     def activate(self, wizard):
         super().activate(wizard)
 
@@ -722,7 +722,9 @@ class PrusaConnectInProgress(BaseWizardStep):
                     self.wizard_manager.set_step(PrusConnectDone(self._screen))
                     return
 
-            r = requests.post(f"http://127.0.0.1:5001/connection", json=CONNECT_PARAMS).json()
+            # Register with the server from the printer settings, not a hardcoded one.
+            # The service defaults to connect.prusa3d.com when none was imported.
+            r = requests.post(f"http://127.0.0.1:5001/connection", json={}).json()
             self.code = r["code"]
             self.url = r["url"]
             logging.info(f"Continue on {self.url}")

@@ -14,14 +14,6 @@ from WizardSteps.baseWizardStep import BaseWizardStep
 from WizardSteps import loadWizardSteps, servicePositionSteps
 from WizardSteps.wizardCommons import *
 
-CONNECT_PARAMS={
-    "connect": {
-		"hostname": "connect.prusa3d.com",
-		"tls": True,
-		"port": 443
-	}
-}
-
 class GetStatus(BaseWizardStep):
     def __init__(self, screen, load_var=True):
         super().__init__(screen)
@@ -80,10 +72,13 @@ class InProgress(BaseWizardStep):
     def __init__(self, screen):
         super().__init__(screen)
         self.printer_config = self._screen.printers[0][list(self._screen.printers[0])[0]]
-        r = requests.post(f"http://{self.printer_config['moonraker_host']}:{self.printer_config['prusa_connect_port']}/connection",json=CONNECT_PARAMS).json()
+        # Register with the server from the printer settings, not a hardcoded one.
+        # The service defaults to connect.prusa3d.com when none was imported.
+        r = requests.post(f"http://{self.printer_config['moonraker_host']}:{self.printer_config['prusa_connect_port']}/connection",json={}).json()
         self.code = r["code"]
         self.url = r["url"]
         logging.info(f"Continue on {self.url}")
+
     def activate(self, wizard):
         super().activate(wizard)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
